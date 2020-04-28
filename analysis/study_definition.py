@@ -199,21 +199,6 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
     ),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/35
-    bp_sys=patients.mean_recorded_value(
-        systolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
-    ),
-    bp_dias=patients.mean_recorded_value(
-        diastolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
-    ),
 
     recent_salbutamol_count=patients.with_these_medications(
         salbutamol_codes,
