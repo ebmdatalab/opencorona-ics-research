@@ -1,16 +1,25 @@
 from datalab_cohorts import StudyDefinition, patients, codelist, codelist_from_csv
 
-chronic_cardiac_disease_codes = codelist_from_csv(
-    "codelists/chronic_cardiac_disease.csv", system="ctv3", column="CTV3ID"
-)
-chronic_liver_disease_codes = codelist_from_csv(
-    "codelists/chronic_liver_disease.csv", system="ctv3", column="CTV3ID"
-)
-salbutamol_codes = codelist_from_csv(
-    "codelists/sabutamol_asthma.csv", system="snomed", column="id"
-)
-systolic_blood_pressure_codes = codelist(["2469."], system="ctv3")
-diastolic_blood_pressure_codes = codelist(["246A."], system="ctv3")
+
+## CODE Lists
+copd_not_signed_off = codelist_from_csv(
+    "codelists/copd_not_signed_off.csv", system="ctv3", column="CTV3ID")
+
+lama_laba_codes = codelist_from_csv(
+    "codelists/lama_laba_codelist.csv", system="snomed", column="id")
+
+laba_codes = codelist_from_csv(
+    "codelists/laba_single_codelist.csv", system="snomed", column="id")
+
+lama_codes = codelist_from_csv(
+    "codelists/lama_single_codelist.csv", system="snomed", column="id")
+
+triple_codes = codelist_from_csv(
+    "codelists/lama_triple_codelist.csv", system="snomed", column="id")
+
+steroid_codes = codelist_from_csv(
+    "codelists/inhaledsteroid_asthma.csv", system="snomed", column="id")
+
 
 study = StudyDefinition(
     # This line defines the study population
@@ -22,55 +31,64 @@ study = StudyDefinition(
     age=patients.age_as_of("2020-02-01"),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/46
     sex=patients.sex(),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/7
-    chronic_cardiac_disease=patients.with_these_clinical_events(
-        chronic_cardiac_disease_codes,
+    # 
+    copd_not_signed_off=patients.with_these_clinical_events(
+        copd_not_signed_off,
         returning="date",
         find_first_match_in_period=True,
         include_month=True,
     ),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/12
-    chronic_liver_disease=patients.with_these_clinical_events(
-        chronic_liver_disease_codes,
-        returning="date",
-        find_first_match_in_period=True,
-        include_month=True,
+    
+    recent_lama_laba=patients.with_these_medications(
+        lama__laba_codes,
+        between=["2019-12-01", "2020-03-01"],
+        returning="number_of_matches_in_period",
     ),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/10
-    bmi=patients.most_recent_bmi(
-        on_or_after="2010-02-01",
-        minimum_age_at_measurement=16,
-        include_measurement_date=True,
-        include_month=True,
+
+     recent_lama_count=patients.with_these_medications(
+        lama_codes,
+        between=["2019-12-01", "2020-03-01"],
+        returning="number_of_matches_in_period",
     ),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/35
-    bp_sys=patients.mean_recorded_value(
-        systolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
+
+      recent_triple_therapy_count=patients.with_these_medications(
+        triple_codes,
+        between=["2019-12-01", "2020-03-01"],
+        returning="number_of_matches_in_period",
     ),
-    bp_dias=patients.mean_recorded_value(
-        diastolic_blood_pressure_codes,
-        on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
-        include_measurement_date=True,
-        include_month=True,
+
+       recent_inhaled_steroid_count=patients.with_these_medications(
+        steroid_codes,
+        between=["2019-12-01", "2020-03-01"],
+        returning="number_of_matches_in_period",
     ),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/54
-    stp=patients.registered_practice_as_of("2020-02-01", returning="stp_code"),
-    msoa=patients.registered_practice_as_of("2020-02-01", returning="msoa_code"),
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/52
-    imd=patients.address_as_of(
-        "2020-02-01", returning="index_of_multiple_deprivation", round_to_nearest=100
+
+        recent_laba_count=patients.with_these_medications(
+        laba_codes,
+        between=["2019-12-01", "2020-03-01"],
+        returning="number_of_matches_in_period",
     ),
-    rural_urban=patients.address_as_of(
-        "2020-02-01", returning="rural_urban_classification"
-    ),
-    recent_salbutamol_count=patients.with_these_medications(
+
+         recent_lama_count=patients.with_these_medications(
         salbutamol_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
+
+         # https://github.com/ebmdatalab/tpp-sql-notebook/issues/55
+        laba_lama_only=patients.categorised_as(
+        {
+            "0": "DEFAULT",
+            "1": """
+                (
+                  recent_lama_laba OR (
+                    recent_lama_count AND recent_laba)
+                  )
+                ) AND NOT (
+                  recent_inhaled_steroid_count OR 
+                  recent_triple_therapy_count
+                )
+            """,
+      
+        }, 
 )
