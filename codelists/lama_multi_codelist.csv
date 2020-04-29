@@ -1,0 +1,22 @@
+type,id,bnf_code,nm
+amp,24644611000001108,0301040W0BBAAAA,Anoro Ellipta 55micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+amp,28357211000001106,0301040V0BBAAAA,Duaklir 340micrograms/dose / 12micrograms/dose Genuair (AstraZeneca UK Ltd)
+amp,23621711000001102,0302000V0BBAAAA,Relvar Ellipta 184micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+amp,23622011000001107,0302000V0BBABAB,Relvar Ellipta 92micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+amp,29971311000001100,0301040X0BBAAAA,Spiolto Respimat 2.5micrograms/dose / 2.5micrograms/dose inhalation solution cartridge with device (Boehringer Ingelheim Ltd)
+amp,37678011000001103,0301040X0BBABAB,Spiolto Respimat 2.5micrograms/dose / 2.5micrograms/dose inhalation solution refill cartridge (Boehringer Ingelheim Ltd)
+amp,34952211000001104,0302000V0BCAAA0,Trelegy Ellipta 92micrograms/dose / 55micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+amp,34681611000001100,0301011ABBBAAA0,Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler (Chiesi Ltd)
+amp,28007211000001102,0301040Y0BBAAAA,Ultibro Breezhaler 85microgram/43microgram inhalation powder capsules with device (Novartis Pharmaceuticals UK Ltd)
+amp,32364511000001104,0301040W0AAAAAA,Umeclidinium bromide 65micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler (Ennogen Healthcare Ltd)
+amp,32629811000001101,0301040W0AAAAAA,Umeclidinium bromide 65micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler (J M McGill Ltd)
+amp,37540311000001105,0301040X0BCAAAA,Yanimo Respimat 2.5micrograms/dose / 2.5micrograms/dose inhalation solution cartridge with device (Boehringer Ingelheim Ltd)
+vmp,28365011000001100,0301040V0AAAAAA,Aclidinium bromide 396micrograms/dose / Formoterol 11.8micrograms/dose dry powder inhaler
+vmp,23661311000001105,0302000V0AAAAAA,Fluticasone furoate 184micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler
+vmp,23661411000001103,0302000V0AAABAB,Fluticasone furoate 92micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler
+vmp,34955111000001103,0302000V0BCAAA0,Generic Trelegy Ellipta 92micrograms/dose / 55micrograms/dose / 22micrograms/dose dry powder inhaler
+vmp,34683311000001106,0301011ABBBAAA0,Generic Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler
+vmp,28049611000001104,0301040Y0AAAAAA,Indacaterol 85micrograms/dose / Glycopyrronium bromide 54micrograms/dose inhalation powder capsules with device
+vmp,37692511000001100,0301040X0AAABAB,Tiotropium bromide 2.5micrograms/dose / Olodaterol 2.5micrograms/dose inhalation solution cartridge CFC free
+vmp,29987211000001108,0301040X0AAAAAA,Tiotropium bromide 2.5micrograms/dose / Olodaterol 2.5micrograms/dose solution for inhalation cartridge with device CFC free
+vmp,24645511000001105,0301040W0AAAAAA,Umeclidinium bromide 65micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler

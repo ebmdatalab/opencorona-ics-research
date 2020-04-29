@@ -1,0 +1,5 @@
+type,id,bnf_code,nm
+amp,34952211000001104,0302000V0BCAAA0,Trelegy Ellipta 92micrograms/dose / 55micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+amp,34681611000001100,0301011ABBBAAA0,Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler (Chiesi Ltd)
+vmp,34955111000001103,0302000V0BCAAA0,Generic Trelegy Ellipta 92micrograms/dose / 55micrograms/dose / 22micrograms/dose dry powder inhaler
+vmp,34683311000001106,0301011ABBBAAA0,Generic Trimbow 87micrograms/dose / 5micrograms/dose / 9micrograms/dose inhaler
