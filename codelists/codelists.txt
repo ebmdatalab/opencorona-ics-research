@@ -1,0 +1,14 @@
+opensafely/aplastic-anaemia/2020-04-24
+opensafely/asplenia/2020-04-14
+opensafely/asthma-inhaled-salbutamol-medication/2020-04-15
+opensafely/cancer-excluding-lung-and-haematological/2020-04-15
+opensafely/chemotherapy-or-radiotherapy/2020-04-15
+opensafely/chronic-respiratory-disease/2020-04-10
+opensafely/dialysis/2020-04-27
+opensafely/ethnicity/2020-04-27
+opensafely/haematological-cancer/2020-04-15
+opensafely/hiv/2020-04-24
+opensafely/lung-cancer/2020-04-15
+opensafely/permanent-immunosuppresion/2020-04-24
+opensafely/sickle-cell-disease/2020-04-14
+opensafely/temporary-immunosuppresion/2020-04-24
