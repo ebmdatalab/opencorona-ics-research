@@ -1,0 +1,17 @@
+opensafely/aplastic-anaemia/2020-04-24
+opensafely/asthma-diagnosis/2020-04-15
+opensafely/asthma-inhaler-salbutamol-medication/2020-04-15
+opensafely/asthma-oral-prednisolone-medication/2020-04-27
+opensafely/asthma-inhaler-steroid-medication/2020-04-15
+opensafely/cancer-excluding-lung-and-haematological/2020-04-15
+opensafely/diabetes/2020-04-15
+opensafely/chronic-kidney-disease/2020-04-14
+opensafely/ethnicity/2020-04-27
+opensafely/haematological-cancer/2020-04-15
+opensafely/hiv/2020-04-24
+opensafely/hypertension/2020-04-28
+opensafely/lung-cancer/2020-04-15
+opensafely/permanent-immunosuppresion/2020-04-24
+opensafely/temporary-immunosuppresion/2020-04-24
+opensafely/smoking-clear/2020-04-29
+opensafely/smoking-unclear/2020-04-29
