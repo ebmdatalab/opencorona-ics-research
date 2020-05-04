@@ -1,4 +1,5 @@
 import csv
+import filecmp
 import subprocess
 import tempfile
 
@@ -877,18 +878,41 @@ def test_patients_categorised_as():
     session = make_session()
     session.add_all(
         [
-            Patient(Sex="M", CodedEvents=[CodedEvent(CTV3Code="foo1")]),
-            Patient(Sex="F", CodedEvents=[CodedEvent(CTV3Code="foo2")]),
-            Patient(Sex="M", CodedEvents=[CodedEvent(CTV3Code="foo2")]),
-            Patient(Sex="F", CodedEvents=[CodedEvent(CTV3Code="foo3")]),
+            Patient(
+                Sex="M",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2000-01-01")
+                ],
+            ),
+            Patient(
+                Sex="F",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo2", ConsultationDate="2000-01-01"),
+                    CodedEvent(CTV3Code="bar1", ConsultationDate="2000-01-01"),
+                ],
+            ),
+            Patient(
+                Sex="M",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo2", ConsultationDate="2000-01-01")
+                ],
+            ),
+            Patient(
+                Sex="F",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo3", ConsultationDate="2000-01-01")
+                ],
+            ),
         ]
     )
     session.commit()
     foo_codes = codelist([("foo1", "A"), ("foo2", "B"), ("foo3", "C")], "ctv3")
+    bar_codes = codelist(["bar1"], "ctv3")
     study = StudyDefinition(
         population=patients.all(),
         category=patients.categorised_as(
             {
+                "W": "foo_category = 'B' AND female_with_bar",
                 "X": "sex = 'F' AND (foo_category = 'B' OR foo_category = 'C')",
                 "Y": "sex = 'M' AND foo_category = 'A'",
                 "Z": "DEFAULT",
@@ -897,18 +921,34 @@ def test_patients_categorised_as():
             foo_category=patients.with_these_clinical_events(
                 foo_codes, returning="category", find_last_match_in_period=True
             ),
+            female_with_bar=patients.satisfying(
+                "has_bar AND sex = 'F'",
+                has_bar=patients.with_these_clinical_events(bar_codes),
+            ),
         ),
     )
     results = study.to_dicts()
-    assert [x["category"] for x in results] == ["Y", "X", "Z", "X"]
+    assert [x["category"] for x in results] == ["Y", "W", "Z", "X"]
+    # Assert that internal columns do not appear
+    assert "foo_category" not in results[0].keys()
+    assert "female_with_bar" not in results[0].keys()
+    assert "has_bar" not in results[0].keys()
 
 
 def test_patients_registered_practice_as_of():
     session = make_session()
-    org_1 = Organisation(STPCode="123", MSOACode="E0201", Region="East of England")
-    org_2 = Organisation(STPCode="456", MSOACode="E0202", Region="Midlands")
-    org_3 = Organisation(STPCode="789", MSOACode="E0203", Region="London")
-    org_4 = Organisation(STPCode="910", MSOACode="E0204", Region="North West")
+    org_1 = Organisation(
+        STPCode="123", MSOACode="E0201", Region="East of England", Organisation_ID=1
+    )
+    org_2 = Organisation(
+        STPCode="456", MSOACode="E0202", Region="Midlands", Organisation_ID=2
+    )
+    org_3 = Organisation(
+        STPCode="789", MSOACode="E0203", Region="London", Organisation_ID=3
+    )
+    org_4 = Organisation(
+        STPCode="910", MSOACode="E0204", Region="North West", Organisation_ID=4
+    )
     patient = Patient()
     patient.RegistrationHistory.append(
         RegistrationHistory(
@@ -951,11 +991,15 @@ def test_patients_registered_practice_as_of():
         region=patients.registered_practice_as_of(
             "2020-01-01", returning="nhse_region_name"
         ),
+        pseudo_id=patients.registered_practice_as_of(
+            "2020-01-01", returning="pseudo_id"
+        ),
     )
     results = study.to_dicts()
     assert [i["stp"] for i in results] == ["789", "123", ""]
     assert [i["msoa"] for i in results] == ["E0203", "E0201", ""]
     assert [i["region"] for i in results] == ["London", "East of England", ""]
+    assert [i["pseudo_id"] for i in results] == ["3", "1", "0"]
 
 
 def test_patients_address_as_of():
@@ -1323,3 +1367,83 @@ def test_duplicate_id_checking():
     with pytest.raises(RuntimeError):
         with tempfile.NamedTemporaryFile(mode="w+") as f:
             study.to_csv(f.name)
+
+
+def test_sqlcmd_and_odbc_outputs_match():
+    session = make_session()
+    patient = Patient(DateOfBirth="1950-01-01")
+    patient.CodedEvents.append(
+        CodedEvent(CTV3Code="XYZ", NumericValue=50, ConsultationDate="2002-06-01")
+    )
+    session.add(patient)
+    session.commit()
+
+    study = StudyDefinition(
+        population=patients.with_these_clinical_events(codelist(["XYZ"], "ctv3"))
+    )
+    with tempfile.NamedTemporaryFile() as input_csv_odbc, tempfile.NamedTemporaryFile() as input_csv_sqlcmd:
+        # windows line endings
+        study.to_csv(input_csv_odbc.name, with_sqlcmd=False)
+        # unix line endings
+        study.to_csv(input_csv_sqlcmd.name, with_sqlcmd=True)
+        assert filecmp.cmp(input_csv_odbc.name, input_csv_sqlcmd.name, shallow=False)
+
+
+def test_column_name_clashes_produce_errors():
+    with pytest.raises(ValueError):
+        StudyDefinition(
+            population=patients.all(),
+            age=patients.age_as_of("2020-01-01"),
+            status=patients.satisfying(
+                "age > 70 AND sex = 'M'",
+                sex=patients.sex(),
+                age=patients.age_as_of("2010-01-01"),
+            ),
+        )
+
+
+def test_recursive_definitions_produce_errors():
+    with pytest.raises(ValueError):
+        StudyDefinition(
+            population=patients.all(),
+            this=patients.satisfying("that = 1"),
+            that=patients.satisfying("this = 1"),
+        )
+
+
+def test_using_expression_in_population_definition():
+    session = make_session()
+    session.add_all(
+        [
+            Patient(
+                Sex="M",
+                DateOfBirth="1970-01-01",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2000-01-01")
+                ],
+            ),
+            Patient(Sex="M", DateOfBirth="1975-01-01"),
+            Patient(
+                Sex="F",
+                DateOfBirth="1980-01-01",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2000-01-01")
+                ],
+            ),
+            Patient(Sex="F", DateOfBirth="1985-01-01"),
+        ]
+    )
+    session.commit()
+    study = StudyDefinition(
+        population=patients.satisfying(
+            "has_foo_code AND sex = 'M'",
+            has_foo_code=patients.with_these_clinical_events(
+                codelist(["foo1"], "ctv3")
+            ),
+            sex=patients.sex(),
+        ),
+        age=patients.age_as_of("2020-01-01"),
+    )
+    results = study.to_dicts()
+    assert results[0].keys() == {"patient_id", "age"}
+    assert [i["age"] for i in results] == ["50"]
