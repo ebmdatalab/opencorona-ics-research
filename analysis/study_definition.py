@@ -13,12 +13,14 @@ systolic_blood_pressure_codes = codelist(["2469."], system="ctv3")
 diastolic_blood_pressure_codes = codelist(["246A."], system="ctv3")
 
 study = StudyDefinition(
-    # This line defines the study population
+    ## STUDY POPULATION
     population=patients.registered_with_one_practice_between(
         "2019-02-01", "2020-02-01"
     ),
-    # The rest of the lines define the covariates with associated GitHub issues
-    # https://github.com/ebmdatalab/tpp-sql-notebook/issues/33
+
+    ## OUTCOMES
+
+    ## DEMOGRAPHIC INFORMATION
     age=patients.age_as_of("2020-02-01"),
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/46
     sex=patients.sex(),
