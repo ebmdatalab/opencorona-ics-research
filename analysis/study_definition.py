@@ -20,6 +20,18 @@ unclear_smoking_codes  = codelist_from_csv(
     "codelists/opensafely-smoking-unclear.csv", system="ctv3", column="CTV3Code", category_column="Category"
 )
 
+insulin_med_codes  = codelist_from_csv(
+    "codelists/opensafely-insulin-medication.csv", system="snomed", column="id"
+)
+
+statin_med_codes  = codelist_from_csv(
+    "codelists/opensafely-statin-medication.csv", system="snomed", column="id"
+)
+
+heartfailure_codes  = codelist_from_csv(
+    "codelists/opensafely-heart-failure.csv", system="ctv3", column="CTV3ID"
+    )
+
 ics_single_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
     )
@@ -209,28 +221,28 @@ study = StudyDefinition(
 
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        laba_single, 
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        lama_single, 
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        laba_ics,  
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        laba_lama,  
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
@@ -377,14 +389,14 @@ study = StudyDefinition(
 
     ### INSULIN USE
     insulin=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        insulin_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     ### STATIN USE
     statin=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        statin_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
