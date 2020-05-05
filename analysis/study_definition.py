@@ -74,19 +74,20 @@ temp_immune_codes = codelist_from_csv(
 
 creatinine_codes = codelist(["XE2q5"], system="ctv3")
 
-ckd_codes = codelist_from_csv(
-    "codelists/opensafely-chronic-kidney-disease.csv", system="ctv3", column="CTV3ID"
-)
-
 covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 
 study = StudyDefinition(
     ## STUDY POPULATION
-    population=patients.registered_with_one_practice_between(
-        "2019-02-01", "2020-02-01"
-    ),
 
+    population=patients.satisfying(
+    'has_follow_up AND has_asthma',
+    has_asthma=patients.with_these_clinical_events(
+        asthma_codes,
+        on_or_before='2017-02-01',
+    ),
+    has_follow_up=patients.registered_with_one_practice_between("2019-02-01", "2020-02-01")
+),
     ## OUTCOMES
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-02-01",
@@ -264,13 +265,6 @@ study = StudyDefinition(
         include_month=True,
     ),
 
-    ### ASTHMA DIAGNOSIS
-    asthma=patients.with_these_clinical_events(
-        asthma_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
-        return_first_date_in_period=True,
-        include_month=True,
-    ),
-
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -366,16 +360,11 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
     ),
-    ckd_diagnosis=patients.with_these_clinical_events(
-        ckd_codes,
-        return_first_date_in_period=True,
-        include_month=True,
-    ),
 
     ### EXACERBATION HISTORY
     exacerbation=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
-        return_first_date_in_period=True,
+        return_number_of_matches_in_period=True,
         include_month=True,
     ),
 
