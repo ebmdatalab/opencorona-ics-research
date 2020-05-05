@@ -84,6 +84,7 @@ study = StudyDefinition(
     'has_follow_up AND has_asthma',
     has_asthma=patients.with_these_clinical_events(
         asthma_codes,
+        on_or_before='2017-02-01',
     ),
     has_follow_up=patients.registered_with_one_practice_between("2019-02-01", "2020-02-01")
 ),
