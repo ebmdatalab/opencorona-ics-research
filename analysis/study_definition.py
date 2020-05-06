@@ -64,12 +64,16 @@ single_laba_med_codes = codelist_from_csv(
     "codelists/opensafely-single-ingredient-laba-inhalers.csv", system="snomed", column="id"
     )
 
+single_lama_med_codes = codelist_from_csv(
+    "codelists/opensafely-single-ingredient-lama-inhalers.csv", system="snomed", column="id"
+    )
+
 oral_steroid_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-oral-prednisolone-medication.csv", system="snomed", column="vpid"
     )
 
 saba_med_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-inhaler-salbutamol-medication.csv", system="snomed", column="id"
+    "codelists/opensafely-saba-inhaler-medications.csv", system="snomed", column="id"
     )
 
 asthma_codes = codelist_from_csv(
@@ -258,6 +262,13 @@ study = StudyDefinition(
         returning="number_of_matches_in_period",
     ),
 
+    #### SAMA SINGLE CONSTITUENT
+    sama_single=patients.with_these_medications(
+        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        between=["2018-02-01", "2020-02-01"],
+        returning="number_of_matches_in_period",
+    ),
+
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
         single_laba_med_codes,
@@ -267,7 +278,7 @@ study = StudyDefinition(
 
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        single_lama_med_codes, 
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
