@@ -1,7 +1,5 @@
 type,id,bnf_code,nm
 amp,9628711000001106,0301011E0BDAAAD,Atimos Modulite 12micrograms/dose inhaler (Chiesi Ltd)
-amp,375711000001100,0301011B0BBAAAA,Bambec 10mg tablets (AstraZeneca UK Ltd)
-amp,809411000001102,0301011B0BBABAB,Bambec 20mg tablets (AstraZeneca UK Ltd)
 amp,3206811000001109,0301011E0BBAAAA,Foradil 12microgram inhalation powder capsules with device (Novartis Pharmaceuticals UK Ltd)
 amp,11176411000001106,0301011E0BEAAAC,Formoterol Easyhaler 12micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
 amp,19568411000001100,0301011U0BEAAAH,Neovent 25micrograms/dose inhaler CFC free (Kent Pharmaceuticals Ltd)
@@ -19,8 +17,6 @@ amp,33561211000001109,0301011U0BGAAAH,Soltel 25micrograms/dose inhaler CFC free 
 amp,24608011000001103,0301011Z0BBAAAA,Striverdi Respimat 2.5micrograms/dose inhalation solution cartridge with device (Boehringer Ingelheim Ltd)
 amp,37678311000001100,0301011Z0BBABAB,Striverdi Respimat 2.5micrograms/dose inhalation solution refill cartridge (Boehringer Ingelheim Ltd)
 amp,22650111000001100,0301011U0BFAAAH,Vertine 25micrograms/dose inhaler CFC free (Teva UK Ltd)
-vmp,320258002,0301011B0AAAAAA,Bambuterol 10mg tablets
-vmp,320259005,0301011B0AAABAB,Bambuterol 20mg tablets
 vmp,12626211000001108,0301011E0AAAAAA,Formoterol 12microgram inhalation powder capsules with device
 vmp,320264009,0301011E0AAACAC,Formoterol 12micrograms/dose dry powder inhaler
 vmp,9652711000001107,0301011E0AAADAD,Formoterol 12micrograms/dose inhaler CFC free
