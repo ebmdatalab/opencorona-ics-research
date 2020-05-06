@@ -24,6 +24,7 @@ from datalab_cohorts import StudyDefinition
 from datalab_cohorts import patients
 from datalab_cohorts import codelist
 from datalab_cohorts import filter_codes_by_category
+from datalab_cohorts import quote
 
 
 def setup_module(module):
@@ -1411,6 +1412,186 @@ def test_recursive_definitions_produce_errors():
         )
 
 
+## Pandas import specification tests
+
+
+def _converters_to_names(kwargs_dict):
+    converters = kwargs_dict.pop("converters")
+    converters_with_names = {}
+    if converters:
+        for k, v in converters.items():
+            converters_with_names[k] = v.__name__
+    kwargs_dict["converters"] = converters_with_names
+    return kwargs_dict
+
+
+def test_age_dtype_generation():
+    study = StudyDefinition(
+        # This line defines the study population
+        population=patients.all(),
+        age=patients.age_as_of("2020-02-01"),
+    )
+    result = study.pandas_csv_args
+    assert result == {"dtype": {"age": "int"}, "converters": {}, "parse_dates": []}
+
+
+def test_address_dtype_generation():
+    study = StudyDefinition(
+        # This line defines the study population
+        population=patients.all(),
+        rural_urban=patients.address_as_of(
+            "2020-02-01", returning="rural_urban_classification"
+        ),
+    )
+    result = study.pandas_csv_args
+    assert result == {
+        "converters": {},
+        "dtype": {"rural_urban": "category"},
+        "parse_dates": [],
+    }
+
+
+def test_sex_dtype_generation():
+    study = StudyDefinition(population=patients.all(), sex=patients.sex())
+    result = study.pandas_csv_args
+    assert result == {"dtype": {"sex": "category"}, "converters": {}, "parse_dates": []}
+
+
+def test_clinical_events_with_date_dtype_generation():
+    test_codelist = codelist(["X"], system="ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        diabetes=patients.with_these_clinical_events(
+            test_codelist, return_first_date_in_period=True, include_month=True
+        ),
+    )
+
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"diabetes": "add_day_to_date"},
+        "dtype": {},
+        "parse_dates": ["diabetes"],
+    }
+
+
+def test_clinical_events_with_year_date_dtype_generation():
+    test_codelist = codelist(["X"], system="ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        diabetes=patients.with_these_clinical_events(test_codelist, returning="date"),
+    )
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"diabetes": "add_month_and_day_to_date"},
+        "dtype": {},
+        "parse_dates": ["diabetes"],
+    }
+
+
+def test_categorical_clinical_events_with_date_dtype_generation():
+    categorised_codelist = codelist([("X", "Y")], system="ctv3")
+    categorised_codelist.has_categories = True
+    study = StudyDefinition(
+        population=patients.all(),
+        ethnicity=patients.with_these_clinical_events(
+            categorised_codelist,
+            returning="category",
+            find_last_match_in_period=True,
+            include_date_of_match=True,
+        ),
+    )
+
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"ethnicity_date": "add_month_and_day_to_date"},
+        "dtype": {"ethnicity": "category"},
+        "parse_dates": ["ethnicity_date"],
+    }
+
+
+def test_categorical_clinical_events_without_date_dtype_generation():
+    categorised_codelist = codelist([("X", "Y")], system="ctv3")
+    categorised_codelist.has_categories = True
+    study = StudyDefinition(
+        population=patients.all(),
+        ethnicity=patients.with_these_clinical_events(
+            categorised_codelist,
+            returning="category",
+            find_last_match_in_period=True,
+            include_date_of_match=False,
+        ),
+    )
+
+    result = study.pandas_csv_args
+    assert result == {
+        "converters": {},
+        "dtype": {"ethnicity": "category"},
+        "parse_dates": [],
+    }
+
+
+def test_bmi_dtype_generation():
+    categorised_codelist = codelist([("X", "Y")], system="ctv3")
+    categorised_codelist.has_categories = True
+    study = StudyDefinition(
+        population=patients.all(),
+        bmi=patients.most_recent_bmi(
+            on_or_after="2010-02-01",
+            minimum_age_at_measurement=16,
+            include_measurement_date=True,
+            include_month=True,
+        ),
+    )
+
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"bmi_date_measured": "add_day_to_date"},
+        "dtype": {"bmi": "float"},
+        "parse_dates": ["bmi_date_measured"],
+    }
+
+
+def test_clinical_events_numeric_value_dtype_generation():
+    test_codelist = codelist(["X"], system="ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        creatinine=patients.with_these_clinical_events(
+            test_codelist,
+            find_last_match_in_period=True,
+            on_or_before="2020-02-01",
+            returning="numeric_value",
+            include_date_of_match=True,
+            include_month=True,
+        ),
+    )
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"creatinine_date": "add_day_to_date"},
+        "dtype": {"creatinine": "float"},
+        "parse_dates": ["creatinine_date"],
+    }
+
+
+def test_mean_recorded_value_dtype_generation():
+    test_codelist = codelist(["X"], system="ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        bp_sys=patients.mean_recorded_value(
+            test_codelist,
+            on_most_recent_day_of_measurement=True,
+            on_or_before="2020-02-01",
+            include_measurement_date=True,
+            include_month=True,
+        ),
+    )
+    result = _converters_to_names(study.pandas_csv_args)
+    assert result == {
+        "converters": {"bp_sys_date_measured": "add_day_to_date"},
+        "dtype": {"bp_sys": "float"},
+        "parse_dates": ["bp_sys_date_measured"],
+    }
+
+
 def test_using_expression_in_population_definition():
     session = make_session()
     session.add_all(
@@ -1447,3 +1628,74 @@ def test_using_expression_in_population_definition():
     results = study.to_dicts()
     assert results[0].keys() == {"patient_id", "age"}
     assert [i["age"] for i in results] == ["50"]
+
+
+def test_quote():
+    with pytest.raises(ValueError):
+        quote("foo!")
+    assert quote("2012-02-01") == "'20120201'"
+    assert quote("2012") == "'2012'"
+    assert quote(2012) == "2012"
+    assert quote(0.1) == "0.1"
+    assert quote("foo") == "'foo'"
+
+
+def test_number_of_episodes():
+    session = make_session()
+    session.add_all(
+        [
+            Patient(
+                CodedEvents=[
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2010-01-01"),
+                    # Throw in some irrelevant events
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2010-01-02"),
+                    CodedEvent(CTV3Code="mto2", ConsultationDate="2010-01-03"),
+                    # These two should be merged in to the previous event
+                    # because there's not more than 14 days between them
+                    CodedEvent(CTV3Code="foo2", ConsultationDate="2010-01-14"),
+                    CodedEvent(CTV3Code="foo3", ConsultationDate="2010-01-20"),
+                    # This is just outside the limit so should count as another event
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2010-02-04"),
+                    # This shouldn't count because there's an "ignore" event on
+                    # the same day (though at a different time)
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2012-01-01T10:45:00"),
+                    CodedEvent(CTV3Code="bar2", ConsultationDate="2012-01-01T16:10:00"),
+                    # This should be another episode
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2015-03-05"),
+                    # This "ignore" event should have no effect because it occurs
+                    # on a different day
+                    CodedEvent(CTV3Code="bar1", ConsultationDate="2015-03-06"),
+                    # This is after the time limit and so shouldn't count
+                    CodedEvent(CTV3Code="foo1", ConsultationDate="2020-02-05"),
+                ]
+            ),
+            # This patient doesn't have any relevant events
+            Patient(
+                CodedEvents=[
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2010-01-01"),
+                    CodedEvent(CTV3Code="mto2", ConsultationDate="2010-01-14"),
+                    CodedEvent(CTV3Code="mto3", ConsultationDate="2010-01-20"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2010-02-04"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2012-01-01T10:45:00"),
+                    CodedEvent(CTV3Code="mtr2", ConsultationDate="2012-01-01T16:10:00"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2015-03-05"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2020-02-05"),
+                ]
+            ),
+        ]
+    )
+    session.commit()
+    foo_codes = codelist(["foo1", "foo2", "foo3"], "ctv3")
+    bar_codes = codelist(["bar1", "bar2"], "ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        episode_count=patients.with_these_clinical_events(
+            foo_codes,
+            on_or_before="2020-01-01",
+            ignore_days_where_these_codes_occur=bar_codes,
+            returning="number_of_episodes",
+            episode_defined_as="series of events each <= 14 days apart",
+        ),
+    )
+    results = study.to_dicts()
+    assert [i["episode_count"] for i in results] == ["3", "0"]
