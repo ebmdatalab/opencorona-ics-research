@@ -10,7 +10,7 @@ DATE VERSION CREATED: 	2020-05-05
 DESCRIPTION OF FILE:	Aim: describe the baseline characteristics of the exposed
 and unexposed groups & produce output table in text format
 
-DATASETS CREATED: 		
+DATASETS CREATED: 		"$pathOut/baseline_table_Px.txt"
 							
 =========================================================================*/
 /*******************************************************************************
@@ -33,7 +33,7 @@ use "cr_create_analysis_dataset", clear
 
 *Set up output file
 cap file close table1 
-file open table1 using "H:\My Documents\GitHub\opencorona-ics-research\analysis/output/baseline_table_Px.txt", write replace
+file open table1 using "$pathOut/baseline_table_Px.txt", write replace
 file write table1 "Baseline characteristics"_tab "Non-ICS based therapy"_tab "ICS based therapy"_tab _n
 
 *Show the total number of patients who exposed and unexposed respectively
@@ -61,6 +61,7 @@ scalar unexp_age_75=r(p75)
 restore
 file write table1 "Age, median (IQR)" _tab %3.2fc (unexp_age_50) " (" %3.2f (unexp_age_25) "-" %3.2f (unexp_age_75) ")" _tab %3.2fc (exp_age_50) " (" %3.2f (exp_age_25) "-" %3.2f (exp_age_75) ")" _n 
 
+*Sex
 foreach i in gender  {
 tab `i' exposed, m col matcell(`i')
 mata : st_matrix("`i'_col_tot", colsum(st_matrix("`i'")))
@@ -72,9 +73,9 @@ matrix unexp_`i'_percent = `i'/unexp_`i' *100
 file write table1 "Female" _tab %9.0fc (`i'[2,1]) " (" %3.2f (unexp_`i'_percent[2,1]) ")" _tab %9.0fc (`i'[2,2]) " (" %3.2f (exp_`i'_percent[2,2]) ")" _n 
 }
 
+*Ethnicity categories
 file write table1 "Ethnicity" _n
 
-*Ethnicity categories
 tab ethnicity exposed, m col matcell(ethn)
 mata : st_matrix("ethn_col_tot", colsum(st_matrix("ethn")))
 scalar unexp_ethn = ethn_col_tot[1,1]
@@ -90,9 +91,28 @@ file write table1 "Black" _tab %9.0fc (ethn[4,1]) " (" %3.2f (unexp_ethn_percent
 file write table1 "Other ethnic groups" _tab %9.0fc (ethn[5,1]) " (" %3.2f (unexp_ethn_percent[5,1]) ")" _tab %9.0fc (ethn[5,2]) " (" %3.2f (exp_ethn_percent[5,2]) ")" _n 
 file write table1 "Missing" _tab %9.0fc (ethn[6,1]) " (" %3.2f (unexp_ethn_percent[6,1]) ")" _tab %9.0fc (ethn[6,2]) " (" %3.2f (exp_ethn_percent[6,2]) ")" _n 
 
-file write table1 "Smoking status" _n
+*IMD
+file write table1 "Index of Multiple Deprivation" _n
+
+tab imd exposed, m col matcell(imd)
+mata : st_matrix("imd_col_tot", colsum(st_matrix("imd")))
+scalar unexp_imd = imd_col_tot[1,1]
+scalar exp_imd = imd_col_tot[1,2] 
+matrix exp_imd_percent = imd/exp_imd *100
+matrix unexp_imd_percent = imd/unexp_imd *100
+
+*write to text file
+file write table1 "1: Least deprived" _tab %9.0fc (imd[1,1]) " (" %3.2f (unexp_imd_percent[1,1]) ")" _tab %9.0fc (imd[1,2]) " (" %3.2f (exp_imd_percent[1,2]) ")" _n 
+file write table1 "2" _tab %9.0fc (imd[2,1]) " (" %3.2f (unexp_imd_percent[2,1]) ")" _tab %9.0fc (imd[2,2]) " (" %3.2f (exp_imd_percent[2,2]) ")" _n 
+file write table1 "3" _tab %9.0fc (imd[3,1]) " (" %3.2f (unexp_imd_percent[3,1]) ")" _tab %9.0fc (imd[3,2]) " (" %3.2f (exp_imd_percent[3,2]) ")" _n 
+file write table1 "4" _tab %9.0fc (imd[4,1]) " (" %3.2f (unexp_imd_percent[4,1]) ")" _tab %9.0fc (imd[4,2]) " (" %3.2f (exp_imd_percent[4,2]) ")" _n 
+file write table1 "5: most deprived" _tab %9.0fc (imd[5,1]) " (" %3.2f (unexp_imd_percent[5,1]) ")" _tab %9.0fc (imd[5,2]) " (" %3.2f (exp_imd_percent[5,2]) ")" _n 
+file write table1 "Missing" _tab %9.0fc (imd[6,1]) " (" %3.2f (unexp_imd_percent[6,1]) ")" _tab %9.0fc (imd[6,2]) " (" %3.2f (exp_imd_percent[6,2]) ")" _n 
+
 
 *Smoking categories
+file write table1 "Smoking status" _n
+
 tab smoke exposed, m col matcell(smoking)
 mata : st_matrix("smoking_col_tot", colsum(st_matrix("smoking")))
 scalar unexp_smoking = smoking_col_tot[1,1]
@@ -106,9 +126,9 @@ file write table1 "Ex-smoker" _tab %9.0fc (smoking[3,1]) " (" %3.2f (unexp_smoki
 file write table1 "Current smoker" _tab %9.0fc (smoking[2,1]) " (" %3.2f (unexp_smoking_percent[2,1]) ")" _tab %9.0fc (smoking[2,2]) " (" %3.2f (exp_smoking_percent[2,2]) ")" _n 
 file write table1 "Missing" _tab %9.0fc (smoking[4,1]) " (" %3.2f (unexp_smoking_percent[4,1]) ")" _tab %9.0fc (smoking[4,2]) " (" %3.2f (exp_smoking_percent[4,2]) ")" _n 
 
+*BMI categories
 file write table1 "Body mass index" _n
 
-*BMI categories
 tab bmi_cat exposed, m col matcell(bmi)
 mata : st_matrix("bmi_col_tot", colsum(st_matrix("bmi")))
 scalar unexp_bmi = bmi_col_tot[1,1]
@@ -134,9 +154,9 @@ scalar unexp_`i' = `i'_col_tot[1,1]
 scalar exp_`i' = `i'_col_tot[1,2] 
 matrix exp_`i'_percent = `i'/exp_`i' *100
 matrix unexp_`i'_percent = `i'/unexp_`i' *100
-
 file write table1 "`i'" _tab %9.0fc (`i'[2,1]) " (" %3.2f (unexp_`i'_percent[2,1]) ")" _tab %9.0fc (`i'[2,2]) " (" %3.2f (exp_`i'_percent[2,2]) ")" _n 
 }
+
 
 file write table1 "Prescription use in the past 60 days" _n
 
@@ -211,4 +231,7 @@ GP consultation rate in the previous year
 Flu/pneumococcal vaccination status
 Current Statin use
 Current insulin use
+Oral steroid
+IMD
+Geographic region: stp
 */

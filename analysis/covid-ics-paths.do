@@ -10,7 +10,7 @@ DATE VERSION CREATED: 	2020-05-05
 DESCRIPTION OF FILE:	Global macros for file paths
 
 *=========================================================================*/
-cd "H:\Desktop\covid_dummy"
+cd "H:\My Documents\GitHub\opencorona-ics-research\analysis\datafile"
 global pathOut		"H:\My Documents\GitHub\opencorona-ics-research\analysis\output"	
 global pathIn		"H:\My Documents\GitHub\opencorona-ics-research\analysis"
-global pathLogs     "H:\My Documents\GitHub\opencorona-ics-research\analysis\output"	
+global pathLogs     "H:\My Documents\GitHub\opencorona-ics-research\analysis\logfile"	

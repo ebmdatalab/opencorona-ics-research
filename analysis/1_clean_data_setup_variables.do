@@ -72,6 +72,28 @@ label def eth_lbl 1 "White" 2 "Mixed" 3 "Asian or Asian British" ///
 label val ethnicity eth_lbl
 
 *************
+*IMD
+************
+* Group into 5 groups
+rename imd imd_o
+egen imd = cut(imd_o), group(5) icodes
+replace imd = imd + 1
+replace imd = .u if imd_o==-1
+drop imd_o
+
+* Reverse the order (so high is more deprived)
+recode imd 5=1 4=2 3=3 2=4 1=5 .u=.u
+
+label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
+label values imd imd 
+
+*************
+*Geographic region: STP
+************
+egen stp_cat=group(stp)
+replace stp_cat=.u if stp_cat==.
+
+*************
 *BMI
 ************
 * Set implausible BMIs to missing:
