@@ -2,11 +2,11 @@ from datalab_cohorts import StudyDefinition, patients, codelist, codelist_from_c
 
 placeholder_event_codes = codelist_from_csv( #### USED AS A PLACEHOLDER
     "codelists/opensafely-diabetes.csv", system="ctv3", column="CTV3ID"
-    )
+)
 
 placeholder_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
-    )
+)
 
 ethnicity_codes  = codelist_from_csv(
     "codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6"
@@ -30,59 +30,59 @@ statin_med_codes  = codelist_from_csv(
 
 heartfailure_codes  = codelist_from_csv(
     "codelists/opensafely-heart-failure.csv", system="ctv3", column="CTV3ID"
-    )
+)
 
 ics_single_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
-    )
+)
 
 laba_ics_med_codes = codelist_from_csv(
     "codelists/opensafely-laba-ics-combination-inhaler.csv", system="snomed", column="id"
-    )
+)
 
 laba_lama_med_codes = codelist_from_csv(
     "codelists/opensafely-laba-lama-combination-inhaler.csv", system="snomed", column="id"
-    )
+)
 
 laba_lama__ics_med_codes = codelist_from_csv(
     "codelists/opensafely-laba-lama-ics-combination-inhaler.csv", system="snomed", column="id"
-    )
+)
 
 leukotriene_med_codes = codelist_from_csv(
     "codelists/opensafely-leukotriene-receptor-antagonist-medication.csv", system="snomed", column="id"
-    )
+)
 
 low_medium__ics_med_codes = codelist_from_csv(
     "codelists/opensafely-low-and-medium-dose-ics-inhalers.csv", system="snomed", column="id"
-    )
+)
 
 nebulised_med_codes = codelist_from_csv(
     "codelists/opensafely-nebulised-asthma-and-copd-medications.csv", system="snomed", column="id"
-    )
+)
 
 single_laba_med_codes = codelist_from_csv(
     "codelists/opensafely-single-ingredient-laba-inhalers.csv", system="snomed", column="id"
-    )
+)
 
 single_lama_med_codes = codelist_from_csv(
     "codelists/opensafely-single-ingredient-lama-inhalers.csv", system="snomed", column="id"
-    )
+)
 
 oral_steroid_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-oral-prednisolone-medication.csv", system="snomed", column="vpid"
-    )
+)
 
 saba_med_codes = codelist_from_csv(
     "codelists/opensafely-saba-inhaler-medications.csv", system="snomed", column="id"
-    )
+)
 
 asthma_codes = codelist_from_csv(
     "codelists/opensafely-asthma-diagnosis.csv", system="ctv3", column="CTV3ID"
-    )
+)
 
 hypertension_codes = codelist_from_csv(
     "codelists/opensafely-hypertension.csv", system="ctv3", column="CTV3ID"
-    )
+)
 
 diabetes_codes = codelist_from_csv(
     "codelists/opensafely-diabetes.csv", system="ctv3", column="CTV3ID"
@@ -125,13 +125,14 @@ study = StudyDefinition(
     ## STUDY POPULATION
 
     population=patients.satisfying(
-    'has_follow_up AND has_asthma',
-    has_asthma=patients.with_these_clinical_events(
-        asthma_codes,
-        on_or_before='2017-02-01',
+        'has_follow_up AND has_asthma',
+        has_asthma=patients.with_these_clinical_events(
+            asthma_codes,
+            on_or_before='2017-02-01',
+        ),
+        has_follow_up=patients.registered_with_one_practice_between("2019-02-01", "2020-02-01")
     ),
-    has_follow_up=patients.registered_with_one_practice_between("2019-02-01", "2020-02-01")
-),
+
     ## OUTCOMES
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-02-01",
@@ -166,7 +167,11 @@ study = StudyDefinition(
 
     stp=patients.registered_practice_as_of("2020-02-01", returning="stp_code"),
 
-    imd=patients.address_as_of("2020-02-01", returning="index_of_multiple_deprivation", round_to_nearest=100),
+    imd=patients.address_as_of(
+        "2020-02-01",
+        returning="index_of_multiple_deprivation",
+        round_to_nearest=100
+    ),
 
     ethnicity = patients.with_these_clinical_events(
         ethnicity_codes,
@@ -231,14 +236,14 @@ study = StudyDefinition(
     ),
 
     #### ICS SINGLE CONSTITUENT
-    ics_single = patients.with_these_medications(
+    ics_single=patients.with_these_medications(
         ics_single_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### ORAL STEROIDS SINGLE CONSTITUENT
-    oral_steroids = patients.with_these_medications(
+    oral_steroids=patients.with_these_medications(
         oral_steroid_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
@@ -267,42 +272,42 @@ study = StudyDefinition(
 
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
-        single_lama_med_codes, 
+        single_lama_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
-        laba_ics_med_codes,  
+        laba_ics_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
-        laba_lama_med_codes,  
+        laba_lama_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
-        laba_lama__ics_med_codes, 
+        laba_lama__ics_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
-        leukotriene_med_codes,   
+        leukotriene_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### NEBULES
     nebules=patients.with_these_medications(
-        nebulised_med_codes, 
+        nebulised_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
