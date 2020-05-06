@@ -41,27 +41,27 @@ laba_ics_med_codes = codelist_from_csv(
     )
 
 laba_lama_med_codes = codelist_from_csv(
-    "codelists/laba-lama-combination-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-laba-lama-combination-inhaler.csv", system="snomed", column="id"
     )
 
 laba_lama__ics_med_codes = codelist_from_csv(
-    "codelists/laba-lama-ics-combination-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-laba-lama-ics-combination-inhaler.csv", system="snomed", column="id"
     )
 
 leukotriene_med_codes = codelist_from_csv(
-    "codelists/leukotriene-receptor-antagonist-medication.csv", system="snomed", column="id"
+    "codelists/opensafely-leukotriene-receptor-antagonist-medication.csv", system="snomed", column="id"
     )
 
 low_medium__ics_med_codes = codelist_from_csv(
-    "codelists/low-and-medium-dose-ics-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-low-and-medium-dose-ics-inhalers.csv", system="snomed", column="id"
     )
 
 nebulised_med_codes = codelist_from_csv(
-    "codelists/nebulised-asthma-and-copd-medications.csv", system="snomed", column="id"
+    "codelists/opensafely-nebulised-asthma-and-copd-medications.csv", system="snomed", column="id"
     )
 
 single_laba_med_codes = codelist_from_csv(
-    "codelists/single-ingredient-laba-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-single-ingredient-laba-inhalers.csv", system="snomed", column="id"
     )
 
 oral_steroid_med_codes = codelist_from_csv(
