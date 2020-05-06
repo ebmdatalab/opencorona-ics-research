@@ -227,14 +227,14 @@ study = StudyDefinition(
         include_month=True,
     ),
 
-    ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
-    exacerbation_count = patients.with_these_clinical_events(
-        placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
-        on_or_before="2020-02-01", ### change to relevant dates
-        ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
-        returning="number_of_episodes",
-        episode_defined_as=">14 consecutive days with no matching codes",
-    ),
+    # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
+    # exacerbation_count = patients.with_these_clinical_events(
+    #     placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
+    #     on_or_before="2020-02-01", ### change to relevant dates
+    #     ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
+    #     returning="number_of_episodes",
+    #     episode_defined_as=">14 consecutive days with no matching codes",
+    # ),
 
 
     #### ICS SINGLE CONSTITUENT
