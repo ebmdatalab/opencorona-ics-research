@@ -36,6 +36,34 @@ ics_single_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
     )
 
+laba_ics_med_codes = codelist_from_csv(
+    "codelists/opensafely-laba-ics-combination-inhaler.csv", system="snomed", column="id"
+    )
+
+laba_lama_med_codes = codelist_from_csv(
+    "codelists/laba-lama-combination-inhaler.csv", system="snomed", column="id"
+    )
+
+laba_lama__ics_med_codes = codelist_from_csv(
+    "codelists/laba-lama-ics-combination-inhaler.csv", system="snomed", column="id"
+    )
+
+leukotriene_med_codes = codelist_from_csv(
+    "codelists/leukotriene-receptor-antagonist-medication.csv", system="snomed", column="id"
+    )
+
+low_medium__ics_med_codes = codelist_from_csv(
+    "codelists/low-and-medium-dose-ics-inhalers.csv", system="snomed", column="id"
+    )
+
+nebulised_med_codes = codelist_from_csv(
+    "codelists/nebulised-asthma-and-copd-medications.csv", system="snomed", column="id"
+    )
+
+single_laba_med_codes = codelist_from_csv(
+    "codelists/single-ingredient-laba-inhalers.csv", system="snomed", column="id"
+    )
+
 oral_steroid_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-oral-prednisolone-medication.csv", system="snomed", column="vpid"
     )
@@ -221,7 +249,7 @@ study = StudyDefinition(
 
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        single_laba_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
@@ -235,35 +263,35 @@ study = StudyDefinition(
 
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
-        laba_ics,  
+        laba_ics_med_codes,  
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
-        laba_lama,  
+        laba_lama_med_codes,  
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        laba_lama__ics_med_codes, 
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
-        placeholder_med_codes,   #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        leukotriene_med_codes,   
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
 
     #### NEBULES
     nebules=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        nebulised_med_codes, 
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),

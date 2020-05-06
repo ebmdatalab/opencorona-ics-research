@@ -22,7 +22,7 @@ opensafely/lung-cancer/2020-04-15
 opensafely/nebulised-asthma-and-copd-medications/2020-05-05
 opensafely/permanent-immunosuppresion/2020-04-24
 opensafely/temporary-immunosuppresion/2020-04-24
-opensafely/single-ingredient-laba-inhalers/2020-05-05
+opensafely/single-ingredient-laba-inhalers/2020-05-06
 opensafely/smoking-clear/2020-04-29
 opensafely/smoking-unclear/2020-04-29
 opensafely/statin-medication/2020-04-20
