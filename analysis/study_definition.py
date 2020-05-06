@@ -228,7 +228,7 @@ study = StudyDefinition(
 
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
-        lama_single, 
+        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
