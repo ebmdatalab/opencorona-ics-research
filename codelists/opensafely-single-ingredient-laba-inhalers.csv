@@ -1,0 +1,36 @@
+type,id,bnf_code,nm
+amp,9628711000001106,0301011E0BDAAAD,Atimos Modulite 12micrograms/dose inhaler (Chiesi Ltd)
+amp,375711000001100,0301011B0BBAAAA,Bambec 10mg tablets (AstraZeneca UK Ltd)
+amp,809411000001102,0301011B0BBABAB,Bambec 20mg tablets (AstraZeneca UK Ltd)
+amp,3206811000001109,0301011E0BBAAAA,Foradil 12microgram inhalation powder capsules with device (Novartis Pharmaceuticals UK Ltd)
+amp,11176411000001106,0301011E0BEAAAC,Formoterol Easyhaler 12micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
+amp,19568411000001100,0301011U0BEAAAH,Neovent 25micrograms/dose inhaler CFC free (Kent Pharmaceuticals Ltd)
+amp,19562111000001107,0301011U0BDAAAH,Neovent 25micrograms/dose inhaler CFC free (Teva UK Ltd)
+amp,17300811000001109,0301011X0BBAAAA,Onbrez Breezhaler 150microgram inhalation powder capsules with device (Novartis Pharmaceuticals UK Ltd)
+amp,17299911000001102,0301011X0BBABAB,Onbrez Breezhaler 300microgram inhalation powder capsules with device (Novartis Pharmaceuticals UK Ltd)
+amp,3245011000001103,0301011E0BCABAC,Oxis 12 Turbohaler (AstraZeneca UK Ltd)
+amp,3243511000001107,0301011E0BCAAAB,Oxis 6 Turbohaler (AstraZeneca UK Ltd)
+amp,10073011000001107,0301011U0BBAFAH,Serevent 25micrograms/dose Evohaler (GlaxoSmithKline UK Ltd)
+amp,408911000001105,0301011U0BBACAC,Serevent 25micrograms/dose inhaler (GlaxoSmithKline UK Ltd)
+amp,3082411000001100,0301011U0BBABAB,Serevent 50microgram disks (GlaxoSmithKline UK Ltd)
+amp,3084011000001103,0301011U0BBAAAA,Serevent 50microgram disks with Diskhaler (GlaxoSmithKline UK Ltd)
+amp,3380111000001107,0301011U0BBAEAE,Serevent 50micrograms/dose Accuhaler (GlaxoSmithKline UK Ltd)
+amp,33561211000001109,0301011U0BGAAAH,Soltel 25micrograms/dose inhaler CFC free (Cipla EU Ltd)
+amp,24608011000001103,0301011Z0BBAAAA,Striverdi Respimat 2.5micrograms/dose inhalation solution cartridge with device (Boehringer Ingelheim Ltd)
+amp,37678311000001100,0301011Z0BBABAB,Striverdi Respimat 2.5micrograms/dose inhalation solution refill cartridge (Boehringer Ingelheim Ltd)
+amp,22650111000001100,0301011U0BFAAAH,Vertine 25micrograms/dose inhaler CFC free (Teva UK Ltd)
+vmp,320258002,0301011B0AAAAAA,Bambuterol 10mg tablets
+vmp,320259005,0301011B0AAABAB,Bambuterol 20mg tablets
+vmp,12626211000001108,0301011E0AAAAAA,Formoterol 12microgram inhalation powder capsules with device
+vmp,320264009,0301011E0AAACAC,Formoterol 12micrograms/dose dry powder inhaler
+vmp,9652711000001107,0301011E0AAADAD,Formoterol 12micrograms/dose inhaler CFC free
+vmp,320263003,0301011E0AAABAB,Formoterol 6micrograms/dose dry powder inhaler
+vmp,17313711000001107,0301011X0AAAAAA,Indacaterol 150microgram inhalation powder capsules with device
+vmp,17313811000001104,0301011X0AAABAB,Indacaterol 300microgram inhalation powder capsules with device
+vmp,37692311000001106,0301011Z0AAABAB,Olodaterol 2.5micrograms/dose inhalation solution cartridge CFC free
+vmp,24670111000001108,0301011Z0AAAAAA,Olodaterol 2.5micrograms/dose solution for inhalation cartridge with device CFC free
+vmp,320244004,0301011U0AAACAC,Salmeterol 25micrograms/dose inhaler
+vmp,10075611000001101,0301011U0AAAHAH,Salmeterol 25micrograms/dose inhaler CFC free
+vmp,35938011000001101,0301011U0AAABAB,Salmeterol 50microgram inhalation powder blisters
+vmp,35937811000001108,0301011U0AAAAAA,Salmeterol 50microgram inhalation powder blisters with device
+vmp,320250009,0301011U0AAAEAE,Salmeterol 50micrograms/dose dry powder inhaler
