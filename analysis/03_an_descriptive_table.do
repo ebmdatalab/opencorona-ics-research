@@ -1,5 +1,5 @@
 /*=========================================================================
-DO FILE NAME:			2_descriptive_table
+DO FILE NAME:			03_an_descriptive_table
 
 AUTHOR:					Angel Wong
 												
@@ -13,21 +13,39 @@ and unexposed groups & produce output table in text format
 DATASETS CREATED: 		"$pathOut/baseline_table_Px.txt"
 							
 =========================================================================*/
-/*******************************************************************************
->> HOUSEKEEPING
-*******************************************************************************/
-clear all
-set more off
+
+
+
+*************************************************************************  CTR NOTE: I havent edited ANgel's code below apart from updating log and use statements to read in data
+
+
+
+
+
+
+* Open a log file
 capture log close
+log using "output/an_descriptive_tables", text replace
 
-* create a filename global that can be used throughout the file
-global filename "2_descriptive_table"
+use cr_create_analysis_dataset, clear
 
-* open log file - no need as fast tool will create log files
-log using "${pathLogs}/${filename}", text replace
 
-*********************************************************************
-use "cr_create_analysis_dataset", clear
+
+
+
+
+
+
+
+************
+*Covariate distributions
+************
+foreach i in gender smoke bmi_cat ethnicity ///
+hypertension diabetes other_respiratory ckd_egfr  ///
+  all_cancer immuno_final vaccine {
+	tab `i' exposed, col m
+}
+
 
 *ignore the inclusion and exclusion criteria for now
 
