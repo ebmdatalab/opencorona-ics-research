@@ -1,3 +1,4 @@
+import copy
 import csv
 import datetime
 import os
@@ -8,12 +9,14 @@ from urllib.parse import urlparse, unquote
 
 import pyodbc
 
+import pandas as pd
+
 from .expressions import format_expression
 
 
 # Characters that are safe to interpolate into SQL (see
 # `placeholders_and_params` below)
-SAFE_CHARS_RE = re.compile(r"[a-zA-Z0-9_\.\-]+")
+SAFE_CHARS_RE = re.compile(r"^[a-zA-Z0-9_\.\-]+$")
 
 
 class StudyDefinition:
@@ -24,7 +27,9 @@ class StudyDefinition:
         covariates["population"] = population
         assert "patient_id" not in covariates, "patient_id is a reserved column name"
         self.codelist_tables = []
+        self.covariate_definitions = covariates
         self.queries = self.build_queries(covariates)
+        self.pandas_csv_args = self.get_pandas_csv_args(covariates)
 
     def _to_csv_with_sqlcmd(self, filename):
         unique_check = UniqueCheck()
@@ -90,6 +95,86 @@ class StudyDefinition:
                     writer.writerow(row)
             unique_check.assert_unique_ids()
 
+    def csv_to_df(self, csv_name):
+        return pd.read_csv(csv_name, **self.pandas_csv_args)
+
+    def get_pandas_csv_args(self, covariate_definitions):
+        def tobool(val):
+            if val == "":
+                return False
+            if val == "0":
+                return False
+            return True
+
+        def add_month_and_day_to_date(val):
+            if val:
+                return val + "-01-01"
+            return val
+
+        def add_day_to_date(val):
+            if val:
+                return val + "-01"
+            return val
+
+        dtypes = {}
+        parse_dates = []
+        converters = {}
+        implicit_dates = []
+        definitions = list(covariate_definitions.items())
+
+        for name, (funcname, kwargs) in copy.deepcopy(definitions):
+            if kwargs.get("include_date_of_match"):
+                kwargs["returning"] = "date"
+                implicit_dates.append((name + "_date", (funcname, kwargs)))
+            elif kwargs.get("include_measurement_date"):
+                kwargs["returning"] = "date"
+                implicit_dates.append((name + "_date_measured", (funcname, kwargs)))
+
+        for name, (funcname, kwargs) in implicit_dates + definitions:
+            returning = kwargs.get("returning", None)
+            if name == "population":
+                continue
+            if returning and (
+                returning == "date"
+                or returning.startswith("date_")
+                or returning.endswith("_date")
+                or "_date_" in returning
+            ):
+                parse_dates.append(name)
+                # if granularity doesn't include a day, add one
+                if not kwargs.get("include_day") and not kwargs.get("include_month"):
+                    converters[name] = add_month_and_day_to_date
+                elif kwargs.get("include_month"):
+                    converters[name] = add_day_to_date
+
+            elif returning == "numeric_value":
+                dtypes[name] = "float"
+            elif returning == "number_of_matches_in_period":
+                dtypes[name] = "int"
+            elif returning == "binary_flag":
+                converters[name] = tobool
+            elif returning == "category" or "category_definitions" in kwargs:
+                dtypes[name] = "category"
+            elif "include_measurement_date" in kwargs:
+                # currently a special case for BMI
+                dtypes[name] = "float"
+                if name + "_date_measured" not in parse_dates:
+                    if kwargs["include_measurement_date"]:
+                        parse_dates.append(name + "_date_measured")
+            elif returning:
+                dtypes[name] = "category"
+            elif funcname == "age_as_of":
+                dtypes[name] = "int"
+            elif funcname == "sex":
+                dtypes[name] = "category"
+            elif funcname == "have_died_of_covid":
+                dtypes[name] = "category"
+            else:
+                raise ValueError(
+                    f"Unable to impute Pandas type for {name} ({funcname})"
+                )
+        return {"dtype": dtypes, "converters": converters, "parse_dates": parse_dates}
+
     def to_dicts(self):
         result = self.execute_query()
         keys = [x[0] for x in result.description]
@@ -100,6 +185,18 @@ class StudyDefinition:
             unique_check.add(item["patient_id"])
         unique_check.assert_unique_ids()
         return output
+
+    def to_data(self):
+        covariate_definitions, hidden_columns = self.flatten_nested_covariates(
+            self.covariate_definitions
+        )
+        data = {"hidden_columns": hidden_columns, "covariate_definitions": {}}
+        for name, (query_type, query_args) in covariate_definitions.items():
+            data["covariate_definitions"][name] = {
+                "type": query_type,
+                "args": query_args,
+            }
+        return data
 
     def to_sql(self):
         """
@@ -404,7 +501,7 @@ class StudyDefinition:
         # each list is the canonical version according to TPP
         weight_codes = [
             "X76C7",  # Concept containing "body weight" terms:
-            "22A.. ",  # O/E weight
+            "22A..",  # O/E weight
         ]
         height_codes = [
             "XM01E",  # Concept containing height/length/stature/growth terms:
@@ -610,9 +707,24 @@ class StudyDefinition:
         Patients who have had at least one of these clinical events in the
         defined period
         """
-        return self._patients_with_events(
-            "CodedEvent", "CTV3Code", codes_are_case_sensitive=True, **kwargs
-        )
+        # This uses a special case function with a "fake it til you make it" API
+        if kwargs["returning"] == "number_of_episodes":
+            kwargs.pop("returning")
+            # Remove unhandled arguments and check they are unused
+            assert not kwargs.pop("find_first_match_in_period", None)
+            assert not kwargs.pop("find_last_match_in_period", None)
+            assert not kwargs.pop("include_date_of_match", None)
+            assert not kwargs.pop("include_month", None)
+            assert not kwargs.pop("include_day", None)
+            return self._number_of_episodes(**kwargs)
+        # This is the default code path for most queries
+        else:
+            # Remove unhandled arguments and check they are unused
+            assert not kwargs.pop("ignore_days_where_these_codes_occur", None)
+            assert not kwargs.pop("episode_defined_as", None)
+            return self._patients_with_events(
+                "CodedEvent", "CTV3Code", codes_are_case_sensitive=True, **kwargs
+            )
 
     def _patients_with_events(
         self,
@@ -725,6 +837,69 @@ class StudyDefinition:
             if include_date_of_match:
                 columns.append(date_column_name)
         return columns, sql
+
+    def _number_of_episodes(
+        self,
+        codelist,
+        # Set date limits
+        on_or_before=None,
+        on_or_after=None,
+        between=None,
+        ignore_days_where_these_codes_occur=None,
+        episode_defined_as=None,
+    ):
+        codelist_table = self.create_codelist_table(codelist, case_sensitive=True)
+        ignore_list_table = self.create_codelist_table(
+            ignore_days_where_these_codes_occur, case_sensitive=True
+        )
+        date_condition = make_date_filter(
+            "ConsultationDate", on_or_after, on_or_before, between
+        )
+        if episode_defined_as is not None:
+            pattern = r"^series of events each <= (\d+) days apart$"
+            match = re.match(pattern, episode_defined_as)
+            if not match:
+                raise ValueError(
+                    f"Argument `episode_defined_as` must match " f"pattern: {pattern}"
+                )
+            washout_period = int(match.group(1))
+        else:
+            washout_period = 0
+
+        sql = f"""
+        SELECT
+          Patient_ID AS patient_id,
+          SUM(is_new_episode) AS episode_count
+        FROM (
+            SELECT
+              Patient_ID,
+              CASE
+                WHEN
+                  DATEDIFF(
+                    day,
+                    LAG(ConsultationDate) OVER (PARTITION BY Patient_ID ORDER BY ConsultationDate),
+                    ConsultationDate
+                  ) <= {washout_period}
+                THEN 0
+                ELSE 1
+              END AS is_new_episode
+            FROM CodedEvent
+            INNER JOIN {codelist_table}
+            ON CTV3Code = {codelist_table}.code
+            WHERE
+              {date_condition}
+              AND NOT EXISTS (
+                SELECT * FROM CodedEvent AS sameday
+                INNER JOIN {ignore_list_table}
+                ON sameday.CTV3Code = {ignore_list_table}.code
+                WHERE
+                  sameday.Patient_ID = CodedEvent.Patient_ID
+                  AND CAST(sameday.ConsultationDate AS date) = CAST(CodedEvent.ConsultationDate AS date)
+              )
+        ) t
+        GROUP BY Patient_ID
+        """
+        return ["patient_id", "episode_count"], sql
 
     def patients_registered_practice_as_of(self, date, returning=None):
         if returning == "stp_code":
@@ -1166,6 +1341,11 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        # Special (and probably temporary) arguments to support queries we need
+        # to do right now. This API will need to be thought through properly at
+        # some stage.
+        ignore_days_where_these_codes_occur=None,
+        episode_defined_as=None,
         # Deprecated return type options kept for now for backwards
         # compatibility
         return_binary_flag=None,
@@ -1320,11 +1500,28 @@ def codelist_to_sql(codelist):
     return ",".join(values)
 
 
+def standardise_if_date(value):
+    """For strings that look like ISO dates, format in a SQL-Server
+    friendly fashion
+
+    """
+
+    # ISO date strings with hyphens are unreliable in SQL Server:
+    # https://stackoverflow.com/a/25548626/559140
+    try:
+        date = datetime.datetime.strptime(value, "%Y-%m-%d")
+        value = date.strftime("%Y%m%d")
+    except ValueError:
+        pass
+    return value
+
+
 def quote(value):
     if isinstance(value, (int, float)):
         return str(value)
     else:
         value = str(value)
+        value = standardise_if_date(value)
         if not SAFE_CHARS_RE.match(value) and value != "":
             raise ValueError(f"Value contains disallowed characters: {value}")
         return f"'{value}'"
