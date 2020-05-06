@@ -16,6 +16,7 @@ opensafely/insulin-medication/2020-04-26
 opensafely/laba-ics-combination-inhaler/2020-05-04
 opensafely/laba-lama-combination-inhaler/2020-05-05
 opensafely/laba-lama-ics-combination-inhaler/2020-05-05
+opensafely/leukotriene-receptor-antagonist-medication/2020-05-05
 opensafely/low-and-medium-dose-ics-inhalers/2020-05-05
 opensafely/lung-cancer/2020-04-15
 opensafely/nebulised-asthma-and-copd-medications/2020-05-05
