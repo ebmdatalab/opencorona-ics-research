@@ -1,23 +1,40 @@
-from datalab_cohorts import StudyDefinition, patients, codelist, codelist_from_csv, filter_codes_by_category
+from datalab_cohorts import (
+    StudyDefinition,
+    patients,
+    codelist,
+    codelist_from_csv,
+    filter_codes_by_category,
+)
 
-placeholder_event_codes = codelist_from_csv( #### USED AS A PLACEHOLDER
+placeholder_event_codes = codelist_from_csv(  #### USED AS A PLACEHOLDER
     "codelists/opensafely-diabetes.csv", system="ctv3", column="CTV3ID"
 )
 
 placeholder_med_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
+    "codelists/opensafely-asthma-inhaler-steroid-medication.csv",
+    system="snomed",
+    column="id",
 )
 
 ethnicity_codes = codelist_from_csv(
-    "codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6"
+    "codelists/opensafely-ethnicity.csv",
+    system="ctv3",
+    column="Code",
+    category_column="Grouping_6",
 )
 
 clear_smoking_codes = codelist_from_csv(
-    "codelists/opensafely-smoking-clear.csv", system="ctv3", column="CTV3Code", category_column="Category"
+    "codelists/opensafely-smoking-clear.csv",
+    system="ctv3",
+    column="CTV3Code",
+    category_column="Category",
 )
 
 unclear_smoking_codes = codelist_from_csv(
-    "codelists/opensafely-smoking-unclear.csv", system="ctv3", column="CTV3Code", category_column="Category"
+    "codelists/opensafely-smoking-unclear.csv",
+    system="ctv3",
+    column="CTV3Code",
+    category_column="Category",
 )
 
 insulin_med_codes = codelist_from_csv(
@@ -33,43 +50,63 @@ heartfailure_codes = codelist_from_csv(
 )
 
 ics_single_med_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
+    "codelists/opensafely-asthma-inhaler-steroid-medication.csv",
+    system="snomed",
+    column="id",
 )
 
 laba_ics_med_codes = codelist_from_csv(
-    "codelists/opensafely-laba-ics-combination-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-laba-ics-combination-inhaler.csv",
+    system="snomed",
+    column="id",
 )
 
 laba_lama_med_codes = codelist_from_csv(
-    "codelists/opensafely-laba-lama-combination-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-laba-lama-combination-inhaler.csv",
+    system="snomed",
+    column="id",
 )
 
 laba_lama__ics_med_codes = codelist_from_csv(
-    "codelists/opensafely-laba-lama-ics-combination-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-laba-lama-ics-combination-inhaler.csv",
+    system="snomed",
+    column="id",
 )
 
 leukotriene_med_codes = codelist_from_csv(
-    "codelists/opensafely-leukotriene-receptor-antagonist-medication.csv", system="snomed", column="id"
+    "codelists/opensafely-leukotriene-receptor-antagonist-medication.csv",
+    system="snomed",
+    column="id",
 )
 
 low_medium__ics_med_codes = codelist_from_csv(
-    "codelists/opensafely-low-and-medium-dose-ics-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-low-and-medium-dose-ics-inhalers.csv",
+    system="snomed",
+    column="id",
 )
 
 nebulised_med_codes = codelist_from_csv(
-    "codelists/opensafely-nebulised-asthma-and-copd-medications.csv", system="snomed", column="id"
+    "codelists/opensafely-nebulised-asthma-and-copd-medications.csv",
+    system="snomed",
+    column="id",
 )
 
 single_laba_med_codes = codelist_from_csv(
-    "codelists/opensafely-single-ingredient-laba-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-single-ingredient-laba-inhalers.csv",
+    system="snomed",
+    column="id",
 )
 
 single_lama_med_codes = codelist_from_csv(
-    "codelists/opensafely-single-ingredient-lama-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-single-ingredient-lama-inhalers.csv",
+    system="snomed",
+    column="id",
 )
 
 oral_steroid_med_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-oral-prednisolone-medication.csv", system="snomed", column="vpid"
+    "codelists/opensafely-asthma-oral-prednisolone-medication.csv",
+    system="snomed",
+    column="vpid",
 )
 
 saba_med_codes = codelist_from_csv(
@@ -101,74 +138,73 @@ haem_cancer_codes = codelist_from_csv(
 )
 
 other_cancer_codes = codelist_from_csv(
-    "codelists/opensafely-cancer-excluding-lung-and-haematological.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-cancer-excluding-lung-and-haematological.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 aplastic_codes = codelist_from_csv(
-    "codelists/opensafely-aplastic-anaemia.csv", system="ctv3", column="CTV3ID")
+    "codelists/opensafely-aplastic-anaemia.csv", system="ctv3", column="CTV3ID"
+)
 
 hiv_codes = codelist_from_csv(
-    "codelists/opensafely-hiv.csv", system="ctv3", column="CTV3ID")
+    "codelists/opensafely-hiv.csv", system="ctv3", column="CTV3ID"
+)
 
 permanent_immune_codes = codelist_from_csv(
-    "codelists/opensafely-permanent-immunosuppresion.csv", system="ctv3", column="CTV3ID")
+    "codelists/opensafely-permanent-immunosuppresion.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
 
 temp_immune_codes = codelist_from_csv(
-    "codelists/opensafely-temporary-immunosuppresion.csv", system="ctv3", column="CTV3ID")
+    "codelists/opensafely-temporary-immunosuppresion.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
 
 creatinine_codes = codelist(["XE2q5"], system="ctv3")
 
 covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 
-
 study = StudyDefinition(
-     # Configure the expectations framework 
+    # Configure the expectations framework
     default_expectations={
         "date": {"earliest": "1970-01-01", "latest": "today"},
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
-
     ## STUDY POPULATION
-
     population=patients.satisfying(
         "has_follow_up AND has_asthma",
         has_asthma=patients.with_these_clinical_events(
-            asthma_codes,
-            on_or_before='2017-02-01',
+            asthma_codes, on_or_before="2017-02-01"
         ),
-        has_follow_up=patients.registered_with_one_practice_between("2019-02-01", "2020-02-01")
+        has_follow_up=patients.registered_with_one_practice_between(
+            "2019-02-01", "2020-02-01"
+        ),
     ),
-
     ## OUTCOMES
     icu_date_admitted=patients.admitted_to_icu(
-        on_or_after="2020-02-01",
-        include_day=True,
-        returning="date_admitted",
+        on_or_after="2020-02-01", include_day=True, returning="date_admitted"
     ),
-
     died_date_cpns=patients.with_death_recorded_in_cpns(
         on_or_before="2020-06-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
     ),
-
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist, on_or_before="2020-06-01", match_only_underlying_cause=False
     ),
-
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist, on_or_before="2020-06-01", match_only_underlying_cause=True
     ),
-
     died_date_ons=patients.died_from_any_cause(
-        on_or_before="2020-06-01",
-        returning="date_of_death"),
-
+        on_or_before="2020-06-01", returning="date_of_death"
+    ),
     ## DEMOGRAPHIC INFORMATION
-
     age=patients.age_as_of(
         "2020-02-01",
         return_expectations={
@@ -176,29 +212,22 @@ study = StudyDefinition(
             "int": {"distribution": "population_ages"},
         },
     ),
-
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
             "category": {"ratios": {"M": 0.49, "F": 0.51}},
         }
     ),
-
     stp=patients.registered_practice_as_of("2020-02-01", returning="stp_code"),
-
     imd=patients.address_as_of(
-        "2020-02-01",
-        returning="index_of_multiple_deprivation",
-        round_to_nearest=100
+        "2020-02-01", returning="index_of_multiple_deprivation", round_to_nearest=100
     ),
-
     ethnicity=patients.with_these_clinical_events(
         ethnicity_codes,
         returning="category",
         find_last_match_in_period=True,
         include_date_of_match=True,
     ),
-
     ## COVARIATES
     bmi=patients.most_recent_bmi(
         on_or_after="2010-02-01",
@@ -206,7 +235,6 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
     ),
-
     smoking_status=patients.categorised_as(
         {
             "S": "most_recent_smoking_code = 'S'",
@@ -216,29 +244,29 @@ study = StudyDefinition(
                      )
                 """,
             "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
-            "M": "DEFAULT"
+            "M": "DEFAULT",
         },
         most_recent_smoking_code=patients.with_these_clinical_events(
             clear_smoking_codes,
             find_last_match_in_period=True,
-            on_or_before='2020-02-01',
+            on_or_before="2020-02-01",
             returning="category",
         ),
         ever_smoked=patients.with_these_clinical_events(
-            filter_codes_by_category(clear_smoking_codes, include=['S', 'E']),
-            on_or_before='2020-02-01'
+            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
+            on_or_before="2020-02-01",
         ),
     ),
     smoking_status_date=patients.with_these_clinical_events(
         clear_smoking_codes,
-        on_or_before='2020-02-01',
+        on_or_before="2020-02-01",
         return_last_date_in_period=True,
         include_month=True,
     ),
     most_recent_unclear_smoking_cat=patients.with_these_clinical_events(
         unclear_smoking_codes,
         find_last_match_in_period=True,
-        on_or_before='2020-02-01',
+        on_or_before="2020-02-01",
         returning="category",
     ),
     most_recent_unclear_smoking_numeric=patients.with_these_clinical_events(
@@ -249,11 +277,10 @@ study = StudyDefinition(
     ),
     most_recent_unclear_smoking_cat_date=patients.with_these_clinical_events(
         unclear_smoking_codes,
-        on_or_before='2020-02-01',
+        on_or_before="2020-02-01",
         return_last_date_in_period=True,
         include_month=True,
     ),
-
     # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
     # exacerbation_count = patients.with_these_clinical_events(
     #     placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
@@ -262,115 +289,95 @@ study = StudyDefinition(
     #     returning="number_of_episodes",
     #     episode_defined_as=">14 consecutive days with no matching codes",
     # ),
-
-
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### ORAL STEROIDS SINGLE CONSTITUENT
     oral_steroids=patients.with_these_medications(
         oral_steroid_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### SABA SINGLE CONSTITUENT
     saba_single=patients.with_these_medications(
         saba_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
-        placeholder_med_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
         single_laba_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
         single_lama_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
         laba_ics_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
         laba_lama_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
         laba_lama__ics_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
         leukotriene_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     #### NEBULES
     nebules=patients.with_these_medications(
         nebulised_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
-
     ### COPD
     copd=patients.with_these_clinical_events(
-        placeholder_event_codes, #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
     ),
-
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
     ),
-
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
     ),
-
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
-        placeholder_event_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        placeholder_event_codes, return_first_date_in_period=True, include_month=True
     ),
-
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
@@ -379,7 +386,6 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
     ),
-
     ### DIASTOLIC BLOOD PRESSURE
     bp_dias=patients.mean_recorded_value(
         diastolic_blood_pressure_codes,
@@ -388,54 +394,34 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
     ),
-
     ### DIABETES
     diabetes=patients.with_these_clinical_events(
-        diabetes_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        diabetes_codes, return_first_date_in_period=True, include_month=True
     ),
-
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
-        lung_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        lung_cancer_codes, return_first_date_in_period=True, include_month=True
     ),
     haem_cancer=patients.with_these_clinical_events(
-        haem_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        haem_cancer_codes, return_first_date_in_period=True, include_month=True
     ),
     other_cancer=patients.with_these_clinical_events(
-        other_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        other_cancer_codes, return_first_date_in_period=True, include_month=True
     ),
-
     # IMMUNOSUPPRESSION - 4 TYPES
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
     aplastic_anaemia=patients.with_these_clinical_events(
-        aplastic_codes,
-        return_last_date_in_period=True,
-        include_month=True,
+        aplastic_codes, return_last_date_in_period=True, include_month=True
     ),
     hiv=patients.with_these_clinical_events(
-        hiv_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        hiv_codes, return_first_date_in_period=True, include_month=True
     ),
     permanent_immunodeficiency=patients.with_these_clinical_events(
-        permanent_immune_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        permanent_immune_codes, return_first_date_in_period=True, include_month=True
     ),
     temporary_immunodeficiency=patients.with_these_clinical_events(
-        temp_immune_codes,
-        return_last_date_in_period=True,
-        include_month=True,
+        temp_immune_codes, return_last_date_in_period=True, include_month=True
     ),
-
     ### CHRONIC KIDNEY DISEASE
     creatinine=patients.with_these_clinical_events(
         creatinine_codes,
@@ -445,33 +431,28 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
     ),
-
     ### EXACERBATION HISTORY
     exacerbation=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_number_of_matches_in_period=True,
         include_month=True,
     ),
-
     ### VACCINATION HISTORY
     vaccine=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
     ),
-
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
         between=["2018-02-01", "2020-02-01"],
         returning="number_of_matches_in_period",
     ),
-
 )
