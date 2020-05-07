@@ -113,10 +113,10 @@ class StudyDefinition:
         **kwargs,
     ):
         defined = set(return_expectations["category"]["ratios"].keys())
-        if codelist and codelist.has_categories:
-            available = set([x[1] for x in codelist])
-        elif category_definitions:
+        if category_definitions:
             available = set(category_definitions.keys())
+        elif codelist and codelist.has_categories:
+            available = set([x[1] for x in codelist])
         else:
             available = defined
         if not defined.issubset(available):
@@ -131,9 +131,9 @@ class StudyDefinition:
         # matching on dependent columns
         for colname in self.pandas_csv_args["parse_dates"]:
             definition_args = self.pandas_csv_args["args"][colname]
-            if "return_expectations" not in definition_args:
+            if not definition_args.get("return_expectations"):
                 raise ValueError(f"No `return_expectations` defined for {colname}")
-            kwargs = self.default_expectations
+            kwargs = self.default_expectations.copy()
             kwargs.update(definition_args["return_expectations"])
             df[colname] = generate(population, **kwargs)["date"]
 
@@ -147,9 +147,10 @@ class StudyDefinition:
         # Now we can optionally pass in an array which has already had
         # its incidence calculated as a mask
         for colname, dtype in self.pandas_csv_args["dtype"].items():
-            if "return_expectations" not in self.pandas_csv_args["args"][colname]:
+            if not self.pandas_csv_args["args"][colname].get("return_expectations"):
                 raise ValueError(f"No `return_expectations` defined for {colname}")
-            kwargs = self.pandas_csv_args["args"][colname]["return_expectations"]
+            kwargs = self.default_expectations.copy()
+            kwargs.update(self.pandas_csv_args["args"][colname]["return_expectations"])
 
             if dtype == "category":
                 self.validate_category_expectations(
@@ -1270,6 +1271,7 @@ class StudyDefinition:
         )
 
     def get_case_expression(self, column_definitions, category_definitions):
+        category_definitions = category_definitions.copy()
         defaults = [k for (k, v) in category_definitions.items() if v == "DEFAULT"]
         if len(defaults) > 1:
             raise ValueError("At most one default category can be defined")
@@ -1561,15 +1563,15 @@ class patients:
     # They use a handler which returns dummy CHESS data.
 
     @staticmethod
-    def with_positive_covid_test():
+    def with_positive_covid_test(return_expectations=None):
         return "with_positive_covid_test", locals()
 
     @staticmethod
-    def have_died_of_covid():
+    def have_died_of_covid(return_expectations=None):
         return "have_died_of_covid", locals()
 
     @staticmethod
-    def random_sample(percent=None):
+    def random_sample(percent=None, return_expectations=None):
         assert percent, "Must specify a percentage greater than zero"
         return "random_sample", locals()
 
@@ -1587,6 +1589,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         assert codelist.system == "icd10"
         validate_time_period_options(**locals())
@@ -1603,6 +1606,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         validate_time_period_options(**locals())
         return "died_from_any_cause", locals()
@@ -1618,6 +1622,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         validate_time_period_options(**locals())
         return "with_death_recorded_in_cpns", locals()
