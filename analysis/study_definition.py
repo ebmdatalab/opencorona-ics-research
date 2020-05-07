@@ -123,6 +123,13 @@ covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 
 study = StudyDefinition(
+     # Configure the expectations framework 
+    default_expectations={
+        "date": {"earliest": "1970-01-01", "latest": "today"},
+        "rate": "exponential_increase",
+        "incidence": 0.2,
+    },
+
     ## STUDY POPULATION
 
     population=patients.satisfying(
@@ -162,9 +169,20 @@ study = StudyDefinition(
 
     ## DEMOGRAPHIC INFORMATION
 
-    age=patients.age_as_of("2020-02-01"),
+    age=patients.age_as_of(
+        "2020-02-01",
+        return_expectations={
+            "rate": "universal",
+            "int": {"distribution": "population_ages"},
+        },
+    ),
 
-    sex=patients.sex(),
+    sex=patients.sex(
+        return_expectations={
+            "rate": "universal",
+            "category": {"ratios": {"M": 0.49, "F": 0.51}},
+        }
+    ),
 
     stp=patients.registered_practice_as_of("2020-02-01", returning="stp_code"),
 
