@@ -8,27 +8,27 @@ placeholder_med_codes = codelist_from_csv(
     "codelists/opensafely-asthma-inhaler-steroid-medication.csv", system="snomed", column="id"
 )
 
-ethnicity_codes  = codelist_from_csv(
+ethnicity_codes = codelist_from_csv(
     "codelists/opensafely-ethnicity.csv", system="ctv3", column="Code", category_column="Grouping_6"
 )
 
-clear_smoking_codes  = codelist_from_csv(
+clear_smoking_codes = codelist_from_csv(
     "codelists/opensafely-smoking-clear.csv", system="ctv3", column="CTV3Code", category_column="Category"
 )
 
-unclear_smoking_codes  = codelist_from_csv(
+unclear_smoking_codes = codelist_from_csv(
     "codelists/opensafely-smoking-unclear.csv", system="ctv3", column="CTV3Code", category_column="Category"
 )
 
-insulin_med_codes  = codelist_from_csv(
+insulin_med_codes = codelist_from_csv(
     "codelists/opensafely-insulin-medication.csv", system="snomed", column="id"
 )
 
-statin_med_codes  = codelist_from_csv(
+statin_med_codes = codelist_from_csv(
     "codelists/opensafely-statin-medication.csv", system="snomed", column="id"
 )
 
-heartfailure_codes  = codelist_from_csv(
+heartfailure_codes = codelist_from_csv(
     "codelists/opensafely-heart-failure.csv", system="ctv3", column="CTV3ID"
 )
 
@@ -126,7 +126,7 @@ study = StudyDefinition(
     ## STUDY POPULATION
 
     population=patients.satisfying(
-        'has_follow_up AND has_asthma',
+        "has_follow_up AND has_asthma",
         has_asthma=patients.with_these_clinical_events(
             asthma_codes,
             on_or_before='2017-02-01',
@@ -138,7 +138,7 @@ study = StudyDefinition(
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-02-01",
         include_day=True,
-        returning="date_admitted"
+        returning="date_admitted",
     ),
 
     died_date_cpns=patients.with_death_recorded_in_cpns(
@@ -174,7 +174,7 @@ study = StudyDefinition(
         round_to_nearest=100
     ),
 
-    ethnicity = patients.with_these_clinical_events(
+    ethnicity=patients.with_these_clinical_events(
         ethnicity_codes,
         returning="category",
         find_last_match_in_period=True,
