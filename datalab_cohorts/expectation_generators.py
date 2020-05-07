@@ -93,7 +93,8 @@ def generate(population, **kwargs):
     elif universal:
         df = pd.DataFrame(data=np.arange(population), columns=["date"])
     else:
-        earliest, latest = _get_date_range(**date)
+        date_as_dict = date or {}
+        earliest, latest = _get_date_range(**date_as_dict)
         df = generate_dates(population, earliest, latest, rate)
 
     category = kwargs.pop("category", None)
