@@ -1,298 +1,267 @@
-/*=========================================================================
+/*==============================================================================
 DO FILE NAME:			01_cr_create_analysis_dataset
-
 PROJECT:				Effect of ICS on Covid-19 outcomes
+DATE: 					6th of May 2020 
+AUTHOR:					Anna Schultze, Angel Wong, Christopher Rentsch									
+DESCRIPTION OF FILE:	Check inclusion/exclusion citeria
+						Reformat variables 
+						Categorise variables
+						Label variables 
+DATASETS USED:			Data in memory (from analysis/input.csv)
 
-AUTHOR:					Anna Schultze, Angel Wong, Christopher Rentsch
-												
-DESCRIPTION OF FILE:	Aim: set up variables and format data variables
-
-DATASETS USED:			Data in memory (from input.csv)
-
-DATASETS CREATED: 		cr_create_analysis_dataset
-
-OTHER OUTPUT: 			None
+DATASETS CREATED: 		cr_create_analysis_dataset.dta, in folder 
+						analysis/tempdata 
+OTHER OUTPUT: 			Logfiles, printed to folder analysis/log
 							
-=========================================================================*/
-
-
+==============================================================================*/
 
 * Open a log file
+
 cap log close
-log using "$Outdir/cr_analysis_dataset", replace t
+log using output\01_cr_create_analysis_dataset, replace t
 
-
-
-
-
-**************************   INPUT REQUIRED   *********************************
-
+/* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
-*global ecdseventcensor 		= "21/04/2020"
+
 global ituadmissioncensor 	= "20/04/2020"
 global cpnsdeathcensor 		= "25/04/2020"
 global onscoviddeathcensor 	= "06/04/2020"
+global indexdate 			= "01/03/2020"
 
+/* TEMP: INCLUSION/EXCLUIONS==================================================*/ 
+* These should not make difference, should be in Python 
 
-*******************************************************************************
+noi di "DROP MISSING GENDER:"
+drop if inlist(sex,"I", "U")
 
+noi di "DROP AGE <18:"
+drop if age < 18 
 
+noi di "DROP AGE >110:"
+drop if age > 110 & age != .
 
-
-
-
-
-
-****************************
-*  Create required cohort  *
-****************************
-
-* Age: Exclude children
-noi di "DROPPING AGE<18:" 
-drop if age<18
-
-
-* Age: Exclude those with implausible ages
-assert age<.
-noi di "DROPPING AGE<105:" 
-drop if age>105
-
-* Sex: Exclude categories other than M and F
-assert inlist(sex, "M", "F", "I", "U")
-noi di "DROPPING GENDER NOT M/F:" 
-drop if inlist(sex, "I", "U")
-
-
-
-
-
-
-
-
-
-
-
+noi di "DROP AGE MISSING:"
+drop if age == . 
 
 /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
 
 * DATA STRUCTURE: Confirm one row per patient 
 duplicates tag patient_id, generate(dup_check)
-
 assert dup_check == 0 
-
 drop dup_check
 
-* INCLUSION 1: Confirm Diagnosis and Timeframe, print population to log 
-
-/* [PENDING PLACEHOLDER FOR VARIABLES]  */
+* INCLUSION 1: Asthma in 3 years of 1 March 2020 
 
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
-**************************************************************************************CTR NOTES: already done above per risk factor analysis
-// assert age < .
-// assert age > 17 
-// assert age < 111 
+assert age < .
+assert age > 17 
+assert age < 111 
  
 * INCLUSION 3: Non-missing gender at 1 March 2020 
-*************************************************************************************CTR NOTES: already done above per risk factor analysis
-// assert inlist(sex, "M", "F")
+assert inlist(sex, "M", "F")
 
 * EXCLUSION 1: 12 months or baseline time 
-
-/* [PENDING PLACEHOLDER FOR VARIABLES]  */
-
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
+* EXCLUSION 3: COPD 
+* EXCLUSION 4: Nebulising treament 
 
-/* [PENDING PLACEHOLDER FOR VARIABLES]  */
+/* RENAME VARAIBLES===========================================================*/
 
+rename most_recent_unclear_smoking_cat		smoking_unclear_cat
+rename most_recent_unclear_smoking_nume 	smoking_unclear_num
+rename most_recent_unclear_smoking_cat_		smoking_unclear_date
+rename bmi_date_measured  	    			bmi_date_measured
+rename bp_dias_date_measured	  			bp_dias_date
+rename bp_sys_date_measured		   			bp_sys_date
 
+/* CONVERT STRINGS TO DATE====================================================*/
+/* Comorb dates are given with month only, so adding day 15 to enable
+   them to be processed as dates 											  */
 
-
-
-
-
-
-
-
-
-******************************
-*  Convert strings to dates  *
-******************************
-
-*************************************************************** CTR NOTE: variables in Risk factor study but not in our dataset (yet)
-// 						hba1c_percentage_date			///
-// 						hba1c_mmol_per_mol_date			///
-// 						chronic_respiratory_disease 	///		
-// 						chronic_cardiac_disease 		///
 // 						bone_marrow_transplant 			///
 // 						chemo_radio_therapy 			///
 // 						chronic_liver_disease 			///
-// 						stroke							///
-// 						dementia		 				///
-// 						other_neuro 					///
 // 						organ_transplant 				///	
 // 						dysplenia						///
 // 						sickle_cell 					///
 // 						ra_sle_psoriasis  
 
-*var name too long
-rename most_recent_unclear_smoking_cat_	smoking_unclear_date												
-* To be added: dates related to outcomes
-foreach var of varlist 	smoking_status_date 			///
-						smoking_unclear_date 			///
-						copd 							///
-						asthma 							///
+
+// 						Heart Failure					///
+// 						Other Heart Disease				///
+// 						Flu vaccine 					///
+// 						Pneuomococcal vaccine			///
+// 						GP consultation rate 			///
+
+foreach var of varlist 	aplastic_anaemia				///
+						asthma           				///
+						bmi_date_measured 				///
+						ckd_diagnosis    				///
+						copd            				///
+						creatinine_date  				///
+						diabetes         				///
+						exacerbation     				///
+						haem_cancer      				///
+						hiv             				///
+						hypertension     				///
+						ili              				///
+						lung_cancer      				///
+						other_cancer     				///
 						other_respiratory 				///
-						ili  							///
-						bp_sys_date_measured 			///
-						bp_dias_date_measured    		///               
-						creatinine_date 				///
-						ckd_diagnosis 					///
-						exacerbation 					///
-						vaccine							///
-						hypertension					///
-						bmi_date_measured				///
-						diabetes 						///
-						aplastic_anaemia 				///	
-						lung_cancer 					///
-						haem_cancer						///
-						other_cancer 					///
-						hiv 							///
-						permanent_immunodeficiency 		///
-						temporary_immunodeficiency	{
-	capture confirm string variable `var'
-	if _rc!=0 {
-		assert `var'==.
-		rename `var' `var'_date
-	}
-	else {
-		replace `var' = `var' + "-15"
-		rename `var' `var'_dstr
-		replace `var'_dstr = " " if `var'_dstr == "-15"
-		gen `var'_date = date(`var'_dstr, "YMD") 
-		order `var'_date, after(`var'_dstr)
-		drop `var'_dstr
-	}
+						permanent_immunodeficiency   	///
+						smoking_status_date				///
+						smoking_unclear_date           	///
+						temporary_immunodeficiency   	///
+						vaccine {
+
+							
+		capture confirm string variable `var'
+		if _rc!=0 {
+			assert `var'==.
+			rename `var' `var'_date
+		}
+	
+		else {
+				replace `var' = `var' + "-15"
+				rename `var' `var'_dstr
+				replace `var'_dstr = " " if `var'_dstr == "-15"
+				gen `var'_date = date(`var'_dstr, "YMD") 
+				order `var'_date, after(`var'_dstr)
+				drop `var'_dstr
+		}
+	
 	format `var'_date %td
 }
 
-rename bp_dias_date_measured  bp_dias_date
-rename bp_sys_date_measured   bp_sys_date
+* Handle death dates separately because these are released as exact dates
 
-******************************************************************************CTR NOTE: variables in Risk factor study but not in our dataset (yet)
-// rename hba1c_percentage_date_date  hba1c_percentage_date
-// rename hba1c_mmol_per_mol_date_date  hba1c_mmol_per_mol_date
+gen died_cpns_date	= date(died_date_cpns, "YMD") 
+format died_cpns_date %td 
+gen died_cpns_flag  = 1 if died_cpns_date != . 
+recode died_cpns_flag (. = 0)
 
+tab died_cpns_flag
 
+/* RENAME VARAIBLES===========================================================*/
+*  An extra 'date' added to the end of some variables, remove 
 
+rename creatinine_date_date 		creatinine_measured_date
+rename smoking_unclear_date_date  	smoking_unclear_date
+rename smoking_status_date_date 	smoking_status_date
+rename bmi_date_measured_date  		bmi_measured_date
 
+tab died_cpns_date
 
+/* CREATE BINARY VARIABLES====================================================*/
 
-
-**************************************************
-*  Create binary comorbidity indices from dates  *
-**************************************************
-
-* Comorbidities ever before
-foreach var of varlist	copd_date						///
-						asthma_date 					///
-						other_respiratory_date 			///
-						ili_date  						///
-						ckd_diagnosis_date 				///
-						exacerbation_date 				///
-						vaccine_date					///
-						hypertension_date				///
-						diabetes_date 					///
-						aplastic_anaemia_date 			///	
-						lung_cancer_date 				///
-						haem_cancer_date				///
-						other_cancer_date 				///
-						hiv_date 						///
-						permanent_immunodeficiency_date ///
-						temporary_immunodeficiency_date	{
+foreach var of varlist 	aplastic_anaemia_date				///
+						asthma_date           				///
+						bmi_measured_date 					///
+						ckd_diagnosis_date 					///
+						copd_date          					///
+						creatinine_measured_date 			///
+						diabetes_date       	    		///
+						exacerbation_date      				///
+						haem_cancer_date       				///
+						hiv_date              				///
+						hypertension_date      				///
+						ili_date               				///
+						lung_cancer_date       				///
+						other_cancer_date      				///
+						other_respiratory_date  			///
+						permanent_immunodeficiency_date    	///
+						temporary_immunodeficiency_date    	///
+						vaccine_date  {
+						
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
-	gen `newvar' = (`var'< d(1/2/2020))
+	gen `newvar' = (`var'< d("$indexdate"))
 	order `newvar', after(`var')
+	
 }
 
-
-
-
-
-
-
-
-
-
-
-
-*******************************
-*  Recode implausible values  *
-*******************************
-
+/* RECODE IMPLAUSIBLE VALUES==================================================*/
 
 * BMI 
-
-* Only keep if within certain time period? using bmi_date_measured ?
-* NB: Some BMI dates in future or after cohort entry
-
-* Set implausible BMIs to missing:
+summarize bmi, d
+replace bmi = . if bmi == 0 
 replace bmi = . if !inrange(bmi, 15, 50)
 
+* Creatinine
+summarize creatinine, d
+replace creatinine = . if creatinine == 0 
 
+/* CREATE CATEGORICAL VARIABLES===============================================*/
 
+* Check each variable type
+describe
 
+* Asthma Treatment: Primary exposure variable
 
+local treatlist ics_single          ///
+				saba_single 		///
+				laba_single 		///
+				lama_single 		///
+				laba_ics 			///
+				laba_lama 			///
+				laba_lama_ics 		///
+				ltra_single
+				
 
-
-
-
-
-
-
-
-
-
-**********************
-*  Recode variables  *
-**********************
-
-
-*check each variable type
-des
-
-
-
-* ICS: Primary exposure variable
-foreach i in ics_single oral_steroids saba_single ///
-laba_single lama_single laba_ics laba_lama laba_lama_ics ltra_single {
+foreach i in `treatlist' {	 
 	tab `i', m
-}                                      
-*Set up exposed (ICS-based) and unexposed groups (non-ICS based) no Rx date
-gen exposed=1 if ics_single==1 | ics_single==2
-replace exposed=1 if laba_ics==1 | laba_ics==2
-replace exposed=1 if laba_lama_ics==1 | laba_ics==2
-replace exposed=0 if exposed==.
+}
+			
+* Any Treatment
 
+gen any_treament = 0 
+
+foreach i in `treatlist' {	 
+	replace any_treament = 1 if `i' >= 1
+}
+
+tab any_treament 
+                                   
+* Set up exposed (ICS-based) and unexposed groups (non-ICS based) 
+
+gen 	exposed = 1 if ics_single >= 1 
+replace exposed = 1 if laba_ics >= 1
+replace exposed = 1 if laba_lama_ics >= 1
+
+/* PLACEHOLDER FOR ICS DOSE */ 
+
+replace exposed = 0 if saba_single == 1   &  ///
+					   ics_single 	 < 1  &  ///
+					   laba_ics		 < 1  &  ///
+					   laba_single   < 1  &  ///
+					   lama_single   < 1  &  ///
+					   laba_lama 	 < 1  &  ///
+					   laba_lama_ics < 1  &  ///
+					   ltra_single 	 < 1  
+					   
+replace exposed = 3 if exposed == . 
+
+tab exposed 
+
+/* PLACEHOLDER FOR CHECKING DATE RANGE FOR EXPOSURE VARIABLES */ 
 
 * Sex
 assert inlist(sex, "M", "F")
-gen male = (sex=="M")
+gen male = (sex == "M")
 drop sex
-
 
 * Smoking 
 label define smoke 1 "Never" 2 "Former" 3 "Current" .u "Unknown (.u)"
 
-gen     smoke = 1  if smoking_status=="N"
-replace smoke = 2  if smoking_status=="E"
-replace smoke = 3  if smoking_status=="S"
-replace smoke = .u if smoking_status=="M"
+gen     smoke = 1  if smoking_status == "N"
+replace smoke = 2  if smoking_status == "E"
+replace smoke = 3  if smoking_status == "S"
+replace smoke = .u if smoking_status == "M"
+
 label values smoke smoke
 drop smoking_status
 
-
 * Ethnicity 
-replace ethnicity = .u if ethnicity==.
+replace ethnicity = .u if ethnicity == .
 
 label define ethnicity 	1 "White"  					///
 						2 "Mixed" 					///
@@ -300,8 +269,8 @@ label define ethnicity 	1 "White"  					///
 						4 "Black"  					///
 						5 "Other"					///
 						.u "Unknown"
-label values ethnicity ethnicity
 
+label values ethnicity ethnicity
 
 * STP 
 rename stp stp_old
@@ -310,23 +279,11 @@ replace stp = sum(stp)
 drop stp_old
 
 
-
-
-
-
-
-
-
-**************************
-*  Categorise variables  *
-**************************
-
-
 /*  Age variables  */ 
 
 * Create categorised age
-recode age 18/39.9999=1 40/49.9999=2 50/59.9999=3 ///
-	60/69.9999=4 70/79.9999=5 80/max=6, gen(agegroup) 
+recode age 18/39.9999 = 1 40/49.9999 = 2 50/59.9999 = 3 ///
+	60/69.9999 = 4 70/79.9999 = 5 80/max = 6, gen(agegroup) 
 
 label define agegroup 	1 "18-<40" ///
 						2 "40-<50" ///
@@ -334,33 +291,32 @@ label define agegroup 	1 "18-<40" ///
 						4 "60-<70" ///
 						5 "70-<80" ///
 						6 "80+"
+						
 label values agegroup agegroup
 
-
 * Create binary age
-recode age min/69.999=0 70/max=1, gen(age70)
+recode age min/69.999 = 0 70/max = 1, gen(age70)
 
 * Check there are no missing ages
-assert age<.
-assert agegroup<.
-assert age70<.
+assert age < .
+assert agegroup < .
+assert age70 < .
 
 * Create restricted cubic splines fir age
 mkspline age = age, cubic nknots(4)
 
-
-
 /*  Body Mass Index  */
 
 * BMI (NB: watch for missingness)
+
 gen 	bmicat = .
-recode  bmicat . = 1 if bmi<18.5
-recode  bmicat . = 2 if bmi<25
-recode  bmicat . = 3 if bmi<30
-recode  bmicat . = 4 if bmi<35
-recode  bmicat . = 5 if bmi<40
-recode  bmicat . = 6 if bmi<.
-replace bmicat = .u if bmi>=.
+recode  bmicat . = 1 if bmi < 18.5
+recode  bmicat . = 2 if bmi < 25
+recode  bmicat . = 3 if bmi < 30
+recode  bmicat . = 4 if bmi < 35
+recode  bmicat . = 5 if bmi < 40
+recode  bmicat . = 6 if bmi < .
+replace bmicat = .u if bmi >= .
 
 label define bmicat 1 "Underweight (<18.5)" 	///
 					2 "Normal (18.5-24.9)"		///
@@ -369,66 +325,31 @@ label define bmicat 1 "Underweight (<18.5)" 	///
 					5 "Obese II (35-39.9)"		///
 					6 "Obese III (40+)"			///
 					.u "Unknown (.u)"
+					
 label values bmicat bmicat
 
-* Create more granular categorisation
-recode bmicat 1/3 .u = 1 4=2 5=3 6=4, gen(obese4cat)
+* Create less  granular categorisation
+recode bmicat 1/3 .u = 1 4 = 2 5 = 3 6 = 4, gen(obese4cat)
 
 label define obese4cat 	1 "No record of obesity" 	///
 						2 "Obese I (30-34.9)"		///
 						3 "Obese II (35-39.9)"		///
 						4 "Obese III (40+)"		
+
 label values obese4cat obese4cat
 order obese4cat, after(bmicat)
 
-
-
 /*  Smoking  */
 * Create non-missing 3-category variable for current smoking
-recode smoke .u=1, gen(smoke_nomiss)
+* Assumes missing smoking is never smoking 
+recode smoke .u = 1, gen(smoke_nomiss)
 order smoke_nomiss, after(smoke)
 label values smoke_nomiss smoke
 
-
-
-/*  Asthma  */
-* Asthma  (coded: 0 No, 1 Yes no OCS, 2 Yes with OCS)
-****************************************************** CTR note, asthma not in our dataset yet -- we have asthma_date though... so I made an ever/never variable above
-// rename asthma asthmacat
-// recode asthmacat 0=1 1=2 2=3
-// label define asthmacat 1 "No" 2 "Yes, no OCS" 3 "Yes with OCS"
-// label values asthmacat asthmacat
-//
-// gen asthma = (asthmacat==2|asthmacat==3)
-
-
-
-
-
-/*  Blood pressure   */
-* Categorise
-gen     bpcat = 1 if bp_sys < 120 &  bp_dias < 80
-replace bpcat = 2 if inrange(bp_sys, 120, 130) & bp_dias<80
-replace bpcat = 3 if inrange(bp_sys, 130, 140) | inrange(bp_dias, 80, 90)
-replace bpcat = 4 if (bp_sys>=140 & bp_sys<.) | (bp_dias>=90 & bp_dias<.) 
-replace bpcat = .u if bp_sys>=. | bp_dias>=. | bp_sys==0 | bp_dias==0
-
-label define bpcat 1 "Normal" 2 "Elevated" 3 "High, stage I"	///
-					4 "High, stage II" .u "Unknown"
-label values bpcat bpcat
-
-recode bpcat .u=1, gen(bpcat_nomiss)
-label values bpcat_nomiss bpcat
-
-* Create non-missing indicator of known high blood pressure
-gen bphigh = (bpcat==4)
-order bpcat bphigh, after(bp_dias_date)
-
-
-
-
 /*  IMD  */
 * Group into 5 groups
+* There's imd that's -1 --> what does this mean? Should this be missing? 
+
 rename imd imd_o
 egen imd = cut(imd_o), group(5) icodes
 replace imd = imd + 1
@@ -436,15 +357,12 @@ replace imd = .u if imd_o==-1
 drop imd_o
 
 * Reverse the order (so high is more deprived)
-recode imd 5=1 4=2 3=3 2=4 1=5 .u=.u
+recode imd 5 = 1 4 = 2 3 = 3 2 = 4 1 = 5 .u = .u
 
 label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
 label values imd imd 
 
-
-
-
-/*  Centred age, sex, IMD, ethnicity (for adjusted KM plots)  */ 
+/*  Centred age, sex, IMD, ethnicity (for adjusted KM plots)  
 
 * Centre age (linear)
 summ age
@@ -460,40 +378,14 @@ gen c_imd = imd - 3
 gen c_ethnicity = ethnicity - 3
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-***************************
-*  Grouped comorbidities  *
-***************************
-
-
-/*  Neurological  */
-************************************************************CTR NOTE: Not in dataset yet -- delete if we never expect them to be
-* Stroke and dementia
-// egen stroke_dementia = rowmax(stroke dementia)
-// order stroke_dementia, after(dementia_date)
+*/
 
 
 /*  Spleen  */
-************************************************************CTR NOTE: Not in dataset yet -- delete if we never expect them to be
+
 * Spleen problems (dysplenia/splenectomy/etc and sickle cell disease)   
 // egen spleen = rowmax(dysplenia sickle_cell) 
 // order spleen, after(sickle_cell)
-
 
 
 /*  Cancer  */
@@ -505,6 +397,7 @@ gen     cancer_haem_cat = 4 if inrange(haem_cancer_date, d(1/1/1900), d(1/2/2015
 replace cancer_haem_cat = 3 if inrange(haem_cancer_date, d(1/2/2015), d(1/2/2019))
 replace cancer_haem_cat = 2 if inrange(haem_cancer_date, d(1/2/2019), d(1/2/2020))
 recode  cancer_haem_cat . = 1
+
 label values cancer_haem_cat cancer
 
 
@@ -516,12 +409,11 @@ replace cancer_exhaem_cat = 3 if inrange(lung_cancer_date,  d(1/2/2015), d(1/2/2
 replace cancer_exhaem_cat = 2 if inrange(lung_cancer_date,  d(1/2/2019), d(1/2/2020)) | ///
 								 inrange(other_cancer_date, d(1/2/2019), d(1/2/2020))
 recode  cancer_exhaem_cat . = 1
-label values cancer_exhaem_cat cancer
 
+label values cancer_exhaem_cat cancer
 
 * Put variables together
 order cancer_exhaem_cat cancer_haem_cat, after(other_cancer_date)
-
 
 
 /*  Immunosuppression  */
@@ -538,33 +430,7 @@ drop temp1 temp2 temp3
 order other_immunosuppression, after(temporary_immunodeficiency)
 
 
-
-
-/*  Hypertension  */
-
-gen htdiag_or_highbp = bphigh
-recode htdiag_or_highbp 0 = 1 if hypertension==1 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-************
-*   eGFR   *
-************
+/* eGFR=======================================================================*/
 
 * Set implausible creatinine values to missing (Note: zero changed to missing)
 replace creatinine = . if !inrange(creatinine, 20, 3000) 
@@ -572,7 +438,7 @@ replace creatinine = . if !inrange(creatinine, 20, 3000)
 * Divide by 88.4 (to convert umol/l to mg/dl)
 gen SCr_adj = creatinine/88.4
 
-gen min=.
+gen min = .
 replace min = SCr_adj/0.7 if male==0
 replace min = SCr_adj/0.9 if male==1
 replace min = min^-0.329  if male==0
@@ -602,91 +468,9 @@ label var ckd "CKD stage calc without eth"
 recode ckd 2/5=1, gen(chronic_kidney_disease)
 replace chronic_kidney_disease = 0 if creatinine==. 
 
+tab ckd_diagnosis 
 
-
-
-
-
-
-
-
-
-
-
-
-************
-*   Hba1c  *
-************
-	
-*********************************************************************** CTR NOTE: no Hba1c in our data yet  -- delete if we dont expect it
-// /*  Diabetes severity  */
-//
-// * Set zero or negative to missing
-// replace hba1c_percentage   = . if hba1c_percentage<=0
-// replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol<=0
-//
-//
-// * Only consider measurements in last 15 months
-// replace hba1c_percentage   = . if hba1c_percentage_date   < d(1/11/2018)
-// replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol_date < d(1/11/2018)
-//
-//
-//
-// /* Express  HbA1c as percentage  */ 
-//
-// * Express all values as perecentage 
-// noi summ hba1c_percentage hba1c_mmol_per_mol 
-// gen 	hba1c_pct = hba1c_percentage 
-// replace hba1c_pct = (hba1c_mmol_per_mol/10.929)+2.15 if hba1c_mmol_per_mol<. 
-//
-// * Valid % range between 0-20  
-// replace hba1c_pct = . if !inrange(hba1c_pct, 0, 20) 
-// replace hba1c_pct = round(hba1c_pct, 0.1)
-//
-//
-// /* Categorise hba1c and diabetes  */
-//
-// * Group hba1c
-// gen 	hba1ccat = 0 if hba1c_pct <  6.5
-// replace hba1ccat = 1 if hba1c_pct >= 6.5  & hba1c_pct < 7.5
-// replace hba1ccat = 2 if hba1c_pct >= 7.5  & hba1c_pct < 8
-// replace hba1ccat = 3 if hba1c_pct >= 8    & hba1c_pct < 9
-// replace hba1ccat = 4 if hba1c_pct >= 9    & hba1c_pct !=.
-// label define hba1ccat 0 "<6.5%" 1">=6.5-7.4" 2">=7.5-7.9" 3">=8-8.9" 4">=9"
-// label values hba1ccat hba1ccat
-// tab hba1ccat
-//
-// * Create diabetes, split by control/not
-// gen     diabcat = 1 if diabetes==0
-// replace diabcat = 2 if diabetes==1 & inlist(hba1ccat, 0, 1)
-// replace diabcat = 3 if diabetes==1 & inlist(hba1ccat, 2, 3, 4)
-// replace diabcat = 4 if diabetes==1 & !inlist(hba1ccat, 0, 1, 2, 3, 4)
-//
-// label define diabcat 	1 "No diabetes" 			///
-// 						2 "Controlled diabetes"		///
-// 						3 "Uncontrolled diabetes" 	///
-// 						4 "Diabetes, no hba1c measure"
-// label values diabcat diabcat
-//
-// * Delete unneeded variables
-// drop hba1c_pct hba1c_percentage hba1c_mmol_per_mol
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-********************************
-*  Outcomes and survival time  *
-********************************
+/* OUTCOME AND SURVIVAL TIME==================================================*/
 
 
 /*  Cohort entry and censor dates  */
