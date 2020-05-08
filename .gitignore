@@ -10,3 +10,5 @@ analysis/*
 !*.hlp
 !*.py
 !*.sthlp
+venv/
+.cache
