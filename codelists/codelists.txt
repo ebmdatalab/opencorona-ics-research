@@ -1,8 +1,9 @@
 opensafely/aplastic-anaemia/2020-04-24
-opensafely/asthma-diagnosis/2020-04-15
 opensafely/asthma-oral-prednisolone-medication/2020-04-27
 opensafely/asthma-inhaler-steroid-medication/2020-04-15
 opensafely/cancer-excluding-lung-and-haematological/2020-04-15
+opensafely/current-asthma/2020-05-06
+opensafely/current-copd/2020-05-06
 opensafely/chronic-cardiac-disease/2020-04-08
 opensafely/diabetes/2020-04-15
 opensafely/ethnicity/2020-04-27

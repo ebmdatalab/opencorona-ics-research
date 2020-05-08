@@ -111,7 +111,11 @@ saba_med_codes = codelist_from_csv(
 )
 
 asthma_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-diagnosis.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-current-asthma.csv", system="ctv3", column="CTV3ID"
+)
+
+copd_codes = codelist_from_csv(
+    "codelists/opensafely-current-copd.csv", system="ctv3", column="CTV3ID"
 )
 
 hypertension_codes = codelist_from_csv(
