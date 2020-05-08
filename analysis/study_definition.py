@@ -169,13 +169,13 @@ covid_codelist = codelist(["U071", "U072"], system="icd10")
 
 
 study = StudyDefinition(
-    # Configure the expectations framework
+    # Configure the expectations framework (optional)
     default_expectations={
         "date": {"earliest": "1970-01-01", "latest": "today"},
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
-    ## STUDY POPULATION
+    ## STUDY POPULATION (required)
     population=patients.satisfying(
         "has_follow_up AND has_asthma",
         has_asthma=patients.with_these_clinical_events(
@@ -185,7 +185,7 @@ study = StudyDefinition(
             "2019-02-01", "2020-02-01"
         ),
     ),
-    ## OUTCOMES
+    ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-02-01",
         include_day=True,
