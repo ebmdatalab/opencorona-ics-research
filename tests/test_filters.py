@@ -1421,7 +1421,10 @@ def _converters_to_names(kwargs_dict):
         for k, v in converters.items():
             converters_with_names[k] = v.__name__
     kwargs_dict["converters"] = converters_with_names
-    return kwargs_dict
+    interesting_dict = {}
+    for k in ["converters", "dtype", "parse_dates"]:
+        interesting_dict[k] = kwargs_dict[k]
+    return interesting_dict
 
 
 def test_age_dtype_generation():
@@ -1430,7 +1433,7 @@ def test_age_dtype_generation():
         population=patients.all(),
         age=patients.age_as_of("2020-02-01"),
     )
-    result = study.pandas_csv_args
+    result = _converters_to_names(study.pandas_csv_args)
     assert result == {"dtype": {"age": "int"}, "converters": {}, "parse_dates": []}
 
 
@@ -1442,7 +1445,7 @@ def test_address_dtype_generation():
             "2020-02-01", returning="rural_urban_classification"
         ),
     )
-    result = study.pandas_csv_args
+    result = _converters_to_names(study.pandas_csv_args)
     assert result == {
         "converters": {},
         "dtype": {"rural_urban": "category"},
@@ -1452,7 +1455,7 @@ def test_address_dtype_generation():
 
 def test_sex_dtype_generation():
     study = StudyDefinition(population=patients.all(), sex=patients.sex())
-    result = study.pandas_csv_args
+    result = _converters_to_names(study.pandas_csv_args)
     assert result == {"dtype": {"sex": "category"}, "converters": {}, "parse_dates": []}
 
 
@@ -1521,7 +1524,7 @@ def test_categorical_clinical_events_without_date_dtype_generation():
         ),
     )
 
-    result = study.pandas_csv_args
+    result = _converters_to_names(study.pandas_csv_args)
     assert result == {
         "converters": {},
         "dtype": {"ethnicity": "category"},

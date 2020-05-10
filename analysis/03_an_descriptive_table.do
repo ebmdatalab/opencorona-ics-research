@@ -1,41 +1,26 @@
-/*=========================================================================
+/*==============================================================================
 DO FILE NAME:			03_an_descriptive_table
-
-AUTHOR:					Angel Wong
-												
-VERSION:				v1
-
-DATE VERSION CREATED: 	2020-05-05
-	
-DESCRIPTION OF FILE:	Aim: describe the baseline characteristics of the exposed
-and unexposed groups & produce output table in text format
-
-DATASETS CREATED: 		"$pathOut/baseline_table_Px.txt"
+AUTHOR:					A Schultze, A Wong, C Rentsch 
+						Adapted from A Wong
+DATE: 					10th of May 2020 
+DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure 
+						Output to a textfile for further formatting
+DATASETS USED:			!! UPDATE NAME 
+DATASETS CREATED: 		None
+OTHER OUTPUT: 			Results in txt: output/table1 
+						Log file: output/an_checks
 							
-=========================================================================*/
-
-
-
-*************************************************************************  CTR NOTE: I havent edited ANgel's code below apart from updating log and use statements to read in data
-
-
-
-
-
+==============================================================================*/
 
 * Open a log file
+
 capture log close
-log using "output/an_descriptive_tables", text replace
+log using output\03_an_descriptive_table, replace t
 
-use cr_create_analysis_dataset, clear
+* Open Stata dataset
+use tempdata\an_data, clear
 
-
-
-
-
-
-
-
+describe
 
 ************
 *Covariate distributions

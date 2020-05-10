@@ -1,51 +1,37 @@
-/*=========================================================================
+/*==============================================================================
 DO FILE NAME:			02_an_checks
-
-PROJECT:				Effect of ICS on Covid-19 outcomes
-
-AUTHOR:					Anna Schultze, Angel Wong, Christopher Rentsch
-												
-DESCRIPTION OF FILE:	Aim: set up variables and format data variables
-
-DATASETS USED:			cr_create_analysis_dataset
-
+PROJECT:				ICS in COVID-19 
+AUTHOR:					A Wong, A Schultze, C Rentsch
+						Adapted from K Baskharan, E Williamson
+DATE: 					10th of May 2020 
+DESCRIPTION OF FILE:	Run sanity checks on all variables
+							- Check variables take expected ranges 
+							- Cross-check logical relationships 
+							- Explore expected relationships 
+							- Check stsettings 
+DATASETS USED:			!! UPDATE NAME 
 DATASETS CREATED: 		None
-
-OTHER OUTPUT: 			Graphs (cumulative events by time in study):
-*						output/events_died.svg
-*						output/events_cpns.svg
-*						output/events_itu.svg
-*
-*						Log file: output/an_checks
+OTHER OUTPUT: 			Log file: output/an_checks
 							
-********************************************************************************
-*
-*	Purpose:		This do-file runs a series of checks and creates a log 
-*					file to record them:
-*						- check variables take expected values/ranges
-*						- cross-check logical relationships
-*						- explore expected relationships
-*						- check stsettings
-*  
-*********************************************************************************/
+==============================================================================*/
 
 * Open a log file
+
 capture log close
-log using "output/an_checks", text replace
+log using output\02_an_checks, replace t
 
 * Open Stata dataset
-use cr_create_analysis_dataset, clear
+use tempdata\an_data, clear
 
-**run ssc install if not already installed on your computer
+describe
+
+*run ssc install if not already installed on your computer
 *ssc install datacheck 
 
 *Duplicate patient check
 datacheck _n==1, by(patient_id) nol
 
-
-******************************************
-*  Check variables take expected values  *
-******************************************
+/* EXPECTED VALUES============================================================*/ 
 
 * Age
 datacheck age<., nol
@@ -67,19 +53,28 @@ datacheck inlist(ethnicity, 1, 2, 3, 4, 5, .u), nol
 
 * Smoking
 datacheck inlist(smoke, 1, 2, 3, .u), nol
-datacheck inlist(smoke_nomiss, 1, 2, 3), nol
+datacheck inlist(smoke_nomiss, 1, 2, 3), nol 
 
-* Blood pressure
-datacheck inlist(bpcat, 1, 2, 3, 4, .u), nol
+/* Check date ranges for all comorbidities */
+/* Dates of comorbidities  
+foreach var of varlist 	chronic_respiratory_disease 	///
+						chronic_cardiac_disease 		///
+						diabetes 						///
+						chronic_liver_disease 			///
+						organ_transplant 				///	
+						ra_sle_psoriasis  {
+	summ `var'_date, format
+	bysort `var': summ `var'_date
+}
 
+* Outcome dates
 
+summ stime_ituadmission stime_cpnsdeath stime_onscoviddeath,   format
+summ itu_date died_date_ons died_date_cpns died_date_onscovid, format
 
+*/
 
-
-***************************************
-*  Cross-check logical relationships  *
-***************************************
-
+/* LOGICAL RELATIONSHIPS======================================================*/ 
 
 * BMI
 bysort bmicat: summ bmi
@@ -92,167 +87,65 @@ tab agegroup age70, m
 * Smoking
 tab smoke smoke_nomiss, m
 
-* Blood pressure
-tab bpcat bphigh, m
+/* ADD 
 
-* Asthma
-**************************************************************** CTR NOTE: not in our dataset yet -- delete if it wont ever be
-// tab asthma asthmacat, m
+ALL TREATMENT VARIABLES TO CHECK THESE ARE AS EXPECTED
+LIFT THIS CHECK FROM THE 01 FILE 
 
-* Diabetes
-**************************************************************** CTR NOTE: not in our dataset yet -- delete if it wont ever be
-// tab diabetes diabcat, m
-
-
-
-*********************
-*  Summarise dates  *
-*********************
-
-* BMI
-*summ bmi_date_measured, format
-/*
-* Dates of comorbidities  
-foreach var of varlist 	chronic_respiratory_disease 	///
-						chronic_cardiac_disease 		///
-						diabetes 						///
-						chronic_liver_disease 			///
-						organ_transplant 				///	
-						ra_sle_psoriasis  {
-	summ `var'_date, format
-	bysort `var': summ `var'_date
-}
 */
 
-
-* Outcome dates
-
-summ stime_ituadmission stime_cpnsdeath stime_onscoviddeath,   format
-summ itu_date died_date_ons died_date_cpns died_date_onscovid, format
-
-
-
-
-
-****************************************
-*  Cross-check expected relationships  *
-****************************************
-
+/* EXPECTED RELATIONSHIPS=====================================================*/ 
 
 /*  Relationships between demographic/lifestyle variables  */
 
-tab agegroup bmicat, 	col row
-tab agegroup smoke, 	col row
-tab agegroup ethnicity, col row 
-tab agegroup imd, 		col row
-tab agegroup bpcat, 	col row
+tab agegroup bmicat, 	row 
+tab agegroup smoke, 	row 
+tab agegroup ethnicity, row  
+tab agegroup imd, 		row 
 
-tab bmicat smoke, 		col row 
-tab bmicat ethnicity, 	col row
-tab bmicat imd, 		col row
-tab bmicat bpcat, 		col row
+tab bmicat smoke, 		 row  
+tab bmicat ethnicity, 	 row 
+tab bmicat imd, 	 	 row 
+tab bmicat hypertension, row
 
-tab smoke ethnicity, 	col row 
-tab smoke imd, 			col row 
-tab smoke bpcat, 		col row
+tab smoke ethnicity, 	row  
+tab smoke imd, 			row  
+tab smoke hypertension, row 
 
-tab ethnicity imd, 		col row
-tab ethnicity bpcat, 	col row
+tab ethnicity imd, 		row
 
-tab imd bpcat, 			col row
+/* ADD 
 
+Asthma and smoking
+Asthma and medication 
+COPD and smoking
+COPD and medications 
 
+*/ 
 
-/*  Relationships with demographic/lifestyle variables  */
-**********************************************************************************************  CTR NOTES: pulled from risk factor -- i havent edited it at all yet -- waiting for real data
-// * Relationships with age
-// foreach var of varlist 	chronic_respiratory_disease 	///
-// 						asthma 							///
-// 						asthmacat						///
-// 						chronic_cardiac_disease 		///
-// 						diabetes 						///
-// 						diabcat	 						///
-// 						cancer_exhaem_cat				///
-// 						cancer_haem_cat 				///
-// 						chronic_liver_disease 			///
-// 						other_neuro			 			///
-// 						chronic_kidney_disease			///
-// 						organ_transplant 				///	
-// 						spleen							///
-// 						ra_sle_psoriasis  				///
-// 						other_immunosuppression	{
-// 	tab agegroup `var', row col
-// }
-//
-//
-// * Relationships with sex
-// foreach var of varlist 	chronic_respiratory_disease 	///
-// 						asthma 							///
-// 						asthmacat						///
-// 						chronic_cardiac_disease 		///
-// 						diabetes 						///
-// 						diabcat	 						///
-// 						cancer_exhaem_cat				///
-// 						cancer_haem_cat 				///
-// 						chronic_liver_disease 			///
-// 						other_neuro			 			///
-// 						chronic_kidney_disease			///
-// 						organ_transplant 				///	
-// 						spleen							///
-// 						ra_sle_psoriasis   				///
-// 						other_immunosuppression {
-// 	tab male `var', row col
-// }
-//
-// * Relationships with smoking
-// foreach var of varlist chronic_respiratory_disease 	///
-// 						asthma 							///
-// 						asthmacat						///
-// 						chronic_cardiac_disease 		///
-// 						diabetes 						///
-// 						diabcat	 						///
-// 						cancer_exhaem_cat				///
-// 						cancer_haem_cat 				///
-// 						chronic_liver_disease 			///
-// 						other_neuro			 			///
-// 						chronic_kidney_disease			///
-// 						organ_transplant 				///	
-// 						spleen							///
-// 						ra_sle_psoriasis   				///
-// 						other_immunosuppression  				{
-// 	tab smoke `var', row col
-// }
+/*  Relationships with demographic/lifestyle variables  
+COMPLETE WITH THE COMPLETE COVARIATE LIST 
+
+* Relationships with age
+ foreach var of  foreach var of varlist [PLACEHOLDER] {
+ 	tab agegroup `var', row col
+ }
 
 
+ * Relationships with sex
+ foreach var of varlist [PLACEHOLDER] {
+ 	tab male `var', row col
+ }
 
-/*  Relationships between conditions  */
-
-
-// * Respiratory
-// tab chronic_respiratory_disease asthma, row col
-// tab chronic_respiratory_disease asthmacat, row col
-//
-// * Cardiac
-// tab diabetes chronic_cardiac_disease, row col
-// tab chronic_cardiac_disease bpcat, row col
-//
-// * Liver
-// tab chronic_liver_disease organ_transplant, row col
+ * Relationships with smoking
+ foreach var of varlist [PLACEHOLDER] {
+ 	tab smoke `var', row col
+ }
 
 
-
-
-
-********************************************
-*  Cross-check logical date relationships  *
-********************************************
-
-* Cross check dates of hosp/itu/death??
+/* SENSE CHECK OUTCOMES=======================================================*/
 
 tab onscoviddeath cpnsdeath, row col
-
-
-
 
 
 * Close log file 
