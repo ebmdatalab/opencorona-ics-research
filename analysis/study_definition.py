@@ -135,14 +135,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
-    # exacerbation_count = patients.with_these_clinical_events(
-    #     placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
-    #     on_or_before="2020-02-01", ### change to relevant dates
-    #     ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
-    #     returning="number_of_episodes",
-    #     episode_defined_as=">14 consecutive days with no matching codes",
-    # ),
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -244,7 +236,7 @@ study = StudyDefinition(
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
-        placeholder_event_codes,
+        hypertension_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
@@ -333,15 +325,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 43.2, "stddev": 10}
-        },
-    ),
-    ### EXACERBATION HISTORY
-    exacerbation=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
-        return_number_of_matches_in_period=True,
-        include_month=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 10, "stddev": 8}
         },
     ),
     ### VACCINATION HISTORY
