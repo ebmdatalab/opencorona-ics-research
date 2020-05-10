@@ -1,6 +1,6 @@
 /*==============================================================================
 DO FILE NAME:			01_cr_create_analysis_dataset
-PROJECT:				Effect of ICS on Covid-19 outcomes
+PROJECT:				ICS in COVID-19 
 DATE: 					6th of May 2020 
 AUTHOR:					Anna Schultze, Angel Wong, Christopher Rentsch									
 DESCRIPTION OF FILE:	Check inclusion/exclusion citeria
@@ -629,16 +629,19 @@ ds, not(varlabel)
 drop `r(varlist)'
 	
 /* SAVE DATA==================================================================*/	
+* This is set to Save locally, need to change for server 
 
+/*
 sort patient_id
 label data "Analysis dataset ICU and Covid outcomes project, asthma population"
-save "analysis_dataset.dta", replace
+save "$Datadir\an_data.dta", replace
 
+/*
 * Save a version set on CPNS survival outcome
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)
 	
 save "analysis_dataset_STSET_cpnsdeath.dta", replace
-
+*/ 
 
 log close
 
