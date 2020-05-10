@@ -1587,7 +1587,6 @@ def test_mean_recorded_value_dtype_generation():
         ),
     )
     result = _converters_to_names(study.pandas_csv_args)
-    print(test)
     assert result == {
         "converters": {"bp_sys_date_measured": "add_day_to_date"},
         "dtype": {"bp_sys": "float"},
