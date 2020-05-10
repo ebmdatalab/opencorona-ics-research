@@ -67,9 +67,6 @@ assert inlist(sex, "M", "F")
 
 /* RENAME VARAIBLES===========================================================*/
 
-rename most_recent_unclear_smoking_cat		smoking_unclear_cat
-rename most_recent_unclear_smoking_nume 	smoking_unclear_num
-rename most_recent_unclear_smoking_cat_		smoking_unclear_date
 rename bmi_date_measured  	    			bmi_date_measured
 rename bp_dias_date_measured	  			bp_dias_date
 rename bp_sys_date_measured		   			bp_sys_date
@@ -78,29 +75,20 @@ rename bp_sys_date_measured		   			bp_sys_date
 /* Comorb dates are given with month only, so adding day 15 to enable
    them to be processed as dates 											  */
 
-// 						bone_marrow_transplant 			///
-// 						chemo_radio_therapy 			///
-// 						chronic_liver_disease 			///
-// 						organ_transplant 				///	
-// 						dysplenia						///
-// 						sickle_cell 					///
-// 						ra_sle_psoriasis  
-
 
 // 						Heart Failure					///
 // 						Other Heart Disease				///
 // 						Flu vaccine 					///
 // 						Pneuomococcal vaccine			///
 // 						GP consultation rate 			///
+//						asthma           				///
+//						ckd_diagnosis    				///
 
 foreach var of varlist 	aplastic_anaemia				///
-						asthma           				///
 						bmi_date_measured 				///
-						ckd_diagnosis    				///
 						copd            				///
 						creatinine_date  				///
 						diabetes         				///
-						exacerbation     				///
 						haem_cancer      				///
 						hiv             				///
 						hypertension     				///
@@ -110,7 +98,6 @@ foreach var of varlist 	aplastic_anaemia				///
 						other_respiratory 				///
 						permanent_immunodeficiency   	///
 						smoking_status_date				///
-						smoking_unclear_date           	///
 						temporary_immunodeficiency   	///
 						vaccine {
 
@@ -133,35 +120,38 @@ foreach var of varlist 	aplastic_anaemia				///
 	format `var'_date %td
 }
 
-* Handle death dates separately because these are released as exact dates
-
-gen died_cpns_date	= date(died_date_cpns, "YMD") 
-format died_cpns_date %td 
-gen died_cpns_flag  = 1 if died_cpns_date != . 
-recode died_cpns_flag (. = 0)
-
-tab died_cpns_flag
+* Note - outcome dates are handled separtely below 
 
 /* RENAME VARAIBLES===========================================================*/
-*  An extra 'date' added to the end of some variables, remove 
+*  An extra 'date' added to the end of some variable names, remove 
 
 rename creatinine_date_date 		creatinine_measured_date
-rename smoking_unclear_date_date  	smoking_unclear_date
 rename smoking_status_date_date 	smoking_status_date
 rename bmi_date_measured_date  		bmi_measured_date
 
-tab died_cpns_date
+* Some names too long for loops below, shorten
+
+rename permanent_immunodeficiency_date perm_immunodef_date
+rename temporary_immunodeficiency_date temp_immunodef_date
 
 /* CREATE BINARY VARIABLES====================================================*/
+*  Remove dates occuring after the index date
+*  Create a variable 'time from measured until index' 
+*  Create assertions to make sure variables are defined prior to index 
+
+// 						Heart Failure					///
+// 						Other Heart Disease				///
+// 						Flu vaccine 					///
+// 						Pneuomococcal vaccine			///
+// 						GP consultation rate 			///
+//						asthma           				///
+//						ckd_diagnosis    				///
 
 foreach var of varlist 	aplastic_anaemia_date				///
-						asthma_date           				///
 						bmi_measured_date 					///
-						ckd_diagnosis_date 					///
 						copd_date          					///
 						creatinine_measured_date 			///
 						diabetes_date       	    		///
-						exacerbation_date      				///
 						haem_cancer_date       				///
 						hiv_date              				///
 						hypertension_date      				///
@@ -169,19 +159,48 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						lung_cancer_date       				///
 						other_cancer_date      				///
 						other_respiratory_date  			///
-						permanent_immunodeficiency_date    	///
-						temporary_immunodeficiency_date    	///
+						perm_immunodef_date    				///
+						temp_immunodef_date    				///
 						vaccine_date  {
 						
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
 	gen `newvar' = (`var'< d("$indexdate"))
 	order `newvar', after(`var')
 	
+	replace `var' = . if `var' > d("$indexdate")
+	gen t_diff_`newvar' = d("$indexdate") - `var'
+	order t_diff_`newvar', after(`newvar')
+	
+}
+
+/* Confirm each covariate is defined before the index date
+   Confirm each coviariate is defined using date occurring in the past 50 years 
+*/ 
+
+foreach var of varlist  t_diff_aplastic_anaemia			///
+						t_diff_bmi_measured				///
+						t_diff_copd						///
+						t_diff_creatinine				///
+						t_diff_diabetes					///
+						t_diff_haem_cancer				///
+						t_diff_hiv						///
+						t_diff_hypertension				///
+						t_diff_ili						///
+						t_diff_lung_cancer				///
+						t_diff_other_cancer				///
+						t_diff_other_respiratory		///
+						t_diff_perm_immunodef			///
+						t_diff_temp_immunodef			///
+						t_diff_vaccine {
+						
+	assert `var' > 0 
+					
 }
 
 /* RECODE IMPLAUSIBLE VALUES==================================================*/
 
 * BMI 
+* SET BMI TO MISSING IF VERY FAR FROM INDEX? WHAT TIMEFRAME? 
 summarize bmi, d
 replace bmi = . if bmi == 0 
 replace bmi = . if !inrange(bmi, 15, 50)
@@ -190,57 +209,68 @@ replace bmi = . if !inrange(bmi, 15, 50)
 summarize creatinine, d
 replace creatinine = . if creatinine == 0 
 
-/* CREATE CATEGORICAL VARIABLES===============================================*/
+/* CREATE VARIABLES===========================================================*/
 
 * Check each variable type
 describe
 
-* Asthma Treatment: Primary exposure variable
+* Asthma Treatment: Create variables summarizing treatment 
+gen any_treatment = 0
 
-local treatlist ics_single          ///
-				saba_single 		///
-				laba_single 		///
-				lama_single 		///
-				laba_ics 			///
-				laba_lama 			///
-				laba_lama_ics 		///
-				ltra_single
-				
+foreach var of varlist  ics_single          ///
+						saba_single 		///
+						sama_single 	    ///
+						laba_single 		///
+						lama_single 		///
+						laba_ics 			///
+						laba_lama 			///
+						laba_lama_ics 		///
+						ltra_single {
+	tab `var', m
+	replace any_treatment = 1 if `var' >=1 & `var' < . 
+	gen `var'_bin = 1 if `var' >=1 & `var' < . 
+	order `var'_bin, after(`var') 
 
-foreach i in `treatlist' {	 
-	tab `i', m
 }
-			
-* Any Treatment
-
-gen any_treament = 0 
-
-foreach i in `treatlist' {	 
-	replace any_treament = 1 if `i' >= 1
-}
-
-tab any_treament 
                                    
-* Set up exposed (ICS-based) and unexposed groups (non-ICS based) 
+* Set up exposure of interest 
+* Need high and low dose, putting in combination vs. single for now
 
-gen 	exposed = 1 if ics_single >= 1 
-replace exposed = 1 if laba_ics >= 1
-replace exposed = 1 if laba_lama_ics >= 1
+gen exposure = .  
 
-/* PLACEHOLDER FOR ICS DOSE */ 
+replace exposure = 0 if saba_single_bin    == 1 & ///
+                        ics_single_bin     != 1 & ///
+						laba_single_bin    != 1 & /// 
+						lama_single_bin    != 1 & ///
+						laba_ics_bin       != 1 & ///
+						laba_lama_bin      != 1 & ///
+						laba_lama_ics_bin  != 1 & ///
+						ltra_single_bin    != 1    
+				
+//* UPDATE WHEN YOU GET THE DOSES !!!!!!! //				
+replace exposure = 1 if ics_single_bin    == 1 
 
-replace exposed = 0 if saba_single == 1   &  ///
-					   ics_single 	 < 1  &  ///
-					   laba_ics		 < 1  &  ///
-					   laba_single   < 1  &  ///
-					   lama_single   < 1  &  ///
-					   laba_lama 	 < 1  &  ///
-					   laba_lama_ics < 1  &  ///
-					   ltra_single 	 < 1  
-					   
-replace exposed = 3 if exposed == . 
+replace exposure = 2 if laba_ics_bin      == 1 & ///				 
+						laba_lama_ics_bin == 1 
+						
+tab exposure 
 
-tab exposed 
+foreach var of varlist  ics_single_bin          ///
+						saba_single_bin 		///
+						sama_single_bin 	    ///
+						laba_single_bin 		///
+						lama_single_bin 		///
+						laba_ics_bin 			///
+						laba_lama_bin 			///
+						laba_lama_ics_bin 		///
+						ltra_single_bin {
+						
+tab `var' exposure, m
+						
+}
+
+label define exposure 0 "SABA only" 1 "ICS low dose" 2 "ICS high dose" 
+label values exposure exposure 
 
 /* PLACEHOLDER FOR CHECKING DATE RANGE FOR EXPOSURE VARIABLES */ 
 
@@ -278,12 +308,15 @@ bysort stp_old: gen stp = 1 if _n==1
 replace stp = sum(stp)
 drop stp_old
 
-
 /*  Age variables  */ 
 
 * Create categorised age
-recode age 18/39.9999 = 1 40/49.9999 = 2 50/59.9999 = 3 ///
-	60/69.9999 = 4 70/79.9999 = 5 80/max = 6, gen(agegroup) 
+recode age 18/39.9999 = 1 /// 
+           40/49.9999 = 2 ///
+		   50/59.9999 = 3 ///
+	       60/69.9999 = 4 ///
+		   70/79.9999 = 5 ///
+		   80/max = 6, gen(agegroup) 
 
 label define agegroup 	1 "18-<40" ///
 						2 "40-<50" ///
@@ -295,7 +328,8 @@ label define agegroup 	1 "18-<40" ///
 label values agegroup agegroup
 
 * Create binary age
-recode age min/69.999 = 0 70/max = 1, gen(age70)
+recode age min/69.999 = 0 ///
+           70/max = 1, gen(age70)
 
 * Check there are no missing ages
 assert age < .
@@ -346,6 +380,8 @@ recode smoke .u = 1, gen(smoke_nomiss)
 order smoke_nomiss, after(smoke)
 label values smoke_nomiss smoke
 
+describe 
+
 /*  IMD  */
 * Group into 5 groups
 * There's imd that's -1 --> what does this mean? Should this be missing? 
@@ -380,55 +416,24 @@ gen c_ethnicity = ethnicity - 3
 
 */
 
-
-/*  Spleen  */
-
-* Spleen problems (dysplenia/splenectomy/etc and sickle cell disease)   
-// egen spleen = rowmax(dysplenia sickle_cell) 
-// order spleen, after(sickle_cell)
-
-
 /*  Cancer  */
 
-label define cancer 1 "Never" 2 "Last year" 3 "2-5 years ago" 4 "5+ years"
-
-* Haematological malignancies
-gen     cancer_haem_cat = 4 if inrange(haem_cancer_date, d(1/1/1900), d(1/2/2015))
-replace cancer_haem_cat = 3 if inrange(haem_cancer_date, d(1/2/2015), d(1/2/2019))
-replace cancer_haem_cat = 2 if inrange(haem_cancer_date, d(1/2/2019), d(1/2/2020))
-recode  cancer_haem_cat . = 1
-
-label values cancer_haem_cat cancer
-
-
-* All other cancers
-gen     cancer_exhaem_cat = 4 if inrange(lung_cancer_date,  d(1/1/1900), d(1/2/2015)) | ///
-								 inrange(other_cancer_date, d(1/1/1900), d(1/2/2015)) 
-replace cancer_exhaem_cat = 3 if inrange(lung_cancer_date,  d(1/2/2015), d(1/2/2019)) | ///
-								 inrange(other_cancer_date, d(1/2/2015), d(1/2/2019)) 
-replace cancer_exhaem_cat = 2 if inrange(lung_cancer_date,  d(1/2/2019), d(1/2/2020)) | ///
-								 inrange(other_cancer_date, d(1/2/2019), d(1/2/2020))
-recode  cancer_exhaem_cat . = 1
-
-label values cancer_exhaem_cat cancer
-
-* Put variables together
-order cancer_exhaem_cat cancer_haem_cat, after(other_cancer_date)
-
+gen cancer_ever =   (haem_cancer == 1 | /// 
+                     lung_cancer == 1 | /// 
+					 other_cancer ==1)			   
 
 /*  Immunosuppression  */
 
 * Immunosuppressed:
 * HIV, permanent immunodeficiency ever, OR 
 * temporary immunodeficiency or aplastic anaemia last year
-gen temp1  = max(hiv, permanent_immunodeficiency)
-gen temp2  = inrange(temporary_immunodeficiency_date, d(1/11/2019), d(1/2/2020))
-gen temp3  = inrange(aplastic_anaemia_date, d(1/11/2019), d(1/2/2020))
+gen temp1  = max(hiv, perm_immunodef)
+gen temp2  = inrange(temp_immunodef_date, (date("$indexdate", "DMY") - 365), d("$indexdate"))
+gen temp3  = inrange(aplastic_anaemia_date, (date("$indexdate", "DMY") - 365), d("$indexdate"))
 
-egen other_immunosuppression = rowmax(temp1 temp2 temp3)
+egen immunodef_any = rowmax(temp1 temp2 temp3)
 drop temp1 temp2 temp3
-order other_immunosuppression, after(temporary_immunodeficiency)
-
+order immunodef_any, after(temp_immunodef_date)
 
 /* eGFR=======================================================================*/
 
@@ -456,9 +461,12 @@ replace egfr=egfr*(0.993^age)
 replace egfr=egfr*1.018 if male==0
 label var egfr "egfr calculated using CKD-EPI formula with no eth"
 
+summarize egfr 
+
 * Categorise into ckd stages
 egen egfr_cat = cut(egfr), at(0, 15, 30, 45, 60, 5000)
-recode egfr_cat 0=5 15=4 30=3 45=2 60=0, generate(ckd)
+recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd)
+
 * 0 = "No CKD" 	2 "stage 3a" 3 "stage 3b" 4 "stage 4" 5 "stage 5"
 label define ckd 0 "No CKD" 1 "CKD"
 label values ckd ckd
@@ -468,15 +476,14 @@ label var ckd "CKD stage calc without eth"
 recode ckd 2/5=1, gen(chronic_kidney_disease)
 replace chronic_kidney_disease = 0 if creatinine==. 
 
-tab ckd_diagnosis 
+/* PLACEHOLDER FOR CKD DIAGNOSIS AND DIALYSIS CODES TO BE ADDED IN */ 
 
 /* OUTCOME AND SURVIVAL TIME==================================================*/
 
-
 /*  Cohort entry and censor dates  */
 
-* Date of cohort entry, 1 Feb 2020
-gen enter_date = date("01/02/2020", "DMY")
+* Date of cohort entry, 1 Mar 2020
+gen enter_date = date("$indexdate", "DMY")
 
 * Date of study end (typically: last date of outcome data available)
 gen ituadmissioncensor_date 	= date("$ituadmissioncensor", 	"DMY") 
@@ -489,30 +496,39 @@ format 	enter_date					///
 		onscoviddeathcensor_date 	///
 		ituadmissioncensor_date  %td
 
-
 /*   Outcomes   */
 
+/* !! COMMENTING OUT BECAUSE ALL DATES ARE MISSING 
+
 * Dates of: ITU admission, CPNS death, ONS-covid death
-********************************************************************************CTR NOTE: ONS date numeric because value is 2020 for 11 people. the rest are missing
-********************************************************************************CTR NOTE: only 4 people have CPNS and 3 ICU outcomes
-foreach var of varlist 	/*died_date_ons*/ died_date_cpns		///
+
+tab died_date_cpns
+tab died_date_ons
+tab icu_date_admitted 
+
+		
+
+foreach var of varlist 	died_date_ons 		///
+						died_date_cpns		///
 						icu_date_admitted  {
+						
 	confirm string variable `var'
 	rename `var' `var'_dstr
 	gen `var' = date(`var'_dstr, "YMD")
 	drop `var'_dstr
+	format `var' %td 
+	
 }
+
 rename icu_date_admitted itu_date
 
 * Date of Covid death in ONS
-gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any==1
+gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
 
 * Binary indicators for outcomes
 gen cpnsdeath 		= (died_date_cpns		< .)
 gen onscoviddeath 	= (died_date_onscovid 	< .)
 gen ituadmission 	= (itu_date 			< .)
-
-
 
 /*  Create survival times  */
 
@@ -529,24 +545,14 @@ replace cpnsdeath 		= 0 if (died_date_cpns		> cpnsdeathcensor_date)
 replace onscoviddeath 	= 0 if (died_date_onscovid	> onscoviddeathcensor_date) 
 
 * Format date variables
-format stime* %td 
-format	stime* 				///
-		itu_date 			///
-		died_date_onscovid 	///
-		died_date_ons 		///
-		died_date_cpns %td 
+format  stime* %td 
+	
+*/ 
 
-		
-		
-		
-		
-		
+/* LABEL VARIABLES============================================================*/
+*  Label variables you are intending to keep, drop the rest 
 
-*********************
-*  Label variables  *
-*********************
-
-describe
+describe, fullname 
 
 * Demographics
 label var patient_id					"Patient ID"
@@ -556,80 +562,50 @@ label var age70 						"70 years and older"
 label var male 							"Male"
 label var bmi 							"Body Mass Index (BMI, kg/m2)"
 label var bmicat 						"Grouped BMI"
-label var bmi_date  					"Body Mass Index (BMI, kg/m2), date measured"
+label var bmi_measured_date  		    "Body Mass Index (BMI, kg/m2), date measured"
 label var obese4cat						"Evidence of obesity (4 categories)"
 label var smoke		 					"Smoking status"
 label var smoke_nomiss	 				"Smoking status (missing set to non)"
 label var imd 							"Index of Multiple Deprivation (IMD)"
 label var ethnicity						"Ethnicity"
 label var stp 							"Sustainability and Transformation Partnership"
-// label var region 						"Geographical region"
-
-// label var hba1ccat						"Categorised hba1c"
-
-label var chronic_kidney_disease      	"Chronic kidney disease" 
-label var egfr_cat						"Calculated eGFR"
-	
-label var bp_sys 						"Systolic blood pressure"
-label var bp_sys_date 					"Systolic blood pressure, date"
-label var bp_dias 						"Diastolic blood pressure"
-label var bp_dias_date 					"Diastolic blood pressure, date"
-label var bpcat 						"Grouped blood pressure"
-label var bphigh						"Binary high (stage 1/2) blood pressure"
-label var htdiag_or_highbp				"Diagnosed hypertension or high blood pressure"
 
 label var age1 							"Age spline 1"
 label var age2 							"Age spline 2"
 label var age3 							"Age spline 3"
-label var c_age							"Centred age"
-label var c_male 						"Centred sex (code: -1/+1)"
-label var c_imd							"Centred Index of Multiple Deprivation (values: -2/+2)"
-label var c_ethnicity					"Centred ethnicity (values: -2/+2)"
+*label var c_age						"Centred age"
+*label var c_male 						"Centred sex (code: -1/+1)"
+*label var c_imd						"Centred Index of Multiple Deprivation (values: -2/+2)"
+*label var c_ethnicity					"Centred ethnicity (values: -2/+2)"
 
-* Comorbidities
-// label var chronic_respiratory_disease	"Respiratory disease (excl. asthma)"
-// label var asthmacat						"Asthma, grouped by severity (OCS use)"
-label var asthma						"Asthma"
-// label var chronic_cardiac_disease		"Heart disease"
+* Exposure variables 
+
+label var exposure 						"Treatment Exposure of INterest "
+label var ics_single_bin        		"Single ICS"
+label var saba_single_bin 				"Single SABA"
+label var sama_single_bin 	    		"Single SAMA"
+label var laba_single_bin 				"Single LABA"
+label var lama_single_bin 				"Single LAMA"
+label var laba_ics_bin 					"LABA ICS"		
+label var laba_lama_bin 				"LABA LAMA"
+label var laba_lama_ics_bin 			"LABA LAMA ICS"
+label var ltra_single_bin				"Single LTRA"
+
+label var nebules 						"Nebules"
+label var oral_steroids 				"Oral Steroids"
+
+* Comorbidities of interest 
+
+*label var chronic_kidney_disease      	"Chronic kidney disease" 
+label var egfr_cat						"Calculated eGFR"
+label var hypertension				    "Diagnosed hypertension"
+*label var asthma						"Asthma"
+label var ili 							"Infleunza Like Illness"
+label var other_respiratory 			"Other Respiratory Diseases"
+label var copd 							"COPD"
 label var diabetes						"Diabetes"
-// label var diabcat						"Diabetes, grouped"
-label var cancer_exhaem_cat				"Cancer (exc. haematological), grouped by time since diagnosis"
-label var cancer_haem_cat				"Haematological malignancy, grouped by time since diagnosis"
-// label var chronic_liver_disease			"Chronic liver disease"
-// label var stroke_dementia				"Stroke or dementia"
-// label var other_neuro					"Neuro condition other than stroke/dementia"	
-label var chronic_kidney_disease 		"Kidney disease"
-// label var organ_transplant 				"Organ transplant recipient"
-// label var dysplenia						"Dysplenia (splenectomy, other, not sickle cell)"
-// label var sickle_cell 					"Sickle cell"
-// label var spleen						"Spleen problems (dysplenia, sickle cell)"
-// label var ra_sle_psoriasis				"RA, SLE, Psoriasis (autoimmune disease)"
-// label var chemo_radio_therapy			"Chemotherapy or radiotherapy"
-label var aplastic_anaemia				"Aplastic anaemia"
-label var hiv 							"HIV"
-label var permanent_immunodeficiency 	"Permanent immunodeficiency"
-label var temporary_immunodeficiency 	"Temporary immunosuppression"
-label var other_immunosuppression		"Immunosuppressed (combination algorithm)"
-// label var chronic_respiratory_disease_date	"Respiratory disease (excl. asthma), date"
-// label var chronic_cardiac_disease_date	"Heart disease, date"
-label var diabetes_date					"Diabetes, date"
-label var lung_cancer_date				"Lung cancer, date"
-label var haem_cancer_date				"Haem. cancer, date"
-label var other_cancer_date				"Any cancer, date"
-// label var bone_marrow_transplant_date	"Organ transplant, date"
-// label var chronic_liver_disease_date	"Liver, date"
-// label var stroke_date					"Stroke, date"
-// label var dementia_date					"Dementia, date"
-// label var other_neuro_date				"Neuro condition other than stroke/dementia, date"	
-// label var organ_transplant_date			"Organ transplant recipient, date"
-// label var dysplenia_date				"Splenectomy etc, date"
-// label var sickle_cell_date 				"Sickle cell, date"
-// label var ra_sle_psoriasis_date			"RA, SLE, Psoriasis (autoimmune disease), date"
-// label var chemo_radio_therapy_date		"Chemotherapy or radiotherapy, date"
-label var aplastic_anaemia_date			"Aplastic anaemia, date"
-label var hiv_date 						"HIV, date"
-label var permanent_immunodeficiency_date "Permanent immunodeficiency, date"
-label var temporary_immunodeficiency_date "Temporary immunosuppression, date"
+label var cancer_ever 					"Cancer"
+label var immunodef_any					"Immunosuppressed (combination algorithm)"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
@@ -642,53 +618,26 @@ label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid de
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
 
 * Survival times
-label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
-label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
-label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
+*label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
+*label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
+*label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
 
 
-
-
-		
-		
-
-		
-		
-		
-***************
-*  Tidy data  *
-***************
-****************************************************************************** CTR NOTE: I pulled from risk factor analysis, but did nothing else. let's wait for real data
-* REDUCE DATASET SIZE TO VARIABLES NEEDED
-// keep patient_id imd stp region enter_date  									///
-// 	ituadmission itu_date ituadmissioncensor_date stime_ituadmission		///
-// 	cpnsdeath died_date_cpns cpnsdeathcensor_date stime_cpnsdeath			///
-// 	onscoviddeath onscoviddeathcensor_date died_date_ons died_date_onscovid ///
-// 	stime_onscoviddeath														///
-// 	age agegroup age70 age1 age2 age3 male bmi smoke   						///
-// 	smoke smoke_nomiss bmicat bpcat_nomiss obese4cat ethnicity 				///
-// 	bpcat bphigh htdiag_or_highbp hypertension 								///
-// 	chronic_respiratory_disease asthma asthmacat chronic_cardiac_disease 	///
-// 	diabetes diabcat hba1ccat cancer_exhaem_cat cancer_haem_cat 			///
-// 	chronic_liver_disease organ_transplant spleen ra_sle_psoriasis 			///
-// 	chronic_kidney_disease stroke dementia stroke_dementia other_neuro		///
-// 	other_immunosuppression   												///
-// 	creatinine egfr egfr_cat ckd  chronic_kidney_disease
-
-
-
-***************
-*  Save data  *
-***************
+/* TIDY DATA==================================================================*/
+*  Drop variables that are needed (those labelled)
+ds, not(varlabel)
+drop `r(varlist)'
+	
+/* SAVE DATA==================================================================*/	
 
 sort patient_id
 label data "Analysis dataset ICU and Covid outcomes project, asthma population"
-save "cr_create_analysis_dataset.dta", replace
+save "analysis_dataset.dta", replace
 
 * Save a version set on CPNS survival outcome
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)
 	
-save "cr_create_analysis_dataset_STSET_cpnsdeath.dta", replace
+save "analysis_dataset_STSET_cpnsdeath.dta", replace
 
 
 log close
