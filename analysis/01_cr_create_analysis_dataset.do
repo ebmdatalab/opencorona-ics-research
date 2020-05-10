@@ -2,7 +2,8 @@
 DO FILE NAME:			01_cr_create_analysis_dataset
 PROJECT:				ICS in COVID-19 
 DATE: 					6th of May 2020 
-AUTHOR:					Anna Schultze, Angel Wong, Christopher Rentsch									
+AUTHOR:					A Wong, A Schultze, C Rentsch
+						Adapted from K Baskharan, E Williamson 										
 DESCRIPTION OF FILE:	Check inclusion/exclusion citeria
 						Reformat variables 
 						Categorise variables
@@ -146,6 +147,7 @@ rename temporary_immunodeficiency_date temp_immunodef_date
 // 						GP consultation rate 			///
 //						asthma           				///
 //						ckd_diagnosis    				///
+// 						exacerbation 					///
 
 foreach var of varlist 	aplastic_anaemia_date				///
 						bmi_measured_date 					///
@@ -273,6 +275,10 @@ label define exposure 0 "SABA only" 1 "ICS low dose" 2 "ICS high dose"
 label values exposure exposure 
 
 /* PLACEHOLDER FOR CHECKING DATE RANGE FOR EXPOSURE VARIABLES */ 
+
+* Exacerbations 
+
+/* PLACEHOLDER FOR CONFIRMING VARIABLE */ 
 
 * Sex
 assert inlist(sex, "M", "F")

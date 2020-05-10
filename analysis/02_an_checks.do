@@ -2,7 +2,8 @@
 DO FILE NAME:			02_an_checks
 PROJECT:				ICS in COVID-19 
 AUTHOR:					A Wong, A Schultze, C Rentsch
-						Adapted from K Baskharan, E Williamson 						
+						Adapted from K Baskharan, E Williamson
+DATE: 					10th of May 2020 
 DESCRIPTION OF FILE:	Run sanity checks on all variables
 							- Check variables take expected ranges 
 							- Cross-check logical relationships 
