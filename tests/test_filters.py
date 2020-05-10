@@ -1569,7 +1569,7 @@ def test_clinical_events_numeric_value_dtype_generation():
     result = _converters_to_names(study.pandas_csv_args)
     assert result == {
         "converters": {"creatinine_date": "add_day_to_date"},
-        "dtype": {"creatinine": "int"},
+        "dtype": {"creatinine": "float"},
         "parse_dates": ["creatinine_date"],
     }
 
