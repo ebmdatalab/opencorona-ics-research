@@ -91,7 +91,7 @@ class StudyDefinition:
         elif on_or_after:
             series = series[series >= on_or_after]
         elif on_or_before:
-            series = series[series >= on_or_before]
+            series = series[series <= on_or_before]
         return series
 
     def apply_date_precision_from_definition(
