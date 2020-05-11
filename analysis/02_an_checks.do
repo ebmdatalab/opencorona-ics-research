@@ -151,3 +151,6 @@ tab onscoviddeath cpnsdeath, row col
 
 * Close log file 
 log close
+
+
+

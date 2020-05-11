@@ -120,31 +120,38 @@ if there is a missing specified, then run the generate row for missing vals
 cap file close tablecontent
 file open tablecontent using ./output/03_an_output_table1.txt, write text replace
 
+file write tablecontent ("Table 1: Demographic and Clinical Characteristics") _n
+file write tablecontent _tab ("Total")				  _tab ///
+							 ("SABA only")			  _tab ///
+							 ("ICS low/medium dose")  _tab ///
+							 ("ICS high dose") 		  _tab ///
+							 ("Other") _n
+
 * DEMOGRAPHICS (more than one level, potentially missing) 
 
 gen byte cons=1
 tabulatevariable, variable(cons) min(1) max(1) 
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(agegroup) min(1) max(6) 
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(male) min(0) max(1) 
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(bmicat) min(1) max(6) missing
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(smoke) min(1) max(3) missing 
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(ethnicity) min(1) max(5) missing 
-file write tablecontent _n _n
+file write tablecontent _n 
 
 tabulatevariable, variable(imd) min(1) max(5) missing
-file write tablecontent _n _n
-
 file write tablecontent _n 
+
+file write tablecontent _n _n
 
 ** ASTHMA TREATMENT VARIABLES (binary)
 foreach treat of varlist 	saba_single 		///
@@ -165,8 +172,8 @@ foreach treat of varlist 	saba_single 		///
 local lab: variable label `treat'
 file write tablecontent ("`lab'") _n 
 	
-generaterow, variable(`treat') condition("==1")
 generaterow, variable(`treat') condition("==0")
+generaterow, variable(`treat') condition("==1")
 
 file write tablecontent _n
 
@@ -205,4 +212,3 @@ file write tablecontent _n
 
 file close tablecontent
 
-tab insulin
