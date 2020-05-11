@@ -20,12 +20,12 @@ study = StudyDefinition(
             copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
         ),
         has_follow_up=patients.registered_with_one_practice_between(
-            "2019-02-01", "2020-02-01"
+            "2019-03-01", "2020-03-01"
         ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
-        on_or_after="2020-02-01",
+        on_or_after="2020-03-01",
         include_day=True,
         returning="date_admitted",
         return_expectations={"date": {}},
@@ -56,7 +56,7 @@ study = StudyDefinition(
     ),
     ## DEMOGRAPHIC INFORMATION
     age=patients.age_as_of(
-        "2020-02-01",
+        "2020-03-01",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
@@ -69,7 +69,7 @@ study = StudyDefinition(
         }
     ),
     stp=patients.registered_practice_as_of(
-        "2020-02-01",
+        "2020-03-01",
         returning="stp_code",
         return_expectations={
             "rate": "universal",
@@ -77,7 +77,7 @@ study = StudyDefinition(
         },
     ),
     imd=patients.address_as_of(
-        "2020-02-01",
+        "2020-03-01",
         returning="index_of_multiple_deprivation",
         round_to_nearest=100,
         return_expectations={
@@ -120,25 +120,25 @@ study = StudyDefinition(
         most_recent_smoking_code=patients.with_these_clinical_events(
             clear_smoking_codes,
             find_last_match_in_period=True,
-            on_or_before="2020-02-01",
+            on_or_before="2020-03-01",
             returning="category",
         ),
         ever_smoked=patients.with_these_clinical_events(
             filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-            on_or_before="2020-02-01",
+            on_or_before="2020-03-01",
         ),
     ),
     smoking_status_date=patients.with_these_clinical_events(
         clear_smoking_codes,
-        on_or_before="2020-02-01",
+        on_or_before="2020-03-01",
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
     # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
-    exacerbation_count = patients.with_these_clinical_events(
+    exacerbation_count=patients.with_these_clinical_events(
         placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
-        on_or_before="2020-02-01", ### change to relevant dates
+        on_or_before="2020-03-01", ### change to relevant dates
         ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
         returning="number_of_episodes",
         episode_defined_as=">14 consecutive days with no matching codes",
@@ -149,79 +149,90 @@ study = StudyDefinition(
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### ORAL STEROIDS SINGLE CONSTITUENT
     oral_steroids=patients.with_these_medications(
         oral_steroid_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### SABA SINGLE CONSTITUENT
     saba_single=patients.with_these_medications(
         saba_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
         placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
         single_laba_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
         single_lama_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
         laba_ics_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
         laba_lama_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
         laba_lama__ics_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
         leukotriene_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     #### NEBULES
     nebules=patients.with_these_medications(
         nebulised_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 8, "stddev": 2}},
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
@@ -256,7 +267,7 @@ study = StudyDefinition(
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
         on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
+        on_or_before="2020-03-01",
         include_measurement_date=True,
         include_month=True,
         return_expectations={
@@ -267,7 +278,7 @@ study = StudyDefinition(
     bp_dias=patients.mean_recorded_value(
         diastolic_blood_pressure_codes,
         on_most_recent_day_of_measurement=True,
-        on_or_before="2020-02-01",
+        on_or_before="2020-03-01",
         include_measurement_date=True,
         include_month=True,
         return_expectations={
@@ -330,7 +341,7 @@ study = StudyDefinition(
     creatinine=patients.with_these_clinical_events(
         creatinine_codes,
         find_last_match_in_period=True,
-        on_or_before="2020-02-01",
+        on_or_before="2020-03-01",
         returning="numeric_value",
         include_date_of_match=True,
         include_month=True,
@@ -348,19 +359,17 @@ study = StudyDefinition(
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 10, "stddev": 2}
-        },
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 10, "stddev": 2}
-        },
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
 )
