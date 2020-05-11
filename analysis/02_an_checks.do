@@ -147,6 +147,7 @@ COMPLETE WITH THE COMPLETE COVARIATE LIST
 
 tab onscoviddeath cpnsdeath, row col
 
+*/
 
 * Close log file 
 log close

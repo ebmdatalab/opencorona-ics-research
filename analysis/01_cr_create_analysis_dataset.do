@@ -3,16 +3,16 @@ DO FILE NAME:			01_cr_create_analysis_dataset
 PROJECT:				ICS in COVID-19 
 DATE: 					6th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
-						Adapted from K Baskharan, E Williamson 										
-DESCRIPTION OF FILE:	Check inclusion/exclusion citeria
-						Reformat variables 
-						Categorise variables
-						Label variables 
-DATASETS USED:			Data in memory (from analysis/input.csv)
+						adapted from K Baskharan, E Williamson 										
+DESCRIPTION OF FILE:	check inclusion/exclusion citeria
+						reformat variables 
+						categorise variables
+						label variables 
+DATASETS USED:			data in memory (from analysis/input.csv)
 
-DATASETS CREATED: 		cr_create_analysis_dataset.dta, in folder 
-						analysis/tempdata 
-OTHER OUTPUT: 			Logfiles, printed to folder analysis/log
+DATASETS CREATED: 		analysis_dataset.dta
+						lives in folder analysis/tempdata 
+OTHER OUTPUT: 			logfiles, printed to folder analysis/log
 							
 ==============================================================================*/
 
@@ -66,6 +66,10 @@ assert inlist(sex, "M", "F")
 * EXCLUSION 3: COPD 
 * EXCLUSION 4: Nebulising treament 
 
+
+* After checks, create variable for number of people in population 
+gen total_pop = _N
+
 /* RENAME VARAIBLES===========================================================*/
 
 rename bmi_date_measured  	    			bmi_date_measured
@@ -100,8 +104,18 @@ foreach var of varlist 	aplastic_anaemia				///
 						permanent_immunodeficiency   	///
 						smoking_status_date				///
 						temporary_immunodeficiency   	///
-						vaccine {
-
+						vaccine							///
+						ics_single                      ///
+						saba_single                     ///
+						sama_single                     ///
+						laba_single                     ///
+						lama_single                     ///
+						laba_ics 	                    ///
+						laba_lama 	                    ///
+						laba_lama_ics					///
+						nebules 						///
+						oral_steroids					///
+                        ltra_single {
 							
 		capture confirm string variable `var'
 		if _rc!=0 {
@@ -149,21 +163,32 @@ rename temporary_immunodeficiency_date temp_immunodef_date
 //						ckd_diagnosis    				///
 // 						exacerbation 					///
 
-foreach var of varlist 	aplastic_anaemia_date				///
-						bmi_measured_date 					///
-						copd_date          					///
-						creatinine_measured_date 			///
-						diabetes_date       	    		///
-						haem_cancer_date       				///
-						hiv_date              				///
-						hypertension_date      				///
-						ili_date               				///
-						lung_cancer_date       				///
-						other_cancer_date      				///
-						other_respiratory_date  			///
-						perm_immunodef_date    				///
-						temp_immunodef_date    				///
-						vaccine_date  {
+foreach var of varlist 	aplastic_anaemia_date			///
+						bmi_measured_date 				///
+						copd_date          				///
+						creatinine_measured_date 		///
+						diabetes_date       	    	///
+						haem_cancer_date       			///
+						hiv_date              			///
+						hypertension_date      			///
+						ili_date               			///
+						lung_cancer_date       			///
+						other_cancer_date      			///
+						other_respiratory_date  		///
+						perm_immunodef_date    			///
+						temp_immunodef_date    			///
+						vaccine_date  					///
+						ics_single                      ///
+						saba_single                     ///
+						sama_single                     ///
+						laba_single                     ///
+						lama_single                     ///
+						laba_ics 	                    ///
+						laba_lama 	                    ///
+						laba_lama_ics					///
+						nebules 						///
+						oral_steroids					///
+                        ltra_single {
 						
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
 	gen `newvar' = (`var'< d("$indexdate"))
@@ -213,11 +238,31 @@ replace creatinine = . if creatinine == 0
 
 /* CREATE VARIABLES===========================================================*/
 
-* Check each variable type
 describe
 
-* Asthma Treatment: Create variables summarizing treatment 
-gen any_treatment = 0
+/* TREATMENTS */ 
+                                   
+* Set up exposure of interest 
+* Need high and low dose, putting in combination vs. single for now
+
+gen exposure = .  
+
+replace exposure = 0 if saba_single    == 1 & ///
+                        ics_single     != 1 & ///
+						laba_single    != 1 & /// 
+						lama_single    != 1 & ///
+						laba_ics       != 1 & ///
+						laba_lama      != 1 & ///
+						laba_lama_ics  != 1 & ///
+						ltra_single    != 1    
+				
+//* UPDATE WHEN YOU GET THE DOSES !!!!!!! //				
+replace exposure = 1 if ics_single    == 1 
+
+replace exposure = 2 if laba_ics      == 1 & ///				 
+						laba_lama_ics == 1 
+						
+tab exposure 
 
 foreach var of varlist  ics_single          ///
 						saba_single 		///
@@ -228,44 +273,6 @@ foreach var of varlist  ics_single          ///
 						laba_lama 			///
 						laba_lama_ics 		///
 						ltra_single {
-	tab `var', m
-	replace any_treatment = 1 if `var' >=1 & `var' < . 
-	gen `var'_bin = 1 if `var' >=1 & `var' < . 
-	order `var'_bin, after(`var') 
-
-}
-                                   
-* Set up exposure of interest 
-* Need high and low dose, putting in combination vs. single for now
-
-gen exposure = .  
-
-replace exposure = 0 if saba_single_bin    == 1 & ///
-                        ics_single_bin     != 1 & ///
-						laba_single_bin    != 1 & /// 
-						lama_single_bin    != 1 & ///
-						laba_ics_bin       != 1 & ///
-						laba_lama_bin      != 1 & ///
-						laba_lama_ics_bin  != 1 & ///
-						ltra_single_bin    != 1    
-				
-//* UPDATE WHEN YOU GET THE DOSES !!!!!!! //				
-replace exposure = 1 if ics_single_bin    == 1 
-
-replace exposure = 2 if laba_ics_bin      == 1 & ///				 
-						laba_lama_ics_bin == 1 
-						
-tab exposure 
-
-foreach var of varlist  ics_single_bin          ///
-						saba_single_bin 		///
-						sama_single_bin 	    ///
-						laba_single_bin 		///
-						lama_single_bin 		///
-						laba_ics_bin 			///
-						laba_lama_bin 			///
-						laba_lama_ics_bin 		///
-						ltra_single_bin {
 						
 tab `var' exposure, m
 						
@@ -276,9 +283,7 @@ label values exposure exposure
 
 /* PLACEHOLDER FOR CHECKING DATE RANGE FOR EXPOSURE VARIABLES */ 
 
-* Exacerbations 
-
-/* PLACEHOLDER FOR CONFIRMING VARIABLE */ 
+/* DEMOGRAPHICS */ 
 
 * Sex
 assert inlist(sex, "M", "F")
@@ -404,23 +409,15 @@ recode imd 5 = 1 4 = 2 3 = 3 2 = 4 1 = 5 .u = .u
 label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
 label values imd imd 
 
-/*  Centred age, sex, IMD, ethnicity (for adjusted KM plots)  
 
-* Centre age (linear)
-summ age
-gen c_age = age-r(mean)
+/* CLINICAL COMORBIDITIES */ 
 
-* "Centre" sex to be coded -1 +1 
-recode male 0=-1, gen(c_male)
-
-* "Centre" IMD
-gen c_imd = imd - 3
-
-* "Centre" ethnicity
-gen c_ethnicity = ethnicity - 3
+/* Exacerbation	*/ 
+*Need to make categories
 
 
-*/
+/* GP consultation rate */ 
+* Need to make categories 
 
 /*  Cancer  */
 
@@ -562,6 +559,7 @@ describe, fullname
 
 * Demographics
 label var patient_id					"Patient ID"
+label var total_pop						"Total Number in Study"
 label var age 							"Age (years)"
 label var agegroup						"Grouped age"
 label var age70 						"70 years and older"
@@ -579,23 +577,19 @@ label var stp 							"Sustainability and Transformation Partnership"
 label var age1 							"Age spline 1"
 label var age2 							"Age spline 2"
 label var age3 							"Age spline 3"
-*label var c_age						"Centred age"
-*label var c_male 						"Centred sex (code: -1/+1)"
-*label var c_imd						"Centred Index of Multiple Deprivation (values: -2/+2)"
-*label var c_ethnicity					"Centred ethnicity (values: -2/+2)"
 
 * Exposure variables 
 
-label var exposure 						"Treatment Exposure of INterest "
-label var ics_single_bin        		"Single ICS"
-label var saba_single_bin 				"Single SABA"
-label var sama_single_bin 	    		"Single SAMA"
-label var laba_single_bin 				"Single LABA"
-label var lama_single_bin 				"Single LAMA"
-label var laba_ics_bin 					"LABA ICS"		
-label var laba_lama_bin 				"LABA LAMA"
-label var laba_lama_ics_bin 			"LABA LAMA ICS"
-label var ltra_single_bin				"Single LTRA"
+label var exposure 						"Treatment Exposure of Interest "
+label var ics_single        		"Single ICS"
+label var saba_single 				"Single SABA"
+label var sama_single 	    		"Single SAMA"
+label var laba_single 				"Single LABA"
+label var lama_single 				"Single LAMA"
+label var laba_ics 					"LABA ICS"		
+label var laba_lama 				"LABA LAMA"
+label var laba_lama_ics 			"LABA LAMA ICS"
+label var ltra_single				"Single LTRA"
 
 label var nebules 						"Nebules"
 label var oral_steroids 				"Oral Steroids"
@@ -635,15 +629,14 @@ ds, not(varlabel)
 drop `r(varlist)'
 	
 /* SAVE DATA==================================================================*/	
-* This is set to Save locally, need to change for server 
 
-/*
 sort patient_id
 label data "Analysis dataset ICU and Covid outcomes project, asthma population"
-save "$Datadir\an_data.dta", replace
+save tempdata\analysis_dataset, replace
 
 /*
 * Save a version set on CPNS survival outcome
+* NEED OUTCOMES FOR THIS
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)
 	
 save "analysis_dataset_STSET_cpnsdeath.dta", replace
