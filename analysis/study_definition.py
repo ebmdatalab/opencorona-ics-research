@@ -365,7 +365,7 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 43.2, "stddev": 10}
+            "float": {"distribution": "normal", "mean": 60.0, "stddev": 15}
         },
     ),
 
