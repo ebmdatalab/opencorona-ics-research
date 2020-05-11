@@ -135,7 +135,7 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
+    # ### EXACERBATIONS OF COPD
     exacerbation_count = patients.with_these_clinical_events(
         placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
         on_or_before="2020-02-01", ### change to relevant dates
