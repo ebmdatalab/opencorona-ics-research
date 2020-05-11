@@ -17,7 +17,7 @@ study = StudyDefinition(
     population=patients.satisfying(
         "has_follow_up AND has_asthma",
         has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-02-01"
+            asthma_codes, on_or_before="2017-03-01"
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
@@ -31,7 +31,7 @@ study = StudyDefinition(
         return_expectations={"date": {}},
     ),
     died_date_cpns=patients.with_death_recorded_in_cpns(
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
@@ -39,18 +39,18 @@ study = StudyDefinition(
     ),
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         match_only_underlying_cause=False,
         return_expectations={"date": {}},
     ),
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         match_only_underlying_cause=True,
         return_expectations={"date": {}},
     ),
     died_date_ons=patients.died_from_any_cause(
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
