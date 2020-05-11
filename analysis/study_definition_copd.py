@@ -15,9 +15,9 @@ study = StudyDefinition(
     },
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_asthma",
-        has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-02-01"
+        "has_follow_up AND has_copd",
+        has_copd=patients.with_these_clinical_events(
+            copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-02-01", "2020-02-01"
@@ -135,23 +135,17 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
-    #### HIGH DOSE ICS
-    high_dose_ics = patients.with_these_medications(
-        high_dose_ics_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}}
+    # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
+    exacerbation_count = patients.with_these_clinical_events(
+        placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
+        on_or_before="2020-02-01", ### change to relevant dates
+        ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
+        returning="number_of_episodes",
+        episode_defined_as=">14 consecutive days with no matching codes",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 10, "stddev": 8}
+        },
     ),
-
-    ### LOW-MED DOSE ICS
-    low_med_dose_ics = patients.with_these_medications(
-        low_medium__ics_med_codes,
-        between=["2018-02-01", "2020-02-01"],
-        returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 6, "stddev": 1}}
-    ),
-
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -244,15 +238,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
-    ### OTHER HEART DISEASE
-    other_heart_disease = patients.with_these_clinical_events(
-        other_heart_disease_codes,
-        return_first_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
-    ),
-
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -262,7 +247,7 @@ study = StudyDefinition(
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
-        hypertension_codes,
+        placeholder_event_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
@@ -353,15 +338,6 @@ study = StudyDefinition(
             "float": {"distribution": "normal", "mean": 43.2, "stddev": 10}
         },
     ),
-
-    #### end stage renal disease codes incl. dialysis / transplant
-    esrf = patients.with_these_clinical_events(
-        ckd_codes,
-        return_last_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
-    ),
-
     ### VACCINATION HISTORY
     vaccine=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
