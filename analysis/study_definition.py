@@ -135,6 +135,23 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    #### HIGH DOSE ICS
+    high_dose_ics = patients.with_these_medications(
+        high_dose_ics_codes,
+        between=["2018-02-01", "2020-02-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={"int": {"distribution": "normal", "mean": 2, "stddev": 1}}
+    ),
+
+    ### LOW-MED DOSE ICS
+    low_med_dose_ics = patients.with_these_medications(
+        low_medium__ics_med_codes,
+        between=["2018-02-01", "2020-02-01"],
+        returning="number_of_matches_in_period",
+        return_expectations={"int": {"distribution": "normal", "mean": 6, "stddev": 1}}
+    ),
+
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -227,6 +244,15 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### OTHER HEART DISEASE
+    other_heart_disease = patients.with_these_clinical_events(
+        other_heart_disease_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -327,6 +353,15 @@ study = StudyDefinition(
             "float": {"distribution": "normal", "mean": 43.2, "stddev": 10}
         },
     ),
+
+    #### end stage renal disease codes incl. dialysis / transplant
+    esrf = patients.with_these_clinical_events(
+        ckd_codes,
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### VACCINATION HISTORY
     vaccine=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE

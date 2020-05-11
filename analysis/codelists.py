@@ -166,4 +166,16 @@ temp_immune_codes = codelist_from_csv(
 
 creatinine_codes = codelist(["XE2q5"], system="ctv3")
 
+ckd_codes = codelist_from_csv(
+    "codelists/opensafely-chronic-kidney-disease.csv", system="ctv3", column="CTV3ID"
+)
+
 covid_codelist = codelist(["U071", "U072"], system="icd10")
+
+high_dose_ics_codes = codelist_from_csv(
+    "codelists/opensafely-high-dose-ics-inhalers.csv", system="snomed", column="id"
+)
+
+other_heart_disease_codes = codelist_from_csv(
+    "codelists/opensafely-other-heart-disease.csv", system="ctv3", column="CTV3ID"
+)
