@@ -18,7 +18,7 @@ OTHER OUTPUT: 			Log file: output/an_checks
 * Open a log file
 
 capture log close
-log using output\02_an_checks, replace t
+log using log\02_an_checks, replace t
 
 * Open Stata dataset
 use tempdata\analysis_dataset, clear

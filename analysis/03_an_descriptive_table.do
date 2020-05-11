@@ -14,7 +14,7 @@ OTHER OUTPUT: 			Results in txt: output/table1
 
 * Open a log file
 capture log close
-log using output\03_an_descriptive_table, replace t
+log using log\03_an_descriptive_table, replace t
 
 * Open Stata dataset
 use tempdata\analysis_dataset, clear
@@ -22,8 +22,6 @@ use tempdata\analysis_dataset, clear
 /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
 
 describe
-
-count if exposure == 0 & total_pop 
 
 ********************************************************************************
 * All below code from K Baskharan 
@@ -35,6 +33,9 @@ syntax, variable(varname) condition(string)
 	
 	cou
 	local overalldenom=r(N)
+	
+	qui sum `variable' if `variable' `condition'
+	file write tablecontent (r(max)) _tab
 	
 	cou if `variable' `condition'
 	local rowdenom = r(N)
@@ -75,7 +76,6 @@ the number followed by space, brackets, formatted pct, end bracket and then tab
 the format %3.1f specifies length of 3, followed by 1 dp. 
 
 */ 
-
 
 ********************************************************************************
 * Generic code to output one section (varible) within table (calls above)
@@ -146,45 +146,56 @@ file write tablecontent _n _n
 
 file write tablecontent _n 
 
-** TREATMENT VARIABLES (binary)
-foreach comorb of varlist 	ics_single		///
-							saba_single 	///
-							sama_single 	///
-							laba_single	 	///
-							lama_single		///
-							laba_ics 		///
-							laba_lama 		///
-							laba_lama		///
-                            ltra_single		///	
-							oral_steroids 	///
-							nebules 		///
+** ASTHMA TREATMENT VARIABLES (binary)
+foreach treat of varlist 	saba_single 		///
+							high_dose_ics   	///
+							low_med_dose_ics	///
+							ics_single      	///
+							sama_single 		///
+							laba_single	 		///
+							lama_single			///
+							laba_ics 			///
+							laba_lama 			///
+							laba_lama			///
+                            ltra_single			///	
+							oral_steroids 		///
+							nebules 			///
 						{    		
-						
-generaterow, variable(`comororal_steroids b') condition("==1")
-generaterow, variable(`comorb') condition("==0")
+
+local lab: variable label `treat'
+file write tablecontent ("`lab'") _n 
+	
+generaterow, variable(`treat') condition("==1")
+generaterow, variable(`treat') condition("==0")
+
 file write tablecontent _n
 
 }
 
 
-** COMORBIDITIES (categorical)
+** COMORBIDITIES (categorical and continous)
 
+* Exacerbations 
 
-
+* GP consultations 
 
 ** COMORBIDITIES (binary)
 
-foreach comorb of varlist 	copd							///
+foreach comorb of varlist 	ckd								///
+							copd							///
 							hypertension			 		///
-							heart failure			 		///
-							other heart disease		 		///
+							other_heart_disease		 		///
 							diabetes 						///
 							cancer_ever 					///
-							chronic_kidney_disease 			///
-							immuno_ever		 				///
+							immunodef_any		 			///
+							ili 							///
+							other_respiratory 				///
+							statin 							///
+							insulin	{
 
-						
-						{
+local lab: variable label `comorb'
+file write tablecontent ("`lab'") _n 
+							
 generaterow, variable(`comorb') condition("==1")
 generaterow, variable(`comorb') condition("==0")
 file write tablecontent _n
@@ -194,3 +205,4 @@ file write tablecontent _n
 
 file close tablecontent
 
+tab insulin

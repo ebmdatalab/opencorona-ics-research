@@ -18,10 +18,6 @@ do "01_cr_create_analysis_dataset.do"
 
 * Commented out until development can be completed on dummy data
 
-/* 
-
-do "02_an_checks.do"
+* do "02_an_checks.do"
 do "03_an_descriptive_tables.do"
-do "04_an_descriptive_plots.do"
-
-*/
+* do "04_an_descriptive_plots.do"

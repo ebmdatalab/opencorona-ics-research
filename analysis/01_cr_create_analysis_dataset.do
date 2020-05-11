@@ -16,10 +16,16 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/log
 							
 ==============================================================================*/
 
+* Create directories required 
+
+capture mkdir output
+capture mkdir log
+capture mkdir tempdata
+
 * Open a log file
 
 cap log close
-log using output\01_cr_create_analysis_dataset, replace t
+log using log\01_cr_create_analysis_dataset, replace t
 
 /* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
@@ -30,7 +36,6 @@ global onscoviddeathcensor 	= "06/04/2020"
 global indexdate 			= "01/03/2020"
 
 /* TEMP: INCLUSION/EXCLUIONS==================================================*/ 
-* These should not make difference, should be in Python 
 
 noi di "DROP MISSING GENDER:"
 drop if inlist(sex,"I", "U")
@@ -68,7 +73,6 @@ assert inlist(sex, "M", "F")
 
 
 * After checks, create variable for number of people in population 
-gen total_pop = _N
 
 /* RENAME VARAIBLES===========================================================*/
 
@@ -97,15 +101,21 @@ foreach var of varlist 	aplastic_anaemia				///
 						haem_cancer      				///
 						hiv             				///
 						hypertension     				///
+						esrf 							///
 						ili              				///
 						lung_cancer      				///
 						other_cancer     				///
+						other_heart_disease				///
 						other_respiratory 				///
 						permanent_immunodeficiency   	///
 						smoking_status_date				///
 						temporary_immunodeficiency   	///
 						vaccine							///
+						insulin 						///
+						statin 							///
 						ics_single                      ///
+						low_med_dose_ics				///
+						high_dose_ics					///
 						saba_single                     ///
 						sama_single                     ///
 						laba_single                     ///
@@ -137,11 +147,12 @@ foreach var of varlist 	aplastic_anaemia				///
 
 * Note - outcome dates are handled separtely below 
 
+
 /* RENAME VARAIBLES===========================================================*/
 *  An extra 'date' added to the end of some variable names, remove 
 
 rename creatinine_date_date 		creatinine_measured_date
-rename smoking_status_date_date 	smoking_status_date
+rename smoking_status_date_date 	smoking_status_measured_date
 rename bmi_date_measured_date  		bmi_measured_date
 
 * Some names too long for loops below, shorten
@@ -155,74 +166,58 @@ rename temporary_immunodeficiency_date temp_immunodef_date
 *  Create assertions to make sure variables are defined prior to index 
 
 // 						Heart Failure					///
-// 						Other Heart Disease				///
 // 						Flu vaccine 					///
 // 						Pneuomococcal vaccine			///
 // 						GP consultation rate 			///
 //						asthma           				///
-//						ckd_diagnosis    				///
 // 						exacerbation 					///
 
-foreach var of varlist 	aplastic_anaemia_date			///
-						bmi_measured_date 				///
-						copd_date          				///
-						creatinine_measured_date 		///
-						diabetes_date       	    	///
-						haem_cancer_date       			///
-						hiv_date              			///
-						hypertension_date      			///
-						ili_date               			///
-						lung_cancer_date       			///
-						other_cancer_date      			///
-						other_respiratory_date  		///
-						perm_immunodef_date    			///
-						temp_immunodef_date    			///
-						vaccine_date  					///
-						ics_single                      ///
-						saba_single                     ///
-						sama_single                     ///
-						laba_single                     ///
-						lama_single                     ///
-						laba_ics 	                    ///
-						laba_lama 	                    ///
-						laba_lama_ics					///
-						nebules 						///
-						oral_steroids					///
-                        ltra_single {
+foreach var of varlist 	aplastic_anaemia_date				///
+						bmi_measured_date 					///
+						copd_date            				///
+						creatinine_measured_date  			///
+						diabetes_date         				///
+						haem_cancer_date      				///
+						hiv_date             				///
+						hypertension_date     				///
+						esrf_date 							///
+						ili_date              				///
+						lung_cancer_date     				///
+						other_cancer_date    				///
+						other_heart_disease_date			///
+						other_respiratory_date 				///
+						perm_immunodef_date   				///
+						smoking_status_measured_date		///
+						temp_immunodef_date   				///
+						vaccine_date						///
+						insulin_date 						///
+						statin_date 						///
+						ics_single_date                     ///
+						low_med_dose_ics_date				///
+						high_dose_ics_date					///
+						saba_single_date                    ///
+						sama_single_date                    ///
+						laba_single_date                    ///
+						lama_single_date                    ///
+						laba_ics_date 	                    ///
+						laba_lama_date 	                    ///
+						laba_lama_ics_date					///
+						nebules_date 						///
+						oral_steroids_date					///
+                        ltra_single_date {
 						
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
 	gen `newvar' = (`var'< d("$indexdate"))
 	order `newvar', after(`var')
 	
-	replace `var' = . if `var' > d("$indexdate")
-	gen t_diff_`newvar' = d("$indexdate") - `var'
-	order t_diff_`newvar', after(`newvar')
-	
 }
 
-/* Confirm each covariate is defined before the index date
-   Confirm each coviariate is defined using date occurring in the past 50 years 
+/* 
+	Potential checks: 
+	Confirm each covariate is defined before the index date
+    Confirm each coviariate is defined using date occurring in the past 50 years 
+
 */ 
-
-foreach var of varlist  t_diff_aplastic_anaemia			///
-						t_diff_bmi_measured				///
-						t_diff_copd						///
-						t_diff_creatinine				///
-						t_diff_diabetes					///
-						t_diff_haem_cancer				///
-						t_diff_hiv						///
-						t_diff_hypertension				///
-						t_diff_ili						///
-						t_diff_lung_cancer				///
-						t_diff_other_cancer				///
-						t_diff_other_respiratory		///
-						t_diff_perm_immunodef			///
-						t_diff_temp_immunodef			///
-						t_diff_vaccine {
-						
-	assert `var' > 0 
-					
-}
 
 /* RECODE IMPLAUSIBLE VALUES==================================================*/
 
@@ -238,50 +233,24 @@ replace creatinine = . if creatinine == 0
 
 /* CREATE VARIABLES===========================================================*/
 
-describe
-
 /* TREATMENTS */ 
                                    
 * Set up exposure of interest 
-* Need high and low dose, putting in combination vs. single for now
 
-gen exposure = .  
-
-replace exposure = 0 if saba_single    == 1 & ///
-                        ics_single     != 1 & ///
-						laba_single    != 1 & /// 
-						lama_single    != 1 & ///
-						laba_ics       != 1 & ///
-						laba_lama      != 1 & ///
-						laba_lama_ics  != 1 & ///
-						ltra_single    != 1    
-				
-//* UPDATE WHEN YOU GET THE DOSES !!!!!!! //				
-replace exposure = 1 if ics_single    == 1 
-
-replace exposure = 2 if laba_ics      == 1 & ///				 
-						laba_lama_ics == 1 
+gen exposure = 0 if saba_single    == 1 & ///
+                    ics_single     != 1 & ///
+					laba_single    != 1 & /// 
+					lama_single    != 1 & ///
+					laba_ics       != 1 & ///
+					laba_lama      != 1 & ///
+					laba_lama_ics  != 1 & ///
+					ltra_single    != 1    
+							
+replace exposure = 1 if low_med_dose_ics  == 1 
+replace exposure = 2 if high_dose_ics     == 1 
 						
-tab exposure 
-
-foreach var of varlist  ics_single          ///
-						saba_single 		///
-						sama_single 	    ///
-						laba_single 		///
-						lama_single 		///
-						laba_ics 			///
-						laba_lama 			///
-						laba_lama_ics 		///
-						ltra_single {
-						
-tab `var' exposure, m
-						
-}
-
 label define exposure 0 "SABA only" 1 "ICS low dose" 2 "ICS high dose" 
 label values exposure exposure 
-
-/* PLACEHOLDER FOR CHECKING DATE RANGE FOR EXPOSURE VARIABLES */ 
 
 /* DEMOGRAPHICS */ 
 
@@ -464,22 +433,20 @@ replace egfr=egfr*(0.993^age)
 replace egfr=egfr*1.018 if male==0
 label var egfr "egfr calculated using CKD-EPI formula with no eth"
 
-summarize egfr 
-
 * Categorise into ckd stages
 egen egfr_cat = cut(egfr), at(0, 15, 30, 45, 60, 5000)
-recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd)
+recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd_egfr)
 
 * 0 = "No CKD" 	2 "stage 3a" 3 "stage 3b" 4 "stage 4" 5 "stage 5"
+
+* Add in end stage renal failure and create a single CKD variable 
+gen ckd = 1 if esrf == 1 
+replace ckd = 1 if ckd_egfr != . & ckd_egfr >= 1
+replace ckd = 0 if ckd_egfr == . & esrf == 0 
+
 label define ckd 0 "No CKD" 1 "CKD"
 label values ckd ckd
 label var ckd "CKD stage calc without eth"
-
-* Convert into CKD group
-recode ckd 2/5=1, gen(chronic_kidney_disease)
-replace chronic_kidney_disease = 0 if creatinine==. 
-
-/* PLACEHOLDER FOR CKD DIAGNOSIS AND DIALYSIS CODES TO BE ADDED IN */ 
 
 /* OUTCOME AND SURVIVAL TIME==================================================*/
 
@@ -501,16 +468,8 @@ format 	enter_date					///
 
 /*   Outcomes   */
 
-/* !! COMMENTING OUT BECAUSE ALL DATES ARE MISSING 
-
 * Dates of: ITU admission, CPNS death, ONS-covid death
-
-tab died_date_cpns
-tab died_date_ons
-tab icu_date_admitted 
-
-		
-
+* Recode to dates from the strings 
 foreach var of varlist 	died_date_ons 		///
 						died_date_cpns		///
 						icu_date_admitted  {
@@ -549,8 +508,6 @@ replace onscoviddeath 	= 0 if (died_date_onscovid	> onscoviddeathcensor_date)
 
 * Format date variables
 format  stime* %td 
-	
-*/ 
 
 /* LABEL VARIABLES============================================================*/
 *  Label variables you are intending to keep, drop the rest 
@@ -558,29 +515,30 @@ format  stime* %td
 describe, fullname 
 
 * Demographics
-label var patient_id					"Patient ID"
-label var total_pop						"Total Number in Study"
-label var age 							"Age (years)"
-label var agegroup						"Grouped age"
-label var age70 						"70 years and older"
-label var male 							"Male"
-label var bmi 							"Body Mass Index (BMI, kg/m2)"
-label var bmicat 						"Grouped BMI"
-label var bmi_measured_date  		    "Body Mass Index (BMI, kg/m2), date measured"
-label var obese4cat						"Evidence of obesity (4 categories)"
-label var smoke		 					"Smoking status"
-label var smoke_nomiss	 				"Smoking status (missing set to non)"
-label var imd 							"Index of Multiple Deprivation (IMD)"
-label var ethnicity						"Ethnicity"
-label var stp 							"Sustainability and Transformation Partnership"
+label var patient_id				"Patient ID"
+label var age 						"Age (years)"
+label var agegroup					"Grouped age"
+label var age70 					"70 years and older"
+label var male 						"Male"
+label var bmi 						"Body Mass Index (BMI, kg/m2)"
+label var bmicat 					"Grouped BMI"
+label var bmi_measured_date  		"Body Mass Index (BMI, kg/m2), date measured"
+label var obese4cat					"Evidence of obesity (4 categories)"
+label var smoke		 				"Smoking status"
+label var smoke_nomiss	 			"Smoking status (missing set to non)"
+label var imd 						"Index of Multiple Deprivation (IMD)"
+label var ethnicity					"Ethnicity"
+label var stp 						"Sustainability and Transformation Partnership"
 
-label var age1 							"Age spline 1"
-label var age2 							"Age spline 2"
-label var age3 							"Age spline 3"
+label var age1 						"Age spline 1"
+label var age2 						"Age spline 2"
+label var age3 						"Age spline 3"
 
 * Exposure variables 
 
-label var exposure 						"Treatment Exposure of Interest "
+label var exposure 					"Treatment Exposure of Interest "
+label var high_dose_ics				"High Dose ICS"
+label var low_med_dose_ics 			"Low/Medium Dose ICS"
 label var ics_single        		"Single ICS"
 label var saba_single 				"Single SABA"
 label var sama_single 	    		"Single SAMA"
@@ -591,21 +549,25 @@ label var laba_lama 				"LABA LAMA"
 label var laba_lama_ics 			"LABA LAMA ICS"
 label var ltra_single				"Single LTRA"
 
-label var nebules 						"Nebules"
-label var oral_steroids 				"Oral Steroids"
+label var nebules 					"Nebules"
+label var oral_steroids 			"Oral Steroids"
 
 * Comorbidities of interest 
 
-*label var chronic_kidney_disease      	"Chronic kidney disease" 
+label var ckd     					 	"Chronic kidney disease" 
 label var egfr_cat						"Calculated eGFR"
 label var hypertension				    "Diagnosed hypertension"
 *label var asthma						"Asthma"
 label var ili 							"Infleunza Like Illness"
 label var other_respiratory 			"Other Respiratory Diseases"
+label var other_heart_disease 			"Other Heart Diseases"
 label var copd 							"COPD"
 label var diabetes						"Diabetes"
 label var cancer_ever 					"Cancer"
 label var immunodef_any					"Immunosuppressed (combination algorithm)"
+
+label var statin 						"Recent Statin"
+label var insulin						"Recent Insulin"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
@@ -618,10 +580,9 @@ label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid de
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
 
 * Survival times
-*label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
-*label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
-*label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
-
+label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
+label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
+label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
 
 /* TIDY DATA==================================================================*/
 *  Drop variables that are needed (those labelled)
@@ -631,16 +592,12 @@ drop `r(varlist)'
 /* SAVE DATA==================================================================*/	
 
 sort patient_id
-label data "Analysis dataset ICU and Covid outcomes project, asthma population"
+label data "Analysis dataset ICS and Covid-19, asthma population"
 save tempdata\analysis_dataset, replace
 
-/*
 * Save a version set on CPNS survival outcome
-* NEED OUTCOMES FOR THIS
-stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)
-	
-save "analysis_dataset_STSET_cpnsdeath.dta", replace
-*/ 
+stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
+save tempdata\analysis_dataset_STSET_cpnsdeath, replace
 
 log close
 
