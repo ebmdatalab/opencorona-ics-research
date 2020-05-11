@@ -12,6 +12,7 @@ import pyodbc
 import pandas as pd
 
 from .expressions import format_expression
+from .expectation_generators import generate
 
 
 # Characters that are safe to interpolate into SQL (see
@@ -26,10 +27,11 @@ class StudyDefinition:
     def __init__(self, population, **covariates):
         covariates["population"] = population
         assert "patient_id" not in covariates, "patient_id is a reserved column name"
+        self.default_expectations = covariates.pop("default_expectations", {})
         self.codelist_tables = []
         self.covariate_definitions = covariates
-        self.queries = self.build_queries(covariates)
         self.pandas_csv_args = self.get_pandas_csv_args(covariates)
+        self.queries = self.build_queries(covariates)
 
     def _to_csv_with_sqlcmd(self, filename):
         unique_check = UniqueCheck()
@@ -81,8 +83,113 @@ class StudyDefinition:
                 unique_check.add(patient_id)
         unique_check.assert_unique_ids()
 
-    def to_csv(self, filename, with_sqlcmd=False):
-        if with_sqlcmd:
+    def apply_date_filters_from_definition(
+        self, series, between=None, on_or_before=None, on_or_after=None, **kwargs
+    ):
+        if between:
+            series = series[(series >= between[0]) & (series <= between[1])]
+        elif on_or_after:
+            series = series[series >= on_or_after]
+        elif on_or_before:
+            series = series[series <= on_or_before]
+        return series
+
+    def apply_date_precision_from_definition(
+        self, series, include_day=None, include_month=None, **kwargs
+    ):
+        if include_day:
+            series = series.dt.strftime("%Y-%m-%d")
+        elif include_month:
+            series = series.dt.strftime("%Y-%m")
+        else:
+            series = series.dt.strftime("%Y")
+        return series
+
+    def validate_category_expectations(
+        self,
+        codelist=None,
+        return_expectations=None,
+        category_definitions=None,
+        **kwargs,
+    ):
+        defined = set(return_expectations["category"]["ratios"].keys())
+        if category_definitions:
+            available = set(category_definitions.keys())
+        elif codelist and codelist.has_categories:
+            available = set([x[1] for x in codelist])
+        else:
+            available = defined
+        if not defined.issubset(available):
+            raise ValueError(
+                f"Expected categories {', '.join(defined)} are not a subset of available categories {', '.join(available)}"
+            )
+
+    def make_df_from_expectations(self, population):
+        df = pd.DataFrame()
+
+        # Start with dates, so we can use them as inputs for incidence
+        # matching on dependent columns
+        for colname in self.pandas_csv_args["parse_dates"]:
+            definition_args = self.pandas_csv_args["args"][colname]
+            if not definition_args.get("return_expectations"):
+                raise ValueError(f"No `return_expectations` defined for {colname}")
+            kwargs = self.default_expectations.copy()
+            kwargs.update(definition_args["return_expectations"])
+            df[colname] = generate(population, **kwargs)["date"]
+
+            # Now apply any date-based filtering specified in the study
+            # definition
+            filtered_dates = self.apply_date_filters_from_definition(
+                df[colname], **definition_args
+            )
+            df.loc[~df.index.isin(filtered_dates.index), colname] = None
+
+        # Now we can optionally pass in an array which has already had
+        # its incidence calculated as a mask
+        for colname, dtype in self.pandas_csv_args["dtype"].items():
+            if not self.pandas_csv_args["args"][colname].get("return_expectations"):
+                raise ValueError(f"No `return_expectations` defined for {colname}")
+            kwargs = self.default_expectations.copy()
+            kwargs.update(self.pandas_csv_args["args"][colname]["return_expectations"])
+
+            if dtype == "category":
+                self.validate_category_expectations(
+                    **self.pandas_csv_args["args"][colname]
+                )
+
+            if dtype == "bool" and "bool" not in kwargs:
+                kwargs["bool"] = True
+
+            dependent_date = self.pandas_csv_args["date_col_for"].get(colname)
+            if dependent_date:
+                df[colname] = generate(
+                    population, match_incidence=df[dependent_date], **kwargs
+                )[dtype]
+            else:
+                try:
+                    df[colname] = generate(population, **kwargs)[dtype]
+                except KeyError:
+                    raise ValueError(
+                        f"Column definition {colname} does not return expected type {dtype}"
+                    )
+        # Finally, reduce date columns to the precision requested in
+        # the definition
+        for colname in self.pandas_csv_args["parse_dates"]:
+            definition_args = self.pandas_csv_args["args"][colname]
+            df[colname] = self.apply_date_precision_from_definition(
+                df[colname], **definition_args
+            )
+        return df
+
+    def to_csv(self, filename, expectations_population=False, with_sqlcmd=False):
+        if expectations_population:
+            df = self.make_df_from_expectations(expectations_population)
+            # Turn the index into a dummy patient_id column; longer
+            # term, we don't plan to include this in the output
+            df = df.reset_index()
+            df = df.rename(columns={"index": "patient_id"})
+            df.to_csv(filename, index=False)
+        elif with_sqlcmd:
             self._to_csv_with_sqlcmd(filename)
         else:
             result = self.execute_query()
@@ -120,20 +227,28 @@ class StudyDefinition:
         parse_dates = []
         converters = {}
         implicit_dates = []
+        date_col_for = {}
+        args = {}
         definitions = list(covariate_definitions.items())
 
+        # first work out properties of date columns which are not
+        # explicitly defined but implied in keyword arguments
         for name, (funcname, kwargs) in copy.deepcopy(definitions):
             if kwargs.get("include_date_of_match"):
                 kwargs["returning"] = "date"
                 implicit_dates.append((name + "_date", (funcname, kwargs)))
+                date_col_for[name] = name + "_date"
             elif kwargs.get("include_measurement_date"):
                 kwargs["returning"] = "date"
                 implicit_dates.append((name + "_date_measured", (funcname, kwargs)))
+                date_col_for[name] = name + "_date_measured"
 
+        # now work out properties of every definition, implicit and explicit
         for name, (funcname, kwargs) in implicit_dates + definitions:
             returning = kwargs.get("returning", None)
             if name == "population":
                 continue
+            args[name] = kwargs.copy()
             if returning and (
                 returning == "date"
                 or returning.startswith("date_")
@@ -153,6 +268,7 @@ class StudyDefinition:
                 dtypes[name] = "int"
             elif returning == "binary_flag":
                 converters[name] = tobool
+                dtypes[name] = "bool"
             elif returning == "category" or "category_definitions" in kwargs:
                 dtypes[name] = "category"
             elif "include_measurement_date" in kwargs:
@@ -173,7 +289,13 @@ class StudyDefinition:
                 raise ValueError(
                     f"Unable to impute Pandas type for {name} ({funcname})"
                 )
-        return {"dtype": dtypes, "converters": converters, "parse_dates": parse_dates}
+        return {
+            "dtype": dtypes,
+            "converters": converters,
+            "parse_dates": parse_dates,
+            "args": args,
+            "date_col_for": date_col_for,
+        }
 
     def to_dicts(self):
         result = self.execute_query()
@@ -228,6 +350,7 @@ class StudyDefinition:
         output_columns = {"patient_id": None}
         table_queries = {}
         for name, (query_type, query_args) in covariate_definitions.items():
+            query_args.pop("return_expectations", None)
             # `categorised_as` columns don't generate their own table query,
             # they're just a CASE expression over columns generated by other
             # queries
@@ -295,6 +418,7 @@ class StudyDefinition:
         hidden = set()
         items = list(covariate_definitions.items())
         while items:
+
             name, (query_type, query_args) = items.pop(0)
             if query_type == "categorised_as" and "extra_columns" in query_args:
                 # Pull out the extra columns
@@ -1155,6 +1279,7 @@ class StudyDefinition:
         )
 
     def get_case_expression(self, column_definitions, category_definitions):
+        category_definitions = category_definitions.copy()
         defaults = [k for (k, v) in category_definitions.items() if v == "DEFAULT"]
         if len(defaults) > 1:
             raise ValueError("At most one default category can be defined")
@@ -1211,7 +1336,11 @@ class patients:
     """
 
     @staticmethod
-    def age_as_of(reference_date):
+    def age_as_of(
+        reference_date,
+        # Required keyword
+        return_expectations=None,
+    ):
         if reference_date == "today":
             reference_date = datetime.date.today()
         else:
@@ -1219,7 +1348,11 @@ class patients:
         return "age_as_of", locals()
 
     @staticmethod
-    def registered_as_of(reference_date):
+    def registered_as_of(
+        reference_date,
+        # Required keyword
+        return_expectations=None,
+    ):
         if reference_date == "today":
             reference_date = datetime.date.today()
         else:
@@ -1227,13 +1360,23 @@ class patients:
         return "registered_as_of", locals()
 
     @staticmethod
-    def registered_with_one_practice_between(start_date, end_date):
+    def registered_with_one_practice_between(
+        start_date,
+        end_date,
+        # Required keyword
+        return_expectations=None,
+    ):
         start_date = datetime.date.fromisoformat(str(start_date))
         end_date = datetime.date.fromisoformat(str(end_date))
         return "registered_with_one_practice_between", locals()
 
     @staticmethod
-    def with_complete_history_between(start_date, end_date):
+    def with_complete_history_between(
+        start_date,
+        end_date,
+        # Required keyword
+        return_expectations=None,
+    ):
         start_date = datetime.date.fromisoformat(str(start_date))
         end_date = datetime.date.fromisoformat(str(end_date))
         return "with_complete_history_between", locals()
@@ -1245,6 +1388,8 @@ class patients:
         on_or_after=None,
         between=None,
         minimum_age_at_measurement=16,
+        # Required keyword
+        return_expectations=None,
         # Add an additional column indicating when measurement was taken
         include_measurement_date=False,
         # If we're returning a date, how granular should it be?
@@ -1258,6 +1403,8 @@ class patients:
     def mean_recorded_value(
         codelist,
         on_most_recent_day_of_measurement=None,
+        # Required keyword
+        return_expectations=None,
         # Set date limits
         on_or_before=None,
         on_or_after=None,
@@ -1277,12 +1424,14 @@ class patients:
         return "all", locals()
 
     @staticmethod
-    def sex():
+    def sex(return_expectations=None):
         return "sex", locals()
 
     @staticmethod
     def with_these_medications(
         codelist,
+        # Required keyword
+        return_expectations=None,
         # Set date limits
         on_or_before=None,
         on_or_after=None,
@@ -1328,6 +1477,8 @@ class patients:
     @staticmethod
     def with_these_clinical_events(
         codelist,
+        # Required keyword
+        return_expectations=None,
         # Set date limits
         on_or_before=None,
         on_or_after=None,
@@ -1376,7 +1527,7 @@ class patients:
         return "with_these_clinical_events", locals()
 
     @staticmethod
-    def categorised_as(category_definitions, **extra_columns):
+    def categorised_as(category_definitions, return_expectations=None, **extra_columns):
         return "categorised_as", locals()
 
     @staticmethod
@@ -1387,11 +1538,18 @@ class patients:
         return "categorised_as", locals()
 
     @staticmethod
-    def registered_practice_as_of(date, returning=None):
+    def registered_practice_as_of(
+        date, returning=None, return_expectations=None  # Required keyword
+    ):
         return "registered_practice_as_of", locals()
 
     @staticmethod
-    def address_as_of(date, returning=None, round_to_nearest=None):
+    def address_as_of(
+        date,
+        returning=None,
+        round_to_nearest=None,
+        return_expectations=None,  # Required keyword
+    ):
         return "address_as_of", locals()
 
     @staticmethod
@@ -1404,6 +1562,8 @@ class patients:
         returning="binary_flag",
         include_month=True,
         include_day=False,
+        # Required keyword
+        return_expectations=None,
     ):
         return "admitted_to_icu", locals()
 
@@ -1411,15 +1571,15 @@ class patients:
     # They use a handler which returns dummy CHESS data.
 
     @staticmethod
-    def with_positive_covid_test():
+    def with_positive_covid_test(return_expectations=None):
         return "with_positive_covid_test", locals()
 
     @staticmethod
-    def have_died_of_covid():
+    def have_died_of_covid(return_expectations=None):
         return "have_died_of_covid", locals()
 
     @staticmethod
-    def random_sample(percent=None):
+    def random_sample(percent=None, return_expectations=None):
         assert percent, "Must specify a percentage greater than zero"
         return "random_sample", locals()
 
@@ -1437,6 +1597,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         assert codelist.system == "icd10"
         validate_time_period_options(**locals())
@@ -1453,6 +1614,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         validate_time_period_options(**locals())
         return "died_from_any_cause", locals()
@@ -1468,6 +1630,7 @@ class patients:
         # If we're returning a date, how granular should it be?
         include_month=False,
         include_day=False,
+        return_expectations=None,
     ):
         validate_time_period_options(**locals())
         return "with_death_recorded_in_cpns", locals()

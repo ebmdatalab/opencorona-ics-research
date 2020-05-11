@@ -1,9 +1,11 @@
 opensafely/aplastic-anaemia/2020-04-24
-opensafely/asthma-diagnosis/2020-04-15
 opensafely/asthma-oral-prednisolone-medication/2020-04-27
 opensafely/asthma-inhaler-steroid-medication/2020-04-15
 opensafely/cancer-excluding-lung-and-haematological/2020-04-15
+opensafely/current-asthma/2020-05-06
+opensafely/current-copd/2020-05-06
 opensafely/chronic-cardiac-disease/2020-04-08
+opensafely/chronic-kidney-disease/2020-04-14
 opensafely/diabetes/2020-04-15
 opensafely/ethnicity/2020-04-27
 opensafely/haematological-cancer/2020-04-15
@@ -19,6 +21,7 @@ opensafely/leukotriene-receptor-antagonist-medication/2020-05-05
 opensafely/low-and-medium-dose-ics-inhalers/2020-05-05
 opensafely/lung-cancer/2020-04-15
 opensafely/nebulised-asthma-and-copd-medications/2020-05-05
+opensafely/other-heart-disease/2020-05-11
 opensafely/permanent-immunosuppresion/2020-04-24
 opensafely/temporary-immunosuppresion/2020-04-24
 opensafely/saba-inhaler-medications/2020-05-06
