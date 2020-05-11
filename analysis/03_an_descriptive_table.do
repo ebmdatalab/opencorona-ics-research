@@ -17,7 +17,7 @@ capture log close
 log using output\03_an_descriptive_table, replace t
 
 * Open Stata dataset
-use tempdata\an_data, clear
+use tempdata\analysis_dataset, clear
 
 /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
 

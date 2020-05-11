@@ -21,7 +21,7 @@ capture log close
 log using output\02_an_checks, replace t
 
 * Open Stata dataset
-use tempdata\an_data, clear
+use tempdata\analysis_dataset, clear
 
 describe
 
