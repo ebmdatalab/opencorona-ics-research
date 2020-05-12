@@ -284,6 +284,15 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### HEART FAILURE
+    heart_failure=patients.with_these_clinical_events(
+        heart_failure_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,

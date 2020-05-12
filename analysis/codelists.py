@@ -42,7 +42,7 @@ statin_med_codes = codelist_from_csv(
     "codelists/opensafely-statin-medication.csv", system="snomed", column="id"
 )
 
-heartfailure_codes = codelist_from_csv(
+heart_failure_codes = codelist_from_csv(
     "codelists/opensafely-heart-failure.csv", system="ctv3", column="CTV3ID"
 )
 
