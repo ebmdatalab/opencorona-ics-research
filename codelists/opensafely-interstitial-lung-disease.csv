@@ -1,0 +1,16 @@
+CTV3ID,CTV3PreferredTermDesc,CTV3Source
+23E5.,O/E - fibrosis of lung present,High_Level_SNOMED
+AD52.,Sarcoidosis of lung with sarcoidosis of lymph nodes,CTV3Map_Code_And_Term
+H563.,(Fibros alveolitis: [idiopath][cryptog]) or (Hamm-Rich synd),CTV3_Children
+H5631,Diffuse interstitial pulmonary fibrosis,CTV3Map_Code_And_Term
+H563z,Idiopathic fibrosing alveolitis NOS,CTV3Map_Code_And_Term
+H57y2,Pulmonary sarcoidosis,CTV3Map_Code_And_Term
+X102u,Pulmonary fibrosis,CTV3Map_Code_And_Term
+X102v,Usual interstitial pneumonitis,CTV3Map_Code_And_Term
+X102v,Usual interstitial pneumonitis,CTV3Map_Code_Only
+X1043,Stage 1 pulmonary sarcoidosis,CTV3_Children
+X1044,Stage 2 pulmonary sarcoidosis,CTV3_Children
+X1045,Stage 3 pulmonary sarcoidosis,CTV3_Children
+X1046,Stage 4 pulmonary sarcoidosis,CTV3_Children
+X1048,Necrotising sarcoid granulomatosis,CTV3_Children
+XaXlE,Respiratory bronchiolitis associated interstitial lung dis,High_Level_SNOMED

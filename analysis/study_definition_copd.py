@@ -444,10 +444,6 @@ study = StudyDefinition(
             "int" : {"distribution" : "normal", "mean" : 4, "stddev" : 2}
         },
     )
-
-
-    ###
-
 )
 
 

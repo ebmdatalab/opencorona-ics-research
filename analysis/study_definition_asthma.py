@@ -109,10 +109,10 @@ study = StudyDefinition(
         {
             "S": "most_recent_smoking_code = 'S'",
             "E": """
-                     most_recent_smoking_code = 'E' OR (
-                       most_recent_smoking_code = 'N' AND ever_smoked
-                     )
-                """,
+                         most_recent_smoking_code = 'E' OR (
+                           most_recent_smoking_code = 'N' AND ever_smoked
+                         )
+                    """,
             "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
             "M": "DEFAULT",
         },
@@ -282,6 +282,15 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### HEART FAILURE
+    heart_failure=patients.with_these_clinical_events(
+        heart_failure_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
@@ -369,6 +378,39 @@ study = StudyDefinition(
         },
     ),
 
+    ### SLE
+    sle=patients.with_these_clinical_events(
+        sle_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
+    ### institial lung disease
+    interstitial_lung_dis=patients.with_these_clinical_events(
+        interstital_lung_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
+    ### RA
+    ra=patients.with_these_clinical_events(
+        ra_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
+    ### MS
+    ms=patients.with_these_clinical_events(
+        ms_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
+
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
         ckd_codes,
@@ -378,8 +420,17 @@ study = StudyDefinition(
     ),
 
     ### VACCINATION HISTORY
-    vaccine=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+    flu_vaccine=patients.with_these_medications(
+        flu_med_codes,
+        between=["2019-09-01", "2020-03-01"],
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
+    pneumococcal_vaccine=patients.with_these_medications(
+        pneumococcal_med_codes,
+        between=["2019-09-01", "2020-03-01"],
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
@@ -393,7 +444,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
@@ -402,4 +452,14 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### GP CONSULTATION RATE
+    gp_consult_count=patients.with_these_clinical_events(
+        placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
+        on_or_before="2019-03-01",
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 4, "stddev": 2}
+        },
+    )
 )

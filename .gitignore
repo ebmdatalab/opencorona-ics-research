@@ -1,6 +1,6 @@
 *~
 model.log
-*/input.csv
+*/input_*.csv
 __pycache__
 .python-version
 .idea

@@ -15,6 +15,7 @@ opensafely/hiv/2020-04-24
 opensafely/hypertension/2020-04-28
 opensafely/inflammatory-bowel-disease/2020-04-07
 opensafely/influenza-vaccination/2020-05-12
+opensafely/interstitial-lung-disease/2020-05-12
 opensafely/insulin-medication/2020-04-26
 opensafely/laba-ics-combination-inhaler/2020-05-04
 opensafely/laba-lama-combination-inhaler/2020-05-05
@@ -33,6 +34,7 @@ opensafely/saba-inhaler-medications/2020-05-06
 opensafely/sama-medication/2020-05-11
 opensafely/single-ingredient-laba-inhalers/2020-05-06
 opensafely/single-ingredient-lama-inhalers/2020-05-06
+opensafely/systemic-lupus-erythematosus-sle/2020-05-12
 opensafely/smoking-clear/2020-04-29
 opensafely/smoking-unclear/2020-04-29
 opensafely/statin-medication/2020-04-20
