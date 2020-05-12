@@ -410,6 +410,13 @@ study = StudyDefinition(
         return_expectations={"date": {}},
     ),
 
+    ### temporal arteritis
+    temporal_arteritis=patients.with_these_clinical_events(
+        placeholder_event_codes, ####REPLACE WITH REAL CODES WHEN AVAILABLE
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
 
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
