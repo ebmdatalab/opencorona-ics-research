@@ -129,7 +129,6 @@ diabetes_codes = codelist_from_csv(
 systolic_blood_pressure_codes = codelist(["2469."], system="ctv3")
 diastolic_blood_pressure_codes = codelist(["246A."], system="ctv3")
 
-
 lung_cancer_codes = codelist_from_csv(
     "codelists/opensafely-lung-cancer.csv", system="ctv3", column="CTV3ID"
 )
@@ -178,4 +177,24 @@ high_dose_ics_codes = codelist_from_csv(
 
 other_heart_disease_codes = codelist_from_csv(
     "codelists/opensafely-other-heart-disease.csv", system="ctv3", column="CTV3ID"
+)
+
+ibd_codes = codelist_from_csv(
+    "codelists/opensafely-inflammatory-bowel-disease.csv", system="ctv3", column="CTV3ID"
+)
+
+ms_codes = codelist_from_csv(
+    "codelists/opensafely-multiple-sclerosis.csv", system="ctv3", column="CTV3ID"
+)
+
+ra_codes = codelist_from_csv(
+    "codelists/opensafely-rheumatoid-arthritis.csv", system="ctv3", column="CTV3ID"
+)
+
+flu_med_codes = codelist_from_csv(
+    "codelists/opensafely-influenza-vaccination.csv", system="snomed", column="snomed_id"
+)
+
+pneumococcal_med_codes = codelist_from_csv(
+    "codelists/opensafely-pneumococcal-vaccination.csv", system="snomed", column="snomed_id"
 )

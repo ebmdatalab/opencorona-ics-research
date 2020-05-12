@@ -13,6 +13,7 @@ opensafely/heart-failure/2020-05-05
 opensafely/high-dose-ics-inhalers/2020-05-05
 opensafely/hiv/2020-04-24
 opensafely/hypertension/2020-04-28
+opensafely/inflammatory-bowel-disease/2020-04-07
 opensafely/influenza-vaccination/2020-05-12
 opensafely/insulin-medication/2020-04-26
 opensafely/laba-ics-combination-inhaler/2020-05-04
@@ -21,10 +22,12 @@ opensafely/laba-lama-ics-combination-inhaler/2020-05-05
 opensafely/leukotriene-receptor-antagonist-medication/2020-05-05
 opensafely/low-and-medium-dose-ics-inhalers/2020-05-05
 opensafely/lung-cancer/2020-04-15
+opensafely/multiple-sclerosis/2020-05-12
 opensafely/nebulised-asthma-and-copd-medications/2020-05-05
 opensafely/other-heart-disease/2020-05-11
 opensafely/permanent-immunosuppresion/2020-04-24
 opensafely/pneumococcal-vaccination/2020-05-11
+opensafely/rheumatoid-arthritis/2020-05-12
 opensafely/temporary-immunosuppresion/2020-04-24
 opensafely/saba-inhaler-medications/2020-05-06
 opensafely/sama-medication/2020-05-11

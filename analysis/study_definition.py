@@ -13,16 +13,18 @@ study = StudyDefinition(
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
+
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_asthma",
-        has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-03-01"
+        "has_follow_up AND has_copd",
+        has_copd=patients.with_these_clinical_events(
+            copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
         ),
     ),
+
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-03-01",
@@ -378,12 +380,22 @@ study = StudyDefinition(
     ),
 
     ### VACCINATION HISTORY
-    vaccine=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+    flu_vaccine=patients.with_these_medications(
+        flu_med_codes,
+        between=["2019-09-01", "2020-03-01"],
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    pneumococcal_vaccine=patients.with_these_medications(
+        pneumococcal_med_codes,
+        between=["2019-09-01", "2020-03-01"],
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -400,4 +412,35 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### EXACERBATIONS OF COPD
+    # exacerbation_count=patients.with_these_clinical_events(
+    #     placeholder_event_codes,  ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
+    #     on_or_before="2019-11-01",  ### change to relevant dates
+    #     ignore_days_where_these_codes_occur=placeholder_event_codes,  ### change to annual review and rescue pakcs
+    #     returning="number_of_episodes",
+    #     episode_defined_as="series of events each <= 14 days apart",
+    #     return_expectations={
+    #         "int": {"distribution": "normal", "mean": 5, "stddev": 2}
+    #     },
+    # ),
+
+    ### GP CONSULTATION RATE
+    gp_consult_count = patients.with_these_clinical_events(
+        placeholder_event_codes, ### CHANGE TO GP CODE WHEN AVAILABLE
+        on_or_before="2019-03-01",
+        returning="number_of_matches_in_period",
+        return_expectations={
+            "int" : {"distribution" : "normal", "mean" : 4, "stddev" : 2}
+        },
+    )
+
+
+    ###
+
 )
+
+
+
+
+
