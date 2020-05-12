@@ -1,23 +1,24 @@
 /*==============================================================================
 DO FILE NAME:			03_an_descriptive_table
+PROJECT:				ICS in COVID-19 
 AUTHOR:					A Schultze, A Wong, C Rentsch 
 						Adapted from K Baskharan, A Wong 
 DATE: 					10th of May 2020 
 DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure 
 						Output to a textfile for further formatting
-DATASETS USED:			!! UPDATE NAME 
+DATASETS USED:			copd_tempdata\analysis_dataset.dta
 DATASETS CREATED: 		None
-OTHER OUTPUT: 			Results in txt: output/table1 
-						Log file: output/an_checks
+OTHER OUTPUT: 			Results in txt: copd_output\table1 
+						Log file: copd_log\03_an_descriptive_table
 							
 ==============================================================================*/
 
 * Open a log file
 capture log close
-log using log\03_an_descriptive_table, replace t
+log using copd_log\03_an_descriptive_table, replace t
 
 * Open Stata dataset
-use tempdata\analysis_dataset, clear
+use copd_tempdata\analysis_dataset, clear
 
 /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
 
@@ -47,10 +48,6 @@ syntax, variable(varname) condition(string)
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
 	cou if exposure == 1 & `variable' `condition'
-	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
-
-	cou if exposure == 2 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
@@ -118,13 +115,12 @@ if there is a missing specified, then run the generate row for missing vals
 
 *Set up output file
 cap file close tablecontent
-file open tablecontent using ./output/03_an_output_table1.txt, write text replace
+file open tablecontent using ./copd_output/03_an_output_table1.txt, write text replace
 
-file write tablecontent ("Table 1: Demographic and Clinical Characteristics") _n
-file write tablecontent _tab ("Total")				  _tab ///
-							 ("SABA only")			  _tab ///
-							 ("ICS low/medium dose")  _tab ///
-							 ("ICS high dose") 		  _tab ///
+file write tablecontent ("Table 1: Demographic and Clinical Characteristics - COPD Population") _n
+file write tablecontent _tab ("Total")				  			  _tab ///
+							 ("LABA/LAMA Combination")			  _tab ///
+							 ("ICS Combination")  				  _tab ///
 							 ("Other") _n
 
 * DEMOGRAPHICS (more than one level, potentially missing) 
@@ -153,7 +149,7 @@ file write tablecontent _n
 
 file write tablecontent _n _n
 
-** ASTHMA TREATMENT VARIABLES (binary)
+** COPD TREATMENT VARIABLES (binary)
 foreach treat of varlist 	saba_single 		///
 							high_dose_ics   	///
 							low_med_dose_ics	///
@@ -165,8 +161,6 @@ foreach treat of varlist 	saba_single 		///
 							laba_lama 			///
 							laba_lama			///
                             ltra_single			///	
-							oral_steroids 		///
-							nebules 			///
 						{    		
 
 local lab: variable label `treat'
@@ -184,9 +178,9 @@ file write tablecontent _n
 
 * Exacerbations 
 
-* GP consultations 
-
 ** COMORBIDITIES (binary)
+
+* Heart Failure outstanding 
 
 foreach comorb of varlist 	ckd								///
 							copd							///
@@ -198,7 +192,12 @@ foreach comorb of varlist 	ckd								///
 							ili 							///
 							other_respiratory 				///
 							statin 							///
-							insulin	{
+							insulin							///
+							oral_steroids 					///
+							nebules 						///
+							flu_vaccine 					///
+							pneumococcal_vaccine			///
+							gp_consult {
 
 local lab: variable label `comorb'
 file write tablecontent ("`lab'") _n 
@@ -211,4 +210,7 @@ file write tablecontent _n
 
 
 file close tablecontent
+
+* Close log file 
+log close
 

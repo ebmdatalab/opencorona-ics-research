@@ -19,14 +19,14 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/log
 
 * Create directories required 
 
-capture mkdir output
-capture mkdir log
-capture mkdir tempdata
+capture mkdir copd_output
+capture mkdir copd_log
+capture mkdir copd_tempdata
 
 * Open a log file
 
 cap log close
-log using log\01_cr_create_analysis_dataset, replace t
+log using copd_log\01_cr_create_analysis_dataset, replace t
 
 /* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
@@ -67,13 +67,12 @@ assert age < 111
 * INCLUSION 3: M or F gender at 1 March 2020 
 assert inlist(sex, "M", "F")
 
-* INCLUSION 4: Smoking record after the 
-
+* INCLUSION 4: Smoking record ever (current or past)
 * EXCLUSION 1: 12 months or baseline time 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
 * EXCLUSION 3: COPD 
 * EXCLUSION 4: Nebulising treament 
-
+* EXCLUDE 5: DIED BEFORE THE 1ST OF MARCH 
 
 * After checks, create variable for number of people in population 
 
@@ -523,6 +522,9 @@ rename icu_date_admitted itu_date
 * Date of Covid death in ONS
 gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
 
+format died_date_ons %td
+format died_date_onscovid %td 
+
 * Binary indicators for outcomes
 gen cpnsdeath 		= (died_date_cpns		< .)
 gen onscoviddeath 	= (died_date_onscovid 	< .)
@@ -621,6 +623,7 @@ label var statin 						"Recent Statin"
 label var insulin						"Recent Insulin"
 label var flu_vaccine					"Flu vaccine"
 label var pneumococcal_vaccine			"Pneumococcal Vaccine"
+label var gp_consult					"At least one GP consultation"
 
 label var ckd_date     					"Chronic kidney disease Date" 
 label var hypertension_date			    "Diagnosed hypertension Date"
@@ -647,6 +650,10 @@ label var ituadmission					"Failure/censoring indicator for outcome: ITU admissi
 label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid death"
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
 
+label var died_date_cpns				"Date of CPNS Death"
+label var died_date_onscovid 			"Date of ONS Death"
+label var itu_date 						"Date of ITU Admission"
+
 * Survival times
 label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
 label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
@@ -660,12 +667,11 @@ drop `r(varlist)'
 /* SAVE DATA==================================================================*/	
 
 sort patient_id
-label data "Analysis dataset ICS and Covid-19, asthma population"
-save tempdata\analysis_dataset, replace
+save copd_tempdata\analysis_dataset, replace
 
 * Save a version set on CPNS survival outcome
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
-save tempdata\analysis_dataset_STSET_cpnsdeath, replace
+save copd_tempdata\analysis_dataset_STSET_cpnsdeath, replace
 
 log close
 
