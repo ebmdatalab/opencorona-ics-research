@@ -381,16 +381,16 @@ study = StudyDefinition(
 
     ### VACCINATION HISTORY
     flu_vaccine=patients.with_these_medications(
-        flu_codes,
-        between=["2019-03-01", "2020-03-01"],
+        flu_med_codes,
+        between=["2019-09-01", "2020-03-01"],
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
 
     pneumococcal_vaccine=patients.with_these_medications(
-        pneumococcal_codes,
-        between=["2015-03-01", "2020-03-01"],
+        pneumococcal_med_codes,
+        between=["2019-09-01", "2020-03-01"],
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
