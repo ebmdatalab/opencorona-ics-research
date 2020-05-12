@@ -18,9 +18,9 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/log
 
 * Create directories required 
 
-capture mkdir output
-capture mkdir log
-capture mkdir tempdata
+capture mkdir asthma_output
+capture mkdir asthma_log
+capture mkdir asthma_tempdata
 
 * Open a log file
 
@@ -205,7 +205,8 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						nebules_date 						///
 						oral_steroids_date					///
                         ltra_single_date {
-						
+	
+	replace `var' = . if (`var'> d("$indexdate"))
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
 	gen `newvar' = (`var'< d("$indexdate"))
 	order `newvar', after(`var')
@@ -218,18 +219,6 @@ foreach var of varlist 	aplastic_anaemia_date				///
     Confirm each coviariate is defined using date occurring in the past 50 years 
 
 */ 
-
-/* RECODE IMPLAUSIBLE VALUES==================================================*/
-
-* BMI 
-* SET BMI TO MISSING IF VERY FAR FROM INDEX? WHAT TIMEFRAME? 
-summarize bmi, d
-replace bmi = . if bmi == 0 
-replace bmi = . if !inrange(bmi, 15, 50)
-
-* Creatinine
-summarize creatinine, d
-replace creatinine = . if creatinine == 0 
 
 /* CREATE VARIABLES===========================================================*/
 
@@ -320,8 +309,24 @@ assert age70 < .
 mkspline age = age, cubic nknots(4)
 
 /*  Body Mass Index  */
+* NB: watch for missingness
 
-* BMI (NB: watch for missingness)
+* Recode strange values 
+summarize bmi, d
+replace bmi = . if bmi == 0 
+replace bmi = . if !inrange(bmi, 15, 50)
+
+* Restrict to within 10 years of index and aged > 16 
+gen bmi_time = (date("$indexdate", "DMY") - bmi_measured_date)/365.25
+gen bmi_age = round(age - bmi_time, 0)
+
+replace bmi = . if bmi_age < 16 
+replace bmi = . if bmi_time > 10 
+
+* Set to missing if no date, and vice versa 
+replace bmi = . if bmi_measured_date == . 
+replace bmi_measured_date = . if bmi == . 
+replace bmi_measured_date = . if bmi == . 
 
 gen 	bmicat = .
 recode  bmicat . = 1 if bmi < 18.5
@@ -392,7 +397,10 @@ label values imd imd
 
 gen cancer_ever =   (haem_cancer == 1 | /// 
                      lung_cancer == 1 | /// 
-					 other_cancer ==1)			   
+					 other_cancer ==1)		
+					 
+gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_date)
+
 
 /*  Immunosuppression  */
 
@@ -411,7 +419,13 @@ order immunodef_any, after(temp_immunodef_date)
 
 * Set implausible creatinine values to missing (Note: zero changed to missing)
 replace creatinine = . if !inrange(creatinine, 20, 3000) 
-	
+
+* Remove creatinine dates if no measurements, and vice versa 
+
+replace creatinine = . if creatinine_measured_date == . 
+replace creatinine_measured_date = . if creatinine == . 
+replace creatinine_measured = . if creatinine == . 
+
 * Divide by 88.4 (to convert umol/l to mg/dl)
 gen SCr_adj = creatinine/88.4
 
@@ -447,6 +461,15 @@ replace ckd = 0 if ckd_egfr == . & esrf == 0
 label define ckd 0 "No CKD" 1 "CKD"
 label values ckd ckd
 label var ckd "CKD stage calc without eth"
+
+* Create date 
+gen temp1_ckd_date = creatinine_measured_date if ckd_egfr >=1
+gen temp2_ckd_date = esrf_date if esrf == 1
+
+*SOMETHING WRONG HERE 
+gen ckd_date = max(temp1_ckd_date,temp2_ckd_date) 
+format ckd_date %td 
+
 
 /* OUTCOME AND SURVIVAL TIME==================================================*/
 
@@ -552,6 +575,21 @@ label var ltra_single				"Single LTRA"
 label var nebules 					"Nebules"
 label var oral_steroids 			"Oral Steroids"
 
+label var high_dose_ics_date		"High Dose ICS Date"
+label var low_med_dose_ics_date 	"Low/Medium Dose ICS Date"
+label var ics_single_date        	"Single ICS Date"
+label var saba_single_date 			"Single SABA Date"
+label var sama_single_date 	    	"Single SAMA Date"
+label var laba_single_date 			"Single LABA Date"
+label var lama_single_date 			"Single LAMA Date"
+label var laba_ics_date 			"LABA ICS Date"		
+label var laba_lama_date 			"LABA LAMA Date"
+label var laba_lama_ics_date		"LABA LAMA ICS Date"
+label var ltra_single_date			"Single LTRA Date"
+
+label var nebules_date 					"Nebules Date"
+label var oral_steroids_date 			"Oral Steroids Date"
+
 * Comorbidities of interest 
 
 label var ckd     					 	"Chronic kidney disease" 
@@ -568,6 +606,19 @@ label var immunodef_any					"Immunosuppressed (combination algorithm)"
 
 label var statin 						"Recent Statin"
 label var insulin						"Recent Insulin"
+
+label var ckd_date     					"Chronic kidney disease Date" 
+label var hypertension_date			    "Diagnosed hypertension Date"
+*label var asthma						"Asthma  Date"
+label var ili_date 						"Infleunza Like Illness Date"
+label var other_respiratory_date 		"Other Respiratory Diseases Date"
+label var other_heart_disease_date		"Other Heart Diseases Date"
+label var copd_date 					"COPD Date"
+label var diabetes_date					"Diabetes Date"
+label var cancer_ever_date 				"Cancer Date"
+
+label var statin_date 					"Recent Statin Date"
+label var insulin_date					"Recent Insulin Date"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
