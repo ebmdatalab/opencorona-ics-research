@@ -179,3 +179,15 @@ high_dose_ics_codes = codelist_from_csv(
 other_heart_disease_codes = codelist_from_csv(
     "codelists/opensafely-other-heart-disease.csv", system="ctv3", column="CTV3ID"
 )
+
+ibd_codes = codelist_from_csv(
+    "codelists/opensafely-inflammatory-bowel-disease.csv", system="ctv3", column="CTV3ID"
+)
+
+ms_codes = codelist_from_csv(
+    "codelists/opensafely-multiple-sclerosis.csv", system="ctv3", column="CTV3ID"
+)
+
+ra_codes = codelist_from_csv(
+    "codelists/opensafely-rheumatoid-arthritis.csv", system="ctv3", column="CTV3ID"
+)
