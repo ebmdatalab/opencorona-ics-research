@@ -9,7 +9,7 @@ DESCRIPTION OF FILE:	Run sanity checks on all variables
 							- Cross-check logical relationships 
 							- Explore expected relationships 
 							- Check stsettings 
-DATASETS USED:			!! UPDATE NAME 
+DATASETS USED:			tempdata\analysis_dataset
 DATASETS CREATED: 		None
 OTHER OUTPUT: 			Log file: output/an_checks
 							
@@ -53,19 +53,40 @@ datacheck inlist(ethnicity, 1, 2, 3, 4, 5, .u), nol
 
 * Smoking
 datacheck inlist(smoke, 1, 2, 3, .u), nol
+
+tab smoke, missing 
+
+
+drop what 
+gen what = 1 if smoke != 1 & smoke != 2 & smoke != 3 & smoke != . 
+
+tab what
+
+sort what 
+
+tab smoke if what == 1, m
+
 datacheck inlist(smoke_nomiss, 1, 2, 3), nol 
 
-/* Check date ranges for all comorbidities */
-/* Dates of comorbidities  
-foreach var of varlist 	chronic_respiratory_disease 	///
-						chronic_cardiac_disease 		///
-						diabetes 						///
-						chronic_liver_disease 			///
-						organ_transplant 				///	
-						ra_sle_psoriasis  {
+* Check date ranges for all treatment variables  
+foreach var of varlist 	high_dose_ics		///
+						low_med_dose_ics 	///
+						ics_single        	///
+						saba_single 		///
+						sama_single 	    ///
+						laba_single 		///
+						lama_single 		///
+						laba_ics 			///
+						laba_lama 			///
+						laba_lama_ics 		///
+						ltra_single	 {
 	summ `var'_date, format
 	bysort `var': summ `var'_date
 }
+
+* Check date ranges for all comorbidities 
+
+
 
 * Outcome dates
 
