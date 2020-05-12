@@ -9,21 +9,19 @@ DESCRIPTION OF FILE:	Run sanity checks on all variables
 							- Cross-check logical relationships 
 							- Explore expected relationships 
 							- Check stsettings 
-DATASETS USED:			tempdata\analysis_dataset
+DATASETS USED:			copd_tempdata\analysis_dataset.dta
 DATASETS CREATED: 		None
-OTHER OUTPUT: 			Log file: output/an_checks
+OTHER OUTPUT: 			Log file: copd_log\02_an_checks
 							
 ==============================================================================*/
 
 * Open a log file
 
 capture log close
-log using log\02_an_checks, replace t
+log using copd_log\02_an_checks, replace t
 
 * Open Stata dataset
-use tempdata\analysis_dataset, clear
-
-describe
+use copd_tempdata\analysis_dataset, clear
 
 *run ssc install if not already installed on your computer
 *ssc install datacheck 
@@ -42,7 +40,7 @@ datacheck inlist(age70, 0, 1), nol
 datacheck inlist(male, 0, 1), nol
 
 * BMI 
-datacheck inlist(obese4cat, 0, 1), nol
+datacheck inlist(obese4cat, 1, 2, 3, 4), nol
 datacheck inlist(bmicat, 1, 2, 3, 4, 5, 6, .u), nol
 
 * IMD
@@ -53,19 +51,6 @@ datacheck inlist(ethnicity, 1, 2, 3, 4, 5, .u), nol
 
 * Smoking
 datacheck inlist(smoke, 1, 2, 3, .u), nol
-
-tab smoke, missing 
-
-
-drop what 
-gen what = 1 if smoke != 1 & smoke != 2 & smoke != 3 & smoke != . 
-
-tab what
-
-sort what 
-
-tab smoke if what == 1, m
-
 datacheck inlist(smoke_nomiss, 1, 2, 3), nol 
 
 * Check date ranges for all treatment variables  
@@ -80,20 +65,39 @@ foreach var of varlist 	high_dose_ics		///
 						laba_lama 			///
 						laba_lama_ics 		///
 						ltra_single	 {
+						
 	summ `var'_date, format
-	bysort `var': summ `var'_date
+
 }
 
 * Check date ranges for all comorbidities 
 
+foreach var of varlist  ckd     					///			
+						hypertension				///
+						ili 						///
+						other_respiratory 			///
+						other_heart_disease 		///
+						copd 						///
+						diabetes					///
+						cancer_ever 				///
+						statin 						///
+						insulin						///
+						flu_vaccine					///
+						pneumococcal_vaccine		///	
+						nebules						///	
+						oral_steroids				///	
+						insulin 					///
+						statin { 
+						
+	summ `var'_date, format
 
+}
 
 * Outcome dates
 
 summ stime_ituadmission stime_cpnsdeath stime_onscoviddeath,   format
 summ itu_date died_date_ons died_date_cpns died_date_onscovid, format
 
-*/
 
 /* LOGICAL RELATIONSHIPS======================================================*/ 
 
@@ -108,58 +112,113 @@ tab agegroup age70, m
 * Smoking
 tab smoke smoke_nomiss, m
 
-/* ADD 
+/* Treatment variables */ 
 
-ALL TREATMENT VARIABLES TO CHECK THESE ARE AS EXPECTED
-LIFT THIS CHECK FROM THE 01 FILE 
+foreach var of varlist 	high_dose_ics		///
+						low_med_dose_ics 	///
+						ics_single        	///
+						saba_single 		///
+						sama_single 	    ///
+						laba_single 		///
+						lama_single 		///
+						laba_ics 			///
+						laba_lama 			///
+						laba_lama_ics 		///
+						ltra_single	 {
+						
+	tab `var', missing
+	tab exposure `var', missing
 
-*/
+}
+
+tab high_dose_ics ics_single
+tab low_med_dose_ics ics_single
 
 /* EXPECTED RELATIONSHIPS=====================================================*/ 
 
 /*  Relationships between demographic/lifestyle variables  */
 
-tab agegroup bmicat, 	row 
-tab agegroup smoke, 	row 
-tab agegroup ethnicity, row  
-tab agegroup imd, 		row 
+tab agegroup bmicat, 	row col
+tab agegroup smoke, 	row col 
+tab agegroup ethnicity, row col
+tab agegroup imd, 		row col
 
-tab bmicat smoke, 		 row  
-tab bmicat ethnicity, 	 row 
-tab bmicat imd, 	 	 row 
-tab bmicat hypertension, row
+tab bmicat smoke, 		 row col  
+tab bmicat ethnicity, 	 row col
+tab bmicat imd, 	 	 row col
+tab bmicat hypertension, row col
+                            
+tab smoke ethnicity, 	row col
+tab smoke imd, 			row col
+tab smoke hypertension, row col
+                            
+tab ethnicity imd, 		row col
 
-tab smoke ethnicity, 	row  
-tab smoke imd, 			row  
-tab smoke hypertension, row 
 
-tab ethnicity imd, 		row
+/*  Relationships with demographic/lifestyle variables  */ 
 
-/* ADD 
-
-Asthma and smoking
-Asthma and medication 
-COPD and smoking
-COPD and medications 
-
-*/ 
-
-/*  Relationships with demographic/lifestyle variables  
-COMPLETE WITH THE COMPLETE COVARIATE LIST 
 
 * Relationships with age
- foreach var of  foreach var of varlist [PLACEHOLDER] {
+foreach var of varlist  ckd     					///			
+						hypertension				///
+						ili 						///
+						other_respiratory 			///
+						other_heart_disease 		///
+						copd 						///
+						diabetes					///
+						cancer_ever 				///
+						statin 						///
+						insulin						///
+						flu_vaccine					///
+						pneumococcal_vaccine		///								
+						insulin 					///
+						statin 						///
+						immunodef_any				///
+						gp_consult { 
+						
  	tab agegroup `var', row col
  }
 
 
  * Relationships with sex
- foreach var of varlist [PLACEHOLDER] {
+foreach var of varlist  ckd     					///			
+						hypertension				///
+						ili 						///
+						other_respiratory 			///
+						other_heart_disease 		///
+						copd 						///
+						diabetes					///
+						cancer_ever 				///
+						statin 						///
+						insulin						///
+						flu_vaccine					///
+						pneumococcal_vaccine		///								
+						insulin 					///
+						statin 						///
+						immunodef_any				///
+						gp_consult { 
+						
  	tab male `var', row col
  }
 
  * Relationships with smoking
- foreach var of varlist [PLACEHOLDER] {
+foreach var of varlist  ckd     					///			
+						hypertension				///
+						ili 						///
+						other_respiratory 			///
+						other_heart_disease 		///
+						copd 						///
+						diabetes					///
+						cancer_ever 				///
+						statin 						///
+						insulin						///
+						flu_vaccine					///
+						pneumococcal_vaccine		///								
+						insulin 					///
+						statin 						///
+						immunodef_any				///
+						gp_consult { 
+	
  	tab smoke `var', row col
  }
 
@@ -168,7 +227,6 @@ COMPLETE WITH THE COMPLETE COVARIATE LIST
 
 tab onscoviddeath cpnsdeath, row col
 
-*/
 
 * Close log file 
 log close

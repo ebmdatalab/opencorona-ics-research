@@ -1,11 +1,10 @@
 /*==============================================================================
-DO FILE NAME:			A_01_cr_create_analysis_dataset
+DO FILE NAME:			01_cr_create_analysis_dataset
 PROJECT:				ICS in COVID-19 
 DATE: 					6th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
 						adapted from K Baskharan, E Williamson 										
-DESCRIPTION OF FILE:	program 01, COPD population for ICS project  
-						check inclusion/exclusion citeria
+DESCRIPTION OF FILE:	check inclusion/exclusion citeria
 						reformat variables 
 						categorise variables
 						label variables 
@@ -19,14 +18,14 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/log
 
 * Create directories required 
 
-capture mkdir copd_output
-capture mkdir copd_log
-capture mkdir copd_tempdata
+capture mkdir asthma_output
+capture mkdir asthma_log
+capture mkdir asthma_tempdata
 
 * Open a log file
 
 cap log close
-log using copd_log\01_cr_create_analysis_dataset, replace t
+log using log\01_cr_create_analysis_dataset, replace t
 
 /* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
@@ -57,22 +56,21 @@ duplicates tag patient_id, generate(dup_check)
 assert dup_check == 0 
 drop dup_check
 
-* INCLUSION 1: COPD ever before 1 March 2020 
+* INCLUSION 1: Asthma in 3 years of 1 March 2020 
 
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
 assert age < .
 assert age > 17 
 assert age < 111 
  
-* INCLUSION 3: M or F gender at 1 March 2020 
+* INCLUSION 3: Non-missing gender at 1 March 2020 
 assert inlist(sex, "M", "F")
 
-* INCLUSION 4: Smoking record ever (current or past)
 * EXCLUSION 1: 12 months or baseline time 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
 * EXCLUSION 3: COPD 
 * EXCLUSION 4: Nebulising treament 
-* EXCLUDE 5: DIED BEFORE THE 1ST OF MARCH 
+
 
 * After checks, create variable for number of people in population 
 
@@ -86,16 +84,20 @@ rename bp_sys_date_measured		   			bp_sys_date
 /* Comorb dates are given with month only, so adding day 15 to enable
    them to be processed as dates 											  */
 
-// 						heart failure					///
-// 						exacerbation		 			///
+
+// 						Heart Failure					///
+// 						Other Heart Disease				///
+// 						Flu vaccine 					///
+// 						Pneuomococcal vaccine			///
+// 						GP consultation rate 			///
 //						asthma           				///
+//						ckd_diagnosis    				///
 
 foreach var of varlist 	aplastic_anaemia				///
 						bmi_date_measured 				///
 						copd            				///
 						creatinine_date  				///
 						diabetes         				///
-						flu_vaccine						///
 						haem_cancer      				///
 						hiv             				///
 						hypertension     				///
@@ -106,9 +108,9 @@ foreach var of varlist 	aplastic_anaemia				///
 						other_heart_disease				///
 						other_respiratory 				///
 						permanent_immunodeficiency   	///
-						pneumococcal_vaccine			///
 						smoking_status_date				///
 						temporary_immunodeficiency   	///
+						vaccine							///
 						insulin 						///
 						statin 							///
 						ics_single                      ///
@@ -164,6 +166,9 @@ rename temporary_immunodeficiency_date temp_immunodef_date
 *  Create assertions to make sure variables are defined prior to index 
 
 // 						Heart Failure					///
+// 						Flu vaccine 					///
+// 						Pneuomococcal vaccine			///
+// 						GP consultation rate 			///
 //						asthma           				///
 // 						exacerbation 					///
 
@@ -176,16 +181,15 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						hiv_date             				///
 						hypertension_date     				///
 						esrf_date 							///
-						flu_vaccine_date					///
 						ili_date              				///
 						lung_cancer_date     				///
 						other_cancer_date    				///
 						other_heart_disease_date			///
 						other_respiratory_date 				///
 						perm_immunodef_date   				///
-						pneumococcal_vaccine_date			///
 						smoking_status_measured_date		///
 						temp_immunodef_date   				///
+						vaccine_date						///
 						insulin_date 						///
 						statin_date 						///
 						ics_single_date                     ///
@@ -222,25 +226,19 @@ foreach var of varlist 	aplastic_anaemia_date				///
                                    
 * Set up exposure of interest 
 
-gen exptemp1 = 1 if laba_lama == 1 
-gen exptemp2 = 1 if laba_single == 1 & lama_single == 1 
-
-gen exptemp3 = 1 if laba_ics == 1 
-gen exptemp4 = 1 if ics_single == 1 & laba_single == 1 
-gen exptemp5 = 1 if ics_single == 1 & (laba_lama == 1 | lama_single == 1)
-gen exptemp6 = 1 if laba_lama_ics == 1
-
-gen exposure = 0 if		exptemp1 == 1 | ///
-						exptemp2 == 1
+gen exposure = 0 if saba_single    == 1 & ///
+                    ics_single     != 1 & ///
+					laba_single    != 1 & /// 
+					lama_single    != 1 & ///
+					laba_ics       != 1 & ///
+					laba_lama      != 1 & ///
+					laba_lama_ics  != 1 & ///
+					ltra_single    != 1    
+							
+replace exposure = 1 if low_med_dose_ics  == 1 
+replace exposure = 2 if high_dose_ics     == 1 
 						
-replace exposure = 1 if exptemp3 == 1 | /// 
-						exptemp4 == 1 | /// 
-						exptemp5 == 1 | ///
-						exptemp6 == 1 
-						
-recode exposure(0 = .) if ics_single == 1 
-						
-label define exposure 0 "LABA/LAMA Combination" 1 "ICS Combination" 
+label define exposure 0 "SABA only" 1 "ICS low dose" 2 "ICS high dose" 
 label values exposure exposure 
 
 /* DEMOGRAPHICS */ 
@@ -249,6 +247,17 @@ label values exposure exposure
 assert inlist(sex, "M", "F")
 gen male = (sex == "M")
 drop sex
+
+* Smoking 
+label define smoke 1 "Never" 2 "Former" 3 "Current" .u "Unknown (.u)"
+
+gen     smoke = 1  if smoking_status == "N"
+replace smoke = 2  if smoking_status == "E"
+replace smoke = 3  if smoking_status == "S"
+replace smoke = .u if smoking_status == "M"
+
+label values smoke smoke
+drop smoking_status
 
 * Ethnicity 
 replace ethnicity = .u if ethnicity == .
@@ -267,28 +276,6 @@ rename stp stp_old
 bysort stp_old: gen stp = 1 if _n==1
 replace stp = sum(stp)
 drop stp_old
-
-/*  IMD  */
-* Group into 5 groups
-rename imd imd_o
-egen imd = cut(imd_o), group(5) icodes
-
-* add one to create groups 1 - 5 
-replace imd = imd + 1
-
-* - 1 is missing, should be excluded from population 
-replace imd = .u if imd_o == -1
-drop imd_o
-
-* Reverse the order (so high is more deprived)
-recode imd 5 = 1 4 = 2 3 = 3 2 = 4 1 = 5 .u = .u
-
-label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
-label values imd imd 
-
-* Exclude unknowns 
-
-drop if imd == .u 
 
 /*  Age variables  */ 
 
@@ -372,24 +359,30 @@ label values obese4cat obese4cat
 order obese4cat, after(bmicat)
 
 /*  Smoking  */
-
-* Smoking 
-label define smoke 1 "Never" 2 "Former" 3 "Current" .u "Unknown (.u)"
-
-gen     smoke = 1  if smoking_status == "N"
-replace smoke = 2  if smoking_status == "E"
-replace smoke = 3  if smoking_status == "S"
-replace smoke = .u if smoking_status == "M"
-replace smoke = .u if smoking_status == "" 
-
-label values smoke smoke
-drop smoking_status
-
 * Create non-missing 3-category variable for current smoking
 * Assumes missing smoking is never smoking 
 recode smoke .u = 1, gen(smoke_nomiss)
 order smoke_nomiss, after(smoke)
 label values smoke_nomiss smoke
+
+describe 
+
+/*  IMD  */
+* Group into 5 groups
+* There's imd that's -1 --> what does this mean? Should this be missing? 
+
+rename imd imd_o
+egen imd = cut(imd_o), group(5) icodes
+replace imd = imd + 1
+replace imd = .u if imd_o==-1
+drop imd_o
+
+* Reverse the order (so high is more deprived)
+recode imd 5 = 1 4 = 2 3 = 3 2 = 4 1 = 5 .u = .u
+
+label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
+label values imd imd 
+
 
 /* CLINICAL COMORBIDITIES */ 
 
@@ -398,12 +391,7 @@ label values smoke_nomiss smoke
 
 
 /* GP consultation rate */ 
-replace gp_consult_count = 0 if gp_consult_count <1 
-
-* those with no count assumed to have no visits 
-replace gp_consult_count = 0 if gp_consult_count == . 
-gen gp_consult = (gp_consult_count >=1)
-
+* Need to make categories 
 
 /*  Cancer  */
 
@@ -522,9 +510,6 @@ rename icu_date_admitted itu_date
 * Date of Covid death in ONS
 gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
 
-format died_date_ons %td
-format died_date_onscovid %td 
-
 * Binary indicators for outcomes
 gen cpnsdeath 		= (died_date_cpns		< .)
 gen onscoviddeath 	= (died_date_onscovid 	< .)
@@ -621,9 +606,6 @@ label var immunodef_any					"Immunosuppressed (combination algorithm)"
 
 label var statin 						"Recent Statin"
 label var insulin						"Recent Insulin"
-label var flu_vaccine					"Flu vaccine"
-label var pneumococcal_vaccine			"Pneumococcal Vaccine"
-label var gp_consult					"At least one GP consultation"
 
 label var ckd_date     					"Chronic kidney disease Date" 
 label var hypertension_date			    "Diagnosed hypertension Date"
@@ -637,8 +619,6 @@ label var cancer_ever_date 				"Cancer Date"
 
 label var statin_date 					"Recent Statin Date"
 label var insulin_date					"Recent Insulin Date"
-label var flu_vaccine_date				"Flu vaccine Date"
-label var pneumococcal_vaccine_date 	"Pneumococcal Vaccine Date"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
@@ -649,10 +629,6 @@ label var onscoviddeathcensor_date 		"Date of admin censoring for ONS deaths"
 label var ituadmission					"Failure/censoring indicator for outcome: ITU admission"
 label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid death"
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
-
-label var died_date_cpns				"Date of CPNS Death"
-label var died_date_onscovid 			"Date of ONS Death"
-label var itu_date 						"Date of ITU Admission"
 
 * Survival times
 label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
@@ -667,11 +643,12 @@ drop `r(varlist)'
 /* SAVE DATA==================================================================*/	
 
 sort patient_id
-save copd_tempdata\analysis_dataset, replace
+label data "Analysis dataset ICS and Covid-19, asthma population"
+save tempdata\analysis_dataset, replace
 
 * Save a version set on CPNS survival outcome
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
-save copd_tempdata\analysis_dataset_STSET_cpnsdeath, replace
+save tempdata\analysis_dataset_STSET_cpnsdeath, replace
 
 log close
 
