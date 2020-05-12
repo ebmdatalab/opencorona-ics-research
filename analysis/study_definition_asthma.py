@@ -15,9 +15,9 @@ study = StudyDefinition(
     },
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_copd",
-        has_copd=patients.with_these_clinical_events(
-            copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
+        "has_follow_up AND has_asthma",
+        has_asthma=patients.with_these_clinical_events(
+            asthma_codes, on_or_before="2017-03-01"
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
@@ -31,7 +31,7 @@ study = StudyDefinition(
         return_expectations={"date": {}},
     ),
     died_date_cpns=patients.with_death_recorded_in_cpns(
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
@@ -39,19 +39,21 @@ study = StudyDefinition(
     ),
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         match_only_underlying_cause=False,
         return_expectations={"date": {}},
     ),
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist,
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         match_only_underlying_cause=True,
         return_expectations={"date": {}},
     ),
     died_date_ons=patients.died_from_any_cause(
-        on_or_before="2020-06-01",
+        on_or_after="2020-03-01",
         returning="date_of_death",
+        include_month=True,
+        include_day=True,
         return_expectations={"date": {}},
     ),
     ## DEMOGRAPHIC INFORMATION
@@ -94,7 +96,7 @@ study = StudyDefinition(
     ),
     ## COVARIATES
     bmi=patients.most_recent_bmi(
-        on_or_after="2010-02-01",
+        on_or_after="2010-03-01",
         minimum_age_at_measurement=16,
         include_measurement_date=True,
         include_month=True,
@@ -136,17 +138,24 @@ study = StudyDefinition(
         return_expectations={"date": {}},
     ),
 
-    # ### EXACERBATIONS OF COPD (THIS SHOULD BE COMMENTED OUT FOR ASTHMA POP
-    exacerbation_count=patients.with_these_clinical_events(
-        placeholder_event_codes, ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
-        on_or_before="2020-03-01", ### change to relevant dates
-        ignore_days_where_these_codes_occur=placeholder_event_codes, ### change to annual review and rescue pakcs
-        returning="number_of_episodes",
-        episode_defined_as=">14 consecutive days with no matching codes",
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 10, "stddev": 8}
-        },
+    #### HIGH DOSE ICS
+    high_dose_ics=patients.with_these_medications(
+        high_dose_ics_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
     ),
+
+    ### LOW-MED DOSE ICS
+    low_med_dose_ics=patients.with_these_medications(
+        low_medium__ics_med_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -250,6 +259,15 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    ### OTHER HEART DISEASE
+    other_heart_disease=patients.with_these_clinical_events(
+        other_heart_disease_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -259,7 +277,7 @@ study = StudyDefinition(
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
-        placeholder_event_codes,
+        hypertension_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
@@ -347,9 +365,18 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 43.2, "stddev": 10}
+            "float": {"distribution": "normal", "mean": 60.0, "stddev": 15}
         },
     ),
+
+    #### end stage renal disease codes incl. dialysis / transplant
+    esrf=patients.with_these_clinical_events(
+        ckd_codes,
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### VACCINATION HISTORY
     vaccine=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE

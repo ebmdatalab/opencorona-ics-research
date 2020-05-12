@@ -13,16 +13,18 @@ study = StudyDefinition(
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
+
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_asthma",
-        has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-03-01"
+        "has_follow_up AND has_copd",
+        has_copd=patients.with_these_clinical_events(
+            copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
         ),
     ),
+
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-03-01",
@@ -400,4 +402,22 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    # ### EXACERBATIONS OF COPD
+    # exacerbation_count=patients.with_these_clinical_events(
+    #     placeholder_event_codes,  ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
+    #     on_or_before="2020-03-01",  ### change to relevant dates
+    #     ignore_days_where_these_codes_occur=placeholder_event_codes,  ### change to annual review and rescue pakcs
+    #     returning="number_of_episodes",
+    #     episode_defined_as=">14 consecutive days with no matching codes",
+    #     return_expectations={
+    #         "int": {"distribution": "normal", "mean": 10, "stddev": 8}
+    #     },
+    # ),
+
 )
+
+
+
+
+
