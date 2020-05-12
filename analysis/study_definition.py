@@ -380,12 +380,22 @@ study = StudyDefinition(
     ),
 
     ### VACCINATION HISTORY
-    vaccine=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+    flu_vaccine=patients.with_these_medications(
+        flu_codes,
+        between=["2019-03-01", "2020-03-01"],
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
+
+    pneumococcal_vaccine=patients.with_these_medications(
+        pneumococcal_codes,
+        between=["2015-03-01", "2020-03-01"],
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,

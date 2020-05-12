@@ -384,6 +384,7 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -392,6 +393,7 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
+
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
