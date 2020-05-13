@@ -121,7 +121,6 @@ foreach var of varlist 	aplastic_anaemia				///
 						laba_ics 	                    ///
 						laba_lama 	                    ///
 						laba_lama_ics					///
-						nebules 						///
 						oral_steroids					///
                         ltra_single {
 							
@@ -198,7 +197,6 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						laba_ics_date 	                    ///
 						laba_lama_date 	                    ///
 						laba_lama_ics_date					///
-						nebules_date 						///
 						oral_steroids_date					///
                         ltra_single_date {
 	
@@ -587,7 +585,6 @@ label var laba_lama 				"LABA LAMA"
 label var laba_lama_ics 			"LABA LAMA ICS"
 label var ltra_single				"Single LTRA"
 
-label var nebules 					"Nebules"
 label var oral_steroids 			"Oral Steroids"
 
 label var high_dose_ics_date		"High Dose ICS Date"
@@ -602,7 +599,6 @@ label var laba_lama_date 			"LABA LAMA Date"
 label var laba_lama_ics_date		"LABA LAMA ICS Date"
 label var ltra_single_date			"Single LTRA Date"
 
-label var nebules_date 					"Nebules Date"
 label var oral_steroids_date 			"Oral Steroids Date"
 
 * Comorbidities of interest 

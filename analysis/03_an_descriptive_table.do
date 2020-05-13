@@ -194,7 +194,6 @@ foreach comorb of varlist 	ckd								///
 							statin 							///
 							insulin							///
 							oral_steroids 					///
-							nebules 						///
 							flu_vaccine 					///
 							pneumococcal_vaccine			///
 							gp_consult {

@@ -84,7 +84,6 @@ foreach var of varlist  ckd     					///
 						insulin						///
 						flu_vaccine					///
 						pneumococcal_vaccine		///	
-						nebules						///	
 						oral_steroids				///	
 						insulin 					///
 						statin { 
