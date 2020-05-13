@@ -423,6 +423,7 @@ study = StudyDefinition(
         return_expectations={
             "float": {"distribution": "normal", "mean": 60.0, "stddev": 15},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
     #### end stage renal disease codes incl. dialysis / transplant
