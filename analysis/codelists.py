@@ -123,7 +123,7 @@ saba_med_codes = codelist_from_csv(
 )
 
 sama_med_codes = codelist_from_csv(
-    "codelists/opensafely-sama-medications.csv", system="snomed", column="id"
+    "codelists/opensafely-sama-medication.csv", system="snomed", column="id"
 )
 
 asthma_codes = codelist_from_csv(
