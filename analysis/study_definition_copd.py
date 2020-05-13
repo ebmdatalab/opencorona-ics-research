@@ -58,33 +58,33 @@ study = StudyDefinition(
         on_or_after="2020-03-01",
         include_day=True,
         returning="date_admitted",
-        return_expectations={"date": {}},
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_date_cpns=patients.with_death_recorded_in_cpns(
         on_or_after="2020-03-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
-        return_expectations={"date": {}},
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_after="2020-03-01",
         match_only_underlying_cause=False,
-        return_expectations={"date": {}},
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_after="2020-03-01",
         match_only_underlying_cause=True,
-        return_expectations={"date": {}},
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     died_date_ons=patients.died_from_any_cause(
         on_or_after="2020-03-01",
         returning="date_of_death",
         include_month=True,
         include_day=True,
-        return_expectations={"date": {}},
+        return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
     ## DEMOGRAPHIC INFORMATION
     age=patients.age_as_of(
@@ -122,7 +122,10 @@ study = StudyDefinition(
         returning="category",
         find_last_match_in_period=True,
         include_date_of_match=True,
-        return_expectations={"category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}}},
+        return_expectations={
+            "category": {"ratios": {"1": 0.8, "5": 0.1, "3": 0.1}},
+            "incidence": 0.75,
+        },
     ),
     ## COVARIATES
     bmi=patients.most_recent_bmi(
@@ -133,6 +136,7 @@ study = StudyDefinition(
         return_expectations={
             "date": {},
             "float": {"distribution": "normal", "mean": 35, "stddev": 10},
+            "incidence": 0.95,
         },
     ),
     smoking_status=patients.categorised_as(
@@ -165,7 +169,7 @@ study = StudyDefinition(
         on_or_before="2020-03-01",
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={"date": {"latest": "2020-03-01"}},
     ),
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
@@ -173,7 +177,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     ### LOW-MED DOSE ICS
     low_med_dose_ics=patients.with_these_medications(
@@ -181,7 +187,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
@@ -189,7 +197,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### ORAL STEROIDS SINGLE CONSTITUENT
     oral_steroids=patients.with_these_medications(
@@ -197,7 +207,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### SABA SINGLE CONSTITUENT
     saba_single=patients.with_these_medications(
@@ -205,7 +217,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
@@ -213,7 +227,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
@@ -221,7 +237,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
@@ -229,7 +247,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
@@ -237,7 +257,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
@@ -245,7 +267,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
@@ -253,7 +277,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
@@ -261,7 +287,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+        },
     ),
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
@@ -314,7 +342,8 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 80, "stddev": 10}
+            "float": {"distribution": "normal", "mean": 80, "stddev": 10},
+            "date": {"latest": "2020-03-01"},
         },
     ),
     ### DIASTOLIC BLOOD PRESSURE
@@ -325,7 +354,8 @@ study = StudyDefinition(
         include_measurement_date=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 120, "stddev": 10}
+            "float": {"distribution": "normal", "mean": 120, "stddev": 10},
+            "date": {"latest": "2020-03-01"},
         },
     ),
     ### DIABETES
@@ -389,7 +419,8 @@ study = StudyDefinition(
         include_date_of_match=True,
         include_month=True,
         return_expectations={
-            "float": {"distribution": "normal", "mean": 60.0, "stddev": 15}
+            "float": {"distribution": "normal", "mean": 60.0, "stddev": 15},
+            "date": {"latest": "2020-03-01"},
         },
     ),
     #### end stage renal disease codes incl. dialysis / transplant
@@ -420,7 +451,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
     ),
     ### STATIN USE
     statin=patients.with_these_medications(
@@ -428,7 +461,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
     ),
     ### EXACERBATIONS OF COPD
     exacerbation_count=patients.with_these_clinical_events(
@@ -447,6 +482,9 @@ study = StudyDefinition(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
         on_or_before="2019-03-01",
         returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 4, "stddev": 2}},
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 4, "stddev": 2},
+            "date": {"latest": "2020-03-01"},
+        },
     ),
 )
