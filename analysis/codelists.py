@@ -191,6 +191,14 @@ ra_codes = codelist_from_csv(
     "codelists/opensafely-rheumatoid-arthritis.csv", system="ctv3", column="CTV3ID"
 )
 
+sle_codes = codelist_from_csv(
+    "codelists/opensafely-systemic-lupus-erythematosus-sle.csv", system="ctv3", column="CTV3ID"
+)
+
+interstital_lung_codes = codelist_from_csv(
+    "codelists/opensafely-interstitial-lung-disease.csv", system="ctv3", column="CTV3ID"
+)
+
 flu_med_codes = codelist_from_csv(
     "codelists/opensafely-influenza-vaccination.csv", system="snomed", column="snomed_id"
 )
