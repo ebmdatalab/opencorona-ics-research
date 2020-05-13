@@ -13,16 +13,43 @@ study = StudyDefinition(
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
+
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_asthma",
+        """
+        has_asthma AND
+        (age_excl >=18 AND age_excl <= 110) AND
+        has_follow_up AND NOT
+        has_copd AND NOT
+        nebules
+        """,
         has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-03-01"
+            asthma_codes,
+            between=["2017-03-01", "2020-03-01"],
+        ),
+        age_excl=patients.age_as_of(
+            "2020-03-01",
+            return_expectations={
+                "rate": "universal",
+                "int": {"distribution": "population_ages"},
+            },
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
         ),
+        has_copd=patients.with_these_clinical_events(
+            copd_codes,
+            between=["2017-03-01", "2020-03-01"],
+        ),
+        nebules=patients.with_these_medications(
+            nebulised_med_codes,
+            between=["2019-03-01", "2020-03-01"],
+            return_last_date_in_period=True,
+            include_month=True,
+            return_expectations={"date": {}},
+        ),
     ),
+
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-03-01",
@@ -104,38 +131,6 @@ study = StudyDefinition(
             "date": {},
             "float": {"distribution": "normal", "mean": 35, "stddev": 10},
         },
-    ),
-    smoking_status=patients.categorised_as(
-        {
-            "S": "most_recent_smoking_code = 'S'",
-            "E": """
-                         most_recent_smoking_code = 'E' OR (
-                           most_recent_smoking_code = 'N' AND ever_smoked
-                         )
-                    """,
-            "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
-            "M": "DEFAULT",
-        },
-        return_expectations={
-            "category": {"ratios": {"S": 0.6, "E": 0.1, "N": 0.2, "M": 0.1}}
-        },
-        most_recent_smoking_code=patients.with_these_clinical_events(
-            clear_smoking_codes,
-            find_last_match_in_period=True,
-            on_or_before="2020-03-01",
-            returning="category",
-        ),
-        ever_smoked=patients.with_these_clinical_events(
-            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-            on_or_before="2020-03-01",
-        ),
-    ),
-    smoking_status_date=patients.with_these_clinical_events(
-        clear_smoking_codes,
-        on_or_before="2020-03-01",
-        return_last_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
     ),
 
     #### HIGH DOSE ICS
@@ -231,14 +226,6 @@ study = StudyDefinition(
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
         leukotriene_med_codes,
-        between=["2019-11-01", "2020-03-01"],
-        return_last_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
-    ),
-    #### NEBULES
-    nebules=patients.with_these_medications(
-        nebulised_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
