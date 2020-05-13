@@ -196,7 +196,7 @@ high_dose_ics_single_ingredient_med_codes = codelist_from_csv(
 )
 
 high_dose_ics_multiple_ingredient_med_codes = codelist_from_csv(
-    "codelists/opensafely-high-dose-multiple-ingredient-ics-inhaler.csv", system="snomed", column="id"
+    "codelists/opensafely-high-dose-multiple-ingredient-ics-inhalers.csv", system="snomed", column="id"
 )
 
 other_heart_disease_codes = codelist_from_csv(
