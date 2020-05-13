@@ -11,6 +11,8 @@ opensafely/ethnicity/2020-04-27
 opensafely/haematological-cancer/2020-04-15
 opensafely/heart-failure/2020-05-05
 opensafely/high-dose-ics-inhalers/2020-05-05
+opensafely/high-dose-multiple-ingredient-ics-inhalers/2020-05-13
+opensafely/high-dose-single-ingredient-ics-inhalers/2020-05-13
 opensafely/hiv/2020-04-24
 opensafely/hypertension/2020-04-28
 opensafely/inflammatory-bowel-disease/2020-04-07
@@ -22,6 +24,8 @@ opensafely/laba-lama-combination-inhaler/2020-05-05
 opensafely/laba-lama-ics-combination-inhaler/2020-05-05
 opensafely/leukotriene-receptor-antagonist-medication/2020-05-05
 opensafely/low-and-medium-dose-ics-inhalers/2020-05-05
+opensafely/low-and-medium-dose-multiple-ingredient-ics-inhalers/2020-05-13
+opensafely/low-and-medium-dose-single-ingredient-ics-inhalers/2020-05-13
 opensafely/lung-cancer/2020-04-15
 opensafely/multiple-sclerosis/2020-05-12
 opensafely/nebulised-asthma-and-copd-medications/2020-05-05
@@ -32,6 +36,7 @@ opensafely/rheumatoid-arthritis/2020-05-12
 opensafely/temporary-immunosuppresion/2020-04-24
 opensafely/saba-inhaler-medications/2020-05-06
 opensafely/sama-medication/2020-05-11
+opensafely/single-ingredient-ics/2020-05-13
 opensafely/single-ingredient-laba-inhalers/2020-05-06
 opensafely/single-ingredient-lama-inhalers/2020-05-06
 opensafely/systemic-lupus-erythematosus-sle/2020-05-12

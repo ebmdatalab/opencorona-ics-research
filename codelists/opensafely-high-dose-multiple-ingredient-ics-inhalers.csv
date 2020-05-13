@@ -1,0 +1,27 @@
+type,id,bnf_code,nm
+amp,31063411000001101,0302000C0BQABBZ,Fostair 200micrograms/dose / 6micrograms/dose inhaler (Chiesi Ltd)
+amp,31063111000001106,0302000C0BRABCA,Fostair NEXThaler 200micrograms/dose / 6micrograms/dose dry powder inhaler (Chiesi Ltd)
+amp,4373811000001100,0302000K0BDACAU,Symbicort 400/12 Turbohaler (AstraZeneca UK Ltd)
+amp,25254711000001106,0302000K0BHABAU,DuoResp Spiromax 320micrograms/dose / 9micrograms/dose dry powder inhaler (Teva UK Ltd)
+amp,34812111000001106,0302000K0BIAAAU,Fobumix Easyhaler 320micrograms/dose / 9micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
+amp,31064811000001101,0302000N0AAAZAZ,Fluticasone propionate 500micrograms/dose / Salmeterol 50micrograms/dose dry powder inhaler (A A H Pharmaceuticals Ltd)
+amp,3188311000001102,0302000N0BCACAZ,Seretide 500 Accuhaler (GlaxoSmithKline UK Ltd)
+amp,539811000001106,0302000N0BCAFBG,Seretide 250 Evohaler (GlaxoSmithKline UK Ltd)
+amp,21019711000001107,0302000N0BDABBK,Flutiform 250micrograms/dose / 10micrograms/dose inhaler (Napp Pharmaceuticals Ltd)
+amp,29782511000001103,0302000N0BFABBG,Sirdupla 25micrograms/dose / 250micrograms/dose inhaler (Mylan)
+amp,30950311000001106,0302000N0BGAAAZ,AirFluSal Forspiro 50micrograms/dose / 500micrograms/dose dry powder inhaler (Sandoz Ltd)
+amp,34215511000001101,0302000N0BGACBG,AirFluSal 25micrograms/dose / 250micrograms/dose inhaler (Sandoz Ltd)
+amp,33679711000001103,0302000N0BHAAAZ,Aerivio Spiromax 50micrograms/dose / 500micrograms/dose dry powder inhaler (Teva UK Ltd)
+amp,34023811000001102,0302000N0BIABBG,Sereflo 25micrograms/dose / 250micrograms/dose inhaler (Cipla EU Ltd)
+amp,34675711000001103,0302000N0BJABBG,Aloflute 25micrograms/dose / 250micrograms/dose inhaler (Mylan)
+amp,35515311000001106,0302000N0BKABAZ,Fusacomb Easyhaler 50micrograms/dose / 500micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
+amp,35594411000001101,0302000N0BLACBG,Combisal 25micrograms/dose / 250micrograms/dose inhaler (Aspire Pharma Ltd)
+amp,36604711000001102,0302000N0BMAAAZ,Stalpex 50micrograms/dose / 500micrograms/dose dry powder inhaler (Glenmark Pharmaceuticals Europe Ltd)
+amp,23621711000001102,0302000V0BBAAAA,Relvar Ellipta 184micrograms/dose / 22micrograms/dose dry powder inhaler (GlaxoSmithKline UK Ltd)
+vmp,31087411000001106,0302000C0AABZBZ,Beclometasone 200micrograms/dose / Formoterol 6micrograms/dose inhaler CFC free
+vmp,31087511000001105,0302000C0AACACA,Beclometasone 200micrograms/dose / Formoterol 6micrograms/dose dry powder inhaler
+vmp,4378111000001103,0302000K0AAAUAU,Budesonide 400micrograms/dose / Formoterol 12micrograms/dose dry powder inhaler
+vmp,320280004,0302000N0AAAZAZ,Fluticasone propionate 500micrograms/dose / Salmeterol 50micrograms/dose dry powder inhaler
+vmp,320276009,0302000N0AABGBG,Fluticasone 250micrograms/dose / Salmeterol 25micrograms/dose inhaler CFC free
+vmp,21113811000001105,0302000N0AABKBK,Fluticasone 250micrograms/dose / Formoterol 10micrograms/dose inhaler CFC free
+vmp,23661311000001105,0302000V0AAAAAA,Fluticasone furoate 184micrograms/dose / Vilanterol 22micrograms/dose dry powder inhaler
