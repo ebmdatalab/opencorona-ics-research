@@ -161,7 +161,7 @@ study = StudyDefinition(
     ),
 
     #### HIGH DOSE ICS - single ingredient preparations
-    high_dose_ics=patients.with_these_medications(
+    high_dose_ics_single_ing=patients.with_these_medications(
         high_dose_ics_single_ingredient_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
@@ -170,7 +170,7 @@ study = StudyDefinition(
     ),
 
     #### HIGH DOSE ICS - multiple ingredient preparation
-    high_dose_ics=patients.with_these_medications(
+    high_dose_ics_multiple_ingredient=patients.with_these_medications(
         high_dose_ics_multiple_ingredient_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
@@ -179,7 +179,7 @@ study = StudyDefinition(
     ),
 
     ### LOW-MED DOSE ICS - single ingredient preparations
-    low_med_dose_ics=patients.with_these_medications(
+    low_med_dose_ics_single_ingredient=patients.with_these_medications(
         low_medium_ics_single_ingredient_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
@@ -188,7 +188,7 @@ study = StudyDefinition(
     ),
 
     ### LOW-MED DOSE ICS - multiple ingredient preparations
-    low_med_dose_ics=patients.with_these_medications(
+    low_med_dose_ics_multiple_ingredient=patients.with_these_medications(
         low_medium_ics_multiple_ingredient_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
@@ -305,6 +305,7 @@ study = StudyDefinition(
     ),
 
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
+    
     ### COPD
     copd=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE

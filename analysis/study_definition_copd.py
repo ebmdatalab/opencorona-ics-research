@@ -163,7 +163,7 @@ study = StudyDefinition(
 
     ### LOW-MED DOSE ICS
     low_med_dose_ics=patients.with_these_medications(
-        low_medium__ics_med_codes,
+        low_medium_ics_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
