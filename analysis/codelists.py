@@ -47,7 +47,7 @@ heart_failure_codes = codelist_from_csv(
 )
 
 ics_single_med_codes = codelist_from_csv(
-    "codelists/single-ingredient-ics/2020-05-13.csv",
+    "codelists/opensafely-single-ingredient-ics/2020-05-13.csv",
     system="snomed",
     column="id",
 )
