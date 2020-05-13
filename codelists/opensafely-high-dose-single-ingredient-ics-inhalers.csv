@@ -1,0 +1,29 @@
+type,id,bnf_code,nm
+amp,3179811000001108,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (A A H Pharmaceuticals Ltd)
+amp,3180011000001102,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Mylan)
+amp,3180911000001103,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Alliance Healthcare (Distribution) Ltd)
+amp,4774011000001109,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Teva UK Ltd)
+amp,7379311000001100,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Kent Pharmaceuticals Ltd)
+amp,11400811000001102,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Almus Pharmaceuticals Ltd)
+amp,17833911000001100,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler (Phoenix Healthcare Distribution Ltd)
+amp,3180211000001107,0302000C0BBAAAC,Becloforte 250micrograms/dose inhaler (GlaxoSmithKline UK Ltd)
+amp,3182411000001107,0302000C0BEABAU,AeroBec Forte 250 Autohaler (Meda Pharmaceuticals Ltd)
+amp,3180611000001109,0302000C0BFACAC,Beclazone 250 inhaler (Teva UK Ltd)
+amp,3182611000001105,0302000C0BFAFAU,Beclazone 250 Easi-Breathe inhaler (Teva UK Ltd)
+amp,3174111000001102,0302000C0BIAFBK,Asmabec 250 Clickhaler (Focus Pharmaceuticals Ltd)
+amp,10619611000001102,0302000C0BPADBW,Clenil Modulite 250micrograms/dose inhaler (Chiesi Ltd)
+amp,36603811000001107,0302000C0BTADBW,Soprobec 250micrograms/dose inhaler (Glenmark Pharmaceuticals Europe Ltd)
+amp,3228711000001106,0302000K0BBAIAH,Pulmicort 400 Turbohaler (AstraZeneca UK Ltd)
+amp,10074411000001100,0302000K0BGACAH,Easyhaler Budesonide 400micrograms/dose dry powder inhaler (Orion Pharma (UK) Ltd)
+amp,3103511000001100,0302000N0BBAFAF,Flixotide 250microgram disks (GlaxoSmithKline UK Ltd)
+amp,3185211000001103,0302000N0BBAUAU,Flixotide 500micrograms/dose Accuhaler (GlaxoSmithKline UK Ltd)
+amp,2831211000001109,0302000N0BBBABC,Flixotide 250micrograms/dose Evohaler (GlaxoSmithKline UK Ltd)
+vmp,35908811000001103,0302000C0AAACAC,Beclometasone 250micrograms/dose inhaler
+vmp,35908611000001102,0302000C0AAAUAU,Beclometasone 250micrograms/dose breath actuated inhaler
+vmp,35908711000001106,0302000C0AABKBK,Beclometasone 250micrograms/dose dry powder inhaler
+vmp,10621111000001100,0302000C0AABWBW,Beclometasone 250micrograms/dose inhaler CFC free
+vmp,35912711000001106,0302000K0AAAHAH,Budesonide 400micrograms/dose dry powder inhaler
+vmp,36059511000001106,0302000N0AAAFAF,Fluticasone propionate 250microgram inhalation powder blisters
+vmp,36059711000001101,0302000N0AAAPAP,Fluticasone propionate 500microgram inhalation powder blisters with device
+vmp,320605000,0302000N0AAAUAU,Fluticasone propionate 500micrograms/dose dry powder inhaler
+vmp,320615006,0302000N0AABCBC,Fluticasone 250micrograms/dose inhaler CFC free
