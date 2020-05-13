@@ -18,7 +18,7 @@ study = StudyDefinition(
         """
         has_copd AND
         (age_excl >=35 AND age_excl <= 110) AND
-        ever_smoked AND
+        ever_smoked_incl AND
         has_follow_up AND NOT
         has_asthma AND NOT
         nebules
@@ -37,7 +37,7 @@ study = StudyDefinition(
                 "int": {"distribution": "population_ages"},
             },
         ),
-        ever_smoked=patients.with_these_clinical_events(
+        ever_smoked_incl=patients.with_these_clinical_events(
             filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
             on_or_before="2020-03-01",
         ),
