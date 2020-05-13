@@ -13,18 +13,46 @@ study = StudyDefinition(
         "rate": "exponential_increase",
         "incidence": 0.2,
     },
-
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_copd",
-        has_copd=patients.with_these_clinical_events(
-            copd_codes, #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
-        ),
+        """
+        has_copd AND
+        (age_excl >=35 AND age_excl <= 110) AND
+        ever_smoked_incl AND
+        has_follow_up AND NOT
+        has_asthma AND NOT
+        nebules
+        """,
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
         ),
+        has_copd=patients.with_these_clinical_events(
+            copd_codes,
+            on_or_before="2020-03-01",  #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
+        ),
+        age_excl=patients.age_as_of(
+            "2020-03-01",
+            return_expectations={
+                "rate": "universal",
+                "int": {"distribution": "population_ages"},
+            },
+        ),
+        ever_smoked_incl=patients.with_these_clinical_events(
+            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
+            on_or_before="2020-03-01",
+        ),
+        has_asthma=patients.with_these_clinical_events(
+            asthma_codes, between=["2017-03-01", "2020-03-01"],
+        ),
+        #### NEBULES
+        nebules=patients.with_these_medications(
+            nebulised_med_codes,
+            between=["2019-03-01", "2020-03-01"],
+            return_last_date_in_period=True,
+            include_month=True,
+            return_expectations={"date": {}},
+        ),
     ),
-
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
         on_or_after="2020-03-01",
@@ -111,9 +139,9 @@ study = StudyDefinition(
         {
             "S": "most_recent_smoking_code = 'S'",
             "E": """
-                     most_recent_smoking_code = 'E' OR (
-                       most_recent_smoking_code = 'N' AND ever_smoked
-                     )
+                     most_recent_smoking_code = 'E' OR (    
+                       most_recent_smoking_code = 'N' AND ever_smoked   
+                     )  
                 """,
             "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
             "M": "DEFAULT",
@@ -139,7 +167,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
         high_dose_ics_codes,
@@ -148,7 +175,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### LOW-MED DOSE ICS
     low_med_dose_ics=patients.with_these_medications(
         low_medium__ics_med_codes,
@@ -157,7 +183,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -238,14 +263,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    #### NEBULES
-    nebules=patients.with_these_medications(
-        nebulised_med_codes,
-        between=["2019-11-01", "2020-03-01"],
-        return_last_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
-    ),
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
@@ -261,7 +278,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### OTHER HEART DISEASE
     other_heart_disease=patients.with_these_clinical_events(
         other_heart_disease_codes,
@@ -269,7 +285,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -284,7 +299,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### HEART FAILURE
     heart_failure=patients.with_these_clinical_events(
         heart_failure_codes,
@@ -292,7 +306,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
@@ -379,7 +392,6 @@ study = StudyDefinition(
             "float": {"distribution": "normal", "mean": 60.0, "stddev": 15}
         },
     ),
-
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
         ckd_codes,
@@ -387,7 +399,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### VACCINATION HISTORY
     flu_vaccine=patients.with_these_medications(
         flu_med_codes,
@@ -396,7 +407,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2019-09-01", "2020-03-01"],
@@ -404,7 +414,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -421,7 +430,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### EXACERBATIONS OF COPD
     exacerbation_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
@@ -434,19 +442,11 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
-
     ### GP CONSULTATION RATE
-    gp_consult_count = patients.with_these_clinical_events(
-        placeholder_event_codes, ### CHANGE TO GP CODE WHEN AVAILABLE
+    gp_consult_count=patients.with_these_clinical_events(
+        placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
         on_or_before="2019-03-01",
         returning="number_of_matches_in_period",
-        return_expectations={
-            "int" : {"distribution" : "normal", "mean" : 4, "stddev" : 2}
-        },
-    )
+        return_expectations={"int": {"distribution": "normal", "mean": 4, "stddev": 2}},
+    ),
 )
-
-
-
-
-

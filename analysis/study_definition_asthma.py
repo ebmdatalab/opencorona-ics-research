@@ -15,12 +15,35 @@ study = StudyDefinition(
     },
     ## STUDY POPULATION (required)
     population=patients.satisfying(
-        "has_follow_up AND has_asthma",
+        """
+        has_asthma AND
+        (age_excl >=18 AND age_excl <= 110) AND
+        has_follow_up AND NOT
+        has_copd AND NOT
+        nebules
+        """,
         has_asthma=patients.with_these_clinical_events(
-            asthma_codes, on_or_before="2017-03-01"
+            asthma_codes, between=["2017-03-01", "2020-03-01"],
+        ),
+        age_excl=patients.age_as_of(
+            "2020-03-01",
+            return_expectations={
+                "rate": "universal",
+                "int": {"distribution": "population_ages"},
+            },
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
+        ),
+        has_copd=patients.with_these_clinical_events(
+            copd_codes, between=["2017-03-01", "2020-03-01"],
+        ),
+        nebules=patients.with_these_medications(
+            nebulised_med_codes,
+            between=["2019-03-01", "2020-03-01"],
+            return_last_date_in_period=True,
+            include_month=True,
+            return_expectations={"date": {}},
         ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
@@ -109,10 +132,10 @@ study = StudyDefinition(
         {
             "S": "most_recent_smoking_code = 'S'",
             "E": """
-                         most_recent_smoking_code = 'E' OR (
-                           most_recent_smoking_code = 'N' AND ever_smoked
-                         )
-                    """,
+                     most_recent_smoking_code = 'E' OR (    
+                       most_recent_smoking_code = 'N' AND ever_smoked   
+                     )  
+                """,
             "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
             "M": "DEFAULT",
         },
@@ -137,7 +160,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
         high_dose_ics_codes,
@@ -146,7 +168,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### LOW-MED DOSE ICS
     low_med_dose_ics=patients.with_these_medications(
         low_medium__ics_med_codes,
@@ -155,7 +176,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
@@ -236,14 +256,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    #### NEBULES
-    nebules=patients.with_these_medications(
-        nebulised_med_codes,
-        between=["2019-11-01", "2020-03-01"],
-        return_last_date_in_period=True,
-        include_month=True,
-        return_expectations={"date": {}},
-    ),
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
@@ -259,7 +271,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### OTHER HEART DISEASE
     other_heart_disease=patients.with_these_clinical_events(
         other_heart_disease_codes,
@@ -267,7 +278,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -282,7 +292,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### HEART FAILURE
     heart_failure=patients.with_these_clinical_events(
         heart_failure_codes,
@@ -290,7 +299,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
@@ -377,7 +385,6 @@ study = StudyDefinition(
             "float": {"distribution": "normal", "mean": 60.0, "stddev": 15}
         },
     ),
-
     ### SLE
     sle=patients.with_these_clinical_events(
         sle_codes,
@@ -385,7 +392,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### institial lung disease
     interstitial_lung_dis=patients.with_these_clinical_events(
         interstital_lung_codes,
@@ -393,7 +399,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### RA
     ra=patients.with_these_clinical_events(
         ra_codes,
@@ -401,7 +406,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### MS
     ms=patients.with_these_clinical_events(
         ms_codes,
@@ -409,15 +413,13 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### temporal arteritis
     temporal_arteritis=patients.with_these_clinical_events(
-        placeholder_event_codes, ####REPLACE WITH REAL CODES WHEN AVAILABLE
+        placeholder_event_codes,  ####REPLACE WITH REAL CODES WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
         ckd_codes,
@@ -425,7 +427,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### VACCINATION HISTORY
     flu_vaccine=patients.with_these_medications(
         flu_med_codes,
@@ -434,7 +435,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2019-09-01", "2020-03-01"],
@@ -442,7 +442,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -459,14 +458,11 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
         on_or_before="2019-03-01",
         returning="number_of_matches_in_period",
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 2}
-        },
-    )
+        return_expectations={"int": {"distribution": "normal", "mean": 4, "stddev": 2}},
+    ),
 )
