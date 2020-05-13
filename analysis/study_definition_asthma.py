@@ -337,6 +337,7 @@ study = StudyDefinition(
         return_expectations={
             "float": {"distribution": "normal", "mean": 80, "stddev": 10},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
     ### DIASTOLIC BLOOD PRESSURE
@@ -349,6 +350,7 @@ study = StudyDefinition(
         return_expectations={
             "float": {"distribution": "normal", "mean": 120, "stddev": 10},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
     ### DIABETES
@@ -498,6 +500,10 @@ study = StudyDefinition(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
         on_or_before="2019-03-01",
         returning="number_of_matches_in_period",
-        return_expectations={"int": {"distribution": "normal", "mean": 4, "stddev": 2}},
+        return_expectations={
+            "int": {"distribution": "normal", "mean": 4, "stddev": 2},
+            "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
+        },
     ),
 )

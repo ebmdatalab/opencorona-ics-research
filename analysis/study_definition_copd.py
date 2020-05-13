@@ -344,6 +344,7 @@ study = StudyDefinition(
         return_expectations={
             "float": {"distribution": "normal", "mean": 80, "stddev": 10},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
     ### DIASTOLIC BLOOD PRESSURE
@@ -356,6 +357,7 @@ study = StudyDefinition(
         return_expectations={
             "float": {"distribution": "normal", "mean": 120, "stddev": 10},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
     ### DIABETES
@@ -485,6 +487,7 @@ study = StudyDefinition(
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 2},
             "date": {"latest": "2020-03-01"},
+            "incidence": 0.95,
         },
     ),
 )
