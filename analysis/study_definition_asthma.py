@@ -133,6 +133,38 @@ study = StudyDefinition(
         },
     ),
 
+    smoking_status=patients.categorised_as(
+        {
+            "S": "most_recent_smoking_code = 'S'",
+            "E": """
+                     most_recent_smoking_code = 'E' OR (    
+                       most_recent_smoking_code = 'N' AND ever_smoked   
+                     )  
+                """,
+            "N": "most_recent_smoking_code = 'N' AND NOT ever_smoked",
+            "M": "DEFAULT",
+        },
+        return_expectations={
+            "category": {"ratios": {"S": 0.6, "E": 0.1, "N": 0.2, "M": 0.1}}
+        },
+        most_recent_smoking_code=patients.with_these_clinical_events(
+            clear_smoking_codes,
+            find_last_match_in_period=True,
+            on_or_before="2020-03-01",
+            returning="category",
+        ),
+        ever_smoked=patients.with_these_clinical_events(
+            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
+            on_or_before="2020-03-01",
+        ),
+    ),
+    smoking_status_date=patients.with_these_clinical_events(
+        clear_smoking_codes,
+        on_or_before="2020-03-01",
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
         high_dose_ics_codes,
