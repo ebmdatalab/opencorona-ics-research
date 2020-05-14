@@ -504,13 +504,13 @@ study = StudyDefinition(
     target_disease_matches="INFLUENZA",
     on_or_after="2019-09-01",
     find_last_match_in_period=True,
-    returning="date",
+    returning={"date"},
     ),
     recent_flu_pneumococcal_tpp_table = patients.with_tpp_vaccination_record(
     target_disease_matches="PNEUMOCOCCAL",
     on_or_after="2015-03-01",
     find_last_match_in_period=True,
-    returning="date",
+    returning={"date"},
     ),  
     ### VACCINATION HISTORY - PART 2 MEDICINES CODES
     flu_vaccine_dmd=patients.with_these_medications(
