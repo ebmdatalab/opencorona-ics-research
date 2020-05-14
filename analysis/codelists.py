@@ -47,7 +47,7 @@ heart_failure_codes = codelist_from_csv(
 )
 
 ics_single_med_codes = codelist_from_csv(
-    "codelists/opensafely-asthma-inhaler-steroid-medication.csv",
+    "codelists/opensafely-single-ingredient-ics.csv",
     system="snomed",
     column="id",
 )
@@ -76,8 +76,20 @@ leukotriene_med_codes = codelist_from_csv(
     column="id",
 )
 
-low_medium__ics_med_codes = codelist_from_csv(
+low_medium_ics_med_codes = codelist_from_csv(
     "codelists/opensafely-low-and-medium-dose-ics-inhalers.csv",
+    system="snomed",
+    column="id",
+)
+
+low_medium_ics_single_ingredient_med_codes = codelist_from_csv(
+    "codelists/opensafely-low-and-medium-dose-single-ingredient-ics-inhalers.csv",
+    system="snomed",
+    column="id",
+)
+
+low_medium_ics_multiple_ingredient_med_codes = codelist_from_csv(
+    "codelists/opensafely-low-and-medium-dose-multiple-ingredient-ics-inhalers.csv",
     system="snomed",
     column="id",
 )
@@ -108,6 +120,10 @@ oral_steroid_med_codes = codelist_from_csv(
 
 saba_med_codes = codelist_from_csv(
     "codelists/opensafely-saba-inhaler-medications.csv", system="snomed", column="id"
+)
+
+sama_med_codes = codelist_from_csv(
+    "codelists/opensafely-sama-medication.csv", system="snomed", column="id"
 )
 
 asthma_codes = codelist_from_csv(
@@ -171,8 +187,16 @@ ckd_codes = codelist_from_csv(
 
 covid_codelist = codelist(["U071", "U072"], system="icd10")
 
-high_dose_ics_codes = codelist_from_csv(
+high_dose_ics_med_codes = codelist_from_csv(
     "codelists/opensafely-high-dose-ics-inhalers.csv", system="snomed", column="id"
+)
+
+high_dose_ics_single_ingredient_med_codes = codelist_from_csv(
+    "codelists/opensafely-high-dose-single-ingredient-ics-inhalers.csv", system="snomed", column="id"
+)
+
+high_dose_ics_multiple_ingredient_med_codes = codelist_from_csv(
+    "codelists/opensafely-high-dose-multiple-ingredient-ics-inhalers.csv", system="snomed", column="id"
 )
 
 other_heart_disease_codes = codelist_from_csv(

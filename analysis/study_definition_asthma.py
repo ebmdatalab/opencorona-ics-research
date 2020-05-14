@@ -164,9 +164,39 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {"latest": "2020-03-01"}},
     ),
-    #### HIGH DOSE ICS
+    #### HIGH DOSE ICS - all preparation
     high_dose_ics=patients.with_these_medications(
-        high_dose_ics_codes,
+        high_dose_ics_med_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
+    ),
+    #### HIGH DOSE ICS - single ingredient preparations
+    high_dose_ics_single_ing=patients.with_these_medications(
+        high_dose_ics_single_ingredient_med_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
+    ),
+    #### HIGH DOSE ICS - multiple ingredient preparation
+    high_dose_ics_multiple_ingredient=patients.with_these_medications(
+        high_dose_ics_multiple_ingredient_med_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
+    ),
+    ### LOW-MED DOSE ICS - single ingredient preparations
+    low_med_dose_ics_single_ingredient=patients.with_these_medications(
+        low_medium_ics_single_ingredient_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
@@ -174,9 +204,17 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-    ### LOW-MED DOSE ICS
+    ### LOW-MED DOSE ICS - multiple ingredient preparations
+    low_med_dose_ics_multiple_ingredient=patients.with_these_medications(
+        low_medium_ics_multiple_ingredient_med_codes,
+        between=["2019-11-01", "2020-03-01"],
+        return_last_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+    ### LOW-MED DOSE ICS - all preparation
     low_med_dose_ics=patients.with_these_medications(
-        low_medium__ics_med_codes,
+        low_medium_ics_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
@@ -216,7 +254,7 @@ study = StudyDefinition(
     ),
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
-        placeholder_med_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        sama_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
@@ -461,21 +499,27 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    ### VACCINATION HISTORY
+    ### PLACEHOLDER VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
+    ### VACCINATION HISTORY - PART 2 MEDICINES CODES
     flu_vaccine=patients.with_these_medications(
         flu_med_codes,
-        between=["2019-09-01", "2020-03-01"],
+        between=["2019-09-01", "2020-03-01"],  # current flu season
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+        },
     ),
     pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
-        between=["2019-09-01", "2020-03-01"],
+        between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+        },
     ),
+    ### PLACEHOLDER VACCINATION HISTORY - PART 3 CLINICAL CODES PLACEHOLDER
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
