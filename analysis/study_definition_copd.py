@@ -305,7 +305,14 @@ study = StudyDefinition(
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
-        other_respiratory_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        other_respiratory_codes,  
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+    ### ASTHMA EVER 
+    asthma_ever=patients.with_these_clinical_events(
+        asthma_ever_codes, 
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
