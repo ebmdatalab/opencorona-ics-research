@@ -433,7 +433,25 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    ### PLACEHOLDER VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
+    ### VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
+    recent_flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
+        target_disease_matches="INFLUENZA",
+        between=["2019-09-01", "2020-03-01"],
+        find_last_match_in_period=True,
+        returning="date",
+        return_expectations={
+            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+        },
+    ),
+    recent_flu_pneumococcal_tpp_table=patients.with_tpp_vaccination_record(
+        target_disease_matches="PNEUMOCOCCAL",
+        between=["2015-03-01", "2020-03-01"],
+        find_last_match_in_period=True,
+        returning="date",
+        return_expectations={
+            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+        },
+    ),
     ### VACCINATION HISTORY - PART 2 MEDICINES CODES
     flu_vaccine=patients.with_these_medications(
         flu_med_codes,
