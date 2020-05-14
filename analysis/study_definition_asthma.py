@@ -499,9 +499,21 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-    ### PLACEHOLDER VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
+    ### VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
+    recent_flu_vaccine_tpp_table = patients.with_tpp_vaccination_record(
+    target_disease_matches="INFLUENZA",
+    on_or_after="2019-09-01",
+    find_last_match_in_period=True,
+    returning="date",
+    ),
+    recent_flu_pneumococcal_tpp_table = patients.with_tpp_vaccination_record(
+    target_disease_matches="PNEUMOCOCCAL",
+    on_or_after="2015-03-01",
+    find_last_match_in_period=True,
+    returning="date",
+    ),  
     ### VACCINATION HISTORY - PART 2 MEDICINES CODES
-    flu_vaccine=patients.with_these_medications(
+    flu_vaccine_dmd=patients.with_these_medications(
         flu_med_codes,
         between=["2019-09-01", "2020-03-01"],  # current flu season
         return_first_date_in_period=True,
@@ -510,7 +522,7 @@ study = StudyDefinition(
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
         },
     ),
-    pneumococcal_vaccine=patients.with_these_medications(
+    pneumococcal_vaccine_dmd=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
