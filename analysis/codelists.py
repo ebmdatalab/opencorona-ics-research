@@ -134,6 +134,10 @@ copd_codes = codelist_from_csv(
     "codelists/opensafely-current-copd.csv", system="ctv3", column="CTV3ID"
 )
 
+other_respiratory_codes = codelist_from_csv(
+    "codelists/opensafely-other-respiratory-conditions.csv", system="ctv3", column="CTV3ID"
+)
+
 hypertension_codes = codelist_from_csv(
     "codelists/opensafely-hypertension.csv", system="ctv3", column="CTV3ID"
 )
