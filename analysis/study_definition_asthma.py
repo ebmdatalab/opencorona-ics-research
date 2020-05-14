@@ -184,7 +184,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
     ),
 
     #### HIGH DOSE ICS - single ingredient preparations
@@ -193,7 +195,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
     ),
 
     #### HIGH DOSE ICS - multiple ingredient preparation
@@ -202,7 +206,9 @@ study = StudyDefinition(
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+        },
     ),
 
     ### LOW-MED DOSE ICS - single ingredient preparations
@@ -544,14 +550,18 @@ study = StudyDefinition(
         between=["2019-09-01", "2020-03-01"], #current flu season
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+        },
     ),
     pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2015-03-01", "2020-03-01"], #past five years
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
+        return_expectations={
+            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+        },
     ),
 
 
