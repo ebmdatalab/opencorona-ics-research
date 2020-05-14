@@ -60,7 +60,6 @@ study = StudyDefinition(
         returning="date_admitted",
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-
     died_date_cpns=patients.with_death_recorded_in_cpns(
         on_or_after="2020-03-01",
         returning="date_of_death",
@@ -68,21 +67,18 @@ study = StudyDefinition(
         include_day=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-
     died_ons_covid_flag_any=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_after="2020-03-01",
         match_only_underlying_cause=False,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-
     died_ons_covid_flag_underlying=patients.with_these_codes_on_death_certificate(
         covid_codelist,
         on_or_after="2020-03-01",
         match_only_underlying_cause=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-
     died_date_ons=patients.died_from_any_cause(
         on_or_after="2020-03-01",
         returning="date_of_death",
@@ -90,7 +86,6 @@ study = StudyDefinition(
         include_day=True,
         return_expectations={"date": {"earliest": "2020-03-01"}},
     ),
-
     ## DEMOGRAPHIC INFORMATION
     age=patients.age_as_of(
         "2020-03-01",
@@ -99,14 +94,12 @@ study = StudyDefinition(
             "int": {"distribution": "population_ages"},
         },
     ),
-
     sex=patients.sex(
         return_expectations={
             "rate": "universal",
             "category": {"ratios": {"M": 0.49, "F": 0.51}},
         }
     ),
-
     stp=patients.registered_practice_as_of(
         "2020-03-01",
         returning="stp_code",
@@ -115,7 +108,6 @@ study = StudyDefinition(
             "category": {"ratios": {"STP1": 0.5, "STP2": 0.5}},
         },
     ),
-
     imd=patients.address_as_of(
         "2020-03-01",
         returning="index_of_multiple_deprivation",
@@ -125,7 +117,6 @@ study = StudyDefinition(
             "category": {"ratios": {"100": 0.1, "200": 0.2, "300": 0.7}},
         },
     ),
-
     ethnicity=patients.with_these_clinical_events(
         ethnicity_codes,
         returning="category",
@@ -136,7 +127,6 @@ study = StudyDefinition(
             "incidence": 0.75,
         },
     ),
-
     ## COVARIATES
     bmi=patients.most_recent_bmi(
         on_or_after="2010-03-01",
@@ -149,7 +139,6 @@ study = StudyDefinition(
             "incidence": 0.95,
         },
     ),
-
     smoking_status=patients.categorised_as(
         {
             "S": "most_recent_smoking_code = 'S'",
@@ -175,7 +164,6 @@ study = StudyDefinition(
             on_or_before="2020-03-01",
         ),
     ),
-
     smoking_status_date=patients.with_these_clinical_events(
         clear_smoking_codes,
         on_or_before="2020-03-01",
@@ -223,7 +211,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### SABA SINGLE CONSTITUENT
     saba_single=patients.with_these_medications(
         saba_med_codes,
@@ -234,10 +221,9 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
-        sama_med_codes,  
+        sama_med_codes,
         between=["2019-11-01", "2020-03-01"],
         return_last_date_in_period=True,
         include_month=True,
@@ -245,7 +231,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
         single_laba_med_codes,
@@ -256,7 +241,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
         single_lama_med_codes,
@@ -267,7 +251,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
         laba_ics_med_codes,
@@ -278,7 +261,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
         laba_lama_med_codes,
@@ -289,7 +271,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
         laba_lama__ics_med_codes,
@@ -300,7 +281,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
         leukotriene_med_codes,
@@ -311,7 +291,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
         },
     ),
-
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
@@ -320,7 +299,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
@@ -342,7 +320,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
         hypertension_codes,
@@ -370,7 +347,6 @@ study = StudyDefinition(
             "incidence": 0.95,
         },
     ),
-
     ### DIASTOLIC BLOOD PRESSURE
     bp_dias=patients.mean_recorded_value(
         diastolic_blood_pressure_codes,
@@ -384,7 +360,6 @@ study = StudyDefinition(
             "incidence": 0.95,
         },
     ),
-
     ### DIABETES
     diabetes=patients.with_these_clinical_events(
         diabetes_codes,
@@ -392,7 +367,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
         lung_cancer_codes,
@@ -400,21 +374,18 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     haem_cancer=patients.with_these_clinical_events(
         haem_cancer_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     other_cancer=patients.with_these_clinical_events(
         other_cancer_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     # IMMUNOSUPPRESSION - 4 TYPES
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
     aplastic_anaemia=patients.with_these_clinical_events(
@@ -423,28 +394,24 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     hiv=patients.with_these_clinical_events(
         hiv_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     permanent_immunodeficiency=patients.with_these_clinical_events(
         permanent_immune_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     temporary_immunodeficiency=patients.with_these_clinical_events(
         temp_immune_codes,
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### CHRONIC KIDNEY DISEASE
     creatinine=patients.with_these_clinical_events(
         creatinine_codes,
@@ -466,13 +433,11 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {}},
     ),
-
     ### PLACEHOLDER VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
-
     ### VACCINATION HISTORY - PART 2 MEDICINES CODES
     flu_vaccine=patients.with_these_medications(
         flu_med_codes,
-        between=["2019-09-01", "2020-03-01"], #current flu season
+        between=["2019-09-01", "2020-03-01"],  # current flu season
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
@@ -481,16 +446,14 @@ study = StudyDefinition(
     ),
     pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
-        between=["2015-03-01", "2020-03-01"], #past five years
+        between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
     ),
-
     ### PLACEHOLDER VACCINATION HISTORY - PART 3 CLINICAL CODES PLACEHOLDER
-
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -501,7 +464,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
         },
     ),
-    
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
