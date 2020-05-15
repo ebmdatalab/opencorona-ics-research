@@ -17,7 +17,7 @@ study = StudyDefinition(
     population=patients.satisfying(
         """
         has_asthma AND
-        (age_excl >=18 AND age_excl <= 110) AND
+        (age >=18 AND age <= 110) AND
         has_follow_up AND NOT
         has_copd AND NOT
         has_other_respiratory AND NOT
@@ -25,13 +25,6 @@ study = StudyDefinition(
         """,
         has_asthma=patients.with_these_clinical_events(
             asthma_codes, between=["2017-03-01", "2020-03-01"],
-        ),
-        age_excl=patients.age_as_of(
-            "2020-03-01",
-            return_expectations={
-                "rate": "universal",
-                "int": {"distribution": "population_ages"},
-            },
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"

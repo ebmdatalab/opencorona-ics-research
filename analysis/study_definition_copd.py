@@ -17,8 +17,8 @@ study = StudyDefinition(
     population=patients.satisfying(
         """
         has_copd AND
-        (age_excl >=35 AND age_excl <= 110) AND
-        ever_smoked_incl AND
+        (age >=35 AND age <= 110) AND
+        ever_smoked AND
         has_follow_up AND NOT
         has_asthma AND NOT
         has_other_respiratory AND NOT
@@ -30,17 +30,6 @@ study = StudyDefinition(
         has_copd=patients.with_these_clinical_events(
             copd_codes,
             on_or_before="2020-03-01",  #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
-        ),
-        age_excl=patients.age_as_of(
-            "2020-03-01",
-            return_expectations={
-                "rate": "universal",
-                "int": {"distribution": "population_ages"},
-            },
-        ),
-        ever_smoked_incl=patients.with_these_clinical_events(
-            filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-            on_or_before="2020-03-01",
         ),
         has_asthma=patients.with_these_clinical_events(
             asthma_codes, between=["2017-03-01", "2020-03-01"],
