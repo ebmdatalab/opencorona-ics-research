@@ -286,49 +286,42 @@ study = StudyDefinition(
         copd_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
         other_respiratory_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### ASTHMA EVER
     asthma_ever=patients.with_these_clinical_events(
         asthma_ever_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### OTHER HEART DISEASE
     other_heart_disease=patients.with_these_clinical_events(
         other_heart_disease_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### ILI
     ili=patients.with_these_clinical_events(
         placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
         hypertension_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### HEART FAILURE
     heart_failure=patients.with_these_clinical_events(
         heart_failure_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
@@ -361,26 +354,22 @@ study = StudyDefinition(
         diabetes_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
         lung_cancer_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     haem_cancer=patients.with_these_clinical_events(
         haem_cancer_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     other_cancer=patients.with_these_clinical_events(
         other_cancer_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     # IMMUNOSUPPRESSION - 4 TYPES
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
@@ -388,25 +377,21 @@ study = StudyDefinition(
         aplastic_codes,
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     hiv=patients.with_these_clinical_events(
         hiv_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     permanent_immunodeficiency=patients.with_these_clinical_events(
         permanent_immune_codes,
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     temporary_immunodeficiency=patients.with_these_clinical_events(
         temp_immune_codes,
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### CHRONIC KIDNEY DISEASE
     creatinine=patients.with_these_clinical_events(
@@ -427,7 +412,6 @@ study = StudyDefinition(
         ckd_codes,
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {}},
     ),
     ### VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
     recent_flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
