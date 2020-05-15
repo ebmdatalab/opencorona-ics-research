@@ -317,27 +317,19 @@ study = StudyDefinition(
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
-        copd_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        copd_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
-        other_respiratory_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        other_respiratory_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### ASTHMA EVER
     asthma_ever=patients.with_these_clinical_events(
-        asthma_ever_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        asthma_ever_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### OTHER HEART DISEASE
     other_heart_disease=patients.with_these_clinical_events(
-        other_heart_disease_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        other_heart_disease_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### ILI
     ili=patients.with_these_clinical_events(
@@ -347,15 +339,11 @@ study = StudyDefinition(
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
-        hypertension_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        hypertension_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### HEART FAILURE
     heart_failure=patients.with_these_clinical_events(
-        heart_failure_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        heart_failure_codes, return_first_date_in_period=True, include_month=True,
     ),
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
@@ -385,47 +373,31 @@ study = StudyDefinition(
     ),
     ### DIABETES
     diabetes=patients.with_these_clinical_events(
-        diabetes_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        diabetes_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
-        lung_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        lung_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     haem_cancer=patients.with_these_clinical_events(
-        haem_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        haem_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     other_cancer=patients.with_these_clinical_events(
-        other_cancer_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        other_cancer_codes, return_first_date_in_period=True, include_month=True,
     ),
     # IMMUNOSUPPRESSION - 4 TYPES
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
     aplastic_anaemia=patients.with_these_clinical_events(
-        aplastic_codes,
-        return_last_date_in_period=True,
-        include_month=True,
+        aplastic_codes, return_last_date_in_period=True, include_month=True,
     ),
     hiv=patients.with_these_clinical_events(
-        hiv_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        hiv_codes, return_first_date_in_period=True, include_month=True,
     ),
     permanent_immunodeficiency=patients.with_these_clinical_events(
-        permanent_immune_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        permanent_immune_codes, return_first_date_in_period=True, include_month=True,
     ),
     temporary_immunodeficiency=patients.with_these_clinical_events(
-        temp_immune_codes,
-        return_last_date_in_period=True,
-        include_month=True,
+        temp_immune_codes, return_last_date_in_period=True, include_month=True,
     ),
     ### CHRONIC KIDNEY DISEASE
     creatinine=patients.with_these_clinical_events(
@@ -443,39 +415,27 @@ study = StudyDefinition(
     ),
     ### SLE
     sle=patients.with_these_clinical_events(
-        sle_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        sle_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### institial lung disease
     interstitial_lung_dis=patients.with_these_clinical_events(
-        interstital_lung_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        interstital_lung_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### RA
     ra=patients.with_these_clinical_events(
-        ra_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        ra_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### MS
     ms=patients.with_these_clinical_events(
-        ms_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        ms_codes, return_first_date_in_period=True, include_month=True,
     ),
     ### temporal arteritis
     temporal_arteritis=patients.with_these_clinical_events(
-        temporal_arteritis_codes,
-        return_first_date_in_period=True,
-        include_month=True,
+        temporal_arteritis_codes, return_first_date_in_period=True, include_month=True,
     ),
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
-        ckd_codes,
-        return_last_date_in_period=True,
-        include_month=True,
+        ckd_codes, return_last_date_in_period=True, include_month=True,
     ),
     ### VACCINATION HISTORY - PART 1 VACCINATION TABLE PLACEHOLDER
     recent_flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
