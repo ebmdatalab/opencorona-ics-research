@@ -36,11 +36,7 @@ study = StudyDefinition(
             other_respiratory_codes, between=["2017-03-01", "2020-03-01"],
         ),
         nebules=patients.with_these_medications(
-            nebulised_med_codes,
-            between=["2019-03-01", "2020-03-01"],
-            return_last_date_in_period=True,
-            include_month=True,
-            return_expectations={"date": {}},
+            nebulised_med_codes, between=["2019-03-01", "2020-03-01"],
         ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
