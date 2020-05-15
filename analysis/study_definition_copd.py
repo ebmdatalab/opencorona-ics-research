@@ -505,9 +505,9 @@ study = StudyDefinition(
     ),
     ### EXACERBATIONS OF COPD
     exacerbation_count=patients.with_these_clinical_events(
-        placeholder_event_codes,  ## CHANGE TO LRTI AND AECOPD CODES WHEN AVAILABLE
-        on_or_before="2019-11-01",  ### change to relevant dates
-        ignore_days_where_these_codes_occur=placeholder_event_codes,  ### change to annual review and rescue pakcs
+        copd_exacerbation_codes,
+        between=["2019-03-01", "2020-03-01"],
+        ignore_days_where_these_codes_occur=copd_review_rescue_codes,
         returning="number_of_episodes",
         episode_defined_as="series of events each <= 14 days apart",
         return_expectations={
@@ -515,6 +515,7 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
+
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE

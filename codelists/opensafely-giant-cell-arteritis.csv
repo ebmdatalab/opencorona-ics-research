@@ -1,0 +1,9 @@
+CTV3ID,CTV3PreferredTermDesc,CTV3Source
+G755.,Giant cell arteritis,CTV3Map_Code_And_Term
+G7550,Giant cell arteritis,High_Level_SNOMED
+G755z,Giant cell arteritis NOS,CTV3Map_Code_And_Term
+N200.,Giant cell arteritis with polymyalgia rheumatica,CTV3_Children
+Nyu41,[X]Other giant cell arteritis,CTV3Map_Code_And_Term
+X00Dy,Cerebral arteritis in giant cell arteritis,CTV3_Children
+X705l,Giant cell arteritis with polymyalgia rheumatica,CTV3Map_Code_And_Term
+X705m,Giant cell arteritis without polymyalgia rheumatica,CTV3_Children
