@@ -12,10 +12,10 @@ capture mkdir copd_tempdata
 
 * Set globals that will print in programs and direct output
 
-global Population "COPD"
-global Outdir  	  "copd_output" 
-global Logdir     "copd_log"
-global Tempdir    "copd_tempdata"
+global population "COPD"
+global outdir  	  "copd_output" 
+global logdir     "copd_log"
+global tempdir    "copd_tempdata"
 
 /*  Pre-analysis data manipulation  */
 
@@ -40,7 +40,7 @@ do "05_an_descriptive_plots_copd.do"
 /* 	ASTHMA ====================================================================*/
 
 clear
-import delimited `c(pwd)'/analysis/input_asthma.csv, clear
+import delimited `c(pwd)'/input_asthma.csv, clear
 set more off 
 cd  `c(pwd)'/analysis
 
@@ -50,9 +50,10 @@ capture mkdir asthma_output
 capture mkdir asthma_log
 capture mkdir asthma_tempdata
 
-global Outdir  "asthma_output" 
-global Logdir  "asthma_log"
-global Tempdir "asthma_tempdata"
+global population "Asthma"
+global outdir  "asthma_output" 
+global logdir  "asthma_log"
+global tempdir "asthma_tempdata"
 
 /*  Pre-analysis data manipulation  */
 
