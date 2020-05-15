@@ -20,6 +20,7 @@ study = StudyDefinition(
         (age_excl >=18 AND age_excl <= 110) AND
         has_follow_up AND NOT
         has_copd AND NOT
+        has_other_respiratory AND NOT
         nebules
         """,
         has_asthma=patients.with_these_clinical_events(
@@ -37,6 +38,9 @@ study = StudyDefinition(
         ),
         has_copd=patients.with_these_clinical_events(
             copd_codes, between=["2017-03-01", "2020-03-01"],
+        ),
+        has_other_respiratory=patients.with_these_clinical_events(
+            other_respiratory_codes, between=["2017-03-01", "2020-03-01"],
         ),
         nebules=patients.with_these_medications(
             nebulised_med_codes,
@@ -325,14 +329,21 @@ study = StudyDefinition(
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        copd_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        other_respiratory_codes,
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={"date": {}},
+    ),
+    ### ASTHMA EVER
+    asthma_ever=patients.with_these_clinical_events(
+        asthma_ever_codes,
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={"date": {}},

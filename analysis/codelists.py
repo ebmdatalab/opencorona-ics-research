@@ -130,8 +130,16 @@ asthma_codes = codelist_from_csv(
     "codelists/opensafely-current-asthma.csv", system="ctv3", column="CTV3ID"
 )
 
+asthma_ever_codes = codelist_from_csv(
+    "codelists/opensafely-asthma-diagnosis.csv", system="ctv3", column="CTV3ID"
+)
+
 copd_codes = codelist_from_csv(
     "codelists/opensafely-current-copd.csv", system="ctv3", column="CTV3ID"
+)
+
+other_respiratory_codes = codelist_from_csv(
+    "codelists/opensafely-other-respiratory-conditions.csv", system="ctv3", column="CTV3ID"
 )
 
 hypertension_codes = codelist_from_csv(
