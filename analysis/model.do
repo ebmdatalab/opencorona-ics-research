@@ -1,6 +1,7 @@
-import delimited `c(pwd)'/analysis/input_copd.csv, clear
-set more off 
 cd  `c(pwd)'/analysis
+import delimited input_copd.csv, clear
+set more off 
+
 
 /* COPD ======================================================================*/
 
@@ -42,7 +43,6 @@ do "05_an_descriptive_plots_copd.do"
 clear
 import delimited `c(pwd)'/input_asthma.csv, clear
 set more off 
-cd  `c(pwd)'/analysis
 
 * Create directories required 
 
