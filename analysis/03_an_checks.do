@@ -9,19 +9,19 @@ DESCRIPTION OF FILE:	Run sanity checks on all variables
 							- Cross-check logical relationships 
 							- Explore expected relationships 
 							- Check stsettings 
-DATASETS USED:			$Tempdir\analysis_dataset.dta
+DATASETS USED:			$tempdir\analysis_dataset.dta
 DATASETS CREATED: 		None
-OTHER OUTPUT: 			Log file: $Logdir\03_an_checks
+OTHER OUTPUT: 			Log file: $logdir\03_an_checks
 							
 ==============================================================================*/
 
 * Open a log file
 
 capture log close
-log using $Logdir\03_an_checks, replace t
+log using $logdir\03_an_checks, replace t
 
 * Open Stata dataset
-use $Tempdir\analysis_dataset, clear
+use $tempdir\analysis_dataset, clear
 
 *run ssc install if not already installed on your computer
 *ssc install datacheck 
@@ -157,7 +157,8 @@ tab ethnicity imd, 		row col
 
 
 /*  Relationships with demographic/lifestyle variables  */ 
-
+						*exacerbation				///
+						*exacerbation_count			///
 
 * Relationships with age
 foreach var of varlist  ckd     					///			
@@ -177,10 +178,9 @@ foreach var of varlist  ckd     					///
 						statin 						///
 						immunodef_any				///
 						gp_consult 					///
-						exacerbation				///
-						gp_consult_count			///
-						exacerbation_count	{ 
-						
+						gp_consult_count			{
+
+		
  	tab agegroup `var', row col
  }
 
@@ -203,12 +203,11 @@ foreach var of varlist  ckd     					///
 						statin 						///
 						immunodef_any				///
 						gp_consult 					///
-						exacerbation				///
-						gp_consult_count			///
-						exacerbation_count	{ 
+						gp_consult_count			{
+
 						
  	tab male `var', row col
- }
+}
 
  * Relationships with smoking
 foreach var of varlist  ckd     					///			
@@ -227,12 +226,10 @@ foreach var of varlist  ckd     					///
 						statin 						///
 						immunodef_any				///
 						gp_consult 					///
-						exacerbation				///
-						gp_consult_count			///
-						exacerbation_count	{ 
+						gp_consult_count			{
 	
  	tab smoke `var', row col
- }
+}
 
 
 /* SENSE CHECK OUTCOMES=======================================================*/

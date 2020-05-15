@@ -4,21 +4,21 @@ PROJECT:				ICS in COVID-19
 DATE: 					6th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
 						adapted from K Baskharan, E Williamson 										
-DESCRIPTION OF FILE:	program 00, COPD population for ICS project  
+DESCRIPTION OF FILE:	program 00, data management for ICS project  
 						reformat variables 
 						categorise variables
 						label variables 
-DATASETS USED:			data in memory (from analysis/input.csv)
+DATASETS USED:			data in memory (from analysis/input_xxx.csv)
 
 DATASETS CREATED: 		none
-OTHER OUTPUT: 			logfiles, printed to folder analysis/log
+OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 							
 ==============================================================================*/
 
 * Open a log file
 
 cap log close
-log using $Logdir\00_cr_create_analysis_dataset, replace t
+log using $logdir\00_cr_create_analysis_dataset, replace t
 
 /* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
@@ -310,11 +310,14 @@ label values smoke_nomiss smoke
 /* CLINICAL COMORBIDITIES */ 
 
 /* Exacerbation	*/ 
+/* Commented out until in both datasets 
 replace exacerbation_count = 0 if exacerbation_count <1 
 
 * those with no count assumed to have no visits 
 replace exacerbation_count = 0 if exacerbation_count == . 
 gen exacerbation = (exacerbation_count >= 1)
+
+*/ 
 
 /* GP consultation rate */ 
 replace gp_consult_count = 0 if gp_consult_count <1 
@@ -539,8 +542,8 @@ label var flu_vaccine					"Flu vaccine"
 label var pneumococcal_vaccine			"Pneumococcal Vaccine"
 label var gp_consult					"GP consultation in last year"
 label var gp_consult_count				"GP consultation count"
-label var exacerbation					"Exacerbation in last year"
-label var exacerbation_count			"Exacerbation Count"
+*label var exacerbation					"Exacerbation in last year"
+*label var exacerbation_count			"Exacerbation Count"
 
 label var ckd_date     					"Chronic kidney disease Date" 
 label var hypertension_date			    "Diagnosed hypertension Date"

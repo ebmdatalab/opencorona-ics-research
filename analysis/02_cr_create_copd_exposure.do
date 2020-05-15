@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			02_cr_create_exposure
+DO FILE NAME:			02_cr_create_copd_exposure
 PROJECT:				ICS in COVID-19 
 DATE: 					14th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
@@ -8,15 +8,15 @@ DESCRIPTION OF FILE:	create exposure of interest
 DATASETS USED:			data in memory (from analysis/input.csv)
 
 DATASETS CREATED: 		analysis_dataset.dta
-						lives in folder analysis/tempdata 
-OTHER OUTPUT: 			logfiles, printed to folder analysis/log
+						lives in folder analysis/$tempdir 
+OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 							
 ==============================================================================*/
 
 * Open a log file
 
 cap log close
-log using $Logdir\02_cr_create_exposure, replace t
+log using $logdir\02_cr_create_copd_exposure, replace t
 
 /* TREATMENT EXPOSURE=========================================================*/	
 
@@ -65,11 +65,11 @@ drop exptemp*
 /* SAVE DATA==================================================================*/	
 
 sort patient_id
-save $Tempdir\analysis_dataset, replace
+save $tempdir\analysis_dataset, replace
 
 * Save a version set on CPNS survival outcome
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
-save $Tempdir\analysis_dataset_STSET_cpnsdeath, replace
+save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
 
 * Close log file 
 log close
