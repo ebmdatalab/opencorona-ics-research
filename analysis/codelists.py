@@ -242,3 +242,15 @@ pneumococcal_med_codes = codelist_from_csv(
 temporal_arteritis_codes = codelist_from_csv(
     "codelists/opensafely-giant-cell-arteritis.csv", system="ctv3", column="CTV3ID"
 )
+
+lrti_codes = codelist_from_csv(
+    "codelists/opensafely-lower-respiratory-tract-infection.csv", system="ctv3", column="CTV3ID"
+)
+
+copd_exacerbation_codes = codelist_from_csv(
+    "codelists/opensafely-copd-exacerbation.csv", system="ctv3", column="CTV3ID"
+)
+
+copd_review_rescue_codes = codelist_from_csv(
+    "codelists/opensafely-copd-rescue-packs-and-annual-reviews.csv", system="ctv3", column="CTV3ID"
+)
