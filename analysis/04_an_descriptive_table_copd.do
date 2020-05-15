@@ -1,28 +1,27 @@
 /*==============================================================================
-DO FILE NAME:			03_an_descriptive_table
+DO FILE NAME:			04_an_descriptive_table
 PROJECT:				ICS in COVID-19 
 AUTHOR:					A Schultze, A Wong, C Rentsch 
 						Adapted from K Baskharan, A Wong 
 DATE: 					10th of May 2020 
-DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure 
+DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure
+						Generalised to produce same columns as levels of exposure
 						Output to a textfile for further formatting
-DATASETS USED:			copd_tempdata\analysis_dataset.dta
+DATASETS USED:			$Tempdir\analysis_dataset.dta
 DATASETS CREATED: 		None
-OTHER OUTPUT: 			Results in txt: copd_output\table1 
-						Log file: copd_log\03_an_descriptive_table
+OTHER OUTPUT: 			Results in txt: copd_output\table1.txt 
+						Log file: $Logdir\04_an_descriptive_table
 							
 ==============================================================================*/
 
 * Open a log file
 capture log close
-log using copd_log\03_an_descriptive_table, replace t
+log using $Logdir\04_an_descriptive_table, replace t
 
 * Open Stata dataset
-use copd_tempdata\analysis_dataset, clear
+use $Tempdir\analysis_dataset, clear
 
 /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
-
-describe
 
 ********************************************************************************
 * All below code from K Baskharan 
@@ -51,7 +50,7 @@ syntax, variable(varname) condition(string)
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
-	cou if exposure == . & `variable' `condition'
+	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
 	
@@ -62,7 +61,7 @@ end
 defines a program (SAS macro/R function equivalent), generate row
 the syntax row specifies two inputs for the program: 
 
-	a VARNAME which you stick in the variable 
+	a VARNAME which is your variable 
 	a CONDITION which is a string of some condition you impose 
 	
 the program counts if variable and condition and returns the counts
@@ -108,6 +107,53 @@ forvalues lowest to highest of the variable, manually set for each var
 run the generate row program for the level of the variable 
 if there is a missing specified, then run the generate row for missing vals
 
+*/ 
+
+********************************************************************************
+* Generic code to summarize a continous variable 
+
+cap prog drop summarizevariable 
+prog define summarizevariable
+syntax, variable(varname) 
+
+	local lab: variable label `variable'
+	file write tablecontent ("`lab'") _n 
+	
+	qui summarize `variable', d
+	file write tablecontent ("Median (IQR)") _tab 
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+							
+	qui summarize `variable' if exposure == 0, d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+
+	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+
+	qui summarize `variable' if exposure >= ., d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+	
+	qui summarize `variable', d
+	file write tablecontent ("Min, Max") _tab 
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+							
+	qui summarize `variable' if exposure == 0, d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+
+	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+
+	qui summarize `variable' if exposure >= ., d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _n
+	
+end
+
+}
+
+/* QUESTION FOR STATA REVIEWER - I WROTE THIS CONTINOUS VAR SUMMARY PROGRAM
+but I don't quite understand why I seem to need ("") on the last row for the 
+maxium value to display properly? Otherwise it seems to just be missing. 
+
+Please check this extra carefully as well
 
 */ 
 
@@ -115,13 +161,20 @@ if there is a missing specified, then run the generate row for missing vals
 
 *Set up output file
 cap file close tablecontent
-file open tablecontent using ./copd_output/03_an_output_table1.txt, write text replace
+file open tablecontent using ./$Outdir/04_an_output_table1.txt, write text replace
 
-file write tablecontent ("Table 1: Demographic and Clinical Characteristics - COPD Population") _n
+file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $Population") _n
+
+* Exposure labelled columns
+
+local lab0: label exposure 0
+local lab1: label exposure 1
+local labu: label exposure .u
+
 file write tablecontent _tab ("Total")				  			  _tab ///
-							 ("LABA/LAMA Combination")			  _tab ///
-							 ("ICS Combination")  				  _tab ///
-							 ("Other") _n
+							 ("`lab0'")			 			      _tab ///
+							 ("`lab1'")  						  _tab ///
+							 ("`labu'")			  				  _n 
 
 * DEMOGRAPHICS (more than one level, potentially missing) 
 
@@ -173,18 +226,15 @@ file write tablecontent _n
 
 }
 
-
 ** COMORBIDITIES (categorical and continous)
 
-* Exacerbations 
-
 ** COMORBIDITIES (binary)
-
-* Heart Failure outstanding 
+*  asthma outstanding 
 
 foreach comorb of varlist 	ckd								///
 							copd							///
 							hypertension			 		///
+							heart_failure					///
 							other_heart_disease		 		///
 							diabetes 						///
 							cancer_ever 					///
@@ -196,7 +246,8 @@ foreach comorb of varlist 	ckd								///
 							oral_steroids 					///
 							flu_vaccine 					///
 							pneumococcal_vaccine			///
-							gp_consult {
+							gp_consult 						///
+							exacerbation {
 
 local lab: variable label `comorb'
 file write tablecontent ("`lab'") _n 
@@ -207,6 +258,9 @@ file write tablecontent _n
 
 }
 
+* COMORBIDITIES (continous)
+summarizevariable, variable(exacerbation_count)
+summarizevariable, variable(gp_consult_count)
 
 file close tablecontent
 
