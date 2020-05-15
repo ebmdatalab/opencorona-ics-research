@@ -238,3 +238,7 @@ flu_med_codes = codelist_from_csv(
 pneumococcal_med_codes = codelist_from_csv(
     "codelists/opensafely-pneumococcal-vaccination.csv", system="snomed", column="snomed_id"
 )
+
+temporal_arteritis_codes = codelist_from_csv(
+    "codelists/opensafely-giant-cell-arteritis.csv", system="ctv3", column="CTV3ID"
+)

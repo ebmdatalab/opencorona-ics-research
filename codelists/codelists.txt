@@ -9,6 +9,7 @@ opensafely/chronic-cardiac-disease/2020-04-08
 opensafely/chronic-kidney-disease/2020-04-14
 opensafely/diabetes/2020-04-15
 opensafely/ethnicity/2020-04-27
+opensafely/giant-cell-arteritis/2020-05-15
 opensafely/haematological-cancer/2020-04-15
 opensafely/heart-failure/2020-05-05
 opensafely/high-dose-ics-inhalers/2020-05-05
