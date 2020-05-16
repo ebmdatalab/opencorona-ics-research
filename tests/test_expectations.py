@@ -38,7 +38,7 @@ def test_age_dtype_generation():
     )
     result = _converters_to_names(study.pandas_csv_args)
     assert result == {
-        "dtype": {"age": "int"},
+        "dtype": {"age": "Int64"},
         "parse_dates": [],
         "date_col_for": {},
         "converters": {},
@@ -229,6 +229,7 @@ def test_data_generator_date_exponential_increase():
         assert count < max_count
         max_count = count
 
+
 def test_data_generator_date_uniform():
     population_size = 100000
     incidence = 0.5
@@ -249,6 +250,7 @@ def test_data_generator_date_uniform():
     expected = (population_size * incidence) / 10
     for count in date_counts:
         assert isclose(count, expected, rel_tol=0.1)
+
 
 def test_data_generator_category_and_date():
     population_size = 10000
@@ -354,6 +356,7 @@ def test_make_df_from_expectations_with_categories():
         ),
     )
     population_size = 10000
+
     result = study.make_df_from_expectations(population_size)
     assert result.columns == ["ethnicity"]
 

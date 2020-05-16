@@ -242,8 +242,13 @@ class StudyDefinition:
             else:
                 generated_df = generate(population, **kwargs)
             try:
+                if dtype == "Int64":
+                    # When defining expectations, the more
+                    # user-friendly `int` is used
+                    dtype = "int"
                 df[colname] = generated_df[dtype]
             except KeyError:
+
                 raise ValueError(
                     f"Column definition {colname} does not return expected type {dtype}"
                 )
