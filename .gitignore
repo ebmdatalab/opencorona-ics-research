@@ -12,3 +12,4 @@ analysis/*
 !*.sthlp
 venv/
 .cache
+*.exe
