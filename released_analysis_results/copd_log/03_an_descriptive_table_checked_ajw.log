@@ -1,0 +1,768 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\03_an_descriptive_table.log
+  log type:  text
+ opened on:  16 May 2020, 13:00:05
+
+. 
+. * Open Stata dataset
+. use copd_tempdata\analysis_dataset, clear
+
+. 
+. /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
+. 
+. describe
+
+Contains data from copd_tempdata\analysis_dataset.dta
+  obs:       321,339                          
+ vars:            85                          16 May 2020 12:57
+--------------------------------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------------------------------
+patient_id      long    %12.0g                Patient ID
+age             int     %8.0g                 Age (years)
+ethnicity       byte    %22.0g     ethnicity
+                                              Ethnicity
+bmi             float   %9.0g                 Body Mass Index (BMI, kg/m2)
+bmi_measured_~e float   %td                   Body Mass Index (BMI, kg/m2), date measured
+high_dose_ics~e float   %td                   High Dose ICS Date
+high_dose_ics   float   %9.0g                 High Dose ICS
+low_med_dose_~e float   %td                   Low/Medium Dose ICS Date
+low_med_dose_~s float   %9.0g                 Low/Medium Dose ICS
+ics_single_date float   %td                   Single ICS Date
+ics_single      float   %9.0g                 Single ICS
+oral_steroids~e float   %td                   Oral Steroids Date
+oral_steroids   float   %9.0g                 Oral Steroids
+saba_single_d~e float   %td                   Single SABA Date
+saba_single     float   %9.0g                 Single SABA
+sama_single_d~e float   %td                   Single SAMA Date
+sama_single     float   %9.0g                 Single SAMA
+laba_single_d~e float   %td                   Single LABA Date
+laba_single     float   %9.0g                 Single LABA
+lama_single_d~e float   %td                   Single LAMA Date
+lama_single     float   %9.0g                 Single LAMA
+laba_ics_date   float   %td                   LABA ICS Date
+laba_ics        float   %9.0g                 LABA ICS
+laba_lama_date  float   %td                   LABA LAMA Date
+laba_lama       float   %9.0g                 LABA LAMA
+laba_lama_ics~e float   %td                   LABA LAMA ICS Date
+laba_lama_ics   float   %9.0g                 LABA LAMA ICS
+ltra_single_d~e float   %td                   Single LTRA Date
+ltra_single     float   %9.0g                 Single LTRA
+copd_date       float   %td                   COPD Date
+copd            float   %9.0g                 COPD
+other_respira~e float   %td                   Other Respiratory Diseases Date
+other_respira~y float   %9.0g                 Other Respiratory Diseases
+other_heart_~te float   %td                   Other Heart Diseases Date
+other_heart_~se float   %9.0g                 Other Heart Diseases
+ili_date        float   %td                   Infleunza Like Illness Date
+ili             float   %9.0g                 Infleunza Like Illness
+hypertension_~e float   %td                   Diagnosed hypertension Date
+hypertension    float   %9.0g                 Diagnosed hypertension
+diabetes_date   float   %td                   Diabetes Date
+diabetes        float   %9.0g                 Diabetes
+immunodef_any   float   %9.0g                 Immunosuppressed (combination algorithm)
+recent_flu_pn~l int     %8.0g                 recent_flu_pneumococcal_tpp_table
+flu_vaccine_d~e float   %td                   Flu vaccine Date
+flu_vaccine     float   %9.0g                 Flu vaccine
+pneumococcal~te float   %td                   Pneumococcal Vaccine Date
+pneumococcal~ne float   %9.0g                 Pneumococcal Vaccine
+insulin_date    float   %td                   Recent Insulin Date
+insulin         float   %9.0g                 Recent Insulin
+statin_date     float   %td                   Recent Statin Date
+statin          float   %9.0g                 Recent Statin
+exposure        float   %21.0g     exposure   Treatment Exposure of Interest
+male            float   %9.0g                 Male
+stp             float   %9.0g                 Sustainability and Transformation Partnership
+imd             float   %16.0g     imd        Index of Multiple Deprivation (IMD)
+agegroup        int     %9.0g      agegroup   Grouped age
+age70           int     %9.0g                 70 years and older
+age1            float   %9.0g                 Age spline 1
+age2            float   %9.0g                 Age spline 2
+age3            float   %9.0g                 Age spline 3
+bmicat          float   %20.0g     bmicat     Grouped BMI
+obese4cat       float   %20.0g     obese4cat
+                                              Evidence of obesity (4 categories)
+smoke           float   %12.0g     smoke      Smoking status
+smoke_nomiss    float   %12.0g     smoke      Smoking status (missing set to non)
+gp_consult      float   %9.0g                 At least one GP consultation
+cancer_ever     float   %9.0g                 Cancer
+cancer_ever_d~e float   %9.0g                 Cancer Date
+egfr            float   %9.0g                 egfr calculated using CKD-EPI formula with no eth
+egfr_cat        float   %9.0g                 Calculated eGFR
+ckd_egfr        float   %9.0g                 RECODE of egfr_cat
+ckd             float   %9.0g      ckd        Chronic kidney disease
+ckd_date        float   %td                   Chronic kidney disease Date
+enter_date      float   %td                   Date of study entry
+ituadmissionc~e float   %td                   Date of admin censoring for itu admission (icnarc)
+cpnsdeathcens~e float   %td                   Date of admin censoring for cpns deaths
+onscoviddeath~e float   %td                   Date of admin censoring for ONS deaths
+died_date_cpns  float   %td                   Date of CPNS Death
+itu_date        float   %td                   Date of ITU Admission
+died_date_ons~d float   %td                   Date of ONS Death
+cpnsdeath       float   %9.0g                 Failure/censoring indicator for outcome: CPNS covid death
+onscoviddeath   float   %9.0g                 Failure/censoring indicator for outcome: ONS covid death
+ituadmission    float   %9.0g                 Failure/censoring indicator for outcome: ITU admission
+stime_ituadmi~n float   %td                   Survival time (date); outcome ITU admission
+stime_cpnsdeath float   %td                   Survival time (date); outcome CPNS covid death
+stime_onscovi~h float   %td                   Survival time (date); outcome ONS covid death
+--------------------------------------------------------------------------------------------------------
+Sorted by: patient_id
+
+. 
+. ********************************************************************************
+. * All below code from K Baskharan 
+. * Generic code to output one row of table
+. 
+. cap prog drop generaterow
+
+. program define generaterow
+  1. syntax, variable(varname) condition(string) 
+  2.         
+.         cou
+  3.         local overalldenom=r(N)
+  4.         
+.         qui sum `variable' if `variable' `condition'
+  5.         file write tablecontent (r(max)) _tab
+  6.         
+.         cou if `variable' `condition'
+  7.         local rowdenom = r(N)
+  8.         local colpct = 100*(r(N)/`overalldenom')
+  9.         file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
+ 10. 
+.         cou if exposure == 0 & `variable' `condition'
+ 11.         local pct = 100*(r(N)/`rowdenom') 
+ 12.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 13. 
+.         cou if exposure == 1 & `variable' `condition'
+ 14.         local pct = 100*(r(N)/`rowdenom')
+ 15.         file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
+ 16. 
+.         cou if exposure == . & `variable' `condition'
+ 17.         local pct = 100*(r(N)/`rowdenom')
+ 18.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
+ 19.         
+. end
+
+. 
+. /* Explanatory Notes 
+> 
+> defines a program (SAS macro/R function equivalent), generate row
+> the syntax row specifies two inputs for the program: 
+> 
+>         a VARNAME which you stick in the variable 
+>         a CONDITION which is a string of some condition you impose 
+>         
+> the program counts if variable and condition and returns the counts
+> column percentages are then automatically generated
+> this is then written to the text file 'tablecontent' 
+> the number followed by space, brackets, formatted pct, end bracket and then tab
+> 
+> the format %3.1f specifies length of 3, followed by 1 dp. 
+> 
+> */ 
+. 
+. ********************************************************************************
+. * Generic code to output one section (varible) within table (calls above)
+. 
+. cap prog drop tabulatevariable
+
+. prog define tabulatevariable
+  1. syntax, variable(varname) min(real) max(real) [missing]
+  2. 
+.         local lab: variable label `variable'
+  3.         file write tablecontent ("`lab'") _n 
+  4. 
+.         forvalues varlevel = `min'/`max'{ 
+  5.                 generaterow, variable(`variable') condition("==`varlevel'")
+  6.         }
+  7.         
+.         if "`missing'"!="" generaterow, variable(`variable') condition(">=.")
+  8. 
+. end
+
+. 
+. ********************************************************************************
+. 
+. /* Explanatory Notes 
+> 
+> defines program tabulate variable 
+> syntax is : 
+> 
+>         - a VARNAME which you stick in variable 
+>         - a numeric minimum 
+>         - a numeric maximum 
+>         - optional missing option, default value is . 
+> 
+> forvalues lowest to highest of the variable, manually set for each var
+> run the generate row program for the level of the variable 
+> if there is a missing specified, then run the generate row for missing vals
+> 
+> 
+> */ 
+. 
+. /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
+. 
+. *Set up output file
+. cap file close tablecontent
+
+. file open tablecontent using ./copd_output/03_an_output_table1.txt, write text replace
+(note: file ./copd_output/03_an_output_table1.txt not found)
+
+. 
+. file write tablecontent ("Table 1: Demographic and Clinical Characteristics - COPD Population") _n
+
+. file write tablecontent _tab ("Total")                                                    _tab ///
+>                                                          ("LABA/LAMA Combination")                    
+>     _tab ///
+>                                                          ("ICS Combination")                          
+>     _tab ///
+>                                                          ("Other") _n
+
+. 
+. * DEMOGRAPHICS (more than one level, potentially missing) 
+. 
+. gen byte cons=1
+
+. tabulatevariable, variable(cons) min(1) max(1) 
+  321,339
+  321,339
+  46,475
+  120,839
+  154,025
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(agegroup) min(1) max(6) 
+  321,339
+  1,279
+  85
+  206
+  988
+  321,339
+  10,429
+  1,073
+  2,530
+  6,826
+  321,339
+  42,999
+  5,921
+  13,402
+  23,676
+  321,339
+  86,757
+  13,193
+  32,880
+  40,684
+  321,339
+  116,313
+  17,472
+  46,822
+  52,019
+  321,339
+  63,562
+  8,731
+  24,999
+  29,832
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(male) min(0) max(1) 
+  321,339
+  146,532
+  21,021
+  55,634
+  69,877
+  321,339
+  174,807
+  25,454
+  65,205
+  84,148
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(bmicat) min(1) max(6) missing
+  321,339
+  11,715
+  1,673
+  5,047
+  4,995
+  321,339
+  92,353
+  12,996
+  34,332
+  45,025
+  321,339
+  98,703
+  14,111
+  36,266
+  48,326
+  321,339
+  56,773
+  8,545
+  21,565
+  26,663
+  321,339
+  22,300
+  3,509
+  8,814
+  9,977
+  321,339
+  9,941
+  1,524
+  4,090
+  4,327
+  321,339
+  29,554
+  4,117
+  10,725
+  14,712
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(smoke) min(1) max(3) missing 
+  321,339
+  0
+  0
+  0
+  0
+  321,339
+  206,536
+  28,286
+  81,434
+  96,816
+  321,339
+  114,803
+  18,189
+  39,405
+  57,209
+  321,339
+  0
+  0
+  0
+  0
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(ethnicity) min(1) max(5) missing 
+  321,339
+  240,995
+  34,845
+  91,574
+  114,576
+  321,339
+  736
+  96
+  218
+  422
+  321,339
+  3,759
+  289
+  1,045
+  2,425
+  321,339
+  1,335
+  112
+  345
+  878
+  321,339
+  1,186
+  127
+  349
+  710
+  321,339
+  73,328
+  11,006
+  27,308
+  35,014
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(imd) min(1) max(5) missing
+  321,339
+  65,228
+  8,675
+  23,007
+  33,546
+  321,339
+  63,939
+  8,936
+  23,367
+  31,636
+  321,339
+  64,610
+  9,312
+  24,208
+  31,090
+  321,339
+  64,754
+  9,235
+  25,336
+  30,183
+  321,339
+  62,808
+  10,317
+  24,921
+  27,570
+  321,339
+  0
+  0
+  0
+  0
+
+. file write tablecontent _n 
+
+. 
+. file write tablecontent _n _n
+
+. 
+. ** COPD TREATMENT VARIABLES (binary)
+. foreach treat of varlist        saba_single             ///
+>                                                         high_dose_ics           ///
+>                                                         low_med_dose_ics        ///
+>                                                         ics_single              ///
+>                                                         sama_single             ///
+>                                                         laba_single                     ///
+>                                                         lama_single                     ///
+>                                                         laba_ics                        ///
+>                                                         laba_lama                       ///
+>                                                         laba_lama                       ///
+>                             ltra_single                 ///     
+>                                                 {               
+  2. 
+. local lab: variable label `treat'
+  3. file write tablecontent ("`lab'") _n 
+  4.         
+. generaterow, variable(`treat') condition("==0")
+  5. generaterow, variable(`treat') condition("==1")
+  6. 
+. file write tablecontent _n
+  7. 
+. }
+  321,339
+  137,029
+  13,297
+  24,682
+  99,050
+  321,339
+  184,310
+  33,178
+  96,157
+  54,975
+  321,339
+  291,281
+  46,475
+  90,951
+  153,855
+  321,339
+  30,058
+  0
+  29,888
+  170
+  321,339
+  223,382
+  46,475
+  26,747
+  150,160
+  321,339
+  97,957
+  0
+  94,092
+  3,865
+  321,339
+  313,199
+  46,475
+  116,731
+  149,993
+  321,339
+  8,140
+  0
+  4,108
+  4,032
+  321,339
+  317,596
+  46,304
+  119,109
+  152,183
+  321,339
+  3,743
+  171
+  1,730
+  1,842
+  321,339
+  312,578
+  43,824
+  119,859
+  148,895
+  321,339
+  8,761
+  2,651
+  980
+  5,130
+  321,339
+  223,879
+  41,528
+  67,006
+  115,345
+  321,339
+  97,460
+  4,947
+  53,833
+  38,680
+  321,339
+  235,387
+  46,475
+  34,887
+  154,025
+  321,339
+  85,952
+  0
+  85,952
+  0
+  321,339
+  271,751
+  2,119
+  115,607
+  154,025
+  321,339
+  49,588
+  44,356
+  5,232
+  0
+  321,339
+  271,751
+  2,119
+  115,607
+  154,025
+  321,339
+  49,588
+  44,356
+  5,232
+  0
+  321,339
+  319,020
+  46,341
+  118,954
+  153,725
+  321,339
+  2,319
+  134
+  1,885
+  300
+
+. 
+. 
+. ** COMORBIDITIES (categorical and continous)
+. 
+. * Exacerbations 
+. 
+. ** COMORBIDITIES (binary)
+. 
+. * Heart Failure outstanding 
+. 
+. foreach comorb of varlist       ckd                                                             ///
+>                                                         copd                                          
+>           ///
+>                                                         hypertension                                  
+>   ///
+>                                                         other_heart_disease                           
+>   ///
+>                                                         diabetes                                      
+>           ///
+>                                                         cancer_ever                                   
+>   ///
+>                                                         immunodef_any                                 
+>   ///
+>                                                         ili                                           
+>           ///
+>                                                         other_respiratory                             
+>   ///
+>                                                         statin                                        
+>           ///
+>                                                         insulin                                       
+>           ///
+>                                                         oral_steroids                                 
+>   ///
+>                                                         flu_vaccine                                   
+>   ///
+>                                                         pneumococcal_vaccine                    ///
+>                                                         gp_consult {
+  2. 
+. local lab: variable label `comorb'
+  3. file write tablecontent ("`lab'") _n 
+  4.                                                         
+. generaterow, variable(`comorb') condition("==1")
+  5. generaterow, variable(`comorb') condition("==0")
+  6. file write tablecontent _n
+  7. 
+. }
+  321,339
+  64,505
+  9,614
+  24,555
+  30,336
+  321,339
+  10,286
+  1,334
+  3,337
+  5,615
+  321,339
+  321,333
+  46,475
+  120,839
+  154,019
+  321,339
+  6
+  0
+  0
+  6
+  321,339
+  160,917
+  23,471
+  62,676
+  74,770
+  321,339
+  160,422
+  23,004
+  58,163
+  79,255
+  321,339
+  73,901
+  11,032
+  28,505
+  34,364
+  321,339
+  247,438
+  35,443
+  92,334
+  119,661
+  321,339
+  78,755
+  11,309
+  30,006
+  37,440
+  321,339
+  242,584
+  35,166
+  90,833
+  116,585
+  321,339
+  45,247
+  6,824
+  17,734
+  20,689
+  321,339
+  276,092
+  39,651
+  103,105
+  133,336
+  321,339
+  1,854
+  223
+  645
+  986
+  321,339
+  319,485
+  46,252
+  120,194
+  153,039
+  321,339
+  78,755
+  11,309
+  30,006
+  37,440
+  321,339
+  242,584
+  35,166
+  90,833
+  116,585
+  321,339
+  27,459
+  3,067
+  12,614
+  11,778
+  321,339
+  293,880
+  43,408
+  108,225
+  142,247
+  321,339
+  156,663
+  24,573
+  62,679
+  69,411
+  321,339
+  164,676
+  21,902
+  58,160
+  84,614
+  321,339
+  9,777
+  1,338
+  3,603
+  4,836
+  321,339
+  311,562
+  45,137
+  117,236
+  149,189
+  321,339
+  69,707
+  9,979
+  42,876
+  16,852
+  321,339
+  251,632
+  36,496
+  77,963
+  137,173
+  321,339
+  13,101
+  2,149
+  5,194
+  5,758
+  321,339
+  308,238
+  44,326
+  115,645
+  148,267
+  321,339
+  9,832
+  1,696
+  3,565
+  4,571
+  321,339
+  311,507
+  44,779
+  117,274
+  149,454
+  321,339
+  71,738
+  10,148
+  27,173
+  34,417
+  321,339
+  249,601
+  36,327
+  93,666
+  119,608
+
+. 
+. 
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\03_an_descriptive_table.log
+  log type:  text
+ closed on:  16 May 2020, 13:00:10
+--------------------------------------------------------------------------------------------------------

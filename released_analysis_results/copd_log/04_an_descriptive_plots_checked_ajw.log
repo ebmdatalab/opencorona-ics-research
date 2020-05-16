@@ -1,0 +1,62 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_plots.log
+  log type:  text
+ opened on:  16 May 2020, 13:00:24
+
+. 
+. * Open Stata dataset
+. use copd_tempdata\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Generate KM PLOT===========================================================*/ 
+. 
+. sts graph, by(exposure)                                                                               
+>                   ///                                                                             
+>                    title("Time to Hospital COVID-19 death, by COPD combination treatment", size(medsma
+> ll))         ///
+>            failure                                                                                    
+>                                   ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                                       
+>   ///
+>                    yscale(range(0, 0.005))                                                            
+>                           ///
+>                    ylabel(0 (0.001) 0.005, angle(0) format(%4.3f) labsize(small))       ///
+>                    xscale(range(30, 84))                                                              
+>                           ///
+>                    xlabel(0 (20) 100, labsize(small))                                                 
+>           ///                             
+>                    legend(size(small) label(1 "LABA/LAMA Combination") label(2 "ICS Combination") regi
+> on(lwidth(none)) order(2 1))      ///
+>                    graphregion(fcolor(white))                                                         
+>                   ///
+>                    saving(km_cpns_bytreat)
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+(file km_cpns_bytreat.gph saved)
+
+. 
+. graph export "copd_output/km_cpns_bytreat.svg", as(svg) replace
+(note: file copd_output/km_cpns_bytreat.svg not found)
+(file copd_output/km_cpns_bytreat.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase km_cpns_bytreat.gph
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_plots.log
+  log type:  text
+ closed on:  16 May 2020, 13:00:28
+--------------------------------------------------------------------------------------------------------
