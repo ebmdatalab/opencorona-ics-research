@@ -1,27 +1,27 @@
 /*==============================================================================
-DO FILE NAME:			03_an_descriptive_table
+DO FILE NAME:			04_an_descriptive_table_asthma
+PROJECT:				ICS in COVID-19 
 AUTHOR:					A Schultze, A Wong, C Rentsch 
 						Adapted from K Baskharan, A Wong 
 DATE: 					10th of May 2020 
-DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure 
+DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure
+						Generalised to produce same columns as levels of exposure
 						Output to a textfile for further formatting
-DATASETS USED:			!! UPDATE NAME 
+DATASETS USED:			$tempdir\analysis_dataset.dta
 DATASETS CREATED: 		None
-OTHER OUTPUT: 			Results in txt: output/table1 
-						Log file: output/an_checks
+OTHER OUTPUT: 			Results in txt: $outdir\table1.txt 
+						Log file: $logdir\04_an_descriptive_table_asthma
 							
 ==============================================================================*/
 
 * Open a log file
 capture log close
-log using log\03_an_descriptive_table, replace t
+log using $logdir\04_an_descriptive_table_asthma, replace t
 
 * Open Stata dataset
-use tempdata\analysis_dataset, clear
+use $tempdir\analysis_dataset, clear
 
 /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
-
-describe
 
 ********************************************************************************
 * All below code from K Baskharan 
@@ -49,12 +49,12 @@ syntax, variable(varname) condition(string)
 	cou if exposure == 1 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
-
+	
 	cou if exposure == 2 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
-	cou if exposure == . & `variable' `condition'
+	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
 	
@@ -65,7 +65,7 @@ end
 defines a program (SAS macro/R function equivalent), generate row
 the syntax row specifies two inputs for the program: 
 
-	a VARNAME which you stick in the variable 
+	a VARNAME which is your variable 
 	a CONDITION which is a string of some condition you impose 
 	
 the program counts if variable and condition and returns the counts
@@ -111,21 +111,68 @@ forvalues lowest to highest of the variable, manually set for each var
 run the generate row program for the level of the variable 
 if there is a missing specified, then run the generate row for missing vals
 
-
 */ 
+
+********************************************************************************
+* Generic code to summarize a continous variable 
+
+cap prog drop summarizevariable 
+prog define summarizevariable
+syntax, variable(varname) 
+
+	local lab: variable label `variable'
+	file write tablecontent ("`lab'") _n 
+	
+	qui summarize `variable', d
+	file write tablecontent ("Median (IQR)") _tab 
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+							
+	qui summarize `variable' if exposure == 0, d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+
+	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+
+	qui summarize `variable' if exposure >= ., d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+	
+	qui summarize `variable', d
+	file write tablecontent ("Min, Max") _tab 
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+							
+	qui summarize `variable' if exposure == 0, d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+
+	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+
+	qui summarize `variable' if exposure >= ., d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _n
+	
+end
+
 
 /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
 
 *Set up output file
 cap file close tablecontent
-file open tablecontent using ./output/03_an_output_table1.txt, write text replace
+file open tablecontent using ./$outdir/table1.txt, write text replace
 
-file write tablecontent ("Table 1: Demographic and Clinical Characteristics") _n
-file write tablecontent _tab ("Total")				  _tab ///
-							 ("SABA only")			  _tab ///
-							 ("ICS low/medium dose")  _tab ///
-							 ("ICS high dose") 		  _tab ///
-							 ("Other") _n
+file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $Population") _n
+
+* Exposure labelled columns
+
+local lab0: label exposure 0
+local lab1: label exposure 1
+local lab2: label exposure 2
+local labu: label exposure .u
+
+
+file write tablecontent _tab ("Total")				  			  _tab ///
+							 ("`lab0'")			 			      _tab ///
+							 ("`lab1'")  						  _tab ///
+							 ("`lab2'")			  				  _tab ///
+							 ("`labu'")			  				  _n 
 
 * DEMOGRAPHICS (more than one level, potentially missing) 
 
@@ -153,7 +200,7 @@ file write tablecontent _n
 
 file write tablecontent _n _n
 
-** ASTHMA TREATMENT VARIABLES (binary)
+** COPD TREATMENT VARIABLES (binary)
 foreach treat of varlist 	saba_single 		///
 							high_dose_ics   	///
 							low_med_dose_ics	///
@@ -165,8 +212,6 @@ foreach treat of varlist 	saba_single 		///
 							laba_lama 			///
 							laba_lama			///
                             ltra_single			///	
-							oral_steroids 		///
-							nebules 			///
 						{    		
 
 local lab: variable label `treat'
@@ -179,18 +224,16 @@ file write tablecontent _n
 
 }
 
-
 ** COMORBIDITIES (categorical and continous)
 
-* Exacerbations 
-
-* GP consultations 
-
 ** COMORBIDITIES (binary)
+*  asthma outstanding 
+*  exacerbation outstanding
 
 foreach comorb of varlist 	ckd								///
 							copd							///
 							hypertension			 		///
+							heart_failure					///
 							other_heart_disease		 		///
 							diabetes 						///
 							cancer_ever 					///
@@ -198,7 +241,11 @@ foreach comorb of varlist 	ckd								///
 							ili 							///
 							other_respiratory 				///
 							statin 							///
-							insulin	{
+							insulin							///
+							oral_steroids 					///
+							flu_vaccine 					///
+							pneumococcal_vaccine			///
+							gp_consult {
 
 local lab: variable label `comorb'
 file write tablecontent ("`lab'") _n 
@@ -209,6 +256,12 @@ file write tablecontent _n
 
 }
 
+* COMORBIDITIES (continous)
+* summarizevariable, variable(exacerbation_count)
+summarizevariable, variable(gp_consult_count)
 
 file close tablecontent
+
+* Close log file 
+log close
 
