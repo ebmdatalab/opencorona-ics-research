@@ -327,9 +327,9 @@ class StudyDefinition:
             elif returning == "numeric_value":
                 dtypes[name] = "float"
             elif returning == "number_of_matches_in_period":
-                dtypes[name] = "int"
+                dtypes[name] = "Int64"
             elif returning == "number_of_episodes":
-                dtypes[name] = "int"
+                dtypes[name] = "Int64"
             elif returning == "binary_flag":
                 converters[name] = tobool
                 dtypes[name] = "bool"
@@ -338,7 +338,7 @@ class StudyDefinition:
             elif returning:
                 dtypes[name] = "category"
             elif funcname == "age_as_of":
-                dtypes[name] = "int"
+                dtypes[name] = "Int64"
             elif funcname == "sex":
                 dtypes[name] = "category"
             elif funcname == "have_died_of_covid":
