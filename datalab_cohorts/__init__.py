@@ -278,7 +278,12 @@ class StudyDefinition:
             unique_check.assert_unique_ids()
 
     def csv_to_df(self, csv_name):
-        return pd.read_csv(csv_name, **self.pandas_csv_args)
+        return pd.read_csv(
+            csv_name,
+            dtype=self.pandas_csv_args["dtype"],
+            converters=self.pandas_csv_args["converters"],
+            parse_dates=self.pandas_csv_args["parse_dates"],
+        )
 
     def get_pandas_csv_args(self, covariate_definitions):
         def tobool(val):
