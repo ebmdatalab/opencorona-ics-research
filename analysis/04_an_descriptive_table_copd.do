@@ -42,14 +42,20 @@ syntax, variable(varname) condition(string)
 	local colpct = 100*(r(N)/`overalldenom')
 	file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
 
+	cou if exposure == 0 
+	local rowdenom = r(N)
 	cou if exposure == 0 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
+	cou if exposure == 1 
+	local rowdenom = r(N)
 	cou if exposure == 1 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
+	cou if exposure >= .
+	local rowdenom = r(N)
 	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
@@ -159,7 +165,7 @@ Please check this extra carefully as well
 
 *Set up output file
 cap file close tablecontent
-file open tablecontent using ./$outdir/04_table1.txt, write text replace
+file open tablecontent using ./$outdir/table1.txt, write text replace
 
 file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $Population") _n
 
@@ -250,8 +256,8 @@ foreach comorb of varlist 	ckd								///
 local lab: variable label `comorb'
 file write tablecontent ("`lab'") _n 
 							
-generaterow, variable(`comorb') condition("==1")
 generaterow, variable(`comorb') condition("==0")
+generaterow, variable(`comorb') condition("==1")
 file write tablecontent _n
 
 }
