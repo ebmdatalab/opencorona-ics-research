@@ -333,7 +333,7 @@ study = StudyDefinition(
     ),
     ### ILI
     ili=patients.with_these_clinical_events(
-        placeholder_event_codes,  #### REPLACE WITH REAL CODE LIST WHEN AVAILABLE
+        ili_codes,
         return_first_date_in_period=True,
         include_month=True,
     ),
