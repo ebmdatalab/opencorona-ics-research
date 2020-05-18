@@ -336,6 +336,7 @@ study = StudyDefinition(
         ili_codes,
         return_first_date_in_period=True,
         include_month=True,
+        between=["2016-09-01", "2020-03-01"],
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
