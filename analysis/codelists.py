@@ -250,3 +250,7 @@ copd_exacerbation_codes = codelist_from_csv(
 copd_review_rescue_codes = codelist_from_csv(
     "codelists/opensafely-copd-rescue-packs-and-annual-reviews.csv", system="ctv3", column="CTV3ID"
 )
+
+ili_codes = codelist_from_csv(
+    "codelists/opensafely-influenza-like-illness.csv", system="ctv3", column="CTV3ID"
+)
