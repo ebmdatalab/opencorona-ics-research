@@ -478,7 +478,7 @@ study = StudyDefinition(
         recent_pneumococcal_vaccine_med
         """,
     ),
-    recent_flu_pneumococcal_tpp_table=patients.with_tpp_vaccination_record(
+    recent_pneumococcal_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="PNEUMOCOCCAL",
         between=["2015-03-01", "2020-03-01"],
         find_last_match_in_period=True,
@@ -487,7 +487,7 @@ study = StudyDefinition(
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
     ),
-    recent_flu_pneumococcal_med=patients.with_these_medications(
+    recent_pneumococcal_med=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
