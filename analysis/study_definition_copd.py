@@ -16,7 +16,7 @@ study = StudyDefinition(
     ## STUDY POPULATION (required)
     population=patients.satisfying(
         """
-        has_copd AND
+        copd AND
         (age >=35 AND age <= 110) AND
         ever_smoked AND
         has_follow_up AND NOT
@@ -26,10 +26,6 @@ study = StudyDefinition(
         """,
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
-        ),
-        has_copd=patients.with_these_clinical_events(
-            copd_codes,
-            on_or_before="2020-03-01",  #### NOTE THIS IS COPD EVER - DIFFERENT TO ASTHMA WHICH IS IN LAST 3 YEARS
         ),
         has_asthma=patients.with_these_clinical_events(
             asthma_codes, between=["2017-03-01", "2020-03-01"],
@@ -283,7 +279,10 @@ study = StudyDefinition(
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
     ### COPD
     copd=patients.with_these_clinical_events(
-        copd_codes, return_first_date_in_period=True, include_month=True,
+        copd_codes,
+        on_or_before="2020-03-01",
+        return_first_date_in_period=True,
+        include_month=True,
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
