@@ -177,8 +177,7 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
-						gp_consult 					///
-						gp_consult_count			{
+						gp_consult 					{
 
 		
  	tab agegroup `var', row col
@@ -202,8 +201,7 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
-						gp_consult 					///
-						gp_consult_count			{
+						gp_consult 					{
 
 						
  	tab male `var', row col
@@ -225,8 +223,7 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
-						gp_consult 					///
-						gp_consult_count			{
+						gp_consult 					{
 	
  	tab smoke `var', row col
 }

@@ -42,18 +42,26 @@ syntax, variable(varname) condition(string)
 	local colpct = 100*(r(N)/`overalldenom')
 	file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
 
+	cou if exposure == 0 
+	local rowdenom = r(N)
 	cou if exposure == 0 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
+	cou if exposure == 1 
+	local rowdenom = r(N)
 	cou if exposure == 1 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
-	
+
+	cou if exposure == 2
+	local rowdenom = r(N)
 	cou if exposure == 2 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
+	cou if exposure >= .
+	local rowdenom = r(N)
 	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n

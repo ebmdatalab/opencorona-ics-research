@@ -457,7 +457,7 @@ study = StudyDefinition(
         },
     ),
     ### VACCINATION HISTORY - PART 2 MEDICINES CODES
-    flu_vaccine_dmd=patients.with_these_medications(
+    flu_vaccine=patients.with_these_medications(
         flu_med_codes,
         between=["2019-09-01", "2020-03-01"],  # current flu season
         return_first_date_in_period=True,
@@ -466,7 +466,7 @@ study = StudyDefinition(
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
         },
     ),
-    pneumococcal_vaccine_dmd=patients.with_these_medications(
+    pneumococcal_vaccine=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
