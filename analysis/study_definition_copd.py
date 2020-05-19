@@ -531,10 +531,7 @@ study = StudyDefinition(
             ignore_days_where_these_codes_occur=copd_review_rescue_codes,
             returning="number_of_episodes",
             episode_defined_as="series of events each <= 14 days apart",
-            return_expectations={
-                "int": {"distribution": "normal", "mean": 4, "stddev": 2},
-                "incidence": 0.2,
-            },
+
         ),
         lrti=patients.with_these_clinical_events(
             lrti_codes,
@@ -542,10 +539,6 @@ study = StudyDefinition(
             ignore_days_where_these_codes_occur=copd_review_rescue_codes,
             returning="number_of_episodes",
             episode_defined_as="series of events each <= 14 days apart",
-            return_expectations={
-                "int": {"distribution": "normal", "mean": 4, "stddev": 2},
-                "incidence": 0.2,
-            },
         ),
     ),
 
