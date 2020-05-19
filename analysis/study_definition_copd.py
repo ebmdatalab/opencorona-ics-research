@@ -20,18 +20,16 @@ study = StudyDefinition(
         (age >=35 AND age <= 110) AND
         ever_smoked AND
         has_follow_up AND NOT
-        has_asthma AND NOT
-        has_other_respiratory AND NOT
-        nebules
+        recent_asthma AND NOT
+        other_respiratory AND NOT
+        nebules AND NOT
+        ltra_single
         """,
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
         ),
-        has_asthma=patients.with_these_clinical_events(
+        recent_asthma=patients.with_these_clinical_events(
             asthma_codes, between=["2017-03-01", "2020-03-01"],
-        ),
-        has_other_respiratory=patients.with_these_clinical_events(
-            other_respiratory_codes, between=["2017-03-01", "2020-03-01"],
         ),
         #### NEBULES
         nebules=patients.with_these_medications(
@@ -535,7 +533,6 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
         },
     ),
-
     ### EXACERBATIONS
     ## count
     exacerbation_count=patients.with_these_clinical_events(
@@ -549,14 +546,12 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
-
     # binary flag
     exacerbations=patients.satisfying(
         """
         exacerbation_count
         """,
     ),
-
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
