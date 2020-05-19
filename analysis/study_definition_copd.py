@@ -21,9 +21,9 @@ study = StudyDefinition(
         ever_smoked AND
         has_follow_up AND NOT
         recent_asthma AND NOT
-        other_respiratory AND NOT
+        other_respiratory_temp AND NOT
         nebules AND NOT
-        ltra_single
+        ltra_single_temp
         """,
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
@@ -34,6 +34,12 @@ study = StudyDefinition(
         #### NEBULES
         nebules=patients.with_these_medications(
             nebulised_med_codes, between=["2019-03-01", "2020-03-01"],
+        ),
+        other_respiratory_temp=patients.with_these_clinical_events(
+            other_respiratory_codes, on_or_before="2020-03-01",
+        ),
+        ltra_single_temp=patients.with_these_medications(
+            leukotriene_med_codes, between=["2019-11-01", "2020-03-01"],
         ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
