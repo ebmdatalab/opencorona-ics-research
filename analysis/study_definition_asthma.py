@@ -524,12 +524,12 @@ study = StudyDefinition(
         return_expectations={"date": {"latest": "2020-03-01"}},
     ),
     ### VACCINATION HISTORY
-    flu_vaccine=patients.satisfying(
-        """
-        recent_flu_vaccine_tpp_table OR
-        recent_flu_vaccine_med
-        """,
-    ),
+    # flu_vaccine=patients.satisfying(
+    #     """
+    #     recent_flu_vaccine_tpp_table OR
+    #     recent_flu_vaccine_med
+    #     """,
+    # ),
     recent_flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="INFLUENZA",
         between=["2019-09-01", "2020-03-01"],
@@ -550,12 +550,12 @@ study = StudyDefinition(
     ),
     ### Brian to add flu vaccine clinical codes definition here
     # PNEUMOCOCCAL VACCINE
-    pneumococcal_vaccine=patients.satisfying(
-        """
-        recent_pneumococcal_vaccine_tpp_table OR
-        recent_pneumococcal_vaccine_med
-        """,
-    ),
+    # pneumococcal_vaccine=patients.satisfying(
+    #     """
+    #     recent_pneumococcal_tpp_table OR
+    #     recent_pneumococcal_med
+    #     """,
+    # ),
     recent_pneumococcal_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="PNEUMOCOCCAL",
         between=["2015-03-01", "2020-03-01"],
