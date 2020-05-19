@@ -82,12 +82,8 @@ foreach var of varlist  ckd     					///
 						copd 						///
 						diabetes					///
 						cancer_ever 				///
-						statin 						///
 						insulin						///
-						flu_vaccine					///
-						pneumococcal_vaccine		///	
 						oral_steroids				///	
-						insulin 					///
 						statin { 
 						
 	summ `var'_date, format
