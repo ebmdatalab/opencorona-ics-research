@@ -548,7 +548,15 @@ study = StudyDefinition(
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
         },
     ),
-    ### Brian to add flu vaccine clinical codes definition here
+    flu_vaccine_clinical=patients.with_these_clinical_events(
+        flu_clinical_codes,
+        between=["2019-09-01", "2020-03-01"],  # current flu season
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={
+            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+        },
+    ),
     # PNEUMOCOCCAL VACCINE
     # pneumococcal_vaccine=patients.satisfying(
     #     """
@@ -574,7 +582,15 @@ study = StudyDefinition(
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
     ),
-    ### Brian to add pneumococcal vaccine clinical codes definition here
+    pneumococcal_vaccine_clinical=patients.with_these_clinical_events(
+        pneumococcal_clinical_codes,
+        between=["2015-03-01", "2020-03-01"],  # past five years
+        return_first_date_in_period=True,
+        include_month=True,
+        return_expectations={
+            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+        },
+    ),
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
