@@ -254,3 +254,11 @@ copd_review_rescue_codes = codelist_from_csv(
 ili_codes = codelist_from_csv(
     "codelists/opensafely-influenza-like-illness.csv", system="ctv3", column="CTV3ID"
 )
+
+copd_infection_codes = codelist_from_csv(
+    "codelists/opensafely-copd-infection.csv", system="ctv3", column="CTV3ID"
+)
+
+lrti_codes = codelist_from_csv(
+    "codelists/opensafely-lower-respiratory-tract-infection.csv", system="ctv3", column="CTV3ID"
+)

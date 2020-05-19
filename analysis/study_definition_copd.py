@@ -504,8 +504,9 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
         },
     ),
-    ### EXACERBATIONS OF COPD
-    exacerbation_count=patients.with_these_clinical_events(
+
+    ### EXACERBATIONS
+    copd_exacerbation_count=patients.with_these_clinical_events(
         copd_exacerbation_codes,
         between=["2019-03-01", "2020-03-01"],
         ignore_days_where_these_codes_occur=copd_review_rescue_codes,
@@ -516,6 +517,38 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
+
+    ### EXACERBATIONS OF COPD
+    exacerbations=patients.satisfying(
+        """
+        copd_exacerbation_count OR 
+        copd_infection OR 
+        lrti
+        """,
+        copd_infection=patients.with_these_clinical_events(
+            copd_exacerbation_codes,
+            between=["2019-03-01", "2020-03-01"],
+            ignore_days_where_these_codes_occur=copd_review_rescue_codes,
+            returning="number_of_episodes",
+            episode_defined_as="series of events each <= 14 days apart",
+            return_expectations={
+                "int": {"distribution": "normal", "mean": 4, "stddev": 2},
+                "incidence": 0.2,
+            },
+        ),
+        lrti=patients.with_these_clinical_events(
+            lrti_codes,
+            between=["2019-03-01", "2020-03-01"],
+            ignore_days_where_these_codes_occur=copd_review_rescue_codes,
+            returning="number_of_episodes",
+            episode_defined_as="series of events each <= 14 days apart",
+            return_expectations={
+                "int": {"distribution": "normal", "mean": 4, "stddev": 2},
+                "incidence": 0.2,
+            },
+        ),
+    ),
+
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
