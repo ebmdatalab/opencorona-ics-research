@@ -19,21 +19,28 @@ study = StudyDefinition(
         has_asthma AND
         (age >=18 AND age <= 110) AND
         has_follow_up AND NOT
-        has_copd AND NOT
-        has_other_respiratory AND NOT
-        nebules
+        copd AND NOT
+        other_respiratory AND NOT
+        nebules AND NOT
+        (
+          (lama_single OR laba_lama) AND NOT (
+            high_dose_ics OR
+            high_dose_ics_single_ing OR
+            high_dose_ics_multiple_ingredient OR
+            low_med_dose_ics_single_ingredient OR
+            low_med_dose_ics_multiple_ingredient OR
+            low_med_dose_ics OR
+            ics_single OR
+            laba_ics OR
+            laba_lama_ics
+          )
+        )
         """,
         has_asthma=patients.with_these_clinical_events(
             asthma_codes, between=["2017-03-01", "2020-03-01"],
         ),
         has_follow_up=patients.registered_with_one_practice_between(
             "2019-03-01", "2020-03-01"
-        ),
-        has_copd=patients.with_these_clinical_events(
-            copd_codes, between=["2017-03-01", "2020-03-01"],
-        ),
-        has_other_respiratory=patients.with_these_clinical_events(
-            other_respiratory_codes, between=["2017-03-01", "2020-03-01"],
         ),
         nebules=patients.with_these_medications(
             nebulised_med_codes, between=["2019-03-01", "2020-03-01"],
@@ -554,8 +561,6 @@ study = StudyDefinition(
         """,
         # ADD IN pneumococcal_vaccine_clinical WHEN DECIDED
     ),
-
-
     ### EXACERBATION
     # count
     exacerbation_count=patients.with_these_medications(
