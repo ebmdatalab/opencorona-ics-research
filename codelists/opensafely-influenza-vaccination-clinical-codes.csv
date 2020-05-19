@@ -1,0 +1,74 @@
+CTV3ID,CTV3PreferredTermDesc,CTV3Source
+65E..,Influenza vaccination,CTV3Map_Code_And_Term
+68NV.,Influenza vacc consent given,CTV3Map_Code_And_Term
+F034G,Post influenza vaccination encephalitis,CTV3Map_Code_And_Term
+XaIBI,Influenza vaccination declined,CTV3Map_Code_And_Term
+XaIOT,Influenza vaccination contraindicated,CTV3Map_Code_And_Term
+XaJ5n,Influenza vaccination not indicated,CTV3Map_Code_And_Term
+XaJ7u,[X]Influenza vaccine causing adverse effects therapeutic use,CTV3Map_Code_And_Term
+XaL1V,Did not attend flu vaccination appointment,CTV3Map_Code_And_Term
+XaLK4,Booster influenza vaccination,CTV3_Children
+XaLNG,First pandemic influenza vaccination,CTV3Map_Code_And_Term
+XaLNH,Second pandemic influenza vaccination,CTV3Map_Code_And_Term
+XaPw1,Consent given for pandemic influenza vaccination,CTV3Map_Code_And_Term
+XaPw7,Pandemic influenza vaccination declined,CTV3Map_Code_And_Term
+XaPwe,Pandemic influenza vaccination contraindicated,CTV3Map_Code_And_Term
+XaPwi,1st pandemic influenza vacc give by other healthcare providr,CTV3Map_Code_And_Term
+XaPwj,2nd pandemic influenza vacc give by other healthcare providr,CTV3Map_Code_And_Term
+XaPwk,Pandemic influenza vaccination not indicated,CTV3Map_Code_And_Term
+XaPyT,Influenza vaccination given by other healthcare provider,CTV3Map_Code_And_Term
+XaQhk,CELVAPAN - first influenza A (H1N1v) 2009 vaccination given,CTV3Map_Code_And_Term
+XaQhl,CELVAPAN - second influenza A (H1N1v) 2009 vaccination given,CTV3Map_Code_And_Term
+XaQhm,PANDEMRIX - first influenza A (H1N1v) 2009 vaccination given,CTV3Map_Code_And_Term
+XaQhn,PANDEMRIX - second influenza A (H1N1v) 2009 vaccination give,CTV3Map_Code_And_Term
+XaQho,CELVAPAN - 1st flu A (H1N1v) 2009 vacc by othr hlth provider,CTV3Map_Code_And_Term
+XaQhp,CELVAPAN - 2nd flu A (H1N1v) 2009 vacc by othr hlth provider,CTV3Map_Code_And_Term
+XaQhq,PANDEMRIX - 1st flu A (H1N1v) 2009 vac by othr hlth provider,CTV3Map_Code_And_Term
+XaQhr,PANDEMRIX - 2nd flu A (H1N1v) 2009 vac by othr hlth provider,CTV3Map_Code_And_Term
+XaR54,Consent given for influenza A subtype H1N1 vaccination,CTV3Map_Code_And_Term
+XaVwE,Did not attend influenza A virus subtype H1N1 vaccination,CTV3_Children
+XaX4R,Influenza A virus subtype H1N1 vaccination declined,CTV3Map_Code_And_Term
+XaZ0d,Seasonal influenza vaccination,CTV3Map_Code_And_Term
+XaZ0e,Seasonal influenza vaccin given by other healthcare provider,CTV3Map_Code_And_Term
+XaZ0i,Seasonal influenza vaccination declined,CTV3Map_Code_And_Term
+XaZ0j,Seasonal influenza vaccination contraindicated,CTV3Map_Code_And_Term
+XaZ0k,Seasonal influenza vaccination not indicated,CTV3Map_Code_And_Term
+XaZ0l,Consent given for seasonal influenza vaccination,CTV3Map_Code_And_Term
+XaZfY,Seasonal influenza vaccination given by pharmacist,CTV3Map_Code_And_Term
+Xaa9G,Administration of intranasal influenza vaccination,CTV3Map_Code_And_Term
+XaaDp,First intranasal influenza vaccination declined,CTV3Map_Code_And_Term
+XaaDq,Second intranasal influenza vaccination declined,CTV3Map_Code_And_Term
+XaaED,Administration of first intranasal influenza vaccination,CTV3Map_Code_And_Term
+XaaEF,Administration of second intranasal influenza vaccination,CTV3Map_Code_And_Term
+XaaWK,DNA second intranasal seasonal influenza vaccination,CTV3_Children
+XaaWM,DNA first intranasal seasonal influenza vaccination,CTV3Map_Code_And_Term
+XaaZp,Seasonal influenza vaccination given while hospital inpt,CTV3Map_Code_And_Term
+Xaac1,Administration of first intranasal pandemic influenza vacc,CTV3Map_Code_And_Term
+Xaac2,Administration of second intranasal pandemic influenza vacc,CTV3Map_Code_And_Term
+Xaac3,Administration of first intranasal seasonal influenza vacc,CTV3Map_Code_And_Term
+Xaac4,Administration of second intranasal seasonal influenza vacc,CTV3Map_Code_And_Term
+Xaac5,First intranasal pndmc influenza vcc gvn othr hlthcare prvdr,CTV3Map_Code_And_Term
+Xaac6,Scnd intrnsl pndmc flu vacc gvn by other healthcare provider,CTV3_Children
+Xaac7,First intranasal seasonal flu vacc gvn by othr hlthcare prov,CTV3Map_Code_And_Term
+Xaac8,Secnd intranasal seasonal flu vacc gvn by othr hlthcare prov,CTV3Map_Code_And_Term
+XaadS,First intranasal seasonal influenza vaccination declined,CTV3Map_Code_And_Term
+XaadT,First intranasal pandemic influenza vaccination declined,CTV3Map_Code_And_Term
+XaadU,Second intranasal seasonal influenza vaccination declined,CTV3Map_Code_And_Term
+XaadV,Second intranasal pandemic influenza vaccination declined,CTV3Map_Code_And_Term
+XaadX,DNA first intranasal pandemic influenza vaccination,CTV3Map_Code_And_Term
+XaadZ,DNA second intranasal pandemic influenza vaccination,CTV3_Children
+XabvT,2nd intramuscular seasonal influenza vacc given by other HCP,CTV3Map_Code_And_Term
+Xac5J,1st intramuscular seasonal influenza vacc given by other HCP,CTV3Map_Code_And_Term
+Xad9j,Administration of first inactivated seasonal influenza vacc,CTV3Map_Code_And_Term
+Xad9k,Administration of second inactivated seasonal influenza vacc,CTV3Map_Code_And_Term
+Xaeet,First intranasal seasonal influenza vacc given by pharmacist,CTV3Map_Code_And_Term
+Xaeeu,Second intranasal seasonal influenza vacc givn by pharmacist,CTV3Map_Code_And_Term
+Xaeev,First inactivated seasonal influenza vacc gvn by pharmacist,CTV3Map_Code_And_Term
+Xaeew,Second inactivated seasonal influenza vacc gvn by pharmacist,CTV3Map_Code_And_Term
+Y0c3f,First influenza A (H1N1v) 2009 vaccination given,CTV3_Children
+Y0c40,Second influenza A (H1N1v) 2009 vaccination given,CTV3_Children
+Y0fd0,Optaflu,CTV3_Children
+Y1314,Mastaflu (MASTA),CTV3_Children
+Y3087,Invivac (Solvey),CTV3_Children
+ZV048,[V]Influenza vaccination,CTV3Map_Code_And_Term
+ZV048,[V]Influenza vaccination,CTV3Map_Code_Only

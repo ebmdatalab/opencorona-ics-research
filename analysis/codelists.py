@@ -47,9 +47,7 @@ heart_failure_codes = codelist_from_csv(
 )
 
 ics_single_med_codes = codelist_from_csv(
-    "codelists/opensafely-single-ingredient-ics.csv",
-    system="snomed",
-    column="id",
+    "codelists/opensafely-single-ingredient-ics.csv", system="snomed", column="id",
 )
 
 laba_ics_med_codes = codelist_from_csv(
@@ -139,7 +137,9 @@ copd_codes = codelist_from_csv(
 )
 
 other_respiratory_codes = codelist_from_csv(
-    "codelists/opensafely-other-respiratory-conditions.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-other-respiratory-conditions.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 hypertension_codes = codelist_from_csv(
@@ -200,11 +200,15 @@ high_dose_ics_med_codes = codelist_from_csv(
 )
 
 high_dose_ics_single_ingredient_med_codes = codelist_from_csv(
-    "codelists/opensafely-high-dose-single-ingredient-ics-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-high-dose-single-ingredient-ics-inhalers.csv",
+    system="snomed",
+    column="id",
 )
 
 high_dose_ics_multiple_ingredient_med_codes = codelist_from_csv(
-    "codelists/opensafely-high-dose-multiple-ingredient-ics-inhalers.csv", system="snomed", column="id"
+    "codelists/opensafely-high-dose-multiple-ingredient-ics-inhalers.csv",
+    system="snomed",
+    column="id",
 )
 
 other_heart_disease_codes = codelist_from_csv(
@@ -212,7 +216,9 @@ other_heart_disease_codes = codelist_from_csv(
 )
 
 ibd_codes = codelist_from_csv(
-    "codelists/opensafely-inflammatory-bowel-disease.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-inflammatory-bowel-disease.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 ms_codes = codelist_from_csv(
@@ -224,7 +230,9 @@ ra_codes = codelist_from_csv(
 )
 
 sle_codes = codelist_from_csv(
-    "codelists/opensafely-systemic-lupus-erythematosus-sle.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-systemic-lupus-erythematosus-sle.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 interstital_lung_codes = codelist_from_csv(
@@ -232,11 +240,27 @@ interstital_lung_codes = codelist_from_csv(
 )
 
 flu_med_codes = codelist_from_csv(
-    "codelists/opensafely-influenza-vaccination.csv", system="snomed", column="snomed_id"
+    "codelists/opensafely-influenza-vaccination.csv",
+    system="snomed",
+    column="snomed_id",
 )
 
 pneumococcal_med_codes = codelist_from_csv(
-    "codelists/opensafely-pneumococcal-vaccination.csv", system="snomed", column="snomed_id"
+    "codelists/opensafely-pneumococcal-vaccination.csv",
+    system="snomed",
+    column="snomed_id",
+)
+
+flu_clinical_codes = codelist_from_csv(
+    "codelists/opensafely-influenza-vaccination-clinical-codes.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+
+pneumococcal_clinical_codes = codelist_from_csv(
+    "codelists/opensafely-pneumococcal-vaccination-clinical-codes.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 temporal_arteritis_codes = codelist_from_csv(
@@ -248,7 +272,9 @@ copd_exacerbation_codes = codelist_from_csv(
 )
 
 copd_review_rescue_codes = codelist_from_csv(
-    "codelists/opensafely-copd-rescue-packs-and-annual-reviews.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-copd-rescue-packs-and-annual-reviews.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
 
 ili_codes = codelist_from_csv(
@@ -262,3 +288,4 @@ copd_infection_codes = codelist_from_csv(
 lrti_codes = codelist_from_csv(
     "codelists/opensafely-lower-respiratory-tract-infection.csv", system="ctv3", column="CTV3ID"
 )
+
