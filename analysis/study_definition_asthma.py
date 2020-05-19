@@ -561,6 +561,29 @@ study = StudyDefinition(
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
     ),
+
+    ### EXACERBATION
+    # count
+    # exacerbation_count=patients.
+    # ),
+
+
+    # # binary flag
+    # exacerbations=patients.satisfying(
+    #     """
+    #     prednisolone_script OR
+    #     asthma_exacerbation
+    #     """,
+    #     prednisolone_script=patients.with_these_medications(
+    #         oral_steroid_med_codes,
+    #         between=["2019-03-01", "2020-03-01"],
+    #         return_first_date_in_period=True,
+    #         include_month=True,
+    #         return_expectations={
+    #             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+    #         },
+    #     ,
+
     ### PLACEHOLDER VACCINATION HISTORY - PART 3 CLINICAL CODES PLACEHOLDER
     ### INSULIN USE
     insulin=patients.with_these_medications(

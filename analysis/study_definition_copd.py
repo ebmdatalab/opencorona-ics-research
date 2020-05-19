@@ -504,7 +504,9 @@ study = StudyDefinition(
             "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
         },
     ),
-    ### EXACERBATIONS OF COPD
+
+    ### EXACERBATIONS
+    ## count
     exacerbation_count=patients.with_these_clinical_events(
         copd_exacerbation_codes,
         between=["2019-03-01", "2020-03-01"],
@@ -516,6 +518,14 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
+
+    # binary flag
+    exacerbations=patients.satisfying(
+        """
+        exacerbation_count
+        """,
+    ),
+
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_these_clinical_events(
         placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
