@@ -479,10 +479,14 @@ study = StudyDefinition(
     ),
     flu_vaccine=patients.satisfying(
         """
-        flu_vaccine_tpp_table OR
+        flu_vaccine_tpp_table_temp OR
         flu_vaccine_med
         """,
         # ADD IN flu_vaccine_clinical WHEN DECIDED
+        flu_vaccine_tpp_table_temp=patients.with_tpp_vaccination_record(
+            target_disease_matches="INFLUENZA",
+            between=["2019-09-01", "2020-03-01"],  # current flu season
+        ),
     ),
     # PNEUMOCOCCAL VACCINE
     pneumococcal_vaccine_tpp_table=patients.with_tpp_vaccination_record(
@@ -514,10 +518,13 @@ study = StudyDefinition(
     ),
     pneumococcal_vaccine=patients.satisfying(
         """
-        pneumococcal_vaccine_tpp_table OR
+        pneumococcal_vaccine_tpp_table_temp OR
         pneumococcal_vaccine_med
         """,
         # ADD IN pneumococcal_vaccine_clinical WHEN DECIDED
+        pneumococcal_vaccine_tpp_table_temp=patients.with_tpp_vaccination_record(
+            target_disease_matches="PNEUMOCOCCAL", between=["2015-03-01", "2020-03-01"],
+        ),
     ),
     ### INSULIN USE
     insulin=patients.with_these_medications(
