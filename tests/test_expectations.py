@@ -356,7 +356,6 @@ def test_make_df_from_expectations_with_categories():
         ),
     )
     population_size = 10000
-
     result = study.make_df_from_expectations(population_size)
     assert result.columns == ["ethnicity"]
 
@@ -577,6 +576,28 @@ def test_make_df_from_expectations_with_number_of_episodes():
     assert result.columns == ["episode_count"]
 
 
+def test_make_df_from_expectations_with_satisfying():
+    study = StudyDefinition(
+        population=patients.all(),
+        has_condition=patients.satisfying(
+            "condition_a OR condition_b",
+            condition_a=patients.with_these_clinical_events(
+                codelist(["A", "B", "C"], system="ctv3")
+            ),
+            condition_b=patients.with_these_clinical_events(
+                codelist(["X", "Y", "Z"], system="ctv3")
+            ),
+            return_expectations={
+                "date": {"earliest": "2001-01-01", "latest": "2020-03-01"},
+                "incidence": 0.95,
+            },
+        ),
+    )
+    population_size = 10000
+    result = study.make_df_from_expectations(population_size)
+    assert result.columns == ["has_condition"]
+
+
 def test_make_df_from_expectations_doesnt_alter_defaults():
     study = StudyDefinition(
         default_expectations={
@@ -678,3 +699,25 @@ def test_validate_category_expectations():
         category_definitions=category_definitions,
         return_expectations={"category": {"ratios": {"A": 1}}},
     )
+
+
+def test_make_df_from_expectations_partial_default_overrides():
+    study = StudyDefinition(
+        default_expectations={
+            "date": {"earliest": "1900-01-01", "latest": "today"},
+            "rate": "exponential_increase",
+            "incidence": 0.2,
+        },
+        population=patients.all(),
+        asthma_condition=patients.with_these_clinical_events(
+            codelist(["X"], system="ctv3"),
+            returning="date",
+            find_first_match_in_period=True,
+            date_format="YYYY",
+            return_expectations={"date": {"latest": "2000-01-01"}},
+        ),
+    )
+
+    population_size = 10000
+    result = study.make_df_from_expectations(population_size)
+    assert result.asthma_condition.astype("float").max() == 2000

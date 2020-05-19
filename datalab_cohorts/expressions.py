@@ -27,13 +27,6 @@ def format_expression(expression, name_map):
     return " ".join(token.value for token in tokens)
 
 
-def convert_date_to_int(expr):
-    if ".date" in expr:
-        return f"IIF({expr} = '', 0, 1)"
-    else:
-        return expr
-
-
 def remap_names(tokens, name_map):
     """
     Takes an iterable of tokens and remaps any names found within using the
@@ -43,7 +36,6 @@ def remap_names(tokens, name_map):
         if token.ttype is ttypes.Name:
             try:
                 name = name_map[token.value]
-                name = convert_date_to_int(name)
             except KeyError:
                 raise UnknownColumnError(f"Unknown column: {token.value}")
             yield sqlparse.sql.Token(ttypes.Name, name)
