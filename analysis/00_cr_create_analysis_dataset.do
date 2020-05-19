@@ -45,7 +45,6 @@ foreach var of varlist 	aplastic_anaemia				///
 						copd            				///
 						creatinine_date  				///
 						diabetes         				///
-						flu_vaccine						///
 						haem_cancer      				///
 						heart_failure 					///
 						hiv             				///
@@ -57,7 +56,6 @@ foreach var of varlist 	aplastic_anaemia				///
 						other_heart_disease				///
 						other_respiratory 				///
 						permanent_immunodeficiency   	///
-						pneumococcal_vaccine			///
 						smoking_status_date				///
 						temporary_immunodeficiency   	///
 						insulin 						///
@@ -123,14 +121,12 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						hiv_date             				///
 						hypertension_date     				///
 						esrf_date 							///
-						flu_vaccine_date					///
 						ili_date              				///
 						lung_cancer_date     				///
 						other_cancer_date    				///
 						other_heart_disease_date			///
 						other_respiratory_date 				///
 						perm_immunodef_date   				///
-						pneumococcal_vaccine_date			///
 						smoking_status_measured_date		///
 						temp_immunodef_date   				///
 						insulin_date 						///
@@ -558,8 +554,6 @@ label var cancer_ever_date 				"Cancer Date"
 
 label var statin_date 					"Recent Statin Date"
 label var insulin_date					"Recent Insulin Date"
-label var flu_vaccine_date				"Flu vaccine Date"
-label var pneumococcal_vaccine_date 	"Pneumococcal Vaccine Date"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
