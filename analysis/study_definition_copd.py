@@ -506,7 +506,8 @@ study = StudyDefinition(
     ),
 
     ### EXACERBATIONS
-    copd_exacerbation_count=patients.with_these_clinical_events(
+    ## count
+    exacerbation_count=patients.with_these_clinical_events(
         copd_exacerbation_codes,
         between=["2019-03-01", "2020-03-01"],
         ignore_days_where_these_codes_occur=copd_review_rescue_codes,
@@ -518,28 +519,11 @@ study = StudyDefinition(
         },
     ),
 
-    ### EXACERBATIONS OF COPD
+    # binary flag
     exacerbations=patients.satisfying(
         """
-        copd_exacerbation_count OR 
-        copd_infection OR 
-        lrti
+        exacerbation_count
         """,
-        copd_infection=patients.with_these_clinical_events(
-            copd_exacerbation_codes,
-            between=["2019-03-01", "2020-03-01"],
-            ignore_days_where_these_codes_occur=copd_review_rescue_codes,
-            returning="number_of_episodes",
-            episode_defined_as="series of events each <= 14 days apart",
-
-        ),
-        lrti=patients.with_these_clinical_events(
-            lrti_codes,
-            between=["2019-03-01", "2020-03-01"],
-            ignore_days_where_these_codes_occur=copd_review_rescue_codes,
-            returning="number_of_episodes",
-            episode_defined_as="series of events each <= 14 days apart",
-        ),
     ),
 
     ### GP CONSULTATION RATE
