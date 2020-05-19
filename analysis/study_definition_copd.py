@@ -448,8 +448,8 @@ study = StudyDefinition(
     ### VACCINATION HISTORY
     flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="INFLUENZA",
-        find_last_match_in_period=True,
         between=["2019-09-01", "2020-03-01"],  # current flu season
+        find_first_match_in_period=True,
         returning="date",
         return_expectations={
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
@@ -484,7 +484,7 @@ study = StudyDefinition(
     pneumococcal_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="PNEUMOCOCCAL",
         between=["2015-03-01", "2020-03-01"],
-        find_last_match_in_period=True,
+        find_first_match_in_period=True,
         returning="date",
         return_expectations={
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
