@@ -548,7 +548,6 @@ study = StudyDefinition(
         sle_codes,
         between=["2019-03-01", "2020-03-01"],
         return_number_of_matches_in_period=True,
-        include_month=True,
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 1},
             "incidence": 0.2,
@@ -559,7 +558,6 @@ study = StudyDefinition(
         interstital_lung_codes,
         between=["2019-03-01", "2020-03-01"],
         return_number_of_matches_in_period=True,
-        include_month=True,
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 1},
             "incidence": 0.2,
@@ -570,7 +568,6 @@ study = StudyDefinition(
         ra_codes,
         between=["2019-03-01", "2020-03-01"],
         return_number_of_matches_in_period=True,
-        include_month=True,
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 1},
             "incidence": 0.2,
@@ -581,7 +578,6 @@ study = StudyDefinition(
         ms_codes,
         between=["2019-03-01", "2020-03-01"],
         return_number_of_matches_in_period=True,
-        include_month=True,
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 1},
             "incidence": 0.2,
@@ -592,7 +588,6 @@ study = StudyDefinition(
         temporal_arteritis_codes,
         between=["2019-03-01", "2020-03-01"],
         return_number_of_matches_in_period=True,
-        include_month=True,
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 1},
             "incidence": 0.2,
