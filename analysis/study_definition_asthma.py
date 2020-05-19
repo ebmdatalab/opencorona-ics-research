@@ -524,22 +524,16 @@ study = StudyDefinition(
         return_expectations={"date": {"latest": "2020-03-01"}},
     ),
     ### VACCINATION HISTORY
-    # flu_vaccine=patients.satisfying(
-    #     """
-    #     recent_flu_vaccine_tpp_table OR
-    #     recent_flu_vaccine_med
-    #     """,
-    # ),
-    recent_flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
+    flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="INFLUENZA",
-        between=["2019-09-01", "2020-03-01"],
         find_last_match_in_period=True,
+        between=["2019-09-01", "2020-03-01"],  # current flu season
         returning="date",
         return_expectations={
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
         },
     ),
-    recent_flu_vaccine_med=patients.with_these_medications(
+    flu_vaccine_med=patients.with_these_medications(
         flu_med_codes,
         between=["2019-09-01", "2020-03-01"],  # current flu season
         return_first_date_in_period=True,
@@ -557,14 +551,15 @@ study = StudyDefinition(
             "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
         },
     ),
+    flu_vaccine=patients.satisfying(
+        """
+        flu_vaccine_tpp_table OR
+        flu_vaccine_med
+        """,
+        # ADD IN flu_vaccine_clinical WHEN DECIDED
+    ),
     # PNEUMOCOCCAL VACCINE
-    # pneumococcal_vaccine=patients.satisfying(
-    #     """
-    #     recent_pneumococcal_tpp_table OR
-    #     recent_pneumococcal_med
-    #     """,
-    # ),
-    recent_pneumococcal_tpp_table=patients.with_tpp_vaccination_record(
+    pneumococcal_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="PNEUMOCOCCAL",
         between=["2015-03-01", "2020-03-01"],
         find_last_match_in_period=True,
@@ -573,7 +568,7 @@ study = StudyDefinition(
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
     ),
-    recent_pneumococcal_med=patients.with_these_medications(
+    pneumococcal_vaccine_med=patients.with_these_medications(
         pneumococcal_med_codes,
         between=["2015-03-01", "2020-03-01"],  # past five years
         return_first_date_in_period=True,
@@ -590,6 +585,13 @@ study = StudyDefinition(
         return_expectations={
             "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
         },
+    ),
+    pneumococcal_vaccine=patients.satisfying(
+        """
+        pneumococcal_vaccine_tpp_table OR
+        pneumococcal_vaccine_med
+        """,
+        # ADD IN pneumococcal_vaccine_clinical WHEN DECIDED
     ),
     ### INSULIN USE
     insulin=patients.with_these_medications(
