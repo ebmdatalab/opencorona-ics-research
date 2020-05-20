@@ -42,25 +42,37 @@ estimates save ./$tempdir/univar, replace
 * Age fit as spline in first instance, categorical below 
 
 stcox i.exposure i.male age1 age2 age3 
-estimates save ./$tempdir/multivar1, replace 
+estimates save ./$tempdir/multivar1, replace #
 
 * Age, Gender and Comorbidities 
-stcox i.exposure i.male age1 age2 age3 								///
-										i. ckd	 					///		
-										i. hypertension			 	///		
-										i. heart_failure			///		
-										i. other_heart_disease		///		
-										i. diabetes 				///		
-										i. cancer_ever 				///	
-										i. immunodef_any		 	///							
-										i. statin 					///		
-										i. insulin					///		
-										i. oral_steroids 			///		
-										i. flu_vaccine 				///	
-										i. pneumococcal_vaccine		///	
-										i. gp_consult				
+stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
+										i.smoke_nomiss				///
+										i.imd 						///
+										i.stp						///
+										i.ckd	 					///		
+										i.hypertension			 	///		
+										i.heart_failure				///		
+										i.other_heart_disease		///		
+										i.diabetes 					///		
+										i.cancer_ever 				///	
+										i.immunodef_any		 		///							
+										i.statin 					///		
+										i.insulin					///		
+										i.oral_steroids 			///		
+										i.flu_vaccine 				///	
+										i.pneumococcal_vaccine		///	
+										i.gp_consult				
 										
 estimates save ./$tempdir/multivar2, replace 
+
+/* MODEL CHANGES TO DO: 
+- BMI as splines
+- STP as strata to avoid overgitting 
+- GP consult as count, depending on distribution of real variable 
+- Exacerbation add in, as count 
+- Diabetes as severity, remove insulin 
+- Remove oral steroids, replace with exacerbations 
+*/ 
 
 /* Print table================================================================*/ 
 
@@ -90,7 +102,7 @@ local lab1: label exposure 1
 	
 	file write tablecontent ("`lab0'") _tab
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-	file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
+	file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
 	
 * Second row, exposure = 1 (comparator)
 
