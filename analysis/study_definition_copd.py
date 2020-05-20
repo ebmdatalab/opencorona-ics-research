@@ -554,11 +554,11 @@ study = StudyDefinition(
     ),
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_gp_consultations(
-        on_or_before="2019-03-01",
+        between=["2019-03-01", "2020-03-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 2},
-            "date": {"latest": "2020-03-01"},
+            "date": {"earliest": "2019-03-01", "latest": "2020-03-01"},
             "incidence": 0.7,
         },
     ),
