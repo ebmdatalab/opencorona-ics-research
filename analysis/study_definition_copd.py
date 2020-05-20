@@ -10,7 +10,7 @@ study = StudyDefinition(
     # Configure the expectations framework (optional)
     default_expectations={
         "date": {"earliest": "1970-01-01", "latest": "today"},
-        "rate": "exponential_increase",
+        "rate": "uniform",
         "incidence": 0.2,
     },
     ## STUDY POPULATION (required)
