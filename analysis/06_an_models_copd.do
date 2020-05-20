@@ -2,25 +2,27 @@
 DO FILE NAME:			06_models_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
-AUTHOR:					A Schultze 
-						adapted from K Baskharan, E Williamson 										
+AUTHOR:					A Schultze 									
 DESCRIPTION OF FILE:	program 06 
 						univariable regression
 						multivariable regression 
+						interaction models are in: 
+							07_an_model_interact
 						sensitivity analyses and model checks are in: 
-							07_model_assumptions
-							08_sensitivity 
+							08_an_model_checks
+							09_an_sensitivity 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 
 DATASETS CREATED: 		none
 OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
+						table2, printed to analysis/$outdir
 							
 ==============================================================================*/
 
 * Open a log file
 
 cap log close
-log using $logdir\06_models_copd, replace t
+log using $logdir\06_an_models_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
@@ -42,7 +44,7 @@ estimates save ./$tempdir/univar, replace
 * Age fit as spline in first instance, categorical below 
 
 stcox i.exposure i.male age1 age2 age3 
-estimates save ./$tempdir/multivar1, replace #
+estimates save ./$tempdir/multivar1, replace 
 
 * Age, Gender and Comorbidities 
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
@@ -75,6 +77,7 @@ estimates save ./$tempdir/multivar2, replace
 */ 
 
 /* Print table================================================================*/ 
+*  Print the results for the main model 
 
 cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
@@ -126,8 +129,6 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 estimates use ./$tempdir/multivar2 
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
-
-file close tablecontent
 
 * Close log file 
 log close
