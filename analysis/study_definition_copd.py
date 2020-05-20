@@ -10,7 +10,7 @@ study = StudyDefinition(
     # Configure the expectations framework (optional)
     default_expectations={
         "date": {"earliest": "1970-01-01", "latest": "today"},
-        "rate": "exponential_increase",
+        "rate": "uniform",
         "incidence": 0.2,
     },
     ## STUDY POPULATION (required)
@@ -553,14 +553,16 @@ study = StudyDefinition(
         """,
     ),
     ### GP CONSULTATION RATE
-    gp_consult_count=patients.with_these_clinical_events(
-        placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
-        on_or_before="2019-03-01",
+    gp_consult_count=patients.with_gp_consultations(
+        between=["2019-03-01", "2020-03-01"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 2},
-            "date": {"latest": "2020-03-01"},
-            "incidence": 0.95,
+            "date": {"earliest": "2019-03-01", "latest": "2020-03-01"},
+            "incidence": 0.7,
         },
+    ),
+    has_consultation_history=patients.with_complete_gp_consultation_history_between(
+        "2019-03-01", "2020-03-01", return_expectations={"incidence": 0.9},
     ),
 )
