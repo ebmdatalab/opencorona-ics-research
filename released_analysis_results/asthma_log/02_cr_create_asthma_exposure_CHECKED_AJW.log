@@ -1,0 +1,103 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\02_cr_create_asthma_exposure.log
+  log type:  text
+ opened on:  20 May 2020, 11:22:32
+
+. 
+. /* TREATMENT EXPOSURE=========================================================*/        
+. 
+. /* SABA ONLY */ 
+. 
+. * At least one prescription of SABA single 
+. gen exposure = 0 if saba_single == 1
+(680,155 missing values generated)
+
+. 
+. * And not a LABA, ICS or LTRA single or in combination 
+. recode exposure(0 = .u) if ics_single == 1 
+(exposure: 214548 changes made)
+
+. recode exposure(0 = .u) if laba_ics == 1 
+(exposure: 280569 changes made)
+
+. recode exposure(0 = .u) if laba_lama_ics == 1 
+(exposure: 660 changes made)
+
+. recode exposure(0 = .u) if ltra_single == 1 
+(exposure: 2482 changes made)
+
+. 
+. * Note to reviewer, LAMA allowed as per protocol
+. 
+. /* ICS */
+.                                 
+. * Most recent low or high dose before index
+. 
+. replace exposure = 1 if low_med_dose_ics == 1 & ///
+>                                                 low_med_dose_ics_date == max(low_med_dose_ics_date, hi
+> gh_dose_ics_date)
+(611,995 real changes made)
+
+. replace exposure = 2 if high_dose_ics == 1 & /// 
+>                                                 high_dose_ics_date == max(low_med_dose_ics_date, high_
+> dose_ics_date)    
+(101,104 real changes made)
+
+. 
+. * If both on same date, assume high                             
+. 
+. replace exposure = .u if exposure >= .
+(465,354 real changes made, 465,354 to missing)
+
+.                                                 
+. label define exposure 0 "SABA only" 1 "ICS (Low/Medium Dose)" 2 "ICS (High Dose)" .u "Other"
+
+. label values exposure exposure 
+
+. 
+. label var exposure "Asthma Treatment Exposure"
+
+. 
+. /* SAVE DATA==================================================================*/        
+. 
+. sort patient_id
+
+. save $tempdir\analysis_dataset, replace
+file asthma_tempdata\analysis_dataset.dta saved
+
+. 
+. * Save a version set on CPNS survival outcome
+. stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)      
+
+                id:  patient_id
+     failure event:  cpnsdeath != 0 & cpnsdeath < .
+obs. time interval:  (stime_cpnsdeath[_n-1], stime_cpnsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+  1,286,997  total observations
+         24  observations end on or before enter()
+------------------------------------------------------------------------------
+  1,286,973  observations remaining, representing
+  1,286,973  subjects
+        406  failures in single-failure-per-subject data
+   70736092  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =        55
+
+. save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
+file asthma_tempdata\analysis_dataset_STSET_cpnsdeath.dta saved
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\02_cr_create_asthma_exposure.log
+  log type:  text
+ closed on:  20 May 2020, 11:22:56
+--------------------------------------------------------------------------------------------------------

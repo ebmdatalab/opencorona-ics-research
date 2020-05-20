@@ -1,0 +1,121 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\02_cr_create_copd_exposure.log
+  log type:  text
+ opened on:  20 May 2020, 11:17:32
+
+. 
+. /* TREATMENT EXPOSURE=========================================================*/        
+. 
+. /* LABA LAMA */ 
+. 
+. * At least one prescription in LABA-LAMA combination list 
+. gen exptemp1 = 1 if laba_lama == 1 
+(245,797 missing values generated)
+
+. * OR at least one prescription of LABA AND at least one prescription of LAMA
+. gen exptemp2 = 1 if laba_single == 1 & lama_single == 1 
+(289,545 missing values generated)
+
+. 
+. gen exposure = 0 if             exptemp1 == 1 | ///
+>                                                 exptemp2 == 1
+(243,549 missing values generated)
+
+.                                                 
+. * AND no prescription for an ICS 
+. recode exposure(0 = .u) if ics_single == 1 
+(exposure: 1492 changes made)
+
+. recode exposure(0 = .u) if laba_ics == 1 
+(exposure: 1906 changes made)
+
+. recode exposure(0 = .u) if laba_lama_ics == 1 
+(exposure: 1730 changes made)
+
+. 
+. /* ICS */
+.                                 
+. * Any prescription for a LABA LAMA ICS combination 
+. gen exptemp3 = 1 if laba_lama_ics == 1
+(258,918 missing values generated)
+
+. * OR Any prescription for a LABA ICS combination product 
+. gen exptemp4 = 1 if laba_ics == 1 
+(216,383 missing values generated)
+
+. * OR Any prescription for single ICS + Single LABA
+. gen exptemp5 = 1 if ics_single == 1 & laba_single == 1 
+(291,517 missing values generated)
+
+. * OR Any prescription for single ICS + LABA/LAMA
+. gen exptemp6 = 1 if ics_single == 1 & laba_lama == 1
+(290,638 missing values generated)
+
+.                                         
+. replace exposure = 1 if exptemp3 == 1 | /// 
+>                                                 exptemp4 == 1 | /// 
+>                                                 exptemp5 == 1 | ///
+>                                                 exptemp6 == 1 
+(105,290 real changes made)
+
+.                                                 
+. 
+. replace exposure = .u if exposure >= .
+(143,387 real changes made, 143,387 to missing)
+
+.                                                 
+. label define exposure 0 "LABA/LAMA Combination" 1 "ICS Combination" .u "Other"
+
+. label values exposure exposure 
+
+. 
+. label var exposure "COPD Treatment Exposure"
+
+. 
+. * Drop temporary variables 
+. drop exptemp*
+
+. 
+. /* SAVE DATA==================================================================*/        
+. 
+. sort patient_id
+
+. save $tempdir\analysis_dataset, replace
+file copd_tempdata\analysis_dataset.dta saved
+
+. 
+. * Save a version set on CPNS survival outcome
+. stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)      
+
+                id:  patient_id
+     failure event:  cpnsdeath != 0 & cpnsdeath < .
+obs. time interval:  (stime_cpnsdeath[_n-1], stime_cpnsdeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+    291,970  total observations
+         41  observations end on or before enter()
+------------------------------------------------------------------------------
+    291,929  observations remaining, representing
+    291,929  subjects
+        426  failures in single-failure-per-subject data
+   15994516  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =        55
+
+. save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
+file copd_tempdata\analysis_dataset_STSET_cpnsdeath.dta saved
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\02_cr_create_copd_exposure.log
+  log type:  text
+ closed on:  20 May 2020, 11:17:37
+--------------------------------------------------------------------------------------------------------

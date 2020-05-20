@@ -1,0 +1,6 @@
+Table 2: Association between current ICS use and CPNS death - COPD Population
+	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+		HR	95% CI	HR	95% CI	HR	95% CI
+Main Analysis
+LABA/LAMA Combination	56 (0.1)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	214 (0.2)	1.57	1.17 - 2.11	1.49	1.11 - 1.99	1.07	0.73 - 1.56

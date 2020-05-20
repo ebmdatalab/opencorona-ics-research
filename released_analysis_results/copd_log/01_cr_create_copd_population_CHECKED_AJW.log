@@ -1,0 +1,102 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
+  log type:  text
+ opened on:  20 May 2020, 11:17:31
+
+. 
+. /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
+. 
+. noi di "DROP MISSING GENDER:"
+DROP MISSING GENDER:
+
+. drop if inlist(sex,"I", "U")
+REDACTED
+
+. 
+. noi di "DROP AGE <35:"
+DROP AGE <35:
+
+. drop if age < 35 
+(0 observations deleted)
+
+. 
+. noi di "DROP AGE >110:"
+DROP AGE >110:
+
+. drop if age > 110 & age != .
+(0 observations deleted)
+
+. 
+. noi di "DROP AGE MISSING:"
+DROP AGE MISSING:
+
+. drop if age == . 
+(0 observations deleted)
+
+. 
+. noi di "DROP IMD MISSING"
+DROP IMD MISSING
+
+. drop if imd == .u
+(1,226 observations deleted)
+
+. 
+. noi di "DROP IF DEAD BEFORE INDEX"
+DROP IF DEAD BEFORE INDEX
+
+. drop if stime_cpnsdeath < d("$indexdate")
+(0 observations deleted)
+
+. 
+. /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
+. 
+. * DATA STRUCTURE: Confirm one row per patient 
+. duplicates tag patient_id, generate(dup_check)
+
+Duplicates in terms of patient_id
+
+. assert dup_check == 0 
+
+. drop dup_check
+
+. 
+. * INCLUSION 1: COPD ever before 1 March 2020 
+. * assert copd != 0 
+. 
+. * INCLUSION 2: >=18 and <=110 at 1 March 2020 
+. assert age < .
+
+. assert age >= 35 
+
+. assert age <= 110
+
+.  
+. * INCLUSION 3: M or F gender at 1 March 2020 
+. assert inlist(sex, "M", "F")
+
+. 
+. * INCLUSION 4: Smoking record ever (current or past)
+. * assert inlist(smoke, 2, 3)
+. 
+. * EXCLUSION 1: 12 months or baseline time 
+. * [PLACEHOLDER - CANNOT QUANTIFY BASELINE TIME WITH CURRENT DEFINITIONS]
+. 
+. * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
+. * [PACEHOLDER - ASTHMA]
+. * [PLACEHOLDER - OTHER RESPIRATORY]
+. 
+. * EXCLUSION 4: Nebulising treament 
+. * [PLACEHOLDER - NEBULES]
+. 
+. * EXCLUDE 5:  MISSING IMD
+. assert inlist(imd, 1, 2, 3, 4, 5)
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
+  log type:  text
+ closed on:  20 May 2020, 11:17:32
+--------------------------------------------------------------------------------------------------------

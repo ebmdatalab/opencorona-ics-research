@@ -1,0 +1,1002 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_table_copd.log
+  log type:  text
+ opened on:  20 May 2020, 11:17:46
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset, clear
+
+. 
+. /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
+. 
+. ********************************************************************************
+. * All below code from K Baskharan 
+. * Generic code to output one row of table
+. 
+. cap prog drop generaterow
+
+. program define generaterow
+  1. syntax, variable(varname) condition(string) 
+  2.         
+.         cou
+  3.         local overalldenom=r(N)
+  4.         
+.         qui sum `variable' if `variable' `condition'
+  5.         file write tablecontent (r(max)) _tab
+  6.         
+.         cou if `variable' `condition'
+  7.         local rowdenom = r(N)
+  8.         local colpct = 100*(r(N)/`overalldenom')
+  9.         file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
+ 10. 
+.         cou if exposure == 0 
+ 11.         local rowdenom = r(N)
+ 12.         cou if exposure == 0 & `variable' `condition'
+ 13.         local pct = 100*(r(N)/`rowdenom') 
+ 14.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 15. 
+.         cou if exposure == 1 
+ 16.         local rowdenom = r(N)
+ 17.         cou if exposure == 1 & `variable' `condition'
+ 18.         local pct = 100*(r(N)/`rowdenom')
+ 19.         file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
+ 20. 
+.         cou if exposure >= .
+ 21.         local rowdenom = r(N)
+ 22.         cou if exposure >= . & `variable' `condition'
+ 23.         local pct = 100*(r(N)/`rowdenom')
+ 24.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
+ 25.         
+. end
+
+. 
+. /* Explanatory Notes 
+> 
+> defines a program (SAS macro/R function equivalent), generate row
+> the syntax row specifies two inputs for the program: 
+> 
+>         a VARNAME which is your variable 
+>         a CONDITION which is a string of some condition you impose 
+>         
+> the program counts if variable and condition and returns the counts
+> column percentages are then automatically generated
+> this is then written to the text file 'tablecontent' 
+> the number followed by space, brackets, formatted pct, end bracket and then tab
+> 
+> the format %3.1f specifies length of 3, followed by 1 dp. 
+> 
+> */ 
+. 
+. ********************************************************************************
+. * Generic code to output one section (varible) within table (calls above)
+. 
+. cap prog drop tabulatevariable
+
+. prog define tabulatevariable
+  1. syntax, variable(varname) min(real) max(real) [missing]
+  2. 
+.         local lab: variable label `variable'
+  3.         file write tablecontent ("`lab'") _n 
+  4. 
+.         forvalues varlevel = `min'/`max'{ 
+  5.                 generaterow, variable(`variable') condition("==`varlevel'")
+  6.         }
+  7.         
+.         if "`missing'"!="" generaterow, variable(`variable') condition(">=.")
+  8. 
+. end
+
+. 
+. ********************************************************************************
+. 
+. /* Explanatory Notes 
+> 
+> defines program tabulate variable 
+> syntax is : 
+> 
+>         - a VARNAME which you stick in variable 
+>         - a numeric minimum 
+>         - a numeric maximum 
+>         - optional missing option, default value is . 
+> 
+> forvalues lowest to highest of the variable, manually set for each var
+> run the generate row program for the level of the variable 
+> if there is a missing specified, then run the generate row for missing vals
+> 
+> */ 
+. 
+. ********************************************************************************
+. * Generic code to summarize a continous variable 
+. 
+. cap prog drop summarizevariable 
+
+. prog define summarizevariable
+  1. syntax, variable(varname) 
+  2. 
+.         local lab: variable label `variable'
+  3.         file write tablecontent ("`lab'") _n 
+  4.         
+.         qui summarize `variable', d
+  5.         file write tablecontent ("Median (IQR)") _tab 
+  6.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  7.                                                         
+.         qui summarize `variable' if exposure == 0, d
+  8.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  9. 
+.         qui summarize `variable' if exposure == 1, d
+ 10.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+ 11. 
+.         qui summarize `variable' if exposure >= ., d
+ 12.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+ 13.         
+.         qui summarize `variable', d
+ 14.         file write tablecontent ("Min, Max") _tab 
+ 15.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 16.                                                         
+.         qui summarize `variable' if exposure == 0, d
+ 17.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 18. 
+.         qui summarize `variable' if exposure == 1, d
+ 19.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 20. 
+.         qui summarize `variable' if exposure >= ., d
+ 21.         file write tablecontent (r(min)) (", ") (r(max)) ("") _n
+ 22.         
+. end
+
+. 
+. /* QUESTION FOR STATA REVIEWER - I WROTE THIS CONTINOUS VAR SUMMARY PROGRAM
+> but I don't quite understand why I seem to need ("") on the last row for the 
+> maxium value to display properly? Otherwise it seems to just be missing. 
+> 
+> Please check this extra carefully as well
+> 
+> */ 
+. 
+. /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
+. 
+. *Set up output file
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table1.txt, write text replace
+
+. 
+. file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $Population") _n
+
+. 
+. * Exposure labelled columns
+. 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+. local labu: label exposure .u
+
+. 
+. file write tablecontent _tab ("Total")                                                    _tab ///
+>                                                          ("`lab0'")                                   
+>                 _tab ///
+>                                                          ("`lab1'")                                   
+>             _tab ///
+>                                                          ("`labu'")                                   
+>                     _n 
+
+. 
+. * DEMOGRAPHICS (more than one level, potentially missing) 
+. 
+. gen byte cons=1
+
+. tabulatevariable, variable(cons) min(1) max(1) 
+  291,970
+  291,970
+  43,293
+  43,293
+  105,290
+  105,290
+  143,387
+  143,387
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(agegroup) min(1) max(6) 
+  291,970
+  1,220
+  43,293
+  83
+  105,290
+  179
+  143,387
+  958
+  291,970
+  9,872
+  43,293
+  1,037
+  105,290
+  2,255
+  143,387
+  6,580
+  291,970
+  40,588
+  43,293
+  5,698
+  105,290
+  12,123
+  143,387
+  22,767
+  291,970
+  80,353
+  43,293
+  12,531
+  105,290
+  29,307
+  143,387
+  38,515
+  291,970
+  104,737
+  43,293
+  16,138
+  105,290
+  40,555
+  143,387
+  48,044
+  291,970
+  55,200
+  43,293
+  7,806
+  105,290
+  20,871
+  143,387
+  26,523
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(male) min(0) max(1) 
+  291,970
+  133,817
+  43,293
+  19,702
+  105,290
+  48,744
+  143,387
+  65,371
+  291,970
+  158,153
+  43,293
+  23,591
+  105,290
+  56,546
+  143,387
+  78,016
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(bmicat) min(1) max(6) missing
+  291,970
+  10,394
+  43,293
+  1,536
+  105,290
+  4,339
+  143,387
+  4,519
+  291,970
+  83,353
+  43,293
+  12,021
+  105,290
+  29,778
+  143,387
+  41,554
+  291,970
+  89,456
+  43,293
+  13,118
+  105,290
+  31,389
+  143,387
+  44,949
+  291,970
+  51,525
+  43,293
+  7,927
+  105,290
+  18,838
+  143,387
+  24,760
+  291,970
+  20,300
+  43,293
+  3,274
+  105,290
+  7,707
+  143,387
+  9,319
+  291,970
+  9,097
+  43,293
+  1,431
+  105,290
+  3,580
+  143,387
+  4,086
+  291,970
+  27,845
+  43,293
+  3,986
+  105,290
+  9,659
+  143,387
+  14,200
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(smoke) min(1) max(3) missing 
+  291,970
+  0
+  43,293
+  0
+  105,290
+  0
+  143,387
+  0
+  291,970
+  184,495
+  43,293
+  26,021
+  105,290
+  69,737
+  143,387
+  88,737
+  291,970
+  107,475
+  43,293
+  17,272
+  105,290
+  35,553
+  143,387
+  54,650
+  291,970
+  0
+  43,293
+  0
+  105,290
+  0
+  143,387
+  0
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(ethnicity) min(1) max(5) missing 
+  291,970
+  218,842
+  43,293
+  32,466
+  105,290
+  79,749
+  143,387
+  106,627
+  291,970
+  675
+  43,293
+  92
+  105,290
+  185
+  143,387
+  398
+  291,970
+  3,367
+  43,293
+  258
+  105,290
+  834
+  143,387
+  2,275
+  291,970
+  1,210
+  43,293
+  103
+  105,290
+  302
+  143,387
+  805
+  291,970
+  1,059
+  43,293
+  113
+  105,290
+  287
+  143,387
+  659
+  291,970
+  66,817
+  43,293
+  10,261
+  105,290
+  23,933
+  143,387
+  32,623
+
+. file write tablecontent _n 
+
+. 
+. tabulatevariable, variable(imd) min(1) max(5) missing
+  291,970
+  58,972
+  43,293
+  8,055
+  105,290
+  19,920
+  143,387
+  30,997
+  291,970
+  58,813
+  43,293
+  8,435
+  105,290
+  20,643
+  143,387
+  29,735
+  291,970
+  59,191
+  43,293
+  8,749
+  105,290
+  21,240
+  143,387
+  29,202
+  291,970
+  57,661
+  43,293
+  8,429
+  105,290
+  21,648
+  143,387
+  27,584
+  291,970
+  57,333
+  43,293
+  9,625
+  105,290
+  21,839
+  143,387
+  25,869
+  291,970
+  0
+  43,293
+  0
+  105,290
+  0
+  143,387
+  0
+
+. file write tablecontent _n 
+
+. 
+. file write tablecontent _n _n
+
+. 
+. ** COPD TREATMENT VARIABLES (binary)
+. foreach treat of varlist        saba_single             ///
+>                                                         high_dose_ics           ///
+>                                                         low_med_dose_ics        ///
+>                                                         ics_single              ///
+>                                                         sama_single             ///
+>                                                         laba_single                     ///
+>                                                         lama_single                     ///
+>                                                         laba_ics                        ///
+>                                                         laba_lama                       ///
+>                                                         laba_lama                       ///
+>                             ltra_single                 ///     
+>                                                 {               
+  2. 
+. local lab: variable label `treat'
+  3. file write tablecontent ("`lab'") _n 
+  4.         
+. generaterow, variable(`treat') condition("==0")
+  5. generaterow, variable(`treat') condition("==1")
+  6. 
+. file write tablecontent _n
+  7. 
+. }
+  291,970
+  125,087
+  43,293
+  12,356
+  105,290
+  21,554
+  143,387
+  91,177
+  291,970
+  166,883
+  43,293
+  30,937
+  105,290
+  83,736
+  143,387
+  52,210
+  291,970
+  266,245
+  43,293
+  43,293
+  105,290
+  79,796
+  143,387
+  143,156
+  291,970
+  25,725
+  43,293
+  0
+  105,290
+  25,494
+  143,387
+  231
+  291,970
+  204,687
+  43,293
+  43,293
+  105,290
+  22,766
+  143,387
+  138,628
+  291,970
+  87,283
+  43,293
+  0
+  105,290
+  82,524
+  143,387
+  4,759
+  291,970
+  284,661
+  43,293
+  43,293
+  105,290
+  102,966
+  143,387
+  138,402
+  291,970
+  7,309
+  43,293
+  0
+  105,290
+  2,324
+  143,387
+  4,985
+  291,970
+  288,649
+  43,293
+  43,134
+  105,290
+  103,803
+  143,387
+  141,712
+  291,970
+  3,321
+  43,293
+  159
+  105,290
+  1,487
+  143,387
+  1,675
+  291,970
+  283,905
+  43,293
+  40,862
+  105,290
+  104,436
+  143,387
+  138,607
+  291,970
+  8,065
+  43,293
+  2,431
+  105,290
+  854
+  143,387
+  4,780
+  291,970
+  204,262
+  43,293
+  38,701
+  105,290
+  59,774
+  143,387
+  105,787
+  291,970
+  87,708
+  43,293
+  4,592
+  105,290
+  45,516
+  143,387
+  37,600
+  291,970
+  216,383
+  43,293
+  43,293
+  105,290
+  29,703
+  143,387
+  143,387
+  291,970
+  75,587
+  43,293
+  0
+  105,290
+  75,587
+  143,387
+  0
+  291,970
+  245,797
+  43,293
+  1,930
+  105,290
+  100,480
+  143,387
+  143,387
+  291,970
+  46,173
+  43,293
+  41,363
+  105,290
+  4,810
+  143,387
+  0
+  291,970
+  245,797
+  43,293
+  1,930
+  105,290
+  100,480
+  143,387
+  143,387
+  291,970
+  46,173
+  43,293
+  41,363
+  105,290
+  4,810
+  143,387
+  0
+  291,970
+  291,970
+  43,293
+  43,293
+  105,290
+  105,290
+  143,387
+  143,387
+  291,970
+  0
+  43,293
+  0
+  105,290
+  0
+  143,387
+  0
+
+. 
+. ** COMORBIDITIES (categorical and continous)
+. 
+. ** COMORBIDITIES (binary)
+. *  asthma outstanding 
+. *  exacerbation 
+. 
+. foreach comorb of varlist       ckd                                                             ///
+>                                                         copd                                          
+>           ///
+>                                                         hypertension                                  
+>   ///
+>                                                         heart_failure                                 
+>   ///
+>                                                         other_heart_disease                           
+>   ///
+>                                                         diabetes                                      
+>           ///
+>                                                         cancer_ever                                   
+>   ///
+>                                                         immunodef_any                                 
+>   ///
+>                                                         ili                                           
+>           ///
+>                                                         other_respiratory                             
+>   ///
+>                                                         statin                                        
+>           ///
+>                                                         insulin                                       
+>           ///
+>                                                         oral_steroids                                 
+>   ///
+>                                                         flu_vaccine                                   
+>   ///
+>                                                         pneumococcal_vaccine                    ///
+>                                                         gp_consult {
+  2. 
+. local lab: variable label `comorb'
+  3. file write tablecontent ("`lab'") _n 
+  4.                                                         
+. generaterow, variable(`comorb') condition("==0")
+  5. generaterow, variable(`comorb') condition("==1")
+  6. file write tablecontent _n
+  7. 
+. }
+  291,970
+  9,589
+  43,293
+  1,269
+  105,290
+  2,990
+  143,387
+  5,330
+  291,970
+  57,362
+  43,293
+  8,781
+  105,290
+  21,039
+  143,387
+  27,542
+  291,970
+  7
+  43,293
+  0
+  105,290
+  0
+  143,387
+  7
+  291,970
+  291,963
+  43,293
+  43,293
+  105,290
+  105,290
+  143,387
+  143,380
+  291,970
+  147,001
+  43,293
+  21,604
+  105,290
+  51,009
+  143,387
+  74,388
+  291,970
+  144,969
+  43,293
+  21,689
+  105,290
+  54,281
+  143,387
+  68,999
+  291,970
+  267,389
+  43,293
+  39,442
+  105,290
+  95,334
+  143,387
+  132,613
+  291,970
+  24,581
+  43,293
+  3,851
+  105,290
+  9,956
+  143,387
+  10,774
+  291,970
+  226,481
+  43,293
+  33,244
+  105,290
+  81,175
+  143,387
+  112,062
+  291,970
+  65,489
+  43,293
+  10,049
+  105,290
+  24,115
+  143,387
+  31,325
+  291,970
+  221,321
+  43,293
+  32,897
+  105,290
+  79,591
+  143,387
+  108,833
+  291,970
+  70,649
+  43,293
+  10,396
+  105,290
+  25,699
+  143,387
+  34,554
+  291,970
+  251,923
+  43,293
+  37,070
+  105,290
+  90,214
+  143,387
+  124,639
+  291,970
+  40,047
+  43,293
+  6,223
+  105,290
+  15,076
+  143,387
+  18,748
+  291,970
+  290,320
+  43,293
+  43,088
+  105,290
+  104,751
+  143,387
+  142,481
+  291,970
+  1,650
+  43,293
+  205
+  105,290
+  539
+  143,387
+  906
+  291,970
+  288,971
+  43,293
+  42,884
+  105,290
+  104,090
+  143,387
+  141,997
+  291,970
+  2,999
+  43,293
+  409
+  105,290
+  1,200
+  143,387
+  1,390
+  291,970
+  291,970
+  43,293
+  43,293
+  105,290
+  105,290
+  143,387
+  143,387
+  291,970
+  0
+  43,293
+  0
+  105,290
+  0
+  143,387
+  0
+  291,970
+  150,512
+  43,293
+  20,524
+  105,290
+  50,938
+  143,387
+  79,050
+  291,970
+  141,458
+  43,293
+  22,769
+  105,290
+  54,352
+  143,387
+  64,337
+  291,970
+  283,245
+  43,293
+  42,066
+  105,290
+  102,224
+  143,387
+  138,955
+  291,970
+  8,725
+  43,293
+  1,227
+  105,290
+  3,066
+  143,387
+  4,432
+  291,970
+  230,337
+  43,293
+  34,141
+  105,290
+  68,435
+  143,387
+  127,761
+  291,970
+  61,633
+  43,293
+  9,152
+  105,290
+  36,855
+  143,387
+  15,626
+  291,970
+  88,825
+  43,293
+  10,902
+  105,290
+  25,882
+  143,387
+  52,041
+  291,970
+  203,145
+  43,293
+  32,391
+  105,290
+  79,408
+  143,387
+  91,346
+  291,970
+  232,664
+  43,293
+  32,456
+  105,290
+  84,484
+  143,387
+  115,724
+  291,970
+  59,306
+  43,293
+  10,837
+  105,290
+  20,806
+  143,387
+  27,663
+  291,970
+  227,757
+  43,293
+  33,993
+  105,290
+  82,086
+  143,387
+  111,678
+  291,970
+  64,213
+  43,293
+  9,300
+  105,290
+  23,204
+  143,387
+  31,709
+
+. 
+. * COMORBIDITIES (continous)
+. * summarizevariable, variable(exacerbation_count)
+. summarizevariable, variable(gp_consult_count)
+
+. 
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_table_copd.log
+  log type:  text
+ closed on:  20 May 2020, 11:17:53
+--------------------------------------------------------------------------------------------------------

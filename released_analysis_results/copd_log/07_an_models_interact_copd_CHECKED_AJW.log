@@ -1,0 +1,890 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\07_an_models_interact_copd.log
+  log type:  text
+ opened on:  20 May 2020, 11:18:36
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Age Interaction============================================================*/ 
+. 
+. /* The smallest age group in COPD is much smaller than for asthma (35-40). 
+>    To be able to fit a meaningful model, combining this with the category above, 
+>    to create a category 35 - 50 */ 
+.    
+. recode agegroup(1 = 2)
+(agegroup: 1220 changes made)
+
+. tab agegroup, nolabel 
+
+Grouped age |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          2 |     11,092        3.80        3.80
+          3 |     40,588       13.90       17.70
+          4 |     80,353       27.52       45.22
+          5 |    104,737       35.87       81.09
+          6 |     55,200       18.91      100.00
+------------+-----------------------------------
+      Total |    291,970      100.00
+
+. 
+. label define agegroup2  2 "35-<50" ///
+>                                                 3 "50-<60" ///
+>                                                 4 "60-<70" ///
+>                                                 5 "70-<80" ///
+>                                                 6 "80+"
+
+.                                                 
+. label values agegroup agegroup2
+
+. tab agegroup 
+
+Grouped age |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     35-<50 |     11,092        3.80        3.80
+     50-<60 |     40,588       13.90       17.70
+     60-<70 |     80,353       27.52       45.22
+     70-<80 |    104,737       35.87       81.09
+        80+ |     55,200       18.91      100.00
+------------+-----------------------------------
+      Total |    291,970      100.00
+
+. 
+. /* Check Counts */ 
+. 
+. bysort agegroup: tab exposure cpnsdeath, row
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 35-<50
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+REDACTED -NB LABA/LAMA DEATHS=0
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 50-<60
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+REDACTED
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 60-<70
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    12,525          6 |    12,531 
+                      |     99.95       0.05 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |    29,291         16 |    29,307 
+                      |     99.95       0.05 |    100.00 
+----------------------+----------------------+----------
+                Total |    41,816         22 |    41,838 
+                      |     99.95       0.05 |    100.00 
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 70-<80
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    16,116         22 |    16,138 
+                      |     99.86       0.14 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |    40,467         88 |    40,555 
+                      |     99.78       0.22 |    100.00 
+----------------------+----------------------+----------
+                Total |    56,583        110 |    56,693 
+                      |     99.81       0.19 |    100.00 
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 80+
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |     7,779         27 |     7,806 
+                      |     99.65       0.35 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |    20,768        103 |    20,871 
+                      |     99.51       0.49 |    100.00 
+----------------------+----------------------+----------
+                Total |    28,547        130 |    28,677 
+                      |     99.55       0.45 |    100.00 
+
+
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure i.agegroup
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3213.7453
+Iteration 1:   log likelihood = -3133.5242
+Iteration 2:   log likelihood = -3121.9993
+Iteration 3:   log likelihood = -3121.8009
+Iteration 4:   log likelihood = -3121.8008
+Refining estimates:
+Iteration 0:   log likelihood = -3121.8008
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,558                  Number of obs    =     148,558
+No. of failures =          270
+Time at risk    =      8135539
+                                                LR chi2(5)       =      183.89
+Log likelihood  =   -3121.8008                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.496808   .2247196     2.69   0.007     1.115252    2.008904
+                 |
+        agegroup |
+         50-<60  |   .3331122   .2432708    -1.51   0.132     .0796087    1.393864
+         60-<70  |   .6204197   .3818438    -0.78   0.438     .1856969    2.072843
+         70-<80  |   2.283857   1.336472     1.41   0.158     .7253725    7.190795
+            80+  |   5.355646   3.127682     2.87   0.004     1.704954     16.8233
+----------------------------------------------------------------------------------
+
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3213.7453
+Iteration 1:   log likelihood = -3136.4352
+Iteration 2:   log likelihood = -3121.1527
+Iteration 3:   log likelihood = -3120.8276
+Iteration 4:   log likelihood = -3120.7876
+Iteration 5:   log likelihood = -3120.7732
+Iteration 6:   log likelihood = -3120.7679
+Iteration 7:   log likelihood =  -3120.766
+Iteration 8:   log likelihood = -3120.7652
+Iteration 9:   log likelihood =  -3120.765
+Iteration 10:  log likelihood = -3120.7649
+Iteration 11:  log likelihood = -3120.7648
+Iteration 12:  log likelihood = -3120.7648
+Iteration 13:  log likelihood = -3120.7648
+Iteration 14:  log likelihood = -3120.7648
+Iteration 15:  log likelihood = -3120.7648
+Iteration 16:  log likelihood = -3120.7648
+Iteration 17:  log likelihood = -3120.7648
+Iteration 18:  log likelihood = -3120.7648
+Iteration 19:  log likelihood = -3120.7648
+Iteration 20:  log likelihood = -3120.7648
+Refining estimates:
+Iteration 0:   log likelihood = -3120.7648
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,558                  Number of obs    =     148,558
+No. of failures =          270
+Time at risk    =      8135539
+                                                LR chi2(8)       =      185.96
+Log likelihood  =   -3120.7648                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+               exposure |
+       ICS Combination  |   5.39e+08   6.03e+08    17.98   0.000     6.03e+07    4.82e+09
+                        |
+               agegroup |
+                50-<60  |   7.68e+07   5.87e+07    23.77   0.000     1.72e+07    3.43e+08
+                60-<70  |   2.10e+08   2.77e+08    14.48   0.000     1.57e+07    2.80e+09
+                70-<80  |   5.98e+08   7.64e+08    15.84   0.000     4.91e+07    7.30e+09
+                   80+  |   1.53e+09   1.95e+09    16.61   0.000     1.26e+08    1.85e+10
+                        |
+      exposure#agegroup |
+ICS Combination#50-<60  |   3.49e-09          .        .       .            .           .
+ICS Combination#60-<70  |   2.12e-09   2.57e-09   -16.42   0.000     1.95e-10    2.29e-08
+ICS Combination#70-<80  |   2.96e-09   3.38e-09   -17.18   0.000     3.15e-10    2.78e-08
+   ICS Combination#80+  |   2.66e-09   3.03e-09   -17.34   0.000     2.85e-10    2.48e-08
+-----------------------------------------------------------------------------------------
+
+. estimates store B
+
+. estimates save ./$tempdir/univar_int, replace 
+(note: file ./copd_tempdata/univar_int.ster not found)
+file ./copd_tempdata/univar_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(3)  =      2.07
+(Assumption: A nested in B)                           Prob > chi2 =    0.5576
+
+. local univar_p = r(p)
+
+. 
+. /* Multivariable models */ 
+. 
+. * Age and Gender 
+. 
+. stcox i.exposure i.agegroup i.male
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3213.7453
+Iteration 1:   log likelihood = -3116.3213
+Iteration 2:   log likelihood = -3104.7311
+Iteration 3:   log likelihood = -3104.5335
+Iteration 4:   log likelihood = -3104.5334
+Refining estimates:
+Iteration 0:   log likelihood = -3104.5334
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,558                  Number of obs    =     148,558
+No. of failures =          270
+Time at risk    =      8135539
+                                                LR chi2(6)       =      218.42
+Log likelihood  =   -3104.5334                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.501226   .2253879     2.71   0.007     1.118537    2.014847
+                 |
+        agegroup |
+         50-<60  |   .3365748   .2458004    -1.49   0.136     .0804358     1.40836
+         60-<70  |   .6202352     .38173    -0.78   0.438     .1856418    2.072226
+         70-<80  |   2.252797   1.318308     1.39   0.165     .7154998    7.093073
+            80+  |   5.248159   3.064958     2.84   0.005     1.670705    16.48595
+                 |
+          1.male |    2.14257    .291164     5.61   0.000     1.641577    2.796461
+----------------------------------------------------------------------------------
+
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup i.male
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3213.7453
+Iteration 1:   log likelihood = -3119.2727
+Iteration 2:   log likelihood = -3103.8927
+Iteration 3:   log likelihood = -3103.5678
+Iteration 4:   log likelihood = -3103.5277
+Iteration 5:   log likelihood = -3103.5133
+Iteration 6:   log likelihood =  -3103.508
+Iteration 7:   log likelihood = -3103.5061
+Iteration 8:   log likelihood = -3103.5054
+Iteration 9:   log likelihood = -3103.5051
+Iteration 10:  log likelihood =  -3103.505
+Iteration 11:  log likelihood =  -3103.505
+Iteration 12:  log likelihood =  -3103.505
+Iteration 13:  log likelihood =  -3103.505
+Iteration 14:  log likelihood =  -3103.505
+Iteration 15:  log likelihood =  -3103.505
+Iteration 16:  log likelihood =  -3103.505
+Iteration 17:  log likelihood =  -3103.505
+Iteration 18:  log likelihood =  -3103.505
+Iteration 19:  log likelihood =  -3103.505
+Iteration 20:  log likelihood =  -3103.505
+Refining estimates:
+Iteration 0:   log likelihood =  -3103.505
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,558                  Number of obs    =     148,558
+No. of failures =          270
+Time at risk    =      8135539
+                                                LR chi2(9)       =      220.48
+Log likelihood  =    -3103.505                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+               exposure |
+       ICS Combination  |   5.42e+08   6.06e+08    17.99   0.000     6.06e+07    4.85e+09
+                        |
+               agegroup |
+                50-<60  |   7.65e+07   5.84e+07    23.77   0.000     1.71e+07    3.42e+08
+                60-<70  |   2.09e+08   2.76e+08    14.48   0.000     1.56e+07    2.79e+09
+                70-<80  |   5.94e+08   7.57e+08    15.83   0.000     4.87e+07    7.24e+09
+                   80+  |   1.50e+09   1.91e+09    16.60   0.000     1.24e+08    1.82e+10
+                        |
+      exposure#agegroup |
+ICS Combination#50-<60  |   3.55e-09          .        .       .            .           .
+ICS Combination#60-<70  |   2.13e-09   2.59e-09   -16.42   0.000     1.96e-10    2.31e-08
+ICS Combination#70-<80  |   2.94e-09   3.36e-09   -17.19   0.000     3.12e-10    2.76e-08
+   ICS Combination#80+  |   2.65e-09   3.02e-09   -17.34   0.000     2.85e-10    2.47e-08
+                        |
+                 1.male |   2.142253   .2911251     5.61   0.000     1.641328    2.796058
+-----------------------------------------------------------------------------------------
+
+. estimates store B
+
+. estimates save ./$tempdir/multivar1_int, replace 
+(note: file ./copd_tempdata/multivar1_int.ster not found)
+file ./copd_tempdata/multivar1_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(3)  =      2.06
+(Assumption: A nested in B)                           Prob > chi2 =    0.5607
+
+. local multivar1_p = r(p)
+
+. 
+. * Age, Gender and Comorbidities 
+. stcox i.exposure i.agegroup i.male      i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.stp                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///     
+>                                                                                 i.immunodef_any       
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.oral_steroids       
+>                   ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.gp_consult          
+>                   
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1511.7156
+Iteration 1:   log likelihood = -1462.3591
+Iteration 2:   log likelihood = -1442.0512
+Iteration 3:   log likelihood = -1439.9015
+Iteration 4:   log likelihood = -1439.6303
+Iteration 5:   log likelihood = -1439.5914
+Iteration 6:   log likelihood = -1439.5787
+Iteration 7:   log likelihood = -1439.5741
+Iteration 8:   log likelihood = -1439.5723
+Iteration 9:   log likelihood = -1439.5717
+Iteration 10:  log likelihood = -1439.5715
+Iteration 11:  log likelihood = -1439.5714
+Iteration 12:  log likelihood = -1439.5714
+Iteration 13:  log likelihood = -1439.5713
+Iteration 14:  log likelihood = -1439.5713
+Iteration 15:  log likelihood = -1439.5713
+Iteration 16:  log likelihood = -1439.5713
+Iteration 17:  log likelihood = -1439.5713
+Iteration 18:  log likelihood = -1439.5713
+Iteration 19:  log likelihood = -1439.5713
+Iteration 20:  log likelihood = -1439.5713
+Iteration 21:  log likelihood = -1439.5713
+Iteration 22:  log likelihood = -1439.5713
+Iteration 23:  log likelihood = -1439.5713
+Iteration 24:  log likelihood = -1439.5713
+Iteration 25:  log likelihood = -1439.5713
+Iteration 26:  log likelihood = -1439.5713
+Iteration 27:  log likelihood = -1439.5713
+Iteration 28:  log likelihood = -1439.5713
+Iteration 29:  log likelihood = -1439.5713
+Iteration 30:  log likelihood = -1439.5713
+Iteration 31:  log likelihood = -1439.5713
+Iteration 32:  log likelihood = -1439.5713
+Iteration 33:  log likelihood = -1439.5713
+Iteration 34:  log likelihood = -1439.5713
+Iteration 35:  log likelihood = -1439.5713
+Iteration 36:  log likelihood = -1439.5713
+Iteration 37:  log likelihood = -1439.5713
+Iteration 38:  log likelihood = -1439.5713
+Iteration 39:  log likelihood = -1439.5713
+Iteration 40:  log likelihood = -1439.5713
+Iteration 41:  log likelihood = -1439.5713
+Iteration 42:  log likelihood = -1439.5713
+Iteration 43:  log likelihood = -1439.5713
+Iteration 44:  log likelihood = -1439.5713
+Refining estimates:
+Iteration 0:   log likelihood = -1439.5713
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       34,069                  Number of obs    =      34,069
+No. of failures =          145
+Time at risk    =      1859991
+                                                LR chi2(52)      =      144.29
+Log likelihood  =   -1439.5713                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+      ICS Combination  |   1.077027   .2083029     0.38   0.701     .7372246    1.573453
+                       |
+              agegroup |
+               50-<60  |   4.02e+08          .        .       .            .           .
+               60-<70  |   4.66e+08   4.97e+08    18.69   0.000     5.74e+07    3.78e+09
+               70-<80  |   7.49e+08   7.67e+08    19.95   0.000     1.01e+08    5.58e+09
+                  80+  |   1.06e+09   1.09e+09    20.25   0.000     1.42e+08    7.95e+09
+                       |
+                1.male |   1.769352    .326463     3.09   0.002     1.232421    2.540208
+                       |
+             obese4cat |
+    Obese I (30-34.9)  |   1.026944   .2131016     0.13   0.898     .6837756     1.54234
+   Obese II (35-39.9)  |   .8434444   .2856951    -0.50   0.615      .434244    1.638246
+      Obese III (40+)  |    1.39818    .565524     0.83   0.407     .6328145    3.089228
+                       |
+          smoke_nomiss |
+              Current  |   .4144844   .1329676    -2.75   0.006     .2210247    .7772766
+                       |
+                   imd |
+                    2  |   1.200761   .2987908     0.74   0.462     .7373063    1.955532
+                    3  |   .8275163   .2284929    -0.69   0.493     .4816635    1.421705
+                    4  |   1.097866   .3015491     0.34   0.734     .6408425    1.880821
+      5 most deprived  |   1.577592   .4367576     1.65   0.100     .9169355    2.714254
+                       |
+                   stp |
+                    2  |   1.29e+08   1.33e+08    18.06   0.000     1.70e+07    9.77e+08
+                    3  |   8.25e+07   8.95e+07    16.81   0.000      9852939    6.91e+08
+                    4  |   1.85e+08   2.15e+08    16.39   0.000     1.90e+07    1.80e+09
+                    5  |   5.62e-12          .        .       .            .           .
+                    6  |   8.87e+07   9.63e+07    16.85   0.000     1.06e+07    7.45e+08
+                    7  |   1.76e-11          .        .       .            .           .
+                    8  |   1.12e+08   1.23e+08    16.88   0.000     1.30e+07    9.62e+08
+                    9  |   1.45e+08   1.56e+08    17.54   0.000     1.78e+07    1.19e+09
+                   10  |   2.53e+07   3.58e+07    12.03   0.000      1573063    4.06e+08
+                   11  |   8.34e+07   9.65e+07    15.76   0.000      8630009    8.05e+08
+                   12  |   1.09e+08   1.34e+08    15.00   0.000      9685504    1.22e+09
+                   13  |   9.41e+07   1.16e+08    14.90   0.000      8401993    1.05e+09
+                   14  |   1.20e+08   1.39e+08    16.07   0.000     1.24e+07    1.16e+09
+                   15  |   3.54e+07   5.01e+07    12.27   0.000      2205656    5.68e+08
+                   16  |   5.81e+07   6.72e+07    15.46   0.000      6025619    5.61e+08
+                   17  |   1.93e+08   2.05e+08    17.94   0.000     2.40e+07    1.55e+09
+                   18  |   1.29e+08   1.44e+08    16.66   0.000     1.43e+07    1.16e+09
+                   19  |   3.50e+08   3.68e+08    18.73   0.000     4.47e+07    2.74e+09
+                   20  |   2.86e+08   2.97e+08    18.78   0.000     3.75e+07    2.19e+09
+                   21  |   3.48e+08   3.70e+08    18.49   0.000     4.33e+07    2.80e+09
+                   22  |   6.28e+08   7.71e+08    16.50   0.000     5.66e+07    6.97e+09
+                   23  |   1.20e+08   1.32e+08    16.95   0.000     1.40e+07    1.04e+09
+                   24  |   2.84e+08   4.03e+08    13.71   0.000     1.76e+07    4.59e+09
+                   25  |   9.83e+07          .        .       .            .           .
+                   26  |   8.54e+07   9.56e+07    16.31   0.000      9506912    7.67e+08
+                   27  |   3.90e+07   4.79e+07    14.24   0.000      3517699    4.33e+08
+                   28  |   5.81e+07   6.72e+07    15.46   0.000      6017389    5.61e+08
+                   29  |   1.13e+08   1.31e+08    16.01   0.000     1.17e+07    1.10e+09
+                   30  |   1.54e+08   1.79e+08    16.27   0.000     1.59e+07    1.50e+09
+                   31  |   5.56e-11          .        .       .            .           .
+                   32  |   1.52e+08   1.58e+08    18.22   0.000     2.01e+07    1.16e+09
+                       |
+                   ckd |
+                  CKD  |   7.624291   5.657252     2.74   0.006     1.780758     32.6433
+        1.hypertension |   .8788814    .164779    -0.69   0.491     .6086126     1.26917
+       1.heart_failure |   1.551863    .293317     2.33   0.020      1.07144    2.247701
+ 1.other_heart_disease |   1.218429   .2240086     1.07   0.283       .84978    1.747004
+            1.diabetes |   1.384351   .7177193     0.63   0.530     .5011171    3.824311
+         1.cancer_ever |   1.033369   .2108052     0.16   0.872     .6928065    1.541341
+       1.immunodef_any |   1.21e-19          .        .       .            .           .
+              1.statin |    .731834   .1329774    -1.72   0.086     .5125611    1.044912
+             1.insulin |   .6999627   .2536778    -0.98   0.325     .3440216    1.424177
+       1.oral_steroids |   1.041467   .1906764     0.22   0.824     .7274514    1.491034
+         1.flu_vaccine |   .8399436   .1776767    -0.82   0.410      .554871    1.271476
+1.pneumococcal_vaccine |   1.107019   .2931576     0.38   0.701     .6587831    1.860235
+          1.gp_consult |   1.340966   .6956196     0.57   0.572     .4851334    3.706589
+----------------------------------------------------------------------------------------
+
+.                                                                                 
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup i.male     i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.stp                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///     
+>                                                                                 i.immunodef_any       
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.oral_steroids       
+>                   ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.gp_consult          
+>           
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1511.7156
+Iteration 1:   log likelihood =   -1462.25
+Iteration 2:   log likelihood = -1441.6843
+Iteration 3:   log likelihood = -1439.4325
+Iteration 4:   log likelihood = -1439.1147
+Iteration 5:   log likelihood = -1439.0586
+Iteration 6:   log likelihood = -1439.0396
+Iteration 7:   log likelihood = -1439.0326
+Iteration 8:   log likelihood = -1439.0301
+Iteration 9:   log likelihood = -1439.0291
+Iteration 10:  log likelihood = -1439.0288
+Iteration 11:  log likelihood = -1439.0287
+Iteration 12:  log likelihood = -1439.0286
+Iteration 13:  log likelihood = -1439.0286
+Iteration 14:  log likelihood = -1439.0286
+Iteration 15:  log likelihood = -1439.0286
+Iteration 16:  log likelihood = -1439.0286
+Iteration 17:  log likelihood = -1439.0286
+Iteration 18:  log likelihood = -1439.0286
+Iteration 19:  log likelihood = -1439.0286
+Iteration 20:  log likelihood = -1439.0286
+Iteration 21:  log likelihood = -1439.0286
+Iteration 22:  log likelihood = -1439.0286
+Iteration 23:  log likelihood = -1439.0286
+Iteration 24:  log likelihood = -1439.0286
+Iteration 25:  log likelihood = -1439.0286
+Iteration 26:  log likelihood = -1439.0286
+Iteration 27:  log likelihood = -1439.0286
+Iteration 28:  log likelihood = -1439.0286
+Iteration 29:  log likelihood = -1439.0286
+Iteration 30:  log likelihood = -1439.0286
+Iteration 31:  log likelihood = -1439.0286
+Refining estimates:
+Iteration 0:   log likelihood = -1439.0286
+Iteration 1:   log likelihood = -1439.0286
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =       34,069                  Number of obs    =      34,069
+No. of failures =          145
+Time at risk    =      1859991
+                                                LR chi2(58)      =      145.37
+Log likelihood  =   -1439.0286                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------
+                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------+----------------------------------------------------------------
+               exposure |
+       ICS Combination  |   1.160889          .        .       .            .           .
+                        |
+               agegroup |
+                50-<60  |   .6265218          .        .       .            .           .
+                60-<70  |   6.85e+08   7.96e+08    17.50   0.000     7.01e+07    6.69e+09
+                70-<80  |   7.91e+08   8.30e+08    19.52   0.000     1.01e+08    6.19e+09
+                   80+  |   1.11e+09   1.16e+09    19.97   0.000     1.44e+08    8.59e+09
+                        |
+      exposure#agegroup |
+ICS Combination#50-<60  |   8.86e+08          .        .       .            .           .
+ICS Combination#60-<70  |   .5766499   .4219518    -0.75   0.452     .1374241      2.4197
+ICS Combination#70-<80  |   .9402905   .2970208    -0.19   0.845     .5062708     1.74639
+   ICS Combination#80+  |   .9523179   .2432996    -0.19   0.848     .5771859     1.57126
+                        |
+                 1.male |   1.768381   .3263117     3.09   0.002     1.231707    2.538893
+                        |
+              obese4cat |
+     Obese I (30-34.9)  |   1.026744   .2131025     0.13   0.899     .6835866    1.542163
+    Obese II (35-39.9)  |   .8428032   .2854943    -0.50   0.614     .4338974    1.637063
+       Obese III (40+)  |   1.397588   .5653991     0.83   0.408     .6324449    3.088415
+                        |
+           smoke_nomiss |
+               Current  |   .4152144   .1331767    -2.74   0.006     .2214401    .7785535
+                        |
+                    imd |
+                     2  |   1.200901   .2988422     0.74   0.462      .737373    1.955813
+                     3  |   .8288699   .2288681    -0.68   0.497     .4824497    1.424035
+                     4  |   1.099426   .3019833     0.35   0.730     .6417468    1.883513
+       5 most deprived  |   1.581918    .437915     1.66   0.098     .9194958    2.721561
+                        |
+                    stp |
+                     2  |   1.70e+08   1.76e+08    18.27   0.000     2.22e+07    1.30e+09
+                     3  |   1.09e+08   1.18e+08    17.03   0.000     1.29e+07    9.15e+08
+                     4  |   2.43e+08   2.82e+08    16.60   0.000     2.48e+07    2.37e+09
+                     5  |   1.21e-06     14.724    -0.00   1.000            0           .
+                     6  |   1.17e+08   1.27e+08    17.05   0.000     1.38e+07    9.89e+08
+                     7  |   1.37e-06    21.3124    -0.00   1.000            0           .
+                     8  |   1.47e+08   1.62e+08    17.09   0.000     1.70e+07    1.27e+09
+                     9  |   1.91e+08   2.05e+08    17.75   0.000     2.33e+07    1.57e+09
+                    10  |   3.32e+07   4.71e+07    12.20   0.000      2055224    5.36e+08
+                    11  |   1.10e+08   1.28e+08    15.98   0.000     1.14e+07    1.07e+09
+                    12  |   1.43e+08   1.77e+08    15.16   0.000     1.26e+07    1.62e+09
+                    13  |   1.24e+08   1.53e+08    15.08   0.000     1.10e+07    1.39e+09
+                    14  |   1.57e+08   1.83e+08    16.28   0.000     1.62e+07    1.53e+09
+                    15  |   4.66e+07   6.61e+07    12.46   0.000      2899206    7.50e+08
+                    16  |   7.66e+07   8.89e+07    15.64   0.000      7871106    7.45e+08
+                    17  |   2.53e+08   2.70e+08    18.15   0.000     3.14e+07    2.05e+09
+                    18  |   1.69e+08   1.89e+08    16.89   0.000     1.87e+07    1.52e+09
+                    19  |   4.60e+08   4.85e+08    18.93   0.000     5.84e+07    3.63e+09
+                    20  |   3.77e+08   3.92e+08    19.01   0.000     4.92e+07    2.89e+09
+                    21  |   4.58e+08   4.89e+08    18.67   0.000     5.65e+07    3.71e+09
+                    22  |   8.24e+08   1.01e+09    16.67   0.000     7.36e+07    9.21e+09
+                    23  |   1.58e+08   1.74e+08    17.20   0.000     1.84e+07    1.36e+09
+                    24  |   3.77e+08          .        .       .            .           .
+                    25  |   1.29e+08   1.83e+08    13.16   0.000      7975327    2.08e+09
+                    26  |   1.12e+08   1.26e+08    16.52   0.000     1.25e+07    1.01e+09
+                    27  |   5.15e+07   6.32e+07    14.47   0.000      4646507    5.70e+08
+                    28  |   7.66e+07   8.88e+07    15.67   0.000      7912632    7.42e+08
+                    29  |   1.49e+08   1.73e+08    16.19   0.000     1.52e+07    1.45e+09
+                    30  |   2.04e+08   2.36e+08    16.55   0.000     2.11e+07    1.96e+09
+                    31  |   1.62e-06   47.16669    -0.00   1.000            0           .
+                    32  |   2.01e+08   2.08e+08    18.43   0.000     2.63e+07    1.53e+09
+                        |
+                    ckd |
+                   CKD  |   7.617626   5.651724     2.74   0.006     1.779468    32.60988
+         1.hypertension |   .8784342   .1646897    -0.69   0.489     .6083102    1.268508
+        1.heart_failure |   1.553326     .29374     2.33   0.020     1.072253    2.250237
+  1.other_heart_disease |   1.217521   .2239647     1.07   0.285     .8489786    1.746048
+             1.diabetes |   1.381516   .7163174     0.62   0.533     .5000424    3.816847
+          1.cancer_ever |   1.034374   .2110285     0.17   0.868     .6934563    1.542894
+        1.immunodef_any |   1.96e-14   2.07e-07    -0.00   1.000            0           .
+               1.statin |   .7323242   .1330879    -1.71   0.086      .512875    1.045671
+              1.insulin |   .7017882   .2543059    -0.98   0.328      .344951    1.427758
+        1.oral_steroids |   1.041194   .1906264     0.22   0.825     .7272601    1.490642
+          1.flu_vaccine |   .8422629   .1782373    -0.81   0.417     .5563125    1.275195
+ 1.pneumococcal_vaccine |   1.109805   .2939027     0.39   0.694     .6604321    1.864941
+           1.gp_consult |   1.343261   .6968755     0.57   0.569     .4859173    3.713287
+-----------------------------------------------------------------------------------------
+
+. estimates store B
+
+. estimates save ./$tempdir/multivar2_int, replace 
+(note: file ./copd_tempdata/multivar2_int.ster not found)
+file ./copd_tempdata/multivar2_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(6)  =      1.09
+(Assumption: A nested in B)                           Prob > chi2 =    0.9822
+
+. local multivar2_p = r(p)
+
+. 
+. /* Print interaction table====================================================*/ 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table3.txt, write text replace
+(note: file ./copd_output/table3.txt not found)
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - COPD Population")
+>  _n
+
+. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab 
+> _tab  ///
+>                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
+
+. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab (
+> "95% CI") _tab ("p (interaction)") _tab _n
+
+. 
+. * Overall p-values 
+. file write tablecontent ("Agegroup") _tab _tab _tab _tab ("`univar_p'") ///
+>                                                 _tab _tab _tab ("`multivar1_p'") /// 
+>                                                 _tab _tab _tab ("`multivar2_p'") _n
+
+. 
+.                                                 
+. * Generic program to print model for a level of another variable 
+. cap prog drop printinteraction
+
+. prog define printinteraction 
+  1. syntax, variable(varname) min(real) max(real) 
+  2. 
+.         forvalues varlevel = `min'/`max'{ 
+  3. 
+.                 * Row headings 
+.                 file write tablecontent ("`varlevel'") _n       
+  4. 
+.                 local lab0: label exposure 0
+  5.                 local lab1: label exposure 1
+  6.                  
+.                 /* Counts */
+.                         
+.                 * First row, exposure = 0 (reference)
+.                 
+.         file write tablecontent ("`lab0'") _tab
+  7. 
+.                         cou if exposure == 0 & `variable' == `varlevel'
+  8.                         local rowdenom = r(N)
+  9.                         cou if exposure == 0  & `variable' == `varlevel' & cpnsdeath == 1
+ 10.                         local pct = 100*(r(N)/`rowdenom')
+ 11.                         
+.                         
+.                 file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 12.                 file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (r
+> ef)") _n
+ 13.                         
+.                 * Second row, exposure = 1 (comparator)
+. 
+.                 file write tablecontent ("`lab1'") _tab  
+ 14. 
+.                         cou if exposure == 1 & `variable' == `varlevel'
+ 15.                         local rowdenom = r(N)
+ 16.                         cou if exposure == 1 & `variable' == `varlevel' & cpnsdeath == 1
+ 17.                         local pct = 100*(r(N)/`rowdenom')
+ 18.                         
+.                 file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 19. 
+.                 * Print models 
+.                 estimates use ./$tempdir/univar_int 
+ 20.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 21.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 22. 
+.                 estimates use ./$tempdir/multivar1_int
+ 23.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 24.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 25. 
+.                 estimates use ./$tempdir/multivar2_int
+ 26.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 27.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _n 
+ 28.         
+.         } 
+ 29.                 
+. end
+
+. 
+. printinteraction, variable(agegroup) min(2) max(6) 
+  1,120
+  0
+  2,434
+  3
+  5,698
+  1
+  12,123
+  4
+  12,531
+  6
+  29,307
+  16
+  16,138
+  22
+  40,555
+  88
+  7,806
+  27
+  20,871
+  103
+
+. 
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\07_an_models_interact_copd.log
+  log type:  text
+ closed on:  20 May 2020, 11:20:05
+--------------------------------------------------------------------------------------------------------
