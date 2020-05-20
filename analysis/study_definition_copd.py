@@ -563,6 +563,6 @@ study = StudyDefinition(
         },
     ),
     has_consultation_history=patients.with_complete_gp_consultation_history_between(
-        "2019-03-01", "2020-03-01"
+        "2019-03-01", "2020-03-01", return_expectations={"incidence": 0.9},
     ),
 )
