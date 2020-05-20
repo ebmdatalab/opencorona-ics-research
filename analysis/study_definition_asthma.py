@@ -482,7 +482,6 @@ study = StudyDefinition(
             "incidence": 0.95,
         },
     ),
-
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
         ckd_codes,
@@ -572,14 +571,12 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
-
     # # binary flag
     exacerbations=patients.satisfying(
         """
         exacerbation_count
         """,
     ),
-
     ## Conditions important for exacerbation
     ### SLE
     sle=patients.with_these_clinical_events(
@@ -631,7 +628,6 @@ study = StudyDefinition(
             "incidence": 0.2,
         },
     ),
-
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
@@ -653,14 +649,16 @@ study = StudyDefinition(
         },
     ),
     ### GP CONSULTATION RATE
-    gp_consult_count=patients.with_these_clinical_events(
-        placeholder_event_codes,  ### CHANGE TO GP CODE WHEN AVAILABLE
+    gp_consult_count=patients.with_gp_consultations(
         on_or_before="2019-03-01",
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 2},
             "date": {"latest": "2020-03-01"},
-            "incidence": 0.95,
+            "incidence": 0.7,
         },
+    ),
+    has_consultation_history=patients.with_complete_gp_consultation_history_between(
+        "2019-03-01", "2020-03-01"
     ),
 )
