@@ -35,8 +35,8 @@ do "03_an_checks.do"
 * COPD specific analyses 
 do "04_an_descriptive_table_copd.do"
 do "05_an_descriptive_plots_copd.do"
-*do "06_an_models_copd.do"
-*do "07_an_sensitivity_models_copd.do"
+do "06_an_models_copd.do"
+do "07_an_models_interact_copd.do"
 
 /* 	ASTHMA ====================================================================*/
 
