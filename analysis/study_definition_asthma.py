@@ -2,6 +2,7 @@ from datalab_cohorts import (
     StudyDefinition,
     patients,
     filter_codes_by_category,
+    combine_codelists
 )
 
 from codelists import *
@@ -565,69 +566,28 @@ study = StudyDefinition(
     exacerbation_count=patients.with_these_medications(
         oral_steroid_med_codes,
         between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
+        ignore_days_where_these_clinical_codes_occur=combine_codelists(
+            sle_codes,
+            interstital_lung_codes,
+            ra_codes,
+            ms_codes,
+            temporal_arteritis_codes,
+        ),
+        returning="number_of_episodes",
+        episode_defined_as="series of events each <= 14 days apart",
         return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
+            "int": {"distribution": "normal", "mean": 2, "stddev": 1},
             "incidence": 0.2,
         },
     ),
+
     # # binary flag
     exacerbations=patients.satisfying(
         """
         exacerbation_count
         """,
     ),
-    ## Conditions important for exacerbation
-    ### SLE
-    sle=patients.with_these_clinical_events(
-        sle_codes,
-        between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-            "incidence": 0.2,
-        },
-    ),
-    ### institial lung disease
-    interstitial_lung_dis=patients.with_these_clinical_events(
-        interstital_lung_codes,
-        between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-            "incidence": 0.2,
-        },
-    ),
-    ### RA
-    ra=patients.with_these_clinical_events(
-        ra_codes,
-        between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-            "incidence": 0.2,
-        },
-    ),
-    ### MS
-    ms=patients.with_these_clinical_events(
-        ms_codes,
-        between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-            "incidence": 0.2,
-        },
-    ),
-    ### temporal arteritis
-    temporal_arteritis=patients.with_these_clinical_events(
-        temporal_arteritis_codes,
-        between=["2019-03-01", "2020-02-29"],
-        return_number_of_matches_in_period=True,
-        return_expectations={
-            "int": {"distribution": "normal", "mean": 4, "stddev": 1},
-            "incidence": 0.2,
-        },
-    ),
+
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
