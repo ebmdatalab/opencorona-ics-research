@@ -28,6 +28,7 @@ from datalab_cohorts import (
     patients,
     codelist,
     filter_codes_by_category,
+    combine_codelists,
     quote,
     AppointmentStatus,
 )
@@ -379,7 +380,7 @@ def test_clinical_event_with_code():
         ),
     )
     results = study.to_dicts()
-    assert [x["latest_asthma_code"] for x in results] == ["0", condition_code, "0"]
+    assert [x["latest_asthma_code"] for x in results] == ["", condition_code, ""]
     assert [x["latest_asthma_code_date"] for x in results] == ["", "2002-06", ""]
 
 
@@ -884,6 +885,12 @@ def test_patients_categorised_as():
                     CodedEvent(CTV3Code="foo3", ConsultationDate="2000-01-01")
                 ],
             ),
+            Patient(
+                Sex="F",
+                CodedEvents=[
+                    CodedEvent(CTV3Code="bar1", ConsultationDate="2000-01-01"),
+                ],
+            ),
         ]
     )
     session.commit()
@@ -893,7 +900,7 @@ def test_patients_categorised_as():
         population=patients.all(),
         category=patients.categorised_as(
             {
-                "W": "foo_category = 'B' AND female_with_bar",
+                "W": "(foo_category = 'B' OR NOT foo_category) AND female_with_bar",
                 "X": "sex = 'F' AND (foo_category = 'B' OR foo_category = 'C')",
                 "Y": "sex = 'M' AND foo_category = 'A'",
                 "Z": "DEFAULT",
@@ -909,7 +916,7 @@ def test_patients_categorised_as():
         ),
     )
     results = study.to_dicts()
-    assert [x["category"] for x in results] == ["Y", "W", "Z", "X"]
+    assert [x["category"] for x in results] == ["Y", "W", "Z", "X", "W"]
     # Assert that internal columns do not appear
     assert "foo_category" not in results[0].keys()
     assert "female_with_bar" not in results[0].keys()
@@ -1498,6 +1505,100 @@ def test_number_of_episodes():
     assert [i["episode_count"] for i in results] == ["3", "0"]
 
 
+def test_number_of_episodes_for_medications():
+    oral_steriod = MedicationDictionary(
+        FullName="Oral Steroid", DMD_ID="ab12", MultilexDrug_ID="1"
+    )
+    other_drug = MedicationDictionary(
+        FullName="Other Drug", DMD_ID="cd34", MultilexDrug_ID="2"
+    )
+    session = make_session()
+    session.add_all(
+        [
+            Patient(
+                MedicationIssues=[
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2010-01-01"
+                    ),
+                    # Throw in some irrelevant prescriptions
+                    MedicationIssue(
+                        MedicationDictionary=other_drug, ConsultationDate="2010-01-02"
+                    ),
+                    MedicationIssue(
+                        MedicationDictionary=other_drug, ConsultationDate="2010-01-03"
+                    ),
+                    # These two should be merged in to the previous event
+                    # because there's not more than 14 days between them
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2010-01-14"
+                    ),
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2010-01-20"
+                    ),
+                    # This is just outside the limit so should count as another event
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2010-02-04"
+                    ),
+                    # This shouldn't count because there's an "ignore" event on
+                    # the same day (though at a different time)
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod,
+                        ConsultationDate="2012-01-01T10:45:00",
+                    ),
+                    # This should be another episode
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2015-03-05"
+                    ),
+                    # This is after the time limit and so shouldn't count
+                    MedicationIssue(
+                        MedicationDictionary=oral_steriod, ConsultationDate="2020-02-05"
+                    ),
+                ],
+                CodedEvents=[
+                    # This "ignore" event should cause us to skip one of the
+                    # meds issues above
+                    CodedEvent(CTV3Code="bar2", ConsultationDate="2012-01-01T16:10:00"),
+                    # This "ignore" event should have no effect because it
+                    # doesn't occur on the same day as any meds issue
+                    CodedEvent(CTV3Code="bar1", ConsultationDate="2015-03-06"),
+                ],
+            ),
+            # This patient doesn't have any relevant events or prescriptions
+            Patient(
+                MedicationIssues=[
+                    MedicationIssue(
+                        MedicationDictionary=other_drug, ConsultationDate="2010-01-02"
+                    ),
+                    MedicationIssue(
+                        MedicationDictionary=other_drug, ConsultationDate="2010-01-03"
+                    ),
+                ],
+                CodedEvents=[
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2010-02-04"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2012-01-01T10:45:00"),
+                    CodedEvent(CTV3Code="mtr2", ConsultationDate="2012-01-01T16:10:00"),
+                    CodedEvent(CTV3Code="mto1", ConsultationDate="2015-03-05"),
+                ],
+            ),
+        ]
+    )
+    session.commit()
+    foo_codes = codelist(["ab12"], "snomed")
+    bar_codes = codelist(["bar1", "bar2"], "ctv3")
+    study = StudyDefinition(
+        population=patients.all(),
+        episode_count=patients.with_these_medications(
+            foo_codes,
+            on_or_before="2020-01-01",
+            ignore_days_where_these_clinical_codes_occur=bar_codes,
+            returning="number_of_episodes",
+            episode_defined_as="series of events each <= 14 days apart",
+        ),
+    )
+    results = study.to_dicts()
+    assert [i["episode_count"] for i in results] == ["3", "0"]
+
+
 def test_patients_with_tpp_vaccination_record():
     session = make_session()
     vaccines = [
@@ -1634,3 +1735,52 @@ def test_patient_with_gp_consultations():
     assert [x["latest_consultation_date"] for x in results] == ["", "2013-01"]
     assert [x["consultation_count"] for x in results] == ["0", "2"]
     assert [x["has_history"] for x in results] == ["0", "1"]
+
+
+def test_combine_codelists():
+    list_1 = codelist(["A", "B", "C"], system="ctv3")
+    list_2 = codelist(["X", "Y", "Z"], system="ctv3")
+    combined = combine_codelists(list_1, list_2)
+    expected = codelist(["A", "B", "C", "X", "Y", "Z"], system="ctv3")
+    assert combined == expected
+    assert combined.system == expected.system
+
+
+def test_combine_codelists_with_categories():
+    list_1 = codelist([("A", "foo"), ("B", "bar")], system="icd10")
+    list_2 = codelist([("X", "foo"), ("Y", "bar")], system="icd10")
+    combined = combine_codelists(list_1, list_2)
+    expected = codelist(
+        [("A", "foo"), ("B", "bar"), ("X", "foo"), ("Y", "bar")], system="icd10"
+    )
+    assert combined == expected
+    assert combined.system == expected.system
+
+
+def test_combine_codelists_raises_error_for_mixed_systems():
+    list_1 = codelist(["A", "B", "C"], system="ctv3")
+    list_2 = codelist(["X", "Y", "Z"], system="icd10")
+    with pytest.raises(ValueError):
+        combine_codelists(list_1, list_2)
+
+
+def test_combine_codelists_raises_error_for_mixed_categorisation():
+    list_1 = codelist([("A", "foo"), ("B", "bar")], system="icd10")
+    list_2 = codelist(["X", "Y", "Z"], system="icd10")
+    with pytest.raises(ValueError):
+        combine_codelists(list_1, list_2)
+
+
+def test_combine_codelists_with_duplicates():
+    list_1 = codelist(["A", "B", "C"], system="ctv3")
+    list_2 = codelist(["X", "B", "Z"], system="ctv3")
+    combined = combine_codelists(list_1, list_2)
+    expected = codelist(["A", "B", "C", "X", "Z"], system="ctv3")
+    assert combined == expected
+
+
+def test_combine_codelists_raises_error_on_inconsistent_categorisation():
+    list_1 = codelist([("A", "foo"), ("B", "bar")], system="icd10")
+    list_2 = codelist([("X", "foo"), ("B", "foo")], system="icd10")
+    with pytest.raises(ValueError):
+        combine_codelists(list_1, list_2)
