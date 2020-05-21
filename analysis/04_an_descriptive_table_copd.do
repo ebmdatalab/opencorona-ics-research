@@ -216,7 +216,7 @@ foreach treat of varlist 	saba_single 		///
 							lama_single			///
 							laba_ics 			///
 							laba_lama 			///
-							laba_lama			///
+							laba_lama_ics		///
                             ltra_single			///	
 						{    		
 
