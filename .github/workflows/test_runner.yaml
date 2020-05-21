@@ -76,6 +76,6 @@ jobs:
     - name: Docker Pull
       run: docker pull docker.pkg.github.com/ebmdatalab/stata-docker-runner/stata-mp
     - name: Generate dummy data
-      run: PYTHONPATH=. python run.py generate_cohort --expectations-population=10000
+      run: PYTHONPATH=. python run.py generate_cohort --expectations-population=100000
     - name: Run model
       run: PYTHONPATH=. python run.py run --analysis
