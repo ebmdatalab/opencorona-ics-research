@@ -71,7 +71,7 @@ study = StudyDefinition(
     ),
     ## DEMOGRAPHIC INFORMATION
     age=patients.age_as_of(
-        "2020-03-01",
+        "2020-02-29",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
@@ -157,121 +157,121 @@ study = StudyDefinition(
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
         high_dose_ics_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     ### LOW-MED DOSE ICS
     low_med_dose_ics=patients.with_these_medications(
         low_medium_ics_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### ICS SINGLE CONSTITUENT
     ics_single=patients.with_these_medications(
         ics_single_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### ORAL STEROIDS SINGLE CONSTITUENT
     oral_steroids=patients.with_these_medications(
         oral_steroid_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### SABA SINGLE CONSTITUENT
     saba_single=patients.with_these_medications(
         saba_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### SAMA SINGLE CONSTITUENT
     sama_single=patients.with_these_medications(
         sama_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LABA SINGLE CONSTITUENT
     laba_single=patients.with_these_medications(
         single_laba_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LAMA SINGLE CONSTITUENT
     lama_single=patients.with_these_medications(
         single_lama_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LABA + ICS
     laba_ics=patients.with_these_medications(
         laba_ics_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LABA + LAMA
     laba_lama=patients.with_these_medications(
         laba_lama_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LABA + LAMA + ICS
     laba_lama_ics=patients.with_these_medications(
         laba_lama__ics_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     #### LTRA SINGLE CONSTITUENT
     ltra_single=patients.with_these_medications(
         leukotriene_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"},
         },
     ),
     ### OXYGEN THERAPY LEFT OUT AT PRESENT DUE TO POOR RECORDS
