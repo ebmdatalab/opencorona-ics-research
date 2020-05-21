@@ -314,6 +314,10 @@ gen cancer_ever =   (haem_cancer == 1 | ///
 gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_date)
 format cancer_ever_date %td
 
+/* Vaccines */ 
+replace pneumococcal_vaccine = 0 if pneumococcal_vaccine == . 
+replace flu_vaccine = 0 if flu_vaccine == . 
+
 /*  Immunosuppression  */
 
 * Immunosuppressed:
