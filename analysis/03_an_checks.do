@@ -75,7 +75,6 @@ foreach var of varlist 	high_dose_ics		///
 foreach var of varlist  asthma_ever					///
 						ckd     					///			
 						hypertension				///
-						ili 						///
 						other_respiratory 			///
 						other_heart_disease 		///
 						heart_failure				///

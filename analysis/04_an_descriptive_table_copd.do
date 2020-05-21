@@ -243,7 +243,6 @@ foreach comorb of varlist 	asthma_ever						///
 							diabetes 						///
 							cancer_ever 					///
 							immunodef_any		 			///
-							ili 							///
 							other_respiratory 				///
 							statin 							///
 							insulin							///

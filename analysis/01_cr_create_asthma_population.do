@@ -49,7 +49,7 @@ assert dup_check == 0
 drop dup_check
 
 * INCLUSION 1: Asthma in 3 years before 1 March 2020 
-assert asthma_ever == 1 
+datacheck asthma_ever == 1, nol
 
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
 assert age < .
@@ -63,8 +63,8 @@ assert inlist(sex, "M", "F")
 * [CANNOT BE QUANTIFIED AS VARIABLE NOT EXPORTED]
 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
-assert other_respiratory != 1 
-assert copd != 1 
+datacheck other_respiratory == 0, nol
+datacheck copd == 0, nol
 
 * EXCLUSION 4: Nebulising treament 
 * [NEBULES CANNOT BE QUANTIFIED AS VARIABLE NOT EXPORTED] 
@@ -78,7 +78,7 @@ gen lama_check = 1 if (lama_single == 1 | laba_lama ==1) & ///
 					   laba_ics != 1 & ///
 					   laba_lama_ics != 1 
 					   
-assert lama_check != 1 
+datacheck lama_check >=., nol
 drop lama_check
 
 * Close log file 
