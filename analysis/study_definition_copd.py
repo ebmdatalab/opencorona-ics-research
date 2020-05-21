@@ -2,6 +2,7 @@ from datalab_cohorts import (
     StudyDefinition,
     patients,
     filter_codes_by_category,
+    combine_codelists
 )
 
 from codelists import *
@@ -536,7 +537,7 @@ study = StudyDefinition(
     ### EXACERBATIONS
     ## count
     exacerbation_count=patients.with_these_clinical_events(
-        copd_exacerbation_codes,
+        combine_codelists(copd_infection_codes, lrti_codes),
         between=["2019-03-01", "2020-02-29"],
         ignore_days_where_these_codes_occur=copd_review_rescue_codes,
         returning="number_of_episodes",
