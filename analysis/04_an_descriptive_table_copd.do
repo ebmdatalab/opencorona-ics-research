@@ -40,25 +40,25 @@ syntax, variable(varname) condition(string)
 	cou if `variable' `condition'
 	local rowdenom = r(N)
 	local colpct = 100*(r(N)/`overalldenom')
-	file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
+	file write tablecontent %9.0gc (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
 
 	cou if exposure == 0 
 	local rowdenom = r(N)
 	cou if exposure == 0 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom') 
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _tab
 
 	cou if exposure == 1 
 	local rowdenom = r(N)
 	cou if exposure == 1 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
 	cou if exposure >= .
 	local rowdenom = r(N)
 	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _n
 	
 end
 
