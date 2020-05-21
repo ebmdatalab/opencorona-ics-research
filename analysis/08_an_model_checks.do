@@ -75,8 +75,7 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.heart_failure				///		
 										i.other_heart_disease		///		
 										i.diabetes 					///		
-										i.cancer_ever 				///	
-										i.immunodef_any		 		///							
+										i.cancer_ever 				///					
 										i.statin 					///		
 										i.insulin					///		
 										i.oral_steroids 			///		
@@ -110,7 +109,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table4.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 4: Testing the PH assumption - COPD Population") _n
+file write tablecontent ("Table 4: Testing the PH assumption - $population Population") _n
 file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _n
 						

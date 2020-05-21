@@ -72,40 +72,36 @@ local multivar1_p = r(p)
 stcox i.exposure i.agegroup i.male   	i.obese4cat					///
 										i.smoke_nomiss				///
 										i.imd 						///
-										i.stp						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
 										i.heart_failure				///		
 										i.other_heart_disease		///		
 										i.diabetes 					///		
-										i.cancer_ever 				///	
-										i.immunodef_any		 		///							
+										i.cancer_ever 				///							
 										i.statin 					///		
 										i.insulin					///		
 										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
-										i.gp_consult				
+										i.gp_consult, strata(stp)					
 										
 estimates store A
 
-stcox i.exposure##i.agegroup i.male 	i.obese4cat					///
+stcox i.exposure##i.agegroup i.male     i.obese4cat					///
 										i.smoke_nomiss				///
 										i.imd 						///
-										i.stp						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
 										i.heart_failure				///		
 										i.other_heart_disease		///		
 										i.diabetes 					///		
-										i.cancer_ever 				///	
-										i.immunodef_any		 		///							
+										i.cancer_ever 				///							
 										i.statin 					///		
 										i.insulin					///		
 										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
-										i.gp_consult			
+										i.gp_consult, strata(stp)			
 estimates store B
 estimates save ./$tempdir/multivar2_int, replace 
 
@@ -117,7 +113,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table3.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - COPD Population") _n
+file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab _tab  ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///

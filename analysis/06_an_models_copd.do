@@ -10,7 +10,7 @@ DESCRIPTION OF FILE:	program 06
 							07_an_model_interact
 						sensitivity analyses and model checks are in: 
 							08_an_model_checks
-							09_an_sensitivity 
+							10_an_sensitivity 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 
 DATASETS CREATED: 		none
@@ -65,9 +65,8 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										
 estimates save ./$tempdir/multivar2, replace 
 
+
 /* MODEL CHANGES TO DO: 
-- BMI as splines
-- STP as strata to avoid overgitting 
 - GP consult as count, depending on distribution of real variable 
 - Exacerbation add in, as count 
 - Diabetes as severity, remove insulin 
