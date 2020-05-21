@@ -23,7 +23,8 @@ opensafely/hypertension/2020-04-28
 opensafely/inflammatory-bowel-disease/2020-04-07
 opensafely/influenza-like-illness/2020-05-18
 opensafely/influenza-vaccination/2020-05-12
-opensafely/influenza-vaccination-clinical-codes/2020-05-19
+opensafely/influenza-vaccination-clinical-codes-given/2020-05-21
+opensafely/influenza-vaccination-clinical-codes-not-given/2020-05-19
 opensafely/interstitial-lung-disease/2020-05-12
 opensafely/insulin-medication/2020-04-26
 opensafely/laba-ics-combination-inhaler/2020-05-04
