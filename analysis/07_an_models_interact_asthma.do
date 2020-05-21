@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			07_models_interact_copd
+DO FILE NAME:			07_models_interact_asthma
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
 AUTHOR:					A Schultze 						
@@ -15,7 +15,7 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 * Open a log file
 
 cap log close
-log using $logdir\07_an_models_interact_copd, replace t
+log using $logdir\07_an_models_interact_asthma, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
@@ -139,6 +139,7 @@ syntax, variable(varname) min(real) max(real)
 
 		local lab0: label exposure 0
 		local lab1: label exposure 1
+		local lab2: label exposure 2
 		 
 		/* Counts */
 			
@@ -177,6 +178,30 @@ syntax, variable(varname) min(real) max(real)
 
 		estimates use ./$tempdir/multivar2_int
 		qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n 
+		
+		* Third row, exposure = 2 (comparator)
+
+		file write tablecontent ("`lab2'") _tab  
+
+			cou if exposure == 2 & `variable' == `varlevel'
+			local rowdenom = r(N)
+			cou if exposure == 2 & `variable' == `varlevel' & cpnsdeath == 1
+			local pct = 100*(r(N)/`rowdenom')
+			
+		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+		* Print models 
+		estimates use ./$tempdir/univar_int 
+		qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
+		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _tab
+
+		estimates use ./$tempdir/multivar1_int
+		qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
+		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _tab
+
+		estimates use ./$tempdir/multivar2_int
+		qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
 		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n 
 	
 	} 

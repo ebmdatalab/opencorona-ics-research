@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			09_model_exploration_copd
+DO FILE NAME:			09_model_exploration_asthma
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
 AUTHOR:					A Schultze 									
@@ -57,13 +57,19 @@ foreach var of varlist 	obese4cat				///
 		
 		local lab0: label exposure 0
 		local lab1: label exposure 1
+		local lab2: label exposure 2
 
 		file write tablecontent ("`lab0'") _tab
 		file write tablecontent ("1.00 (ref)") _tab _n
 		file write tablecontent ("`lab1'") _tab  
 		
 		qui lincom 1.exposure, eform
-		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n _n
+		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n
+		
+		file write tablecontent ("`lab2'") _tab  
+		
+		qui lincom 2.exposure, eform
+		file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n _n							
 									
 } 	
 

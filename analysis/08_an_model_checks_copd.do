@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			08_an_model_checks
+DO FILE NAME:			08_an_model_checks_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					20th of May 2020  
 AUTHOR:					A Schultze 									
@@ -17,7 +17,7 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 * Open a log file
 
 cap log close
-log using $logdir\08_an_model_checks, replace t
+log using $logdir\08_an_model_checks_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
