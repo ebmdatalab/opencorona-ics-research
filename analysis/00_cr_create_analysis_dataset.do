@@ -23,9 +23,8 @@ log using $logdir\00_cr_create_analysis_dataset, replace t
 /* SET FU DATES===============================================================*/ 
 * Censoring dates for each outcome (largely, last date outcome data available)
 
-global ituadmissioncensor 	= "20/04/2020"
-global cpnsdeathcensor 		= "25/04/2020"
-global onscoviddeathcensor 	= "06/04/2020"
+global cpnsdeathcensor 		= "23/04/2020"
+global onscoviddeathcensor 	= "23/04/2020"
 global indexdate 			= "01/03/2020"
 
 /* RENAME VARAIBLES===========================================================*/
@@ -38,9 +37,8 @@ rename bp_sys_date_measured		   			bp_sys_date
 /* Comorb dates are given with month only, so adding day 15 to enable
    them to be processed as dates 											  */
 
-//						asthma           				///
-
 foreach var of varlist 	aplastic_anaemia				///
+						asthma_ever						///
 						bmi_date_measured 				///
 						copd            				///
 						creatinine_date  				///
@@ -106,12 +104,10 @@ rename permanent_immunodeficiency_date perm_immunodef_date
 rename temporary_immunodeficiency_date temp_immunodef_date
 
 /* CREATE BINARY VARIABLES====================================================*/
-*  Remove dates occuring after the index date
-*  Make variables for all conditions occuring before index
-
-//						asthma           				///
+*  Make indicator variables for all conditions 
 
 foreach var of varlist 	aplastic_anaemia_date				///
+						asthma_ever_date					///
 						bmi_measured_date 					///
 						copd_date            				///
 						creatinine_measured_date  			///
@@ -144,19 +140,13 @@ foreach var of varlist 	aplastic_anaemia_date				///
 						oral_steroids_date					///
                         ltra_single_date {
 	
-	replace `var' = . if (`var' >= date("$indexdate", "DMY"))
+	/* date ranges are applied in python, so presence of date indicates presence of 
+	  disease in the correct time frame */ 
 	local newvar =  substr("`var'", 1, length("`var'") - 5)
-	gen `newvar' = (`var'< date("$indexdate", "DMY"))
+	gen `newvar' = (`var'!=. )
 	order `newvar', after(`var')
 	
 }
-
-/* 
-	Potential checks: 
-	Confirm each covariate is defined before the index date
-    Confirm each coviariate is defined using date occurring in the past 50 years 
-
-*/ 
 
 /* CREATE VARIABLES===========================================================*/
 
@@ -237,16 +227,15 @@ mkspline age = age, cubic nknots(4)
 * NB: watch for missingness
 
 * Recode strange values 
-summarize bmi, d
 replace bmi = . if bmi == 0 
 replace bmi = . if !inrange(bmi, 15, 50)
 
 * Restrict to within 10 years of index and aged > 16 
 gen bmi_time = (date("$indexdate", "DMY") - bmi_measured_date)/365.25
-gen bmi_age = round(age - bmi_time, 0)
+gen bmi_age = age - bmi_time
 
 replace bmi = . if bmi_age < 16 
-replace bmi = . if bmi_time > 10 
+replace bmi = . if bmi_time > 10 & bmi_time != . 
 
 * Set to missing if no date, and vice versa 
 replace bmi = . if bmi_measured_date == . 
@@ -305,15 +294,9 @@ label values smoke_nomiss smoke
 
 /* CLINICAL COMORBIDITIES */ 
 
-/* Exacerbation	*/ 
-/* Commented out until in both datasets 
+/* Exacerbation */ 
+replace exacerbations = 0 if exacerbations == . 
 replace exacerbation_count = 0 if exacerbation_count <1 
-
-* those with no count assumed to have no visits 
-replace exacerbation_count = 0 if exacerbation_count == . 
-gen exacerbation = (exacerbation_count >= 1)
-
-*/ 
 
 /* GP consultation rate */ 
 replace gp_consult_count = 0 if gp_consult_count <1 
@@ -329,6 +312,7 @@ gen cancer_ever =   (haem_cancer == 1 | ///
 					 other_cancer ==1)		
 					 
 gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_date)
+format cancer_ever_date %td
 
 /*  Immunosuppression  */
 
@@ -405,15 +389,13 @@ gen enter_date = date("$indexdate", "DMY")
 
 * Date of study end (typically: last date of outcome data available)
 **** NOTE!! ITU ADMISSION TO BE REPLACED WITH ECDS OUTCOME 
-gen ituadmissioncensor_date 	= date("$ituadmissioncensor", 	"DMY") 
 gen cpnsdeathcensor_date		= date("$cpnsdeathcensor", 		"DMY")
 gen onscoviddeathcensor_date 	= date("$onscoviddeathcensor", 	"DMY")
 
 * Format the dates
 format 	enter_date					///
 		cpnsdeathcensor_date 		///
-		onscoviddeathcensor_date 	///
-		ituadmissioncensor_date  %td
+		onscoviddeathcensor_date 	%td
 
 /*   Outcomes   */
 
@@ -421,7 +403,7 @@ format 	enter_date					///
 * Recode to dates from the strings 
 foreach var of varlist 	died_date_ons 		///
 						died_date_cpns		///
-						icu_date_admitted  {
+						{
 						
 	confirm string variable `var'
 	rename `var' `var'_dstr
@@ -430,8 +412,6 @@ foreach var of varlist 	died_date_ons 		///
 	format `var' %td 
 	
 }
-
-rename icu_date_admitted itu_date
 
 * Date of Covid death in ONS
 gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
@@ -442,19 +422,16 @@ format died_date_onscovid %td
 * Binary indicators for outcomes
 gen cpnsdeath 		= (died_date_cpns		< .)
 gen onscoviddeath 	= (died_date_onscovid 	< .)
-gen ituadmission 	= (itu_date 			< .)
 
 /*  Create survival times  */
 
 * For looping later, name must be stime_binary_outcome_name
 
 * Survival time = last followup date (first: end study, death, or that outcome)
-gen stime_ituadmission 	= min(ituadmissioncensor_date, 	itu_date, 		died_date_ons)
 gen stime_cpnsdeath  	= min(cpnsdeathcensor_date, 	died_date_cpns, died_date_ons)
 gen stime_onscoviddeath = min(onscoviddeathcensor_date, 				died_date_ons)
 
 * If outcome was after censoring occurred, set to zero
-replace ituadmission 	= 0 if (itu_date			> ituadmissioncensor_date) 
 replace cpnsdeath 		= 0 if (died_date_cpns		> cpnsdeathcensor_date) 
 replace onscoviddeath 	= 0 if (died_date_onscovid	> onscoviddeathcensor_date) 
 
@@ -463,8 +440,6 @@ format  stime* %td
 
 /* LABEL VARIABLES============================================================*/
 *  Label variables you are intending to keep, drop the rest 
-
-describe, fullname 
 
 * Demographics
 label var patient_id				"Patient ID"
@@ -518,12 +493,11 @@ label var ltra_single_date			"Single LTRA Date"
 label var oral_steroids_date 			"Oral Steroids Date"
 
 * Comorbidities of interest 
-
+label var asthma_ever					"Asthma ever"
 label var ckd     					 	"Chronic kidney disease" 
 label var egfr_cat						"Calculated eGFR"
 label var hypertension				    "Diagnosed hypertension"
 label var heart_failure				    "Heart Failure"
-*label var asthma						"Asthma"
 label var ili 							"Infleunza Like Illness"
 label var other_respiratory 			"Other Respiratory Diseases"
 label var other_heart_disease 			"Other Heart Diseases"
@@ -538,13 +512,13 @@ label var flu_vaccine					"Flu vaccine"
 label var pneumococcal_vaccine			"Pneumococcal Vaccine"
 label var gp_consult					"GP consultation in last year"
 label var gp_consult_count				"GP consultation count"
-*label var exacerbation					"Exacerbation in last year"
-*label var exacerbation_count			"Exacerbation Count"
+label var exacerbations					"Exacerbation in last year"
+label var exacerbation_count			"Exacerbation Count"
 
+label var asthma_ever_date				"Asthma date"
 label var ckd_date     					"Chronic kidney disease Date" 
 label var hypertension_date			    "Diagnosed hypertension Date"
 label var heart_failure_date			"Heart Failure Date"
-*label var asthma						"Asthma  Date"
 label var ili_date 						"Infleunza Like Illness Date"
 label var other_respiratory_date 		"Other Respiratory Diseases Date"
 label var other_heart_disease_date		"Other Heart Diseases Date"
@@ -557,20 +531,16 @@ label var insulin_date					"Recent Insulin Date"
 
 * Outcomes and follow-up
 label var enter_date					"Date of study entry"
-label var ituadmissioncensor_date 		"Date of admin censoring for itu admission (icnarc)"
 label var cpnsdeathcensor_date 			"Date of admin censoring for cpns deaths"
 label var onscoviddeathcensor_date 		"Date of admin censoring for ONS deaths"
 
-label var ituadmission					"Failure/censoring indicator for outcome: ITU admission"
 label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid death"
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
 
 label var died_date_cpns				"Date of CPNS Death"
 label var died_date_onscovid 			"Date of ONS Death"
-label var itu_date 						"Date of ITU Admission"
 
 * Survival times
-label var  stime_ituadmission			"Survival time (date); outcome ITU admission"
 label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
 label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
 

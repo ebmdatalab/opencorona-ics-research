@@ -49,7 +49,7 @@ assert dup_check == 0
 drop dup_check
 
 * INCLUSION 1: COPD ever before 1 March 2020 
-* assert copd != 0 
+assert copd == 1 
 
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
 assert age < .
@@ -60,20 +60,23 @@ assert age <= 110
 assert inlist(sex, "M", "F")
 
 * INCLUSION 4: Smoking record ever (current or past)
-* assert inlist(smoke, 2, 3)
+assert inlist(smoke, 2, 3)
 
 * EXCLUSION 1: 12 months or baseline time 
-* [PLACEHOLDER - CANNOT QUANTIFY BASELINE TIME WITH CURRENT DEFINITIONS]
+* [VARIABLE NOT EXPORTED, CANNOT QUANTIFY]
 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
-* [PACEHOLDER - ASTHMA]
-* [PLACEHOLDER - OTHER RESPIRATORY]
+assert other_respiratory != 1
+assert asthma_ever_date == . | (date($indexdate, DMY) - asthma_ever_date) >= (365.25*3-15)
 
 * EXCLUSION 4: Nebulising treament 
-* [PLACEHOLDER - NEBULES]
+* [VARIABLE NOT EXPORTED, CANNOT QUANTIFY]
 
 * EXCLUDE 5:  MISSING IMD
 assert inlist(imd, 1, 2, 3, 4, 5)
+
+* EXCLUSION 6: NO LTRA, as asthma treatment 
+assert ltra_single != 1 
 
 * Close log file 
 log close

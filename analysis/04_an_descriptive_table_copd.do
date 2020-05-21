@@ -233,10 +233,9 @@ file write tablecontent _n
 ** COMORBIDITIES (categorical and continous)
 
 ** COMORBIDITIES (binary)
-*  asthma outstanding 
-*  exacerbation 
 
-foreach comorb of varlist 	ckd								///
+foreach comorb of varlist 	asthma_ever						///
+							ckd								///
 							copd							///
 							hypertension			 		///
 							heart_failure					///
@@ -251,6 +250,7 @@ foreach comorb of varlist 	ckd								///
 							oral_steroids 					///
 							flu_vaccine 					///
 							pneumococcal_vaccine			///
+							exacerbations 					///
 							gp_consult {
 
 local lab: variable label `comorb'
@@ -263,8 +263,9 @@ file write tablecontent _n
 }
 
 * COMORBIDITIES (continous)
-* summarizevariable, variable(exacerbation_count)
+
 summarizevariable, variable(gp_consult_count)
+summarizevariable, variable(exacerbation_count)
 
 file close tablecontent
 

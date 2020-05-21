@@ -29,10 +29,9 @@ gen exposure = 0 if saba_single == 1
 * And not a LABA, ICS or LTRA single or in combination 
 recode exposure(0 = .u) if ics_single == 1 
 recode exposure(0 = .u) if laba_ics == 1 
+recode exposure(0 = .u) if laba_lama == 1
 recode exposure(0 = .u) if laba_lama_ics == 1 
 recode exposure(0 = .u) if ltra_single == 1 
-
-* Note to reviewer, LAMA allowed as per protocol
 
 /* ICS */
 				
@@ -43,7 +42,7 @@ replace exposure = 1 if low_med_dose_ics == 1 & ///
 replace exposure = 2 if high_dose_ics == 1 & /// 
 						high_dose_ics_date == max(low_med_dose_ics_date, high_dose_ics_date)	
 
-* If both on same date, assume high				
+* If both on same date, code above assumes high dose		
 
 replace exposure = .u if exposure >= .
 						
