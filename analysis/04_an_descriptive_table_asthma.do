@@ -40,31 +40,31 @@ syntax, variable(varname) condition(string)
 	cou if `variable' `condition'
 	local rowdenom = r(N)
 	local colpct = 100*(r(N)/`overalldenom')
-	file write tablecontent (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
+	file write tablecontent %9.0gc (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
 
 	cou if exposure == 0 
 	local rowdenom = r(N)
 	cou if exposure == 0 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom') 
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _tab
 
 	cou if exposure == 1 
 	local rowdenom = r(N)
 	cou if exposure == 1 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
 	cou if exposure == 2
 	local rowdenom = r(N)
 	cou if exposure == 2 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f  (`pct') (")") _tab
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
 	cou if exposure >= .
 	local rowdenom = r(N)
 	cou if exposure >= . & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _n
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _n
 	
 end
 
@@ -218,7 +218,7 @@ foreach treat of varlist 	saba_single 		///
 							lama_single			///
 							laba_ics 			///
 							laba_lama 			///
-							laba_lama			///
+							laba_lama_ics		///
                             ltra_single			///	
 						{    		
 
@@ -235,10 +235,9 @@ file write tablecontent _n
 ** COMORBIDITIES (categorical and continous)
 
 ** COMORBIDITIES (binary)
-*  asthma outstanding 
-*  exacerbation outstanding
 
-foreach comorb of varlist 	ckd								///
+foreach comorb of varlist 	asthma_ever						///
+							ckd								///
 							copd							///
 							hypertension			 		///
 							heart_failure					///
@@ -246,27 +245,28 @@ foreach comorb of varlist 	ckd								///
 							diabetes 						///
 							cancer_ever 					///
 							immunodef_any		 			///
-							ili 							///
 							other_respiratory 				///
 							statin 							///
 							insulin							///
 							oral_steroids 					///
 							flu_vaccine 					///
 							pneumococcal_vaccine			///
+							exacerbations					///
 							gp_consult {
 
 local lab: variable label `comorb'
 file write tablecontent ("`lab'") _n 
 							
-generaterow, variable(`comorb') condition("==1")
 generaterow, variable(`comorb') condition("==0")
+generaterow, variable(`comorb') condition("==1")
 file write tablecontent _n
 
 }
 
 * COMORBIDITIES (continous)
-* summarizevariable, variable(exacerbation_count)
+
 summarizevariable, variable(gp_consult_count)
+summarizevariable, variable(exacerbation_count)
 
 file close tablecontent
 

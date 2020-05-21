@@ -26,7 +26,7 @@ log using $logdir\01_cr_create_asthma_population, replace t
 noi di "DROP MISSING GENDER:"
 drop if inlist(sex,"I", "U")
 
-noi di "DROP AGE <35:"
+noi di "DROP AGE <18:"
 drop if age < 18 
 
 noi di "DROP AGE >110:"
@@ -49,7 +49,7 @@ assert dup_check == 0
 drop dup_check
 
 * INCLUSION 1: Asthma in 3 years before 1 March 2020 
-* [PLACEHOLDER - Asthma variable]
+datacheck asthma_ever == 1, nol
 
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
 assert age < .
@@ -60,23 +60,31 @@ assert age <= 110
 assert inlist(sex, "M", "F")
 
 * EXCLUSION 1: 12 months or baseline time 
-* [PLACEHOLDER - CANNOT QUANTIFY BASELINE TIME WITH CURRENT DEFINITIONS]
+* [CANNOT BE QUANTIFIED AS VARIABLE NOT EXPORTED]
 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
-* [PACEHOLDER - COPD in 3 years]
-* [PLACEHOLDER - OTHER RESPIRATORY in 3 years]
+datacheck other_respiratory == 0, nol
+datacheck copd == 0, nol
 
 * EXCLUSION 4: Nebulising treament 
-* [PLACEHOLDER - NEBULES]
+* [NEBULES CANNOT BE QUANTIFIED AS VARIABLE NOT EXPORTED] 
 
 * EXCLUDE 5:  MISSING IMD
 assert inlist(imd, 1, 2, 3, 4, 5)
 
+* EXCLUDE 6: NO LAMA (COPD treatment), unless LAMA and ICS 
+gen lama_check = 1 if (lama_single == 1 | laba_lama ==1) & ///
+                       ics_single != 1 & ///
+					   laba_ics != 1 & ///
+					   laba_lama_ics != 1 
+					   
+datacheck lama_check >=., nol
+drop lama_check
+
 * Close log file 
-log close
-
-
-
-
-
-
+log close					   
+					   
+					   
+					   
+					   
+					   
