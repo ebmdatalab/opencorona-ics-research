@@ -47,6 +47,7 @@ foreach var of varlist 	obese4cat				///
 						oral_steroids 			///		
 						flu_vaccine 			///	
 						pneumococcal_vaccine	///	
+						exacerbations 			///
 						gp_consult { 
 	
 	local lab: variable label `var'

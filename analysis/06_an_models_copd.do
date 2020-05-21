@@ -8,9 +8,8 @@ DESCRIPTION OF FILE:	program 06
 						multivariable regression 
 						interaction models are in: 
 							07_an_model_interact
-						sensitivity analyses and model checks are in: 
+						 model checks are in: 
 							08_an_model_checks
-							10_an_sensitivity 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 
 DATASETS CREATED: 		none
@@ -58,13 +57,12 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.cancer_ever 				///							
 										i.statin 					///		
 										i.insulin					///		
-										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
+										i.exacerbations 			///
 										i.gp_consult, strata(stp)				
 										
 estimates save ./$tempdir/multivar2, replace 
-
 
 /* MODEL CHANGES TO DO: 
 - GP consult as count, depending on distribution of real variable 

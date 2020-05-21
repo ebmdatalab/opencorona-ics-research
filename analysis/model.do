@@ -40,7 +40,7 @@ do "07_an_models_interact_copd.do"
 do "08_an_model_checks_copd.do"
 do "09_an_model_explore_copd.do"
 
-/* 	ASTHMA ====================================================================*/
+/* 	ASTHMA ===================================================================*/
 
 clear
 import delimited `c(pwd)'/input_asthma.csv, clear
@@ -74,6 +74,23 @@ do "03_an_checks.do"
 * COPD specific analyses 
 do "04_an_descriptive_table_asthma.do"
 do "05_an_descriptive_plots_asthma.do"
+
+/* 	SENSITIVITY 1=============================================================*/
+*   Redefine copd exposure to triple therapy 
+
+/* 	SENSITIVITY 2=============================================================*/
+*   ONS death as the outcome 
+
+/* 	SENSITIVITY 3=============================================================*/
+*   Asthma high/low dose classification 
+
+/* 	SENSITIVITY 4=============================================================*/
+*   Asthma population: ever diagnosis + recent treatment 
+*   Requires new input.csv file to be generated, on hold for now 
+
+
+
+
 
 
 

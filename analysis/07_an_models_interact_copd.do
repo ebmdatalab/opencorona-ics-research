@@ -25,12 +25,14 @@ use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
 /* The smallest age group in COPD is much smaller than for asthma (35-40). 
    To be able to fit a meaningful model, combining this with the category above, 
    to create a category 35 - 50 */ 
+/* So few deaths occuring below 50 years this cannot be used as a category, 
+   so updating to 35-60 */ 
    
 recode agegroup(1 = 2)
+recode agegroup(2 = 3)
 tab agegroup, nolabel 
 
-label define agegroup2 	2 "35-<50" ///
-						3 "50-<60" ///
+label define agegroup2 	3 "35-<60" ///
 						4 "60-<70" ///
 						5 "70-<80" ///
 						6 "80+"
@@ -80,9 +82,9 @@ stcox i.exposure i.agegroup i.male   	i.obese4cat					///
 										i.cancer_ever 				///							
 										i.statin 					///		
 										i.insulin					///		
-										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
+										i.exacerbations 			///
 										i.gp_consult, strata(stp)					
 										
 estimates store A
@@ -98,9 +100,9 @@ stcox i.exposure##i.agegroup i.male     i.obese4cat					///
 										i.cancer_ever 				///							
 										i.statin 					///		
 										i.insulin					///		
-										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
+										i.exacerbations				///
 										i.gp_consult, strata(stp)			
 estimates store B
 estimates save ./$tempdir/multivar2_int, replace 
@@ -181,7 +183,7 @@ syntax, variable(varname) min(real) max(real)
 		
 end
 
-printinteraction, variable(agegroup) min(2) max(6) 
+printinteraction, variable(agegroup) min(3) max(6) 
 
 
 * Close log file 
