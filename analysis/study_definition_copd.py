@@ -26,14 +26,14 @@ study = StudyDefinition(
         ltra_single
         """,
         has_follow_up=patients.registered_with_one_practice_between(
-            "2019-03-01", "2020-03-01"
+            "2019-02-28", "2020-02-29"
         ),
         recent_asthma=patients.with_these_clinical_events(
-            asthma_codes, between=["2017-03-01", "2020-03-01"],
+            asthma_codes, between=["2017-02-28", "2020-02-29"],
         ),
         #### NEBULES
         nebules=patients.with_these_medications(
-            nebulised_med_codes, between=["2019-03-01", "2020-03-01"],
+            nebulised_med_codes, between=["2019-02-28", "2020-02-29"],
         ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
@@ -84,15 +84,15 @@ study = StudyDefinition(
         }
     ),
     stp=patients.registered_practice_as_of(
-        "2020-03-01",
+        "2020-02-29",
         returning="stp_code",
         return_expectations={
             "rate": "universal",
-            "category": {"ratios": {"STP1": 0.5, "STP2": 0.5}},
+            "category": {"ratios": {"STP1": 0.1, "STP2": 0.1, "STP3": 0.1, "STP4": 0.1, "STP5": 0.1, "STP6": 0.1, "STP7": 0.1, "STP8": 0.1, "STP9": 0.1, "STP10": 0.1}},
         },
     ),
     imd=patients.address_as_of(
-        "2020-03-01",
+        "2020-02-29",
         returning="index_of_multiple_deprivation",
         round_to_nearest=100,
         return_expectations={
@@ -112,7 +112,7 @@ study = StudyDefinition(
     ),
     ## COVARIATES
     bmi=patients.most_recent_bmi(
-        on_or_after="2010-03-01",
+        between=["2010-02-28", "2020-02-29"],
         minimum_age_at_measurement=16,
         include_measurement_date=True,
         include_month=True,
@@ -139,20 +139,20 @@ study = StudyDefinition(
         most_recent_smoking_code=patients.with_these_clinical_events(
             clear_smoking_codes,
             find_last_match_in_period=True,
-            on_or_before="2020-03-01",
+            on_or_before="2020-02-29",
             returning="category",
         ),
         ever_smoked=patients.with_these_clinical_events(
             filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
-            on_or_before="2020-03-01",
+            on_or_before="2020-02-29",
         ),
     ),
     smoking_status_date=patients.with_these_clinical_events(
         clear_smoking_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     #### HIGH DOSE ICS
     high_dose_ics=patients.with_these_medications(
@@ -278,71 +278,71 @@ study = StudyDefinition(
     ### COPD
     copd=patients.with_these_clinical_events(
         copd_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### OTHER RESPIRATORY
     other_respiratory=patients.with_these_clinical_events(
         other_respiratory_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### ASTHMA EVER
     asthma_ever=patients.with_these_clinical_events(
         asthma_ever_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### OTHER HEART DISEASE
     other_heart_disease=patients.with_these_clinical_events(
         other_heart_disease_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### ILI
     ili=patients.with_these_clinical_events(
         ili_codes,
         return_first_date_in_period=True,
         include_month=True,
-        between=["2016-09-01", "2020-03-01"],
+        between=["2016-09-01", "2020-02-29"],
         return_expectations={
-            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-09-01", "latest": "2020-02-29"}
         },
     ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
         hypertension_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### HEART FAILURE
     heart_failure=patients.with_these_clinical_events(
         heart_failure_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     #### SYSTOLIC BLOOD PRESSURE
     bp_sys=patients.mean_recorded_value(
         systolic_blood_pressure_codes,
         on_most_recent_day_of_measurement=True,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         include_measurement_date=True,
         include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 80, "stddev": 10},
-            "date": {"latest": "2020-03-01"},
+            "date": {"latest": "2020-02-29"},
             "incidence": 0.95,
         },
     ),
@@ -350,125 +350,125 @@ study = StudyDefinition(
     bp_dias=patients.mean_recorded_value(
         diastolic_blood_pressure_codes,
         on_most_recent_day_of_measurement=True,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         include_measurement_date=True,
         include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 120, "stddev": 10},
-            "date": {"latest": "2020-03-01"},
+            "date": {"latest": "2020-02-29"},
             "incidence": 0.95,
         },
     ),
     ### DIABETES
     diabetes=patients.with_these_clinical_events(
         diabetes_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
         lung_cancer_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     haem_cancer=patients.with_these_clinical_events(
         haem_cancer_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     other_cancer=patients.with_these_clinical_events(
         other_cancer_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     # IMMUNOSUPPRESSION - 4 TYPES
     # https://github.com/ebmdatalab/tpp-sql-notebook/issues/36
     aplastic_anaemia=patients.with_these_clinical_events(
         aplastic_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     hiv=patients.with_these_clinical_events(
         hiv_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     permanent_immunodeficiency=patients.with_these_clinical_events(
         permanent_immune_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_first_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     temporary_immunodeficiency=patients.with_these_clinical_events(
         temp_immune_codes,
-        between=["2019-03-01", "2020-03-01"],
+        between=["2019-03-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-03-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-03-01", "latest": "2020-02-29"}
         },
     ),
     ### CHRONIC KIDNEY DISEASE
     creatinine=patients.with_these_clinical_events(
         creatinine_codes,
         find_last_match_in_period=True,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         returning="numeric_value",
         include_date_of_match=True,
         include_month=True,
         return_expectations={
             "float": {"distribution": "normal", "mean": 60.0, "stddev": 15},
-            "date": {"latest": "2020-03-01"},
+            "date": {"latest": "2020-02-29"},
             "incidence": 0.95,
         },
     ),
     #### end stage renal disease codes incl. dialysis / transplant
     esrf=patients.with_these_clinical_events(
         ckd_codes,
-        on_or_before="2020-03-01",
+        on_or_before="2020-02-29",
         return_last_date_in_period=True,
         include_month=True,
-        return_expectations={"date": {"latest": "2020-03-01"}},
+        return_expectations={"date": {"latest": "2020-02-29"}},
     ),
     ### VACCINATION HISTORY
     flu_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="INFLUENZA",
-        between=["2019-09-01", "2020-03-01"],  # current flu season
+        between=["2019-09-01", "2020-02-29"],  # current flu season
         find_first_match_in_period=True,
         returning="date",
         return_expectations={
-            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-09-01", "latest": "2020-02-29"}
         },
     ),
     flu_vaccine_med=patients.with_these_medications(
         flu_med_codes,
-        between=["2019-09-01", "2020-03-01"],  # current flu season
+        between=["2019-09-01", "2020-02-29"],  # current flu season
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-09-01", "latest": "2020-02-29"}
         },
     ),
     flu_vaccine_clinical=patients.with_these_clinical_events(
         flu_clinical_codes,
-        between=["2019-09-01", "2020-03-01"],  # current flu season
+        between=["2019-09-01", "2020-02-29"],  # current flu season
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-09-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-09-01", "latest": "2020-02-29"}
         },
     ),
     flu_vaccine=patients.satisfying(
@@ -481,29 +481,29 @@ study = StudyDefinition(
     # PNEUMOCOCCAL VACCINE
     pneumococcal_vaccine_tpp_table=patients.with_tpp_vaccination_record(
         target_disease_matches="PNEUMOCOCCAL",
-        between=["2015-03-01", "2020-03-01"],
+        between=["2015-03-01", "2020-02-29"],
         find_first_match_in_period=True,
         returning="date",
         return_expectations={
-            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2015-03-01", "latest": "2020-02-29"}
         },
     ),
     pneumococcal_vaccine_med=patients.with_these_medications(
         pneumococcal_med_codes,
-        between=["2015-03-01", "2020-03-01"],  # past five years
+        between=["2015-03-01", "2020-02-29"],  # past five years
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2015-03-01", "latest": "2020-02-29"}
         },
     ),
     pneumococcal_vaccine_clinical=patients.with_these_clinical_events(
         pneumococcal_clinical_codes,
-        between=["2015-03-01", "2020-03-01"],  # past five years
+        between=["2015-03-01", "2020-02-29"],  # past five years
         return_first_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2015-03-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2015-03-01", "latest": "2020-02-29"}
         },
     ),
     pneumococcal_vaccine=patients.satisfying(
@@ -516,28 +516,28 @@ study = StudyDefinition(
     ### INSULIN USE
     insulin=patients.with_these_medications(
         insulin_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"}
         },
     ),
     ### STATIN USE
     statin=patients.with_these_medications(
         statin_med_codes,
-        between=["2019-11-01", "2020-03-01"],
+        between=["2019-11-01", "2020-02-29"],
         return_last_date_in_period=True,
         include_month=True,
         return_expectations={
-            "date": {"earliest": "2019-11-01", "latest": "2020-03-01"}
+            "date": {"earliest": "2019-11-01", "latest": "2020-02-29"}
         },
     ),
     ### EXACERBATIONS
     ## count
     exacerbation_count=patients.with_these_clinical_events(
         copd_exacerbation_codes,
-        between=["2019-03-01", "2020-03-01"],
+        between=["2019-03-01", "2020-02-29"],
         ignore_days_where_these_codes_occur=copd_review_rescue_codes,
         returning="number_of_episodes",
         episode_defined_as="series of events each <= 14 days apart",
@@ -554,15 +554,15 @@ study = StudyDefinition(
     ),
     ### GP CONSULTATION RATE
     gp_consult_count=patients.with_gp_consultations(
-        between=["2019-03-01", "2020-03-01"],
+        between=["2019-03-01", "2020-02-29"],
         returning="number_of_matches_in_period",
         return_expectations={
             "int": {"distribution": "normal", "mean": 4, "stddev": 2},
-            "date": {"earliest": "2019-03-01", "latest": "2020-03-01"},
+            "date": {"earliest": "2019-03-01", "latest": "2020-02-29"},
             "incidence": 0.7,
         },
     ),
     has_consultation_history=patients.with_complete_gp_consultation_history_between(
-        "2019-03-01", "2020-03-01", return_expectations={"incidence": 0.9},
+        "2019-03-01", "2020-02-29", return_expectations={"incidence": 0.9},
     ),
 )
