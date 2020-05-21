@@ -71,11 +71,10 @@ foreach var of varlist 	high_dose_ics		///
 }
 
 * Check date ranges for all comorbidities 
-* ASTHMA 
 
-foreach var of varlist  ckd     					///			
+foreach var of varlist  asthma_ever					///
+						ckd     					///			
 						hypertension				///
-						ili 						///
 						other_respiratory 			///
 						other_heart_disease 		///
 						heart_failure				///
@@ -92,8 +91,8 @@ foreach var of varlist  ckd     					///
 
 * Outcome dates
 
-summ stime_ituadmission stime_cpnsdeath stime_onscoviddeath,   format
-summ itu_date died_date_ons died_date_cpns died_date_onscovid, format
+summ  stime_cpnsdeath stime_onscoviddeath,   format
+summ  died_date_ons died_date_cpns died_date_onscovid, format
 
 
 /* LOGICAL RELATIONSHIPS======================================================*/ 
@@ -123,8 +122,7 @@ foreach var of varlist 	high_dose_ics		///
 						laba_lama_ics 		///
 						ltra_single	 {
 						
-	tab `var', missing
-	tab exposure `var', missing
+	tab exposure `var', row missing
 
 }
 
@@ -135,21 +133,21 @@ tab low_med_dose_ics ics_single
 
 /*  Relationships between demographic/lifestyle variables  */
 
-tab agegroup bmicat, 	row col
-tab agegroup smoke, 	row col 
-tab agegroup ethnicity, row col
-tab agegroup imd, 		row col
+tab agegroup bmicat, 	row 
+tab agegroup smoke, 	row  
+tab agegroup ethnicity, row 
+tab agegroup imd, 		row 
 
-tab bmicat smoke, 		 row col  
-tab bmicat ethnicity, 	 row col
-tab bmicat imd, 	 	 row col
-tab bmicat hypertension, row col
+tab bmicat smoke, 		 row   
+tab bmicat ethnicity, 	 row 
+tab bmicat imd, 	 	 row 
+tab bmicat hypertension, row 
                             
-tab smoke ethnicity, 	row col
-tab smoke imd, 			row col
-tab smoke hypertension, row col
+tab smoke ethnicity, 	row 
+tab smoke imd, 			row 
+tab smoke hypertension, row 
                             
-tab ethnicity imd, 		row col
+tab ethnicity imd, 		row 
 
 
 /*  Relationships with demographic/lifestyle variables  */ 
@@ -157,9 +155,9 @@ tab ethnicity imd, 		row col
 						*exacerbation_count			///
 
 * Relationships with age
-foreach var of varlist  ckd     					///			
+foreach var of varlist  ckd     					///	
+						asthma_ever					///
 						hypertension				///
-						ili 						///
 						other_respiratory 			///
 						other_heart_disease 		///
 						heart_failure				///
@@ -173,20 +171,21 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
+						exacerbations				///
 						gp_consult 					{
 
 		
- 	tab agegroup `var', row col
+ 	tab agegroup `var', row 
  }
 
 
  * Relationships with sex
-foreach var of varlist  ckd     					///			
+foreach var of varlist  ckd     					///	
+						asthma_ever					///
 						hypertension				///
-						ili 						///
 						other_respiratory 			///
 						other_heart_disease 		///
-						heart_failure 				///
+						heart_failure				///
 						copd 						///
 						diabetes					///
 						cancer_ever 				///
@@ -197,18 +196,19 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
+						exacerbations				///
 						gp_consult 					{
-
 						
- 	tab male `var', row col
+ 	tab male `var', row 
 }
 
  * Relationships with smoking
-foreach var of varlist  ckd     					///			
+foreach var of varlist  ckd     					///	
+						asthma_ever					///
 						hypertension				///
-						ili 						///
 						other_respiratory 			///
 						other_heart_disease 		///
+						heart_failure				///
 						copd 						///
 						diabetes					///
 						cancer_ever 				///
@@ -219,9 +219,10 @@ foreach var of varlist  ckd     					///
 						insulin 					///
 						statin 						///
 						immunodef_any				///
+						exacerbations				///
 						gp_consult 					{
 	
- 	tab smoke `var', row col
+ 	tab smoke `var', row 
 }
 
 
