@@ -257,8 +257,13 @@ flu_clinical_codes = codelist_from_csv(
     column="CTV3ID",
 )
 
-pneumococcal_clinical_codes = codelist_from_csv(
-    "codelists/opensafely-pneumococcal-vaccination-clinical-codes.csv",
+pneumococcal_clinical_given_codes = codelist_from_csv(
+    "codelists/opensafely-pneumococcal-vaccination-clinical-codes-indicative-of-being-administered.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+pneumococcal_clinical_not_given_codes = codelist_from_csv(
+    "codelists/opensafely-pneumococcal-vaccination-clinical-codes-indicative-of-not-being-administered.csv",
     system="ctv3",
     column="CTV3ID",
 )
@@ -286,6 +291,7 @@ copd_infection_codes = codelist_from_csv(
 )
 
 lrti_codes = codelist_from_csv(
-    "codelists/opensafely-lower-respiratory-tract-infection.csv", system="ctv3", column="CTV3ID"
+    "codelists/opensafely-lower-respiratory-tract-infection.csv",
+    system="ctv3",
+    column="CTV3ID",
 )
-

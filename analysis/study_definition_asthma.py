@@ -558,7 +558,8 @@ study = StudyDefinition(
         },
     ),
     pneumococcal_vaccine_clinical=patients.with_these_clinical_events(
-        pneumococcal_clinical_codes,
+        pneumococcal_clinical_given_codes,
+        ignore_days_where_these_codes_occur=pneumococcal_clinical_not_given_codes,
         between=["2015-03-01", "2020-02-29"],  # past five years
         return_first_date_in_period=True,
         include_month=True,
@@ -569,9 +570,9 @@ study = StudyDefinition(
     pneumococcal_vaccine=patients.satisfying(
         """
         pneumococcal_vaccine_tpp_table OR
-        pneumococcal_vaccine_med
+        pneumococcal_vaccine_med OR
+        pneumococcal_vaccine_clinical
         """,
-        # ADD IN pneumococcal_vaccine_clinical WHEN DECIDED
     ),
     ### EXACERBATION
     # count
