@@ -69,6 +69,7 @@ graph close
 		  
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		

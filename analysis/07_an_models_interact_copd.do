@@ -73,6 +73,7 @@ local multivar1_p = round(r(p),0.001)
 * Age, Gender and Comorbidities 
 stcox i.exposure i.agegroup i.male   	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
@@ -90,6 +91,7 @@ estimates store A
 
 stcox i.exposure##i.agegroup i.male     i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		

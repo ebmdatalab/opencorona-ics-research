@@ -34,6 +34,7 @@ file write tablecontent _tab ("HR") _tab ("95% CI") _n
 /* Adjust one covariate at a time=============================================*/
 
 foreach var of varlist 	obese4cat				///
+						asthma_ever				///
 						smoke_nomiss			///
 						imd 					///
 						ckd	 					///		

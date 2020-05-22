@@ -48,6 +48,7 @@ estimates save ./$tempdir/multivar1, replace
 * Age, Gender and Comorbidities 
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
@@ -66,6 +67,7 @@ estimates save ./$tempdir/multivar2, replace
 * Age, Gender and Comorbidities + GP visits (binary)
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
