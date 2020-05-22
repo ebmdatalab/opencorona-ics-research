@@ -84,8 +84,7 @@ stcox i.exposure i.agegroup i.male   	i.obese4cat					///
 										i.insulin					///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
-										i.exacerbations 			///
-										i.gp_consult, strata(stp)					
+										i.exacerbations, strata(stp)					
 										
 estimates store A
 
@@ -102,8 +101,7 @@ stcox i.exposure##i.agegroup i.male     i.obese4cat					///
 										i.insulin					///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
-										i.exacerbations				///
-										i.gp_consult, strata(stp)			
+										i.exacerbations	, strata(stp)			
 estimates store B
 estimates save ./$tempdir/multivar2_int, replace 
 

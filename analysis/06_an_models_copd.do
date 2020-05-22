@@ -59,10 +59,28 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.insulin					///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
-										i.exacerbations 			///
-										i.gp_consult, strata(stp)				
+										i.exacerbations, strata(stp)				
 										
 estimates save ./$tempdir/multivar2, replace 
+
+* Age, Gender and Comorbidities + GP visits (binary)
+stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
+										i.smoke_nomiss				///
+										i.imd 						///
+										i.ckd	 					///		
+										i.hypertension			 	///		
+										i.heart_failure				///		
+										i.other_heart_disease		///		
+										i.diabetes 					///		
+										i.cancer_ever 				///							
+										i.statin 					///		
+										i.insulin					///		
+										i.flu_vaccine 				///	
+										i.pneumococcal_vaccine		///	
+										i.exacerbations				///
+										i.gp_consult, strata(stp)				
+										
+estimates save ./$tempdir/multivar3, replace 
 
 /* MODEL CHANGES TO DO: 
 - Diabetes as severity, remove insulin 
@@ -75,11 +93,12 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 2: Association between current ICS use and CPNS death - COPD Population") _n
+file write tablecontent ("Table 2: Association between current ICS use and CPNS death - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
-						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
+						("Age/Sex and Comorbidity Adjusted") _tab _tab ///
+						("Age/Sex and Comorbidity + GP Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
-						("95% CI") _tab ("HR") _tab ("95% CI") _n
+						("95% CI") _tab ("HR") _tab ("95% CI")  _tab ("HR") _tab ("95% CI") _n
 file write tablecontent ("Main Analysis") _n 					
 
 * Row headings 
@@ -120,7 +139,11 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 
 estimates use ./$tempdir/multivar2 
 lincom 1.exposure, eform
-file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab
+
+estimates use ./$tempdir/multivar3 
+lincom 1.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n
 
 * Close log file 
 log close

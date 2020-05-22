@@ -116,8 +116,7 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.insulin					///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///
-										i.exacerbations				///
-										i.gp_consult, strata(stp)	
+										i.exacerbations, strata(stp)	
 estat phtest, detail
 local multivar2_p1 = round(r(phtest)[2,4],0.001)
 local multivar2_p2 = round(r(phtest)[3,4],0.001)
