@@ -388,6 +388,11 @@ study = StudyDefinition(
         returning="numeric_value",
         include_date_of_match=True,
         include_month=True,
+        return_expectations={
+            "date": {"latest": "2020-02-29"},
+            "float": {"distribution": "normal", "mean": 40.0, "stddev": 20},
+            "incidence": 0.95,
+        },
     ),
     hba1c_percentage=patients.with_these_clinical_events(
         hba1c_old_codes,
@@ -396,6 +401,11 @@ study = StudyDefinition(
         returning="numeric_value",
         include_date_of_match=True,
         include_month=True,
+        return_expectations={
+            "date": {"latest": "2020-02-29"},
+            "float": {"distribution": "normal", "mean": 5, "stddev": 2},
+            "incidence": 0.95,
+        },
     ),
     ### CANCER - 3 TYPES
     lung_cancer=patients.with_these_clinical_events(
