@@ -20,6 +20,11 @@ log using $logdir\10_an_models_ethnicity_asthma, replace t
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
 
+/* Restrict population========================================================*/ 
+
+preserve 
+drop if ethnicity != 1
+
 /* Sense check outcomes=======================================================*/ 
 
 tab exposure cpnsdeath, missing row
@@ -142,6 +147,8 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 
 file write tablecontent _n
 file close tablecontent
+
+restore 
 
 * Close log file 
 log close
