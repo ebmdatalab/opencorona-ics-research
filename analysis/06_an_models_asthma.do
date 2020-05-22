@@ -26,195 +26,128 @@ log using $logdir\06_an_models_asthma, replace t
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
 
-/* Surround model code with program===========================================*/
-*  This takes no syntax because the only change will be the population 
+/* Sense check outcomes=======================================================*/ 
 
-cap prog drop runmodels
-program define runmodels 
+tab exposure cpnsdeath, missing row
 
-	/* Sense check outcomes===================================================*/ 
+/* Main Model=================================================================*/
 
-	tab exposure cpnsdeath, missing row
+/* Univariable model */ 
 
-	/* Main Model=============================================================*/
+stcox i.exposure 
+estimates save ./$tempdir/univar, replace 
 
-	/* Univariable model */ 
+/* Multivariable models */ 
 
-	stcox i.exposure 
-	estimates save ./$tempdir/univar, replace 
+* Age and Gender 
+* Age fit as spline in first instance, categorical below 
 
-	/* Multivariable models */ 
+stcox i.exposure i.male age1 age2 age3 
+estimates save ./$tempdir/multivar1, replace 
 
-	* Age and Gender 
-	* Age fit as spline in first instance, categorical below 
+* Age, Gender and Comorbidities 
+stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
+										i.smoke_nomiss				///
+										i.imd 						///
+										i.ckd	 					///		
+										i.hypertension			 	///		
+										i.heart_failure				///		
+										i.other_heart_disease		///		
+										i.diabetes 					///		
+										i.cancer_ever 				///							
+										i.statin 					///		
+										i.insulin					///		
+										i.flu_vaccine 				///	
+										i.pneumococcal_vaccine		///	
+										i.exacerbations 			///
+										i.gp_consult, strata(stp)				
+										
+estimates save ./$tempdir/multivar2, replace 
 
-	stcox i.exposure i.male age1 age2 age3 
-	estimates save ./$tempdir/multivar1, replace 
+/* MODEL CHANGES TO DO: 
+- Diabetes as severity, remove insulin 
+*/ 
 
-	* Age, Gender and Comorbidities 
-	stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
-											i.smoke_nomiss				///
-											i.imd 						///
-											i.ckd	 					///		
-											i.hypertension			 	///		
-											i.heart_failure				///		
-											i.other_heart_disease		///		
-											i.diabetes 					///		
-											i.cancer_ever 				///							
-											i.statin 					///		
-											i.insulin					///		
-											i.flu_vaccine 				///	
-											i.pneumococcal_vaccine		///	
-											i.exacerbations, strata(stp)				
-											
-	estimates save ./$tempdir/multivar2, replace 
-
-	* Age, Gender and Comorbidities + GP visits (binary)
-	stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
-											i.smoke_nomiss				///
-											i.imd 						///
-											i.ckd	 					///		
-											i.hypertension			 	///		
-											i.heart_failure				///		
-											i.other_heart_disease		///		
-											i.diabetes 					///		
-											i.cancer_ever 				///							
-											i.statin 					///		
-											i.insulin					///		
-											i.flu_vaccine 				///	
-											i.pneumococcal_vaccine		///	
-											i.exacerbations				///
-											i.gp_consult, strata(stp)				
-											
-	estimates save ./$tempdir/multivar3, replace 
-
-
-	/* MODEL CHANGES TO DO: 
-	- Diabetes as severity, remove insulin 
-	*/ 
-
-	/* Print table============================================================*/ 
-	*  Print the results for the main model 		
-
-	* Row headings 
-	local lab0: label exposure 0
-	local lab1: label exposure 1
-	local lab2: label exposure 2
-	 
-	/* Counts */
-	 
-	* First row, exposure = 0 (reference)
-
-		cou if exposure == 0 
-		local rowdenom = r(N)
-		cou if exposure == 0 & cpnsdeath == 1
-		local pct = 100*(r(N)/`rowdenom') 
-		
-		file write tablecontent ("`lab0'") _tab
-		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-		file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
-		
-	* Second row, exposure = 1 (comparator)
-
-	file write tablecontent ("`lab1'") _tab  
-
-		cou if exposure == 1 
-		local rowdenom = r(N)
-		cou if exposure == 1 & cpnsdeath == 1
-		local pct = 100*(r(N)/`rowdenom') 
-		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-
-	/* Main Model */ 
-	estimates use ./$tempdir/univar 
-	lincom 1.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
-	estimates use ./$tempdir/multivar1 
-	lincom 1.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
-	estimates use ./$tempdir/multivar2 
-	lincom 1.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab
-
-	estimates use ./$tempdir/multivar3 
-	lincom 1.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n
-
-	* Third row, exposure = 2 (comparator)
-
-	file write tablecontent ("`lab2'") _tab  
-
-		cou if exposure == 2
-		local rowdenom = r(N)
-		cou if exposure == 2 & cpnsdeath == 1
-		local pct = 100*(r(N)/`rowdenom') 
-		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-
-	/* Main Model */ 
-	estimates use ./$tempdir/univar 
-	lincom 2.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
-	estimates use ./$tempdir/multivar1 
-	lincom 2.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
-	estimates use ./$tempdir/multivar2 
-	lincom 2.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
-	estimates use ./$tempdir/multivar3 
-	lincom 2.exposure, eform
-	file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n
-
-end
-
-/* Open and print table structure=============================================*/
+/* Print table================================================================*/ 
+*  Print the results for the main model 
 
 cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
 
 * Column headings 
-
 file write tablecontent ("Table 2: Association between current ICS use and CPNS death - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
-						("Age/Sex and Comorbidity Adjusted") _tab _tab ///
-						("Age/Sex and Comorbidity + GP Adjusted") _tab _tab _n
+						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
-						("95% CI") _tab ("HR") _tab ("95% CI")  _tab ("HR") _tab ("95% CI") _n
-file write tablecontent ("Main Analysis") _n 	
+						("95% CI") _tab ("HR") _tab ("95% CI") _n
+file write tablecontent ("Main Analysis") _n 					
 
-/* Main model=================================================================*/
-runmodels
-file write tablecontent _n 
+* Row headings 
+local lab0: label exposure 0
+local lab1: label exposure 1
+local lab2: label exposure 2
+ 
+/* Counts */
+ 
+* First row, exposure = 0 (reference)
 
-/* White people only==========================================================*/
-preserve
-drop if ethnicity != 1 
+	cou if exposure == 0 
+	local rowdenom = r(N)
+	cou if exposure == 0 & cpnsdeath == 1
+	local pct = 100*(r(N)/`rowdenom') 
+	
+	file write tablecontent ("`lab0'") _tab
+	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+	file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
+	
+* Second row, exposure = 1 (comparator)
 
-file write tablecontent ("Restricted to ethnicity == 1") _n 
+file write tablecontent ("`lab1'") _tab  
 
-runmodels
-file write tablecontent _n 
+	cou if exposure == 1 
+	local rowdenom = r(N)
+	cou if exposure == 1 & cpnsdeath == 1
+	local pct = 100*(r(N)/`rowdenom') 
+	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
-restore
+/* Main Model */ 
+estimates use ./$tempdir/univar 
+lincom 1.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
 
+estimates use ./$tempdir/multivar1 
+lincom 1.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+estimates use ./$tempdir/multivar2 
+lincom 1.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+* Third row, exposure = 2 (comparator)
+
+file write tablecontent ("`lab2'") _tab  
+
+	cou if exposure == 2
+	local rowdenom = r(N)
+	cou if exposure == 2 & cpnsdeath == 1
+	local pct = 100*(r(N)/`rowdenom') 
+	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+/* Main Model */ 
+estimates use ./$tempdir/univar 
+lincom 2.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+estimates use ./$tempdir/multivar1 
+lincom 2.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+estimates use ./$tempdir/multivar2 
+lincom 2.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+file write tablecontent _n
 file close tablecontent
 
 * Close log file 
 log close
-
-
-
-
-
-
-
-
-
-
-
-
-
-
