@@ -1,0 +1,350 @@
+---------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\08_an_model_ch
+> ecks_copd.log
+  log type:  text
+ opened on:  22 May 2020, 13:50:52
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Quietly run models, perform test and store results in local macro==========*
+> /
+. 
+. qui stcox i.exposure 
+
+. estat phtest, detail
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.exposure |            .            .        1             .
+      1.exposure  |     -0.08608         1.93        1         0.1644
+      ------------+---------------------------------------------------
+      global test |                      1.93        1         0.1644
+      ----------------------------------------------------------------
+
+. local univar_p = round(r(p),0.001)
+
+. di `univar_p'
+.164
+
+.  
+. estat phtest, plot(1.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, univariabl
+> e", position(11) size(medsmall)) 
+
+. 
+. graph export "$outdir/schoenplot1.svg", as(svg) replace
+(file copd_output/schoenplot1.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close  
+
+.                           
+. stcox i.exposure i.male age1 age2 age3 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3106.5553
+Iteration 1:   log likelihood = -3042.2896
+Iteration 2:   log likelihood = -2992.6499
+Iteration 3:   log likelihood = -2990.8971
+Iteration 4:   log likelihood = -2990.8874
+Iteration 5:   log likelihood = -2990.8874
+Refining estimates:
+Iteration 0:   log likelihood = -2990.8874
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,507                  Number of obs    =     148,507
+No. of failures =          261
+Time at risk    =      7838493
+                                                LR chi2(5)       =      231.34
+Log likelihood  =   -2990.8874                  Prob > chi2      =      0.0000
+
+--------------------------------------------------------------------------------
+            _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+      exposure |
+ICS Combina..  |   1.563032   .2423232     2.88   0.004      1.15346    2.118034
+        1.male |   2.124234   .2929928     5.46   0.000     1.621053    2.783604
+          age1 |   1.003114   .0441136     0.07   0.944     .9202738     1.09341
+          age2 |   1.185902   .1003251     2.02   0.044     1.004705    1.399777
+          age3 |   .5126707   .1774241    -1.93   0.054     .2601695    1.010231
+--------------------------------------------------------------------------------
+
+. estat phtest, detail
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.exposure |            .            .        1             .
+      1.exposure  |     -0.08727         2.00        1         0.1577
+      0b.male     |            .            .        1             .
+      1.male      |      0.04810         0.61        1         0.4362
+      age1        |     -0.03490         0.36        1         0.5508
+      age2        |      0.00165         0.00        1         0.9781
+      age3        |      0.02355         0.15        1         0.6985
+      ------------+---------------------------------------------------
+      global test |                      7.98        5         0.1572
+      ----------------------------------------------------------------
+
+. local multivar1_p = round(r(phtest)[2,4],0.001)
+
+.  
+. estat phtest, plot(1.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, age and se
+> x adjusted", position(11) size(medsmall))                          
+
+. 
+. graph export "$outdir/schoenplot2.svg", as(svg) replace
+(file copd_output/schoenplot2.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+.                   
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                            
+>          ///
+>                                                                                
+>  i.smoke_nomiss                          ///
+>                                                                                
+>  i.imd                                           ///
+>                                                                                
+>  i.ckd                                           ///             
+>                                                                                
+>  i.hypertension                          ///             
+>                                                                                
+>  i.heart_failure                         ///             
+>                                                                                
+>  i.other_heart_disease           ///             
+>                                                                                
+>  i.diabetes                                      ///             
+>                                                                                
+>  i.cancer_ever                           ///                                   
+>   
+>                                                                                
+>  i.statin                                        ///             
+>                                                                                
+>  i.insulin                                       ///             
+>                                                                                
+>  i.flu_vaccine                           ///     
+>                                                                                
+>  i.pneumococcal_vaccine          ///
+>                                                                                
+>  i.exacerbations                         ///
+>                                                                                
+>  i.gp_consult, strata(stp)       
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -2288.5064
+Iteration 1:   log likelihood = -2172.6002
+Iteration 2:   log likelihood = -2108.3852
+Iteration 3:   log likelihood = -2106.5091
+Iteration 4:   log likelihood = -2106.5019
+Iteration 5:   log likelihood = -2106.5019
+Refining estimates:
+Iteration 0:   log likelihood = -2106.5019
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      148,507                  Number of obs    =     148,507
+No. of failures =          261
+Time at risk    =      7838493
+                                                LR chi2(25)      =      364.01
+Log likelihood  =   -2106.5019                  Prob > chi2      =      0.0000
+
+--------------------------------------------------------------------------------
+            _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+---------------+----------------------------------------------------------------
+      exposure |
+ICS Combina..  |    1.46394   .2306141     2.42   0.016     1.075063    1.993485
+        1.male |   2.060263   .2901388     5.13   0.000     1.563332    2.715151
+          age1 |   .9869523   .0432477    -0.30   0.764     .9057264    1.075463
+          age2 |   1.154599   .0976736     1.70   0.089     .9781905     1.36282
+          age3 |   .5762494   .2001175    -1.59   0.112     .2917486    1.138183
+               |
+     obese4cat |
+Obese I (3..)  |   1.318086   .1988573     1.83   0.067     .9806733    1.771589
+Obese II (..)  |   1.263183   .2856596     1.03   0.302      .810911    1.967702
+Obese III ..)  |   1.691969   .5065994     1.76   0.079     .9408722    3.042665
+               |
+  smoke_nomiss |
+      Current  |   .3433717   .0783604    -4.68   0.000     .2195396    .5370517
+               |
+           imd |
+            2  |   1.091478   .2096636     0.46   0.649     .7490426    1.590463
+            3  |   .8388757   .1752956    -0.84   0.400     .5569631    1.263481
+            4  |   1.283023   .2547491     1.26   0.209     .8694111    1.893406
+5 most depr..  |   1.594871   .3260575     2.28   0.022     1.068329    2.380928
+               |
+           ckd |
+          CKD  |   2.104774   .2951573     5.31   0.000     1.598967    2.770585
+1.hypertension |   .9365192   .1290902    -0.48   0.634     .7148035    1.227006
+1.heart_fai~re |    1.71135   .2616705     3.51   0.000       1.2682    2.309352
+1.other_hea~se |   1.011927   .1440349     0.08   0.934      .765582    1.337541
+    1.diabetes |   1.512294   .2109933     2.96   0.003     1.150476    1.987901
+ 1.cancer_ever |   .9994561   .1586918    -0.00   0.997     .7321693    1.364319
+      1.statin |    .934248   .1297436    -0.49   0.624     .7116257    1.226514
+     1.insulin |   .9851398   .2777179    -0.05   0.958     .5669413    1.711818
+ 1.flu_vaccine |   1.031175   .1711828     0.18   0.853     .7447773    1.427704
+1.pneumococc~e |   1.015081   .1968584     0.08   0.938     .6941028     1.48449
+1.exacerbati~s |    1.48149   .1971312     2.95   0.003     1.141394    1.922924
+  1.gp_consult |   1.334821   .9525281     0.40   0.686     .3296141    5.405556
+--------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. estat phtest, detail
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.exposure |            .            .        1             .
+      1.exposure  |     -0.06636         1.14        1         0.2851
+      0b.male     |            .            .        1             .
+      1.male      |      0.04281         0.48        1         0.4902
+      age1        |     -0.02010         0.12        1         0.7331
+      age2        |     -0.01036         0.03        1         0.8635
+      age3        |      0.03271         0.29        1         0.5902
+      1b.obese4cat|            .            .        1             .
+      2.obese4cat |     -0.02677         0.19        1         0.6664
+      3.obese4cat |     -0.05432         0.75        1         0.3870
+      4.obese4cat |     -0.02724         0.20        1         0.6583
+      2b.smoke_n~s|            .            .        1             .
+      3.smoke_no~s|      0.13717         5.08        1         0.0242
+      1b.imd      |            .            .        1             .
+      2.imd       |      0.02595         0.17        1         0.6799
+      3.imd       |      0.02493         0.16        1         0.6872
+      4.imd       |      0.08820         1.92        1         0.1656
+      5.imd       |      0.06316         1.01        1         0.3144
+      0b.ckd      |            .            .        1             .
+      1.ckd       |      0.06194         1.09        1         0.2964
+      0b.hyperte~n|            .            .        1             .
+      1.hyperten~n|     -0.10330         2.89        1         0.0892
+      0b.heart_~re|            .            .        1             .
+      1.heart_f~re|      0.11433         3.45        1         0.0634
+      0b.other_~se|            .            .        1             .
+      1.other_h~se|     -0.00645         0.01        1         0.9174
+      0b.diabetes |            .            .        1             .
+      1.diabetes  |      0.15980         6.70        1         0.0096
+      0b.cancer_~r|            .            .        1             .
+      1.cancer_e~r|      0.03190         0.27        1         0.6008
+      0b.statin   |            .            .        1             .
+      1.statin    |     -0.01768         0.09        1         0.7614
+      0b.insulin  |            .            .        1             .
+      1.insulin   |     -0.03129         0.26        1         0.6128
+      0b.flu_vac~e|            .            .        1             .
+      1.flu_vacc~e|     -0.02913         0.23        1         0.6329
+      0b.pneumoc~e|            .            .        1             .
+      1.pneumoco~e|     -0.02828         0.21        1         0.6496
+      0b.exacerb~s|            .            .        1             .
+      1.exacerba~s|      0.00103         0.00        1         0.9868
+      0b.gp_con~lt|            .            .        1             .
+      1.gp_consult|      0.07116         1.35        1         0.2449
+      ------------+---------------------------------------------------
+      global test |                     33.14       25         0.1277
+      ----------------------------------------------------------------
+
+. local multivar2_p = round(r(phtest)[2,4],0.001)
+
+.  
+. estat phtest, plot(1.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, fully adju
+> sted", position(11) size(medsmall))                
+
+.                           
+. graph export "$outdir/schoenplot3.svg", as(svg) replace
+(file copd_output/schoenplot3.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Print table of results======================================================*
+> /        
+. 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table4.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 4: Testing the PH assumption - $population Popu
+> lation") _n
+
+. file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
+>                                                 ("Age/Sex and Comorbidity Adjus
+> ted") _tab _n
+
+.                                                 
+. file write tablecontent _tab ("p-value") _tab ("p-value") _tab ("p-value") _tab
+>  _n
+
+. 
+. * Row heading and content  
+. file write tablecontent ("Treatment Exposure") _tab
+
+. file write tablecontent ("`univar_p'") _tab ("`multivar1_p'") _tab ("`multivar2
+> _p'")
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\08_an_model_ch
+> ecks_copd.log
+  log type:  text
+ closed on:  22 May 2020, 13:52:14
+---------------------------------------------------------------------------------

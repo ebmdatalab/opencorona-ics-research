@@ -1,0 +1,5 @@
+Table 4: Testing the PH assumption - Asthma Population
+	Univariable	Age/Sex Adjusted	Age/Sex and Comorbidity Adjusted	
+	p-value	p-value	p-value	
+ICS (Low/Medium Dose)	.368	.314	.441
+ICS (High Dose)	.6970000000000001	.63	.727
