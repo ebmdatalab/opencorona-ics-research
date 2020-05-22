@@ -1,11 +1,13 @@
---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\01_cr_create_asthma_population.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\01_cr_create
+> _asthma_population.log
   log type:  text
- opened on:  22 May 2020, 09:18:09
+ opened on:  22 May 2020, 13:55:35
 
 . 
-. /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
+. /* APPLY INCLUSION/EXCLUIONS==================================================*
+> / 
 . 
 . noi di "DROP MISSING GENDER:"
 DROP MISSING GENDER:
@@ -49,7 +51,8 @@ DROP IF DEAD BEFORE INDEX
 (0 observations deleted)
 
 . 
-. /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
+. /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*
+> / 
 . 
 . * DATA STRUCTURE: Confirm one row per patient 
 . duplicates tag patient_id, generate(dup_check)
@@ -109,7 +112,8 @@ Duplicates in terms of patient_id
 . * Close log file 
 . log close                                          
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\01_cr_create_asthma_population.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\01_cr_create
+> _asthma_population.log
   log type:  text
- closed on:  22 May 2020, 09:18:18
---------------------------------------------------------------------------------------------------------
+ closed on:  22 May 2020, 13:55:44
+---------------------------------------------------------------------------------

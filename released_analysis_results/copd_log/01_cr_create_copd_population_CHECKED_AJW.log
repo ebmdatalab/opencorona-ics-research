@@ -1,17 +1,19 @@
---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_c
+> opd_population.log
   log type:  text
- opened on:  22 May 2020, 09:12:29
+ opened on:  22 May 2020, 13:49:07
 
 . 
-. /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
+. /* APPLY INCLUSION/EXCLUIONS==================================================*
+> / 
 . 
 . noi di "DROP MISSING GENDER:"
 DROP MISSING GENDER:
 
 . drop if inlist(sex,"I", "U")
-(REDACTED observations deleted)
+REDACTED
 
 . 
 . noi di "DROP AGE <35:"
@@ -49,7 +51,8 @@ DROP IF DEAD BEFORE INDEX
 (0 observations deleted)
 
 . 
-. /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
+. /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*
+> / 
 . 
 . * DATA STRUCTURE: Confirm one row per patient 
 . duplicates tag patient_id, generate(dup_check)
@@ -112,7 +115,8 @@ Duplicates in terms of patient_id
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_c
+> opd_population.log
   log type:  text
- closed on:  22 May 2020, 09:12:31
---------------------------------------------------------------------------------------------------------
+ closed on:  22 May 2020, 13:49:08
+---------------------------------------------------------------------------------

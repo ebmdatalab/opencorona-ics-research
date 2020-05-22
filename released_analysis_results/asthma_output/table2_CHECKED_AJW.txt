@@ -1,0 +1,7 @@
+Table 2: Association between current ICS use and CPNS death - COPD Population
+	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+		HR	95% CI	HR	95% CI	HR	95% CI
+Main Analysis
+SABA only	30 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS (Low/Medium Dose)	225 (0.0)	1.34	0.91 - 1.96	1.00	0.69 - 1.47	1.13	0.77 - 1.65
+ICS (High Dose)	64 (0.1)	2.29	1.48 - 3.53	1.62	1.05 - 2.49	1.49	0.96 - 2.31

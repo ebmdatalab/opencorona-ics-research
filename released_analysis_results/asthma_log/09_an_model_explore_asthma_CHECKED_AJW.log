@@ -1,9 +1,9 @@
 ---------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\09_an_model_ex
-> plore_copd.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\09_an_model_
+> explore_asthma.log
   log type:  text
- opened on:  22 May 2020, 13:52:14
+ opened on:  22 May 2020, 14:16:07
 
 . 
 . * Open Stata dataset
@@ -37,21 +37,21 @@
 >                                                 ckd                            
 >                  ///             
 >                                                 hypertension                   
->  ///             
+>  ///     
 >                                                 heart_failure                  
->  ///             
+>  ///     
 >                                                 other_heart_disease            
->  ///             
+>  ///     
 >                                                 diabetes                       
->          ///             
+>          ///     
 >                                                 cancer_ever                    
->  ///                                                     
+>  ///     
 >                                                 statin                         
->          ///             
+>          ///     
 >                                                 insulin                        
->          ///             
+>          ///     
 >                                                 oral_steroids                  
->  ///             
+>  ///     
 >                                                 flu_vaccine                    
 >  ///     
 >                                                 pneumococcal_vaccine    ///    
@@ -63,27 +63,37 @@
 .         local lab: variable label `var'
   3.         file write tablecontent ("`lab'") _n 
   4.         
-.         qui stcox i.exposure i.male age1 age2 age3 i.`var', strata(stp) 
-  5.                 
-.                 local lab0: label exposure 0
-  6.                 local lab1: label exposure 1
-  7. 
+.         capture stcox i.exposure i.male age1 age2 age3 i.`var', strata(stp)    
+>  
+  5.         if !_rc {
+  6.                 local lab0: label exposure 0
+  7.                 local lab1: label exposure 1
+  8.                 local lab2: label exposure 2
+  9. 
 .                 file write tablecontent ("`lab0'") _tab
-  8.                 file write tablecontent ("1.00 (ref)") _tab _n
-  9.                 file write tablecontent ("`lab1'") _tab  
- 10.                 
+ 10.                 file write tablecontent ("1.00 (ref)") _tab _n
+ 11.                 file write tablecontent ("`lab1'") _tab  
+ 12.                 
 .                 qui lincom 1.exposure, eform
- 11.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb
-> )) (" - ") %4.2f (r(ub)) _n _n
- 12.                                                                         
-. }       
+ 13.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb
+> )) (" - ") %4.2f (r(ub)) _n
+ 14.                 
+.                 file write tablecontent ("`lab2'") _tab  
+ 15.                 
+.                 qui lincom 2.exposure, eform
+ 16.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb
+> )) (" - ") %4.2f (r(ub)) _tab _n _n                                            
+>      
+ 17.                                                                         
+.         }
+ 18.         else di "*WARNING `var' MODEL DID NOT SUCCESSFULLY FIT*"
+ 19. }
 
-. 
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\09_an_model_ex
-> plore_copd.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\09_an_model_
+> explore_asthma.log
   log type:  text
- closed on:  22 May 2020, 13:53:28
+ closed on:  22 May 2020, 14:24:49
 ---------------------------------------------------------------------------------

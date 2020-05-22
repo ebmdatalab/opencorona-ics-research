@@ -16,6 +16,10 @@ ICS (Low/Medium Dose)	1.06	0.73 - 1.56
 ICS (High Dose)	1.58	1.03 - 2.45	
 
 Chronic kidney disease
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	1.08	0.74 - 1.58
+ICS (High Dose)	1.61	1.04 - 2.49	
+
 Diagnosed hypertension
 SABA only	1.00 (ref)	
 ICS (Low/Medium Dose)	1.06	0.72 - 1.55

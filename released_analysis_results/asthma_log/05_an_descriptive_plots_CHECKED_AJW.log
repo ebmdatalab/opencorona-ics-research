@@ -1,15 +1,17 @@
---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
+> ptive_plots.log
   log type:  text
- opened on:  22 May 2020, 09:19:52
+ opened on:  22 May 2020, 13:57:19
 
 . 
 . * Open Stata dataset
 . use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
 
 . 
-. /* Sense check outcomes=======================================================*/ 
+. /* Sense check outcomes=======================================================*
+> / 
 . tab exposure cpnsdeath
 
                       |   Failure/censoring
@@ -25,7 +27,8 @@ ICS (Low/Medium Dose) |   608,525        225 |   608,750
                 Total |   817,900        319 |   818,219 
 
 . 
-. /* Generate KM PLOT===========================================================*/ 
+. /* Generate KM PLOT===========================================================*
+> / 
 . 
 . count if exposure != .u
   818,219
@@ -34,24 +37,26 @@ ICS (Low/Medium Dose) |   608,525        225 |   608,750
 RUNNING THE KM PLOT FOR 818219 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
-. sts graph, by(exposure) failure                                                                       
->           ///     
->                    title("Time to hospital COVID-19 death, $population population", justification(left
-> ) size(medsmall) )           ///
->                    xtitle("Days since 1 Mar 2020", size(small))                                       
+. sts graph, by(exposure) failure                                                
+>                                  ///     
+>                    title("Time to hospital COVID-19 death, $population populati
+> on", justification(left) size(medsmall) )           ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                
+>                          ///
+>                    yscale(range(0, 0.005))                                     
+>                                                  ///
+>                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small)
+> )        ///
+>                    xscale(range(30, 84))                                       
+>                                                  ///
+>                    xlabel(0 (20) 100, labsize(small))                          
+>                                  ///                             
+>                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/
+> Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))   
 >   ///
->                    yscale(range(0, 0.005))                                                            
->                           ///
->                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small))        ///
->                    xscale(range(30, 84))                                                              
->                           ///
->                    xlabel(0 (20) 100, labsize(small))                                                 
->           ///                             
->                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/Medium Dose)") label (3
->  "ICS (High Dose)")region(lwidth(none)) position(12))     ///
 >                    graphregion(fcolor(white)) ///       
->                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Medium Dose)" 3 "ICS (High
->  Dose)") title(,size(vsmall))) ///
+>                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Med
+> ium Dose)" 3 "ICS (High Dose)") title(,size(vsmall))) ///
 >                    saving(kmplot1, replace)
 
          failure _d:  cpnsdeath
@@ -79,7 +84,8 @@ RUNNING THE KM PLOT FOR 818219 PEOPLE WITH NON-MISSING EXPOSURE
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
+> ptive_plots.log
   log type:  text
- closed on:  22 May 2020, 09:20:17
---------------------------------------------------------------------------------------------------------
+ closed on:  22 May 2020, 13:57:44
+---------------------------------------------------------------------------------

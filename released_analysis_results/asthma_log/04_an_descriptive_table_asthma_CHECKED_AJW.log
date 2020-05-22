@@ -1,17 +1,20 @@
---------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\04_an_descriptive_table_asthma.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\04_an_descri
+> ptive_table_asthma.log
   log type:  text
- opened on:  22 May 2020, 09:19:14
+ opened on:  22 May 2020, 13:56:41
 
 . 
 . * Open Stata dataset
 . use $tempdir\analysis_dataset, clear
 
 . 
-. /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*/ 
+. /* PROGRAMS TO AUTOMATE TABULATIONS===========================================*
+> / 
 . 
-. ********************************************************************************
+. *******************************************************************************
+> *
 . * All below code from K Baskharan 
 . * Generic code to output one row of table
 . 
@@ -29,25 +32,29 @@
 .         cou if `variable' `condition'
   7.         local rowdenom = r(N)
   8.         local colpct = 100*(r(N)/`overalldenom')
-  9.         file write tablecontent %9.0gc (`rowdenom')  (" (") %3.1f (`colpct') (")") _tab
+  9.         file write tablecontent %9.0gc (`rowdenom')  (" (") %3.1f (`colpct')
+>  (")") _tab
  10. 
 .         cou if exposure == 0 
  11.         local rowdenom = r(N)
  12.         cou if exposure == 0 & `variable' `condition'
  13.         local pct = 100*(r(N)/`rowdenom') 
- 14.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 14.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f (`pct') (")") _ta
+> b
  15. 
 .         cou if exposure == 1 
  16.         local rowdenom = r(N)
  17.         cou if exposure == 1 & `variable' `condition'
  18.         local pct = 100*(r(N)/`rowdenom')
- 19.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
+ 19.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _t
+> ab
  20. 
 .         cou if exposure == 2
  21.         local rowdenom = r(N)
  22.         cou if exposure == 2 & `variable' `condition'
  23.         local pct = 100*(r(N)/`rowdenom')
- 24.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
+ 24.         file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _t
+> ab
  25. 
 .         cou if exposure >= .
  26.         local rowdenom = r(N)
@@ -75,7 +82,8 @@
 > 
 > */ 
 . 
-. ********************************************************************************
+. *******************************************************************************
+> *
 . * Generic code to output one section (varible) within table (calls above)
 . 
 . cap prog drop tabulatevariable
@@ -95,7 +103,8 @@
 . end
 
 . 
-. ********************************************************************************
+. *******************************************************************************
+> *
 . 
 . /* Explanatory Notes 
 > 
@@ -113,7 +122,8 @@
 > 
 > */ 
 . 
-. ********************************************************************************
+. *******************************************************************************
+> *
 . * Generic code to summarize a continous variable 
 . 
 . cap prog drop summarizevariable 
@@ -126,16 +136,20 @@
   4.         
 .         qui summarize `variable', d
   5.         file write tablecontent ("Median (IQR)") _tab 
-  6.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  6.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")"
+> ) _tab
   7.                                                         
 .         qui summarize `variable' if exposure == 0, d
-  8.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  8.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")"
+> ) _tab
   9. 
 .         qui summarize `variable' if exposure == 1, d
- 10.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+ 10.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")"
+> ) _tab
  11. 
 .         qui summarize `variable' if exposure >= ., d
- 12.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+ 12.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")"
+> ) _n
  13.         
 .         qui summarize `variable', d
  14.         file write tablecontent ("Min, Max") _tab 
@@ -154,7 +168,8 @@
 
 . 
 . 
-. /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
+. /* INVOKE PROGRAMS FOR TABLE 1================================================*
+> / 
 . 
 . *Set up output file
 . cap file close tablecontent
@@ -162,7 +177,8 @@
 . file open tablecontent using ./$outdir/table1.txt, write text replace
 
 . 
-. file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $Population") _n
+. file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $
+> Population") _n
 
 . 
 . * Exposure labelled columns
@@ -177,15 +193,16 @@
 
 . 
 . 
-. file write tablecontent _tab ("Total")                                                    _tab ///
->                                                          ("`lab0'")                                   
->                 _tab ///
->                                                          ("`lab1'")                                   
->             _tab ///
->                                                          ("`lab2'")                                   
->                     _tab ///
->                                                          ("`labu'")                                   
->                     _n 
+. file write tablecontent _tab ("Total")                                         
+>            _tab ///
+>                                                          ("`lab0'")            
+>                                        _tab ///
+>                                                          ("`lab1'")            
+>                                    _tab ///
+>                                                          ("`lab2'")            
+>                                            _tab ///
+>                                                          ("`labu'")            
+>                                            _n 
 
 . 
 . * DEMOGRAPHICS (more than one level, potentially missing) 
@@ -552,15 +569,24 @@
 . 
 . ** COPD TREATMENT VARIABLES (binary)
 . foreach treat of varlist        saba_single             ///
->                                                         high_dose_ics           ///
->                                                         low_med_dose_ics        ///
->                                                         ics_single              ///
->                                                         sama_single             ///
->                                                         laba_single                     ///
->                                                         lama_single                     ///
->                                                         laba_ics                        ///
->                                                         laba_lama                       ///
->                                                         laba_lama_ics           ///
+>                                                         high_dose_ics          
+>  ///
+>                                                         low_med_dose_ics       
+>  ///
+>                                                         ics_single             
+>  ///
+>                                                         sama_single            
+>  ///
+>                                                         laba_single            
+>          ///
+>                                                         lama_single            
+>          ///
+>                                                         laba_ics               
+>          ///
+>                                                         laba_lama              
+>          ///
+>                                                         laba_lama_ics          
+>  ///
 >                             ltra_single                 ///     
 >                                                 {               
   2. 
@@ -799,36 +825,38 @@
 . 
 . ** COMORBIDITIES (binary)
 . 
-. foreach comorb of varlist       asthma_ever                                             ///
->                                                         ckd                                           
->                   ///
->                                                         copd                                          
->           ///
->                                                         hypertension                                  
->   ///
->                                                         heart_failure                                 
->   ///
->                                                         other_heart_disease                           
->   ///
->                                                         diabetes                                      
->           ///
->                                                         cancer_ever                                   
->   ///
->                                                         immunodef_any                                 
->   ///
->                                                         other_respiratory                             
->   ///
->                                                         statin                                        
->           ///
->                                                         insulin                                       
->           ///
->                                                         oral_steroids                                 
->   ///
->                                                         flu_vaccine                                   
->   ///
->                                                         pneumococcal_vaccine                    ///
->                                                         exacerbations                                 
->   ///
+. foreach comorb of varlist       asthma_ever                                    
+>          ///
+>                                                         ckd                    
+>                                          ///
+>                                                         copd                   
+>                                  ///
+>                                                         hypertension           
+>                          ///
+>                                                         heart_failure          
+>                          ///
+>                                                         other_heart_disease    
+>                          ///
+>                                                         diabetes               
+>                                  ///
+>                                                         cancer_ever            
+>                          ///
+>                                                         immunodef_any          
+>                          ///
+>                                                         other_respiratory      
+>                          ///
+>                                                         statin                 
+>                                  ///
+>                                                         insulin                
+>                                  ///
+>                                                         oral_steroids          
+>                          ///
+>                                                         flu_vaccine            
+>                          ///
+>                                                         pneumococcal_vaccine   
+>                  ///
+>                                                         exacerbations          
+>                          ///
 >                                                         gp_consult {
   2. 
 . local lab: variable label `comorb'
@@ -860,25 +888,25 @@
   467,243
   467,243
   1,285,462
-  198,452
+  1,212,151
   108,422
-  17,004
+  102,410
   608,750
-  74,423
+  566,591
   101,047
-  8,304
+  92,785
   467,243
-  98,721
+  450,365
   1,285,462
-  73,837
+  73,311
   108,422
-  6,092
+  6,012
   608,750
-  42,400
+  42,159
   101,047
-  8,315
+  8,262
   467,243
-  17,030
+  16,878
   1,285,462
   1,285,462
   108,422
@@ -1194,7 +1222,8 @@
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\04_an_descriptive_table_asthma.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\04_an_descri
+> ptive_table_asthma.log
   log type:  text
- closed on:  22 May 2020, 09:19:52
---------------------------------------------------------------------------------------------------------
+ closed on:  22 May 2020, 13:57:19
+---------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ ICS Combination	1.51	1.11 - 2.06
 
 Chronic kidney disease
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.09	0.74 - 1.59
+ICS Combination	1.57	1.15 - 2.13
 
 Diagnosed hypertension
 LABA/LAMA Combination	1.00 (ref)	
