@@ -1,0 +1,778 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\07_an_models_interact_asthma.log
+  log type:  text
+ opened on:  22 May 2020, 09:40:31
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Age Interaction============================================================*/ 
+. 
+. /* The smallest age group in COPD is much smaller than for asthma (35-40). 
+>    To be able to fit a meaningful model, combining this with the category above, 
+>    to create a category 35 - 50 */ 
+. /* So few deaths occuring below 50 years this cannot be used as a category, 
+>    so updating to 35-60 */ 
+.    
+. recode agegroup(1 = 2)
+(agegroup: 417391 changes made)
+
+. recode agegroup(2 = 3)
+(agegroup: 652837 changes made)
+
+. tab agegroup, nolabel 
+
+Grouped age |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |    906,039       70.48       70.48
+          4 |    181,908       14.15       84.63
+          5 |    130,593       10.16       94.79
+          6 |     66,922        5.21      100.00
+------------+-----------------------------------
+      Total |  1,285,462      100.00
+
+. 
+. label define agegroup2  3 "35-<60" ///
+>                                                 4 "60-<70" ///
+>                                                 5 "70-<80" ///
+>                                                 6 "80+"
+
+.                                                 
+. label values agegroup agegroup2
+
+. tab agegroup 
+
+Grouped age |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     35-<60 |    906,039       70.48       70.48
+     60-<70 |    181,908       14.15       84.63
+     70-<80 |    130,593       10.16       94.79
+        80+ |     66,922        5.21      100.00
+------------+-----------------------------------
+      Total |  1,285,462      100.00
+
+. 
+. /* Check Counts */ 
+. 
+. bysort agegroup: tab exposure cpnsdeath, row
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 35-<60
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |    80,164          5 |    80,169 
+                      |     99.99       0.01 |    100.00 
+----------------------+----------------------+----------
+ICS (Low/Medium Dose) |   383,093         35 |   383,128 
+                      |     99.99       0.01 |    100.00 
+----------------------+----------------------+----------
+      ICS (High Dose) |    61,019          9 |    61,028 
+                      |     99.99       0.01 |    100.00 
+----------------------+----------------------+----------
+                Total |   524,276         49 |   524,325 
+                      |     99.99       0.01 |    100.00 
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 60-<70
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |    13,961          7 |    13,968 
+                      |     99.95       0.05 |    100.00 
+----------------------+----------------------+----------
+ICS (Low/Medium Dose) |   105,819         31 |   105,850 
+                      |     99.97       0.03 |    100.00 
+----------------------+----------------------+----------
+      ICS (High Dose) |    18,950         12 |    18,962 
+                      |     99.94       0.06 |    100.00 
+----------------------+----------------------+----------
+                Total |   138,730         50 |   138,780 
+                      |     99.96       0.04 |    100.00 
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 70-<80
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |     9,198          9 |     9,207 
+                      |     99.90       0.10 |    100.00 
+----------------------+----------------------+----------
+ICS (Low/Medium Dose) |    79,690         65 |    79,755 
+                      |     99.92       0.08 |    100.00 
+----------------------+----------------------+----------
+      ICS (High Dose) |    13,876         21 |    13,897 
+                      |     99.85       0.15 |    100.00 
+----------------------+----------------------+----------
+                Total |   102,764         95 |   102,859 
+                      |     99.91       0.09 |    100.00 
+
+--------------------------------------------------------------------------------------------------------
+-> agegroup = 80+
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |     5,069          9 |     5,078 
+                      |     99.82       0.18 |    100.00 
+----------------------+----------------------+----------
+ICS (Low/Medium Dose) |    39,923         94 |    40,017 
+                      |     99.77       0.23 |    100.00 
+----------------------+----------------------+----------
+      ICS (High Dose) |     7,138         22 |     7,160 
+                      |     99.69       0.31 |    100.00 
+----------------------+----------------------+----------
+                Total |    52,130        125 |    52,255 
+                      |     99.76       0.24 |    100.00 
+
+
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure i.agegroup
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4138.1505
+Iteration 2:   log likelihood = -4103.7986
+Iteration 3:   log likelihood = -4101.3882
+Iteration 4:   log likelihood = -4101.3841
+Refining estimates:
+Iteration 0:   log likelihood = -4101.3841
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(5)       =      482.81
+Log likelihood  =   -4101.3841                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |    1.02268   .1991917     0.12   0.908     .6981479    1.498069
+      ICS (High Dose)  |   1.668348   .3699388     2.31   0.021     1.080293     2.57651
+                       |
+              agegroup |
+               60-<70  |   3.808225   .7664178     6.64   0.000     2.566939    5.649757
+               70-<80  |   9.781251   1.724009    12.94   0.000      6.92412    13.81733
+                  80+  |   25.49264   4.304734    19.18   0.000     18.30962    35.49362
+----------------------------------------------------------------------------------------
+
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4143.9554
+Iteration 2:   log likelihood = -4103.1827
+Iteration 3:   log likelihood = -4099.2179
+Iteration 4:   log likelihood = -4099.2085
+Iteration 5:   log likelihood = -4099.2085
+Refining estimates:
+Iteration 0:   log likelihood = -4099.2085
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(11)      =      487.16
+Log likelihood  =   -4099.2085                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                     exposure |
+       ICS (Low/Medium Dose)  |   1.464676   .7002492     0.80   0.425     .5738382    3.738469
+             ICS (High Dose)  |   2.364678   1.318954     1.54   0.123     .7924912    7.055853
+                              |
+                     agegroup |
+                      60-<70  |   8.045301   4.710846     3.56   0.000     2.553464    25.34865
+                      70-<80  |    15.7135   8.764572     4.94   0.000     5.266177    46.88679
+                         80+  |    28.6965   16.00614     6.02   0.000     9.617261    85.62617
+                              |
+            exposure#agegroup |
+ICS (Low/Medium Dose)#60-<70  |   .3986981   .2533182    -1.45   0.148     .1147683    1.385053
+ICS (Low/Medium Dose)#70-<80  |   .5687249    .338889    -0.95   0.344     .1768856    1.828572
+   ICS (Low/Medium Dose)#80+  |   .9036622   .5348588    -0.17   0.864     .2832682      2.8828
+      ICS (High Dose)#60-<70  |   .5338449   .3913129    -0.86   0.392     .1269045    2.245707
+      ICS (High Dose)#70-<80  |   .6537156   .4480891    -0.62   0.535     .1705819    2.505213
+         ICS (High Dose)#80+  |   .7342807   .5021518    -0.45   0.652     .1921993    2.805256
+-----------------------------------------------------------------------------------------------
+
+. estimates store B
+
+. estimates save ./$tempdir/univar_int, replace 
+(note: file ./asthma_tempdata/univar_int.ster not found)
+file ./asthma_tempdata/univar_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(6)  =      4.35
+(Assumption: A nested in B)                           Prob > chi2 =    0.6293
+
+. local univar_p = round(r(p),0.001)
+
+. 
+. /* Multivariable models */ 
+. 
+. * Age and Gender 
+. 
+. stcox i.exposure i.agegroup i.male
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4130.6342
+Iteration 2:   log likelihood = -4093.9057
+Iteration 3:   log likelihood = -4091.4939
+Iteration 4:   log likelihood = -4091.4897
+Refining estimates:
+Iteration 0:   log likelihood = -4091.4897
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(6)       =      502.59
+Log likelihood  =   -4091.4897                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |   1.024154   .1995088     0.12   0.902     .6991142    1.500315
+      ICS (High Dose)  |   1.676225   .3717677     2.33   0.020     1.085289    2.588923
+                       |
+              agegroup |
+               60-<70  |   3.846278   .7741485     6.69   0.000     2.592492    5.706421
+               70-<80  |   10.03223   1.769449    13.07   0.000     7.100117     14.1752
+                  80+  |   26.87461   4.550672    19.44   0.000      19.2845    37.45208
+                       |
+                1.male |   1.655573   .1861441     4.48   0.000      1.32814    2.063731
+----------------------------------------------------------------------------------------
+
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup i.male
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4136.5381
+Iteration 2:   log likelihood = -4093.3045
+Iteration 3:   log likelihood = -4089.3394
+Iteration 4:   log likelihood = -4089.3299
+Iteration 5:   log likelihood = -4089.3299
+Refining estimates:
+Iteration 0:   log likelihood = -4089.3299
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(12)      =      506.91
+Log likelihood  =   -4089.3299                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                     exposure |
+       ICS (Low/Medium Dose)  |   1.483459   .7092413     0.82   0.409     .5811875    3.786472
+             ICS (High Dose)  |   2.432971   1.357134     1.59   0.111     .8153209    7.260144
+                              |
+                     agegroup |
+                      60-<70  |   8.105666   4.746211     3.57   0.000     2.572611    25.53896
+                      70-<80  |   16.36087   9.126863     5.01   0.000     5.482344     48.8255
+                         80+  |   30.96322   17.27884     6.15   0.000     10.37142    92.43875
+                              |
+            exposure#agegroup |
+ICS (Low/Medium Dose)#60-<70  |   .4005226   .2544777    -1.44   0.150     .1152933    1.391394
+ICS (Low/Medium Dose)#70-<80  |   .5604386   .3339565    -0.97   0.331     .1743053    1.801961
+   ICS (Low/Medium Dose)#80+  |   .8832499   .5227974    -0.21   0.834     .2768571    2.817809
+      ICS (High Dose)#60-<70  |   .5295283     .38815    -0.87   0.386     .1258778    2.227558
+      ICS (High Dose)#70-<80  |   .6360862   .4360223    -0.66   0.509     .1659729    2.437782
+         ICS (High Dose)#80+  |   .7059952   .4828492    -0.51   0.611     .1847745      2.6975
+                              |
+                       1.male |   1.654988   .1860981     4.48   0.000     1.327639     2.06305
+-----------------------------------------------------------------------------------------------
+
+. estimates store B
+
+. estimates save ./$tempdir/multivar1_int, replace 
+(note: file ./asthma_tempdata/multivar1_int.ster not found)
+file ./asthma_tempdata/multivar1_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(6)  =      4.32
+(Assumption: A nested in B)                           Prob > chi2 =    0.6335
+
+. local multivar1_p = round(r(p),0.001)
+
+. 
+. * Age, Gender and Comorbidities 
+. stcox i.exposure i.agegroup i.male      i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.exacerbations       
+>                   ///
+>                                                                                 i.gp_consult, strata(s
+> tp)                                       
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1171.7602
+Iteration 1:   log likelihood = -1118.0433
+Iteration 2:   log likelihood = -1019.3185
+Iteration 3:   log likelihood = -1009.9697
+Iteration 4:   log likelihood = -1009.8154
+Iteration 5:   log likelihood = -1009.8152
+Refining estimates:
+Iteration 0:   log likelihood = -1009.8152
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      156,527                  Number of obs    =     156,527
+No. of failures =          136
+Time at risk    =      8281232
+                                                LR chi2(27)      =      323.89
+Log likelihood  =   -1009.8152                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |   1.392706   .4449858     1.04   0.300     .7445448    2.605123
+      ICS (High Dose)  |   1.666123   .6010613     1.42   0.157     .8215471    3.378951
+                       |
+              agegroup |
+               60-<70  |   5.685868   3.416966     2.89   0.004     1.750897     18.4643
+               70-<80  |   10.51769   6.138417     4.03   0.000       3.3507    33.01454
+                  80+  |   16.52891    9.68688     4.79   0.000      5.24073    52.13107
+                       |
+                1.male |   1.663593   .3026334     2.80   0.005     1.164663    2.376259
+                       |
+             obese4cat |
+    Obese I (30-34.9)  |   1.119057   .2398782     0.52   0.600     .7351748    1.703388
+   Obese II (35-39.9)  |   1.473547   .3946605     1.45   0.148     .8717387    2.490815
+      Obese III (40+)  |   1.589826    .541811     1.36   0.174      .815194    3.100546
+                       |
+          smoke_nomiss |
+               Former  |   1.161956   .2130224     0.82   0.413     .8112196    1.664337
+              Current  |   .6560645   .3973316    -0.70   0.486     .2001863    2.150101
+                       |
+                   imd |
+                    2  |   1.329233   .4387767     0.86   0.389     .6960195    2.538521
+                    3  |   1.410571   .4576239     1.06   0.289     .7468688     2.66407
+                    4  |   2.406813   .7315885     2.89   0.004     1.326498    4.366952
+      5 most deprived  |     2.4657   .7972263     2.79   0.005     1.308351    4.646825
+                       |
+                   ckd |
+                  CKD  |   2.053386   .8979601     1.65   0.100     .8714334    4.838458
+        1.hypertension |   1.425604    .347796     1.45   0.146      .883764    2.299648
+       1.heart_failure |   1.651321   .3576169     2.32   0.021      1.08017    2.524476
+ 1.other_heart_disease |   1.143876   .2260421     0.68   0.496     .7765552    1.684944
+            1.diabetes |   1.821128   .3664995     2.98   0.003     1.227545     2.70174
+         1.cancer_ever |   1.362617   .2853759     1.48   0.140     .9038673      2.0542
+              1.statin |   .8749315   .1689649    -0.69   0.489     .5992277    1.277486
+             1.insulin |   1.335919   .3701599     1.05   0.296     .7761168    2.299499
+         1.flu_vaccine |   1.096828   .2392698     0.42   0.672     .7152397    1.681999
+1.pneumococcal_vaccine |   .7192006   .2512438    -0.94   0.345     .3626547    1.426286
+       1.exacerbations |   1.559526   .2875405     2.41   0.016     1.086552    2.238383
+          1.gp_consult |   2.072181   2.094575     0.72   0.471     .2857769    15.02547
+----------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+.                                                                                 
+. estimates store A
+
+. 
+. stcox i.exposure##i.agegroup i.male     i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.exacerbations       
+>                   ///
+>                                                                                 i.gp_consult, strata(s
+> tp)                       
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1171.7602
+Iteration 1:   log likelihood =  -1122.761
+Iteration 2:   log likelihood = -1019.1338
+Iteration 3:   log likelihood = -1008.2438
+Iteration 4:   log likelihood = -1007.9917
+Iteration 5:   log likelihood = -1007.9797
+Iteration 6:   log likelihood = -1007.9756
+Iteration 7:   log likelihood = -1007.9741
+Iteration 8:   log likelihood = -1007.9735
+Iteration 9:   log likelihood = -1007.9733
+Iteration 10:  log likelihood = -1007.9732
+Iteration 11:  log likelihood = -1007.9732
+Iteration 12:  log likelihood = -1007.9732
+Iteration 13:  log likelihood = -1007.9732
+Iteration 14:  log likelihood = -1007.9732
+Iteration 15:  log likelihood = -1007.9732
+Iteration 16:  log likelihood = -1007.9732
+Iteration 17:  log likelihood = -1007.9732
+Iteration 18:  log likelihood = -1007.9732
+Iteration 19:  log likelihood = -1007.9732
+Iteration 20:  log likelihood = -1007.9732
+Refining estimates:
+Iteration 0:   log likelihood = -1007.9732
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      156,527                  Number of obs    =     156,527
+No. of failures =          136
+Time at risk    =      8281232
+                                                LR chi2(32)      =      327.57
+Log likelihood  =   -1007.9732                  Prob > chi2      =      0.0000
+
+-----------------------------------------------------------------------------------------------
+                           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+------------------------------+----------------------------------------------------------------
+                     exposure |
+       ICS (Low/Medium Dose)  |   4.67e+08   6.61e+08    14.10   0.000     2.91e+07    7.49e+09
+             ICS (High Dose)  |   7.38e+08   6.41e+08    23.52   0.000     1.35e+08    4.05e+09
+                              |
+                     agegroup |
+                      60-<70  |   3.36e+09   3.85e+09    19.10   0.000     3.53e+08    3.19e+10
+                      70-<80  |   4.20e+09   6.08e+09    15.29   0.000     2.45e+08    7.19e+10
+                         80+  |   4.22e+09   6.06e+09    15.43   0.000     2.53e+08    7.05e+10
+                              |
+            exposure#agegroup |
+ICS (Low/Medium Dose)#60-<70  |   1.22e-09   1.56e-09   -16.00   0.000     9.85e-11    1.50e-08
+ICS (Low/Medium Dose)#70-<80  |   2.31e-09   3.49e-09   -13.15   0.000     1.19e-10    4.47e-08
+   ICS (Low/Medium Dose)#80+  |   3.84e-09   5.73e-09   -13.00   0.000     2.07e-10    7.14e-08
+      ICS (High Dose)#60-<70  |   1.70e-09          .        .       .            .           .
+      ICS (High Dose)#70-<80  |   1.73e-09   1.83e-09   -19.11   0.000     2.19e-10    1.37e-08
+         ICS (High Dose)#80+  |   2.54e-09   2.58e-09   -19.51   0.000     3.48e-10    1.86e-08
+                              |
+                       1.male |   1.663574    .302697     2.80   0.005     1.164558     2.37642
+                              |
+                    obese4cat |
+           Obese I (30-34.9)  |   1.120676   .2402162     0.53   0.595     .7362504    1.705826
+          Obese II (35-39.9)  |   1.475197   .3954976     1.45   0.147     .8722569    2.494914
+             Obese III (40+)  |   1.590662   .5422839     1.36   0.173     .8154337    3.102895
+                              |
+                 smoke_nomiss |
+                      Former  |   1.162183   .2130741     0.82   0.412      .811364     1.66469
+                     Current  |   .6541581   .3961366    -0.70   0.483     .1996287    2.143593
+                              |
+                          imd |
+                           2  |   1.326091   .4377803     0.85   0.393     .6943329    2.532673
+                           3  |   1.409686   .4574273     1.06   0.290     .7463059    2.662734
+                           4  |   2.409509   .7326926     2.89   0.004     1.327675    4.372855
+             5 most deprived  |   2.468537   .7980999     2.79   0.005     1.309901     4.65201
+                              |
+                          ckd |
+                         CKD  |   2.014743   .8791637     1.61   0.108     .8566135    4.738647
+               1.hypertension |   1.416853   .3452372     1.43   0.153      .878854    2.284192
+              1.heart_failure |   1.653751    .357938     2.32   0.020     1.082022    2.527576
+        1.other_heart_disease |   1.143789   .2259232     0.68   0.496     .7766321    1.684522
+                   1.diabetes |    1.82108   .3663442     2.98   0.003     1.227704    2.701245
+                1.cancer_ever |   1.360923   .2849914     1.47   0.141     .9027825    2.051559
+                     1.statin |   .8752659   .1689125    -0.69   0.490     .5996136     1.27764
+                    1.insulin |    1.32849   .3683945     1.02   0.306     .7714667      2.2877
+                1.flu_vaccine |   1.096111    .238715     0.42   0.673     .7152816    1.679703
+       1.pneumococcal_vaccine |   .7211476   .2519459    -0.94   0.349     .3636148    1.430233
+              1.exacerbations |   1.558313    .287344     2.41   0.016     1.085671    2.236719
+                 1.gp_consult |   2.016651   2.037907     0.69   0.488     .2782643    14.61518
+-----------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. estimates store B
+
+. estimates save ./$tempdir/multivar2_int, replace 
+(note: file ./asthma_tempdata/multivar2_int.ster not found)
+file ./asthma_tempdata/multivar2_int.ster saved
+
+. 
+. lrtest A B
+
+Likelihood-ratio test                                 LR chi2(5)  =      3.68
+(Assumption: A nested in B)                           Prob > chi2 =    0.5957
+
+. local multivar2_p = round(r(p),0.001)
+
+. 
+. /* Print interaction table====================================================*/ 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table3.txt, write text replace
+(note: file ./asthma_output/table3.txt not found)
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - $population Popul
+> ation") _n
+
+. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab 
+> _tab  ///
+>                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
+
+. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab (
+> "95% CI") _tab ("p (interaction)") _tab _n
+
+. 
+. * Overall p-values 
+. file write tablecontent ("Agegroup") _tab _tab _tab _tab ("`univar_p'") ///
+>                                                 _tab _tab _tab ("`multivar1_p'") /// 
+>                                                 _tab _tab _tab ("`multivar2_p'") _n
+
+. 
+.                                                 
+. * Generic program to print model for a level of another variable 
+. cap prog drop printinteraction
+
+. prog define printinteraction 
+  1. syntax, variable(varname) min(real) max(real) 
+  2. 
+.         forvalues varlevel = `min'/`max'{ 
+  3. 
+.                 * Row headings 
+.                 file write tablecontent ("`varlevel'") _n       
+  4. 
+.                 local lab0: label exposure 0
+  5.                 local lab1: label exposure 1
+  6.                 local lab2: label exposure 2
+  7.                  
+.                 /* Counts */
+.                         
+.                 * First row, exposure = 0 (reference)
+.                 
+.         file write tablecontent ("`lab0'") _tab
+  8. 
+.                         cou if exposure == 0 & `variable' == `varlevel'
+  9.                         local rowdenom = r(N)
+ 10.                         cou if exposure == 0  & `variable' == `varlevel' & cpnsdeath == 1
+ 11.                         local pct = 100*(r(N)/`rowdenom')
+ 12.                         
+.                         
+.                 file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 13.                 file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (r
+> ef)") _n
+ 14.                         
+.                 * Second row, exposure = 1 (comparator)
+. 
+.                 file write tablecontent ("`lab1'") _tab  
+ 15. 
+.                         cou if exposure == 1 & `variable' == `varlevel'
+ 16.                         local rowdenom = r(N)
+ 17.                         cou if exposure == 1 & `variable' == `varlevel' & cpnsdeath == 1
+ 18.                         local pct = 100*(r(N)/`rowdenom')
+ 19.                         
+.                 file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 20. 
+.                 * Print models 
+.                 estimates use ./$tempdir/univar_int 
+ 21.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 22.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 23. 
+.                 estimates use ./$tempdir/multivar1_int
+ 24.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 25.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 26. 
+.                 estimates use ./$tempdir/multivar2_int
+ 27.                 qui lincom 1.exposure + 1.exposure#`varlevel'.`variable', eform
+ 28.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _n 
+ 29.                 
+.                 * Third row, exposure = 2 (comparator)
+. 
+.                 file write tablecontent ("`lab2'") _tab  
+ 30. 
+.                         cou if exposure == 2 & `variable' == `varlevel'
+ 31.                         local rowdenom = r(N)
+ 32.                         cou if exposure == 2 & `variable' == `varlevel' & cpnsdeath == 1
+ 33.                         local pct = 100*(r(N)/`rowdenom')
+ 34.                         
+.                 file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+ 35. 
+.                 * Print models 
+.                 estimates use ./$tempdir/univar_int 
+ 36.                 qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
+ 37.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 38. 
+.                 estimates use ./$tempdir/multivar1_int
+ 39.                 qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
+ 40.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _tab
+ 41. 
+.                 estimates use ./$tempdir/multivar2_int
+ 42.                 qui lincom 2.exposure + 2.exposure#`varlevel'.`variable', eform
+ 43.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)
+> ) _tab _n 
+ 44.         
+.         } 
+ 45.                 
+. end
+
+. 
+. printinteraction, variable(agegroup) min(3) max(6) 
+  80,169
+  REDACTED
+  383,128
+  35
+  61,028
+  9
+  13,968
+  7
+  105,850
+  31
+  18,962
+  12
+  9,207
+  9
+  79,755
+  65
+  13,897
+  21
+  5,078
+  9
+  40,017
+  94
+  7,160
+  22
+
+. 
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\07_an_models_interact_asthma.log
+  log type:  text
+ closed on:  22 May 2020, 09:44:07
+--------------------------------------------------------------------------------------------------------

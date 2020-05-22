@@ -1,0 +1,215 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\06_an_models_asthma.log
+  log type:  text
+ opened on:  22 May 2020, 09:20:17
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Sense check outcomes=======================================================*/ 
+. 
+. tab exposure cpnsdeath, missing row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |   108,392         30 |   108,422 
+                      |     99.97       0.03 |    100.00 
+----------------------+----------------------+----------
+ICS (Low/Medium Dose) |   608,525        225 |   608,750 
+                      |     99.96       0.04 |    100.00 
+----------------------+----------------------+----------
+      ICS (High Dose) |   100,983         64 |   101,047 
+                      |     99.94       0.06 |    100.00 
+----------------------+----------------------+----------
+                Other |   467,171         72 |   467,243 
+                      |     99.98       0.02 |    100.00 
+----------------------+----------------------+----------
+                Total | 1,285,071        391 | 1,285,462 
+                      |     99.97       0.03 |    100.00 
+
+. 
+. /* Main Model=================================================================*/
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4334.5065
+Iteration 2:   log likelihood = -4334.0142
+Iteration 3:   log likelihood = -4334.0136
+Refining estimates:
+Iteration 0:   log likelihood = -4334.0136
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(2)       =       17.55
+Log likelihood  =   -4334.0136                  Prob > chi2      =      0.0002
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |   1.335791   .2596311     1.49   0.136     .9126299     1.95516
+      ICS (High Dose)  |   2.290214   .5067448     3.75   0.000     1.484344      3.5336
+----------------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/univar, replace 
+(note: file ./asthma_tempdata/univar.ster not found)
+file ./asthma_tempdata/univar.ster saved
+
+. 
+. /* Multivariable models */ 
+. 
+. * Age and Gender 
+. * Age fit as spline in first instance, categorical below 
+. 
+. stcox i.exposure i.male age1 age2 age3 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4100.2402
+Iteration 2:   log likelihood = -4065.1268
+Iteration 3:   log likelihood = -4062.2315
+Iteration 4:   log likelihood = -4061.8055
+Iteration 5:   log likelihood = -4061.7786
+Iteration 6:   log likelihood = -4061.7785
+Iteration 7:   log likelihood = -4061.7785
+Refining estimates:
+Iteration 0:   log likelihood = -4061.7785
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(6)       =      562.02
+Log likelihood  =   -4061.7785                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |   1.003462   .1952969     0.02   0.986     .6852312    1.469482
+      ICS (High Dose)  |   1.615972   .3580049     2.17   0.030     1.046784    2.494654
+                       |
+                1.male |   1.703774   .1920232     4.73   0.000     1.366085    2.124939
+                  age1 |   1.107811   .0768662     1.48   0.140     .9669508    1.269191
+                  age2 |   .9504284   .1392402    -0.35   0.729      .713208    1.266551
+                  age3 |   1.170656   .4579429     0.40   0.687     .5438161    2.520034
+----------------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/multivar1, replace 
+(note: file ./asthma_tempdata/multivar1.ster not found)
+file ./asthma_tempdata/multivar1.ster saved
+
+. 
+. * Age, Gender and Comorbidities 
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.exacerbations       
+>                   ///
+>                                                                                 i.gp_consult, strata(s
+> tp)                               
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1171.7602
+Iteration 1:   log likelihood = -1112.9814
+Iteration 2:   log likelihood = -1005.1105
+Iteration 3:   log likelihood = -998.10305
+Iteration 4:   log likelihood = -997.93592
+Iteration 5:   log likelihood =  -997.8065
+Iteration 6:   log likelihood =  -997.6251
+Iteration 7:   log likelihood = -997.37996
+Iteration 8:   log likelihood = -997.08812
+Iteration 9:   log likelihood = -996.78116
+Iteration 10:  log likelihood = -996.72861
+Iteration 11:  log likelihood = -996.70156
+Iteration 12:  log likelihood = -996.69809  (backed up)
+flat region resulting in a missing likelihood
+r(430);
+
+end of do-file
+r(430);
+
+end of do-file
+
+r(430);
+
+. do "C:\Users\ALEXWA~1\AppData\Local\Temp\6\STD91dc_000000.tmp"
+
+. do "07_an_models_interact_asthma.do"
+
+. /*==============================================================================
+> DO FILE NAME:                   07_models_interact_asthma
+> PROJECT:                                ICS in COVID-19 
+> DATE:                                   18th of May 2020  
+> AUTHOR:                                 A Schultze                                              
+> DESCRIPTION OF FILE:    program 07, evaluate age interaction 
+> DATASETS USED:                  data in memory ($tempdir/analysis_dataset_STSET_outcome)
+> 
+> DATASETS CREATED:               none
+> OTHER OUTPUT:                   logfiles, printed to folder analysis/$logdir
+>                                                 table3, printed to analysis/$outdir
+>                                                         
+> ==============================================================================*/
+. 
+. * Open a log file
+. 
+. cap log close

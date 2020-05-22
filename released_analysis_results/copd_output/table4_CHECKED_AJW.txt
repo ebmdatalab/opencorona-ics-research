@@ -1,0 +1,4 @@
+Table 4: Testing the PH assumption - COPD Population
+	Univariable	Age/Sex Adjusted	Age/Sex and Comorbidity Adjusted	
+	p-value	p-value	p-value	
+Treatment Exposure	.164	.158	.5660000000000001

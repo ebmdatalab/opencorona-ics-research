@@ -1,0 +1,257 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\08_an_model_checks_asthma.log
+  log type:  text
+ opened on:  22 May 2020, 09:44:07
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. * Exposure labels 
+. local lab1: label exposure 1
+
+. local lab2: label exposure 2
+
+. 
+. /* Quietly run models, perform test and store results in local macro==========*/
+. 
+. qui stcox i.exposure 
+
+. estat phtest, detail
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.exposure |            .            .        1             .
+      1.exposure  |      0.05036         0.81        1         0.3684
+      2.exposure  |      0.02177         0.15        1         0.6974
+      ------------+---------------------------------------------------
+      global test |                      1.05        2         0.5923
+      ----------------------------------------------------------------
+
+. local univar_p1 = round(r(phtest)[2,4],0.001)
+
+. local univar_p2 = round(r(phtest)[3,4],0.001)
+
+. 
+. di `univar_p1'
+.368
+
+. di `univar_p2'
+.697
+
+.  
+. estat phtest, plot(1.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, univariable `lab1'", position(11)
+>  size(medsmall)) 
+
+. 
+. graph export "$outdir/schoenplot1a.svg", as(svg) replace
+(note: file asthma_output/schoenplot1a.svg not found)
+(file asthma_output/schoenplot1a.svg written in SVG format)
+
+. 
+. estat phtest, plot(2.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, univariable `lab2'", position(11)
+>  size(medsmall)) 
+
+. 
+. graph export "$outdir/schoenplot1b.svg", as(svg) replace
+(note: file asthma_output/schoenplot1b.svg not found)
+(file asthma_output/schoenplot1b.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close  
+
+.                           
+. stcox i.exposure i.male age1 age2 age3 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -4342.7867
+Iteration 1:   log likelihood = -4100.2402
+Iteration 2:   log likelihood = -4065.1268
+Iteration 3:   log likelihood = -4062.2315
+Iteration 4:   log likelihood = -4061.8055
+Iteration 5:   log likelihood = -4061.7786
+Iteration 6:   log likelihood = -4061.7785
+Iteration 7:   log likelihood = -4061.7785
+Refining estimates:
+Iteration 0:   log likelihood = -4061.7785
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      818,200                  Number of obs    =     818,200
+No. of failures =          319
+Time at risk    =     43331502
+                                                LR chi2(6)       =      562.02
+Log likelihood  =   -4061.7785                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+ICS (Low/Medium Dose)  |   1.003462   .1952969     0.02   0.986     .6852312    1.469482
+      ICS (High Dose)  |   1.615972   .3580049     2.17   0.030     1.046784    2.494654
+                       |
+                1.male |   1.703774   .1920232     4.73   0.000     1.366085    2.124939
+                  age1 |   1.107811   .0768662     1.48   0.140     .9669508    1.269191
+                  age2 |   .9504284   .1392402    -0.35   0.729      .713208    1.266551
+                  age3 |   1.170656   .4579429     0.40   0.687     .5438161    2.520034
+----------------------------------------------------------------------------------------
+
+. estat phtest, detail
+
+      Test of proportional-hazards assumption
+
+      Time:  Time
+      ----------------------------------------------------------------
+                  |       rho            chi2       df       Prob>chi2
+      ------------+---------------------------------------------------
+      0b.exposure |            .            .        1             .
+      1.exposure  |      0.05624         1.01        1         0.3141
+      2.exposure  |      0.02694         0.23        1         0.6301
+      0b.male     |            .            .        1             .
+      1.male      |     -0.11611         4.37        1         0.0365
+      age1        |      0.08523         1.24        1         0.2660
+      age2        |     -0.11297         2.32        1         0.1280
+      age3        |      0.11985         2.73        1         0.0983
+      ------------+---------------------------------------------------
+      global test |                     10.83        6         0.0938
+      ----------------------------------------------------------------
+
+. local multivar1_p1 = round(r(phtest)[2,4],0.001)
+
+. local multivar1_p2 = round(r(phtest)[3,4],0.001)
+
+.  
+. estat phtest, plot(1.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, age and sex adjusted `lab1'", pos
+> ition(11) size(medsmall))                           
+
+. 
+. graph export "$outdir/schoenplot2a.svg", as(svg) replace
+(note: file asthma_output/schoenplot2a.svg not found)
+(file asthma_output/schoenplot2a.svg written in SVG format)
+
+. 
+. estat phtest, plot(2.exposure) ///
+>                           graphregion(fcolor(white)) ///
+>                           ylabel(, nogrid labsize(small)) ///
+>                           xlabel(, labsize(small)) ///
+>                           xtitle("Time", size(small)) ///
+>                           ytitle("Scaled Shoenfeld Residuals", size(small)) ///
+>                           msize(small) ///
+>                           mcolor(gs6) ///
+>                           msymbol(circle_hollow) ///
+>                           scheme(s1mono) ///
+>                           title ("Schoenfeld residuals against time, age and sex adjusted `lab2'", pos
+> ition(11) size(medsmall))                           
+
+. 
+. graph export "$outdir/schoenplot2b.svg", as(svg) replace
+(note: file asthma_output/schoenplot2b.svg not found)
+(file asthma_output/schoenplot2b.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+.                   
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///
+>                                                                                 i.exacerbations       
+>                   ///
+>                                                                                 i.gp_consult, strata(s
+> tp)       
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1171.7602
+Iteration 1:   log likelihood = -1112.9814
+Iteration 2:   log likelihood = -1005.1105
+Iteration 3:   log likelihood = -998.10305
+Iteration 4:   log likelihood = -997.93592
+Iteration 5:   log likelihood =  -997.8065
+Iteration 6:   log likelihood =  -997.6251
+Iteration 7:   log likelihood = -997.37996
+Iteration 8:   log likelihood = -997.08812
+Iteration 9:   log likelihood = -996.78116
+Iteration 10:  log likelihood = -996.72861
+Iteration 11:  log likelihood = -996.70156
+Iteration 12:  log likelihood = -996.69809  (backed up)
+flat region resulting in a missing likelihood
+r(430);
+
+end of do-file
+r(430);
+
+end of do-file
+
+r(430);
+
+. exit, clear
