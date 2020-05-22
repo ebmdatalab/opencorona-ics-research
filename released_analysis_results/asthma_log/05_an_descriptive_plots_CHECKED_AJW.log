@@ -1,0 +1,91 @@
+---------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
+> ptive_plots.log
+  log type:  text
+ opened on:  22 May 2020, 13:57:19
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Sense check outcomes=======================================================*
+> / 
+. tab exposure cpnsdeath
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |   108,392         30 |   108,422 
+ICS (Low/Medium Dose) |   608,525        225 |   608,750 
+      ICS (High Dose) |   100,983         64 |   101,047 
+----------------------+----------------------+----------
+                Total |   817,900        319 |   818,219 
+
+. 
+. /* Generate KM PLOT===========================================================*
+> / 
+. 
+. count if exposure != .u
+  818,219
+
+. noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
+RUNNING THE KM PLOT FOR 818219 PEOPLE WITH NON-MISSING EXPOSURE
+
+. 
+. sts graph, by(exposure) failure                                                
+>                                  ///     
+>                    title("Time to hospital COVID-19 death, $population populati
+> on", justification(left) size(medsmall) )           ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                
+>                          ///
+>                    yscale(range(0, 0.005))                                     
+>                                                  ///
+>                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small)
+> )        ///
+>                    xscale(range(30, 84))                                       
+>                                                  ///
+>                    xlabel(0 (20) 100, labsize(small))                          
+>                                  ///                             
+>                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/
+> Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))   
+>   ///
+>                    graphregion(fcolor(white)) ///       
+>                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Med
+> ium Dose)" 3 "ICS (High Dose)") title(,size(vsmall))) ///
+>                    saving(kmplot1, replace)
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+(note: file kmplot1.gph not found)
+(file kmplot1.gph saved)
+(file kmplot1.gph saved)
+
+. 
+. graph export "$outdir/kmplot1.svg", as(svg) replace
+(file asthma_output/kmplot1.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase kmplot1.gph
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
+> ptive_plots.log
+  log type:  text
+ closed on:  22 May 2020, 13:57:44
+---------------------------------------------------------------------------------
