@@ -75,7 +75,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 2: Association between current ICS use and CPNS death - COPD Population") _n
+file write tablecontent ("Table 2: Association between current ICS use and CPNS death - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
@@ -146,18 +146,8 @@ estimates use ./$tempdir/multivar2
 lincom 2.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
+file write tablecontent _n
+file close tablecontent
+
 * Close log file 
 log close
-
-
-
-
-
-
-
-
-
-
-
-
-

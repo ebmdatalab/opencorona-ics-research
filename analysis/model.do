@@ -82,6 +82,45 @@ do "09_an_model_explore_asthma.do"
 /* 	SENSITIVITY 1=============================================================*/
 *   Redefine copd exposure to triple therapy 
 
+clear
+import delimited `c(pwd)'/input_copd.csv, clear
+set more off 
+
+* Create directories required 
+
+capture mkdir copd_output
+capture mkdir copd_log
+capture mkdir copd_tempdata
+
+global population "COPD - Sensitivity Exposure Definition"
+global outdir  	  "copd_output" 
+global logdir     "copd_log"
+global tempdir    "copd_tempdata"
+
+/*  Pre-analysis data manipulation  */
+
+do "00_cr_create_analysis_dataset.do"
+
+* COPD specific data manipulation   
+do "01_cr_create_copd_population.do"
+
+* Create the new exposure 
+do "S1-02_cr_create_copd_exposure.do"
+
+/*  Checks  */
+
+do "03_an_checks.do"
+
+/* Run analysis */ 
+
+* COPD specific analyses 
+do "S1-04_an_descriptive_table_copd.do"
+do "S1-05_an_descriptive_plots_copd.do"
+do "S1-06_an_models_copd.do"
+do "S1-07_an_models_interact_copd.do"
+do "S1-08_an_model_checks_copd.do"
+do "S1-09_an_model_explore_copd.do"
+
 /* 	SENSITIVITY 2=============================================================*/
 *   ONS death as the outcome 
 

@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			07_models_interact_asthma
+DO FILE NAME:			S1-07_models_interact_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
 AUTHOR:					A Schultze 						
@@ -8,14 +8,14 @@ DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 
 DATASETS CREATED: 		none
 OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
-						table3, printed to analysis/$outdir
+						S1table3, printed to analysis/$outdir
 							
 ==============================================================================*/
 
 * Open a log file
 
 cap log close
-log using $logdir\07_an_models_interact_asthma, replace t
+log using $logdir\S1-07_an_models_interact_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
@@ -110,10 +110,10 @@ local multivar2_p = round(r(p),0.001)
 
 /* Print interaction table====================================================*/ 
 cap file close tablecontent
-file open tablecontent using ./$outdir/table3.txt, write text replace
+file open tablecontent using ./$outdir/S1table3.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - $population Population") _n
+file write tablecontent ("S1 Table 3: Current ICS use and CPNS death, Age Interaction - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab _tab  ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///
@@ -208,14 +208,9 @@ end
 
 printinteraction, variable(agegroup) min(3) max(6) 
 
+file write tablecontent _n
+file close tablecontent
 
 * Close log file 
 log close
-
-
-
-
-
-
-
 

@@ -69,6 +69,7 @@ graph close
 		  
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
@@ -80,8 +81,7 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.insulin					///		
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///
-										i.exacerbations				///
-										i.gp_consult, strata(stp)	
+										i.exacerbations, strata(stp)	
 estat phtest, detail
 local multivar2_p = round(r(phtest)[2,4],0.001)
  

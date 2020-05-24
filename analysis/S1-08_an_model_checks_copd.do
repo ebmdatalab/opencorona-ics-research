@@ -1,7 +1,7 @@
 /*==============================================================================
-DO FILE NAME:			08_an_model_checks_asthma
+DO FILE NAME:			S1-08_an_model_checks_copd
 PROJECT:				ICS in COVID-19 
-DATE: 					20th of May 2020  
+DATE: 					22nd of May 2020  
 AUTHOR:					A Schultze 									
 DESCRIPTION OF FILE:	program 08 
 						check the PH assumption, produce graphs 
@@ -9,7 +9,7 @@ DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 
 DATASETS CREATED: 		none
 OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
-						table4, printed to analysis/$outdir
+						S1table4, printed to analysis/$outdir
 						schoenplots1-x, printed to analysis?$outdir 
 							
 ==============================================================================*/
@@ -17,7 +17,7 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 * Open a log file
 
 cap log close
-log using $logdir\08_an_model_checks_asthma, replace t
+log using $logdir\S1-08_an_model_checks_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
@@ -48,7 +48,7 @@ estat phtest, plot(1.exposure) ///
 			  scheme(s1mono) ///
 			  title ("Schoenfeld residuals against time, univariable `lab1'", position(11) size(medsmall)) 
 
-graph export "$outdir/schoenplot1a.svg", as(svg) replace
+graph export "$outdir/schoenplotS1a.svg", as(svg) replace
 
 estat phtest, plot(2.exposure) ///
 			  graphregion(fcolor(white)) ///
@@ -62,7 +62,7 @@ estat phtest, plot(2.exposure) ///
 			  scheme(s1mono) ///
 			  title ("Schoenfeld residuals against time, univariable `lab2'", position(11) size(medsmall)) 
 
-graph export "$outdir/schoenplot1b.svg", as(svg) replace
+graph export "$outdir/schoenplotS1b.svg", as(svg) replace
 
 * Close window 
 graph close  
@@ -84,7 +84,7 @@ estat phtest, plot(1.exposure) ///
 			  scheme(s1mono) ///
 			  title ("Schoenfeld residuals against time, age and sex adjusted `lab1'", position(11) size(medsmall)) 			  
 
-graph export "$outdir/schoenplot2a.svg", as(svg) replace
+graph export "$outdir/schoenplotS2a.svg", as(svg) replace
 
 estat phtest, plot(2.exposure) ///
 			  graphregion(fcolor(white)) ///
@@ -98,7 +98,7 @@ estat phtest, plot(2.exposure) ///
 			  scheme(s1mono) ///
 			  title ("Schoenfeld residuals against time, age and sex adjusted `lab2'", position(11) size(medsmall)) 			  
 
-graph export "$outdir/schoenplot2b.svg", as(svg) replace
+graph export "$outdir/schoenplotS2b.svg", as(svg) replace
 
 * Close window 
 graph close
@@ -133,7 +133,7 @@ estat phtest, plot(1.exposure) ///
 			  scheme(s1mono) /// 
 			  title ("Schoenfeld residuals against time, fully adjusted `lab1'", position(11) size(medsmall)) 		  
 			  
-graph export "$outdir/schoenplot3a.svg", as(svg) replace
+graph export "$outdir/schoenplotS3a.svg", as(svg) replace
 
 estat phtest, plot(2.exposure) ///
 			  graphregion(fcolor(white)) ///
@@ -147,7 +147,7 @@ estat phtest, plot(2.exposure) ///
 			  scheme(s1mono) ///
 			  title ("Schoenfeld residuals against time, fully adjusted `lab2'", position(11) size(medsmall)) 		  
 			  
-graph export "$outdir/schoenplot3b.svg", as(svg) replace
+graph export "$outdir/schoenplotS3b.svg", as(svg) replace
 
 * Close window 
 graph close
@@ -156,10 +156,10 @@ graph close
 
 
 cap file close tablecontent
-file open tablecontent using ./$outdir/table4.txt, write text replace
+file open tablecontent using ./$outdir/S1table4.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 4: Testing the PH assumption - $population Population") _n
+file write tablecontent ("S1 Table 4: Testing the PH assumption - $population Population") _n
 file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _n
 						
