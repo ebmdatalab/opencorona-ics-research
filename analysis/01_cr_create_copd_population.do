@@ -71,7 +71,7 @@ datacheck inlist(smoke, 2, 3), nol
 datacheck other_respiratory == 0, nol
 gen asthma_time = ((enter_date - asthma_ever_date) - 15)/365.25
 
-datacheck asthma_time < 3, nol
+datacheck asthma_time > 3, nol
 
 * EXCLUSION 4: Nebulising treament 
 * [VARIABLE NOT EXPORTED, CANNOT QUANTIFY]
