@@ -14,6 +14,7 @@ capture mkdir copd_tempdata
 * Set globals that will print in programs and direct output
 
 global population "COPD"
+global outcome "onscoviddeath"
 global outdir  	  "copd_output" 
 global logdir     "copd_log"
 global tempdir    "copd_tempdata"
@@ -39,6 +40,7 @@ do "06_an_models_copd.do"
 do "07_an_models_interact_copd.do"
 do "08_an_model_checks_copd.do"
 do "09_an_model_explore_copd.do"
+do "10_an_models_ethnicity_copd.do"
 
 /* 	ASTHMA ===================================================================*/
 
@@ -53,9 +55,11 @@ capture mkdir asthma_log
 capture mkdir asthma_tempdata
 
 global population "Asthma"
+global outcome "onscoviddeath"
 global outdir  "asthma_output" 
 global logdir  "asthma_log"
 global tempdir "asthma_tempdata"
+
 
 /*  Pre-analysis data manipulation  */
 
@@ -78,6 +82,7 @@ do "06_an_models_asthma.do"
 do "07_an_models_interact_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
+do "10_an_models_ethnicity_asthma.do"
 
 /* 	SENSITIVITY 1=============================================================*/
 *   Redefine copd exposure to triple therapy 
@@ -93,6 +98,7 @@ capture mkdir copd_log
 capture mkdir copd_tempdata
 
 global population "COPD - Sensitivity Exposure Definition"
+global outcome "onscoviddeath"
 global outdir  	  "copd_output" 
 global logdir     "copd_log"
 global tempdir    "copd_tempdata"
@@ -120,9 +126,10 @@ do "S1-06_an_models_copd.do"
 do "S1-07_an_models_interact_copd.do"
 do "S1-08_an_model_checks_copd.do"
 do "S1-09_an_model_explore_copd.do"
+do "S1-10_an_models_ethnicity_copd"
 
 /* 	SENSITIVITY 2=============================================================*/
-*   ONS death as the outcome 
+*   CPNS death as the outcome 
 
 /* 	SENSITIVITY 3=============================================================*/
 *   Asthma high/low dose classification 

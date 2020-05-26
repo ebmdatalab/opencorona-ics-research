@@ -68,8 +68,5 @@ sort patient_id
 save $tempdir\analysis_dataset, replace
 
 * Save a version set on CPNS survival outcome
-stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
-save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
-
-* Close log file 
-log close
+stset stime_$outcome, fail($outcome) id(patient_id) enter(enter_date) origin(enter_date)	
+save $tempdir\analysis_dataset_STSET_$outcome, replace
