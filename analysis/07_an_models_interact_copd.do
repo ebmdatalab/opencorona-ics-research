@@ -185,6 +185,8 @@ end
 
 printinteraction, variable(agegroup) min(3) max(6) 
 
+file write tablecontent _n
+file close tablecontent
 
 * Close log file 
 log close

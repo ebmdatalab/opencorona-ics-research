@@ -141,6 +141,9 @@ syntax, variable(varname)
 
 	qui summarize `variable' if exposure == 1, d
 	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+	
+	qui summarize `variable' if exposure == 2, d
+	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
 
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
@@ -153,6 +156,9 @@ syntax, variable(varname)
 	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
 
 	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+	
+	qui summarize `variable' if exposure == 2, d
 	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
 
 	qui summarize `variable' if exposure >= ., d

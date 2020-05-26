@@ -370,11 +370,10 @@ recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd_egfr)
 * 0 = "No CKD" 	2 "stage 3a" 3 "stage 3b" 4 "stage 4" 5 "stage 5"
 
 * Add in end stage renal failure and create a single CKD variable 
-gen ckd = 1 if esrf == 1
-replace ckd = 0 if esrf == 0
+* Missing assumed to not have CKD 
+gen ckd = 0
 replace ckd = 1 if ckd_egfr != . & ckd_egfr >= 1
-replace ckd = 0 if ckd_egfr == .
-replace ckd = 0 if ckd_egfr < 1
+replace ckd = 1 if esrf == 1
 
 label define ckd 0 "No CKD" 1 "CKD"
 label values ckd ckd

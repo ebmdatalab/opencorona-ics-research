@@ -39,7 +39,7 @@ noi di "DROP IMD MISSING"
 drop if imd == .u
 
 noi di "DROP IF DEAD BEFORE INDEX"
-drop if stime_$outcome < d("$indexdate")
+drop if stime_$outcome <= date("$indexdate", "DMY")
 
 /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
 
@@ -71,7 +71,7 @@ datacheck inlist(smoke, 2, 3), nol
 datacheck other_respiratory == 0, nol
 gen asthma_time = ((enter_date - asthma_ever_date) - 15)/365.25
 
-datacheck asthma_time < 3, nol
+datacheck asthma_time > 3, nol
 
 * EXCLUSION 4: Nebulising treament 
 * [VARIABLE NOT EXPORTED, CANNOT QUANTIFY]

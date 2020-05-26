@@ -68,6 +68,9 @@ foreach var of varlist 	obese4cat				///
 									
 } 	
 
+file write tablecontent _n
+file close tablecontent
+
 * Close log file 
 log close
 

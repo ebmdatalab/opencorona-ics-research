@@ -119,6 +119,9 @@ file write tablecontent _tab ("p-value") _tab ("p-value") _tab ("p-value") _tab 
 file write tablecontent ("Treatment Exposure") _tab
 file write tablecontent ("`univar_p'") _tab ("`multivar1_p'") _tab ("`multivar2_p'")
 
+file write tablecontent _n
+file close tablecontent
+
 * Close log file 
 log close
 		  
