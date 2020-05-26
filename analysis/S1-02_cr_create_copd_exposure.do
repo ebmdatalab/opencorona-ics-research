@@ -64,7 +64,8 @@ sort patient_id
 save $tempdir\analysis_dataset, replace
 
 * Save a version set on outcome
-stset stime_$outcome fail($outcome) id(patient_id) enter(enter_date) origin(enter_date)	
+* Save a version set on survival outcome
+stset stime_$outcome, fail($outcome) id(patient_id) enter(enter_date) origin(enter_date)	
 save $tempdir\analysis_dataset_STSET_$outcome, replace
 
 * Close log file 
