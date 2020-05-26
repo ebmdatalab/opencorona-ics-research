@@ -39,8 +39,8 @@ recode exposure(0 = .u) if laba_lama_ics == 1
 replace exposure = 1 if laba_ics == 1 
 * OR Any prescription for single ICS + Single LABA
 replace exposure = 1 if ics_single == 1 & laba_single == 1 
-* OR Any prescription for single ICS + LABA/LAMA
-replace exposure = 1 if ics_single == 1 & laba_lama == 1
+* OR Any prescription for single ICS + Single LAMA
+replace exposure = 1 if ics_single == 1 & lama_single == 1
 					
 						
 /* Triple combination ICS */ 
