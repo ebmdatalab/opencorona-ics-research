@@ -24,11 +24,11 @@ cap log close
 log using $logdir\06_an_models_asthma, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 /* Sense check outcomes=======================================================*/ 
 
-tab exposure onscoviddeath, missing row
+tab exposure $outcome, missing row
 
 /* Main Model=================================================================*/
 
@@ -75,7 +75,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 2: Association between current ICS use and ONS Covid death - $population Population") _n
+file write tablecontent ("Table 2: Association between current ICS use and Covid death - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///

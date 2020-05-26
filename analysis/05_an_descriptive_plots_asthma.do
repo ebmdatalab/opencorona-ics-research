@@ -7,7 +7,7 @@ DATE: 					12th of May 2020
 DESCRIPTION OF FILE:	create KM plot
 						save KM plot 
 						
-DATASETS USED:			$tempdir\analysis_dataset_STSET_cpnsdeath.dta
+DATASETS USED:			$tempdir\analysis_dataset_STSET_$outcome.dta
 DATASETS CREATED: 		None
 OTHER OUTPUT: 			Results in svg: $outdir\kmplot1
 						Log file: $logdir\05_an_descriptive_plots_asthma 
@@ -19,10 +19,10 @@ capture log close
 log using $logdir\05_an_descriptive_plots, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 /* Sense check outcomes=======================================================*/ 
-tab exposure cpnsdeath
+tab exposure $outcome
 
 /* Generate KM PLOT===========================================================*/ 
 
@@ -30,7 +30,7 @@ count if exposure != .u
 noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
 
 sts graph, by(exposure) failure 							    			///	
-		   title("Time to ONS COVID-19 death, $population population", justification(left) size(medsmall) )  	   ///
+		   title("Time to COVID-19 death, $population population", justification(left) size(medsmall) )  	   ///
 		   xtitle("Days since 1 Mar 2020", size(small))						///
 		   yscale(range(0, 0.005)) 											///
 		   ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small))	///

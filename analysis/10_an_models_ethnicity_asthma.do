@@ -18,7 +18,7 @@ cap log close
 log using $logdir\10_an_models_ethnicity_asthma, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 /* Restrict population========================================================*/ 
 
@@ -27,7 +27,7 @@ drop if ethnicity != 1
 
 /* Sense check outcomes=======================================================*/ 
 
-tab exposure onscoviddeath, missing row
+tab exposure $outcome, missing row
 
 /* Main Model=================================================================*/
 
@@ -74,7 +74,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table6.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 6: Association between current ICS use and ONS COVID-19 death - $population Population ethnicity == 1") _n
+file write tablecontent ("Table 6: Association between current ICS use and COVID-19 death - $population Population ethnicity == 1") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///

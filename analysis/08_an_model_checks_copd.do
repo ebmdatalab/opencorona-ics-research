@@ -20,7 +20,7 @@ cap log close
 log using $logdir\08_an_model_checks_copd, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 /* Quietly run models, perform test and store results in local macro==========*/
 
