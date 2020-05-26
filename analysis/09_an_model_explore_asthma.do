@@ -74,6 +74,10 @@ foreach var of varlist 	obese4cat				///
 	}
 	else di "*WARNING `var' MODEL DID NOT SUCCESSFULLY FIT*"
 }
+
+file write tablecontent _n
+file close tablecontent
+
 * Close log file 
 log close
 

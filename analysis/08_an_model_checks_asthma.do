@@ -172,6 +172,10 @@ file write tablecontent ("`univar_p1'") _tab ("`multivar1_p1'") _tab ("`multivar
 file write tablecontent ("`lab2'") _tab
 file write tablecontent ("`univar_p2'") _tab ("`multivar1_p2'") _tab ("`multivar2_p2'") _n
 
+file write tablecontent _n
+file close tablecontent
+
+
 * Close log file 
 log close
 		  

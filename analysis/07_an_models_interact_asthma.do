@@ -152,7 +152,7 @@ syntax, variable(varname) min(real) max(real)
 			
 			
 		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-		file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
+		file write tablecontent ("1.00 (ref)") _tab _tab _tab ("1.00 (ref)") _tab _tab _tab ("1.00 (ref)") _n
 			
 		* Second row, exposure = 1 (comparator)
 
@@ -208,6 +208,8 @@ end
 
 printinteraction, variable(agegroup) min(3) max(6) 
 
+file write tablecontent _n
+file close tablecontent
 
 * Close log file 
 log close
