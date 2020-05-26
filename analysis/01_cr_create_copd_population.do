@@ -39,7 +39,7 @@ noi di "DROP IMD MISSING"
 drop if imd == .u
 
 noi di "DROP IF DEAD BEFORE INDEX"
-drop if stime_cpnsdeath <= date("$indexdate", "DMY")
+drop if stime_$outcome <= date("$indexdate", "DMY")
 
 /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
 

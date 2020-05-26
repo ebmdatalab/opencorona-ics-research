@@ -19,7 +19,7 @@ cap log close
 log using $logdir\09_an_model_explore_asthma, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 /* Print table================================================================*/ 
 *  Print the results for the main model 

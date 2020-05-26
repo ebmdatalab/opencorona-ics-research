@@ -39,8 +39,8 @@ recode exposure(0 = .u) if laba_lama_ics == 1
 replace exposure = 1 if laba_ics == 1 
 * OR Any prescription for single ICS + Single LABA
 replace exposure = 1 if ics_single == 1 & laba_single == 1 
-* OR Any prescription for single ICS + LABA/LAMA
-replace exposure = 1 if ics_single == 1 & laba_lama == 1
+* OR Any prescription for single ICS + Single LAMA
+replace exposure = 1 if ics_single == 1 & lama_single == 1
 					
 						
 /* Triple combination ICS */ 
@@ -63,9 +63,10 @@ label var exposure "COPD Treatment Exposure"
 sort patient_id
 save $tempdir\analysis_dataset, replace
 
-* Save a version set on CPNS survival outcome
-stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
-save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
+* Save a version set on outcome
+* Save a version set on survival outcome
+stset stime_$outcome, fail($outcome) id(patient_id) enter(enter_date) origin(enter_date)	
+save $tempdir\analysis_dataset_STSET_$outcome, replace
 
 * Close log file 
 log close

@@ -20,7 +20,7 @@ cap log close
 log using $logdir\S1-08_an_model_checks_copd, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 * Exposure labels 
 local lab1: label exposure 1
