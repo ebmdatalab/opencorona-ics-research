@@ -18,7 +18,7 @@ cap log close
 log using $logdir\07_an_models_interact_asthma, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
 
 /* Age Interaction============================================================*/ 
 
@@ -42,7 +42,7 @@ tab agegroup
 
 /* Check Counts */ 
 
-bysort agegroup: tab exposure cpnsdeath, row
+bysort agegroup: tab exposure onscoviddeath, row
 
 /* Univariable model */ 
 
@@ -113,7 +113,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table3.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 3: Current ICS use and CPNS death, Age Interaction - $population Population") _n
+file write tablecontent ("Table 3: Current ICS use and ONS COVID-19 death, Age Interaction - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab _tab  ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///

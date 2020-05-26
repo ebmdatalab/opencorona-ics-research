@@ -67,5 +67,9 @@ save $tempdir\analysis_dataset, replace
 stset stime_cpnsdeath, fail(cpnsdeath) id(patient_id) enter(enter_date) origin(enter_date)	
 save $tempdir\analysis_dataset_STSET_cpnsdeath, replace
 
+* Save a version set on ONS survival outcome
+stset stime_onscoviddeath, fail(onscoviddeath) id(patient_id) enter(enter_date) origin(enter_date)	
+save $tempdir\analysis_dataset_STSET_onscoviddeath, replace
+
 * Close log file 
 log close

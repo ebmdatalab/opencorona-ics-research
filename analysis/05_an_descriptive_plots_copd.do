@@ -19,7 +19,7 @@ capture log close
 log using $logdir\05_an_descriptive_plots_copd, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
 
 /* Sense check outcomes=======================================================*/ 
 tab exposure cpnsdeath
@@ -30,7 +30,7 @@ count if exposure != .u
 noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
 
 sts graph, by(exposure) failure 							    			///	
-		   title("Time to hospital COVID-19 death, $population population", justification(left) size(medsmall) )  	   ///
+		   title("Time to ONS COVID-19 death, $population population", justification(left) size(medsmall) )  	   ///
 		   xtitle("Days since 1 Mar 2020", size(small))						///
 		   yscale(range(0, 0.005)) 											///
 		   ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small))	///

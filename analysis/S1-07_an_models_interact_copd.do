@@ -18,7 +18,7 @@ cap log close
 log using $logdir\S1-07_an_models_interact_copd, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
 
 /* Age Interaction============================================================*/ 
 
@@ -42,7 +42,7 @@ tab agegroup
 
 /* Check Counts */ 
 
-bysort agegroup: tab exposure cpnsdeath, row
+bysort agegroup: tab exposure onscoviddeath, row
 
 /* Univariable model */ 
 

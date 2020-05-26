@@ -21,11 +21,11 @@ cap log close
 log using $logdir\S1-06_an_models_copd, replace t
 
 * Open Stata dataset
-use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+use $tempdir\analysis_dataset_STSET_onscoviddeath, clear
 
 /* Sense check outcomes=======================================================*/ 
 
-tab exposure cpnsdeath, missing row
+tab exposure onscoviddeath, missing row
 
 /* Main Model=================================================================*/
 
