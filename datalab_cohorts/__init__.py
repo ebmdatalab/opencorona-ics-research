@@ -579,6 +579,26 @@ class StudyDefinition:
         else:
             raise ValueError(f"Unhandled return column name: {col}")
 
+    def invent_column_name_for_type(self, column_type):
+        """
+        This is pretty backwards: sometimes we want to return a column of a
+        particular type so this function returns a name which we know that the
+        above function will map to the desired type. This definitely all needs
+        refactoring at some point.
+        """
+        if column_type == "date":
+            return "date"
+        elif column_type == "str":
+            return "category"
+        elif column_type == "bool":
+            return "is_true"
+        elif column_type == "int":
+            return "count"
+        elif column_type == "float":
+            return "value"
+        else:
+            raise ValueError(f"Unhandled column type: {column_type}")
+
     def get_default_value_for_type(self, column_type):
         if column_type == "date":
             return ""
@@ -947,11 +967,10 @@ class StudyDefinition:
         # This is the default code path for most queries
         else:
             # Remove unhandled arguments and check they are unused
-            assert not kwargs.pop("ignore_days_where_these_clinical_codes_occur", None)
             assert not kwargs.pop("episode_defined_as", None)
             return self._patients_with_events(
+                "MedicationIssue",
                 """
-                MedicationIssue
                 INNER JOIN MedicationDictionary
                 ON MedicationIssue.MultilexDrug_ID = MedicationDictionary.MultilexDrug_ID
                 """,
@@ -976,19 +995,21 @@ class StudyDefinition:
             return self._number_of_episodes_by_clinical_event(**kwargs)
         # This is the default code path for most queries
         else:
-            # Remove unhandled arguments and check they are unused
-            assert not kwargs.pop("ignore_days_where_these_codes_occur", None)
             assert not kwargs.pop("episode_defined_as", None)
             return self._patients_with_events(
-                "CodedEvent", "CTV3Code", codes_are_case_sensitive=True, **kwargs
+                "CodedEvent", "", "CTV3Code", codes_are_case_sensitive=True, **kwargs
             )
 
     def _patients_with_events(
         self,
         from_table,
+        additional_join,
         code_column,
         codes_are_case_sensitive,
         codelist,
+        # Allows us to say: find codes A and B, but only on days where X and Y
+        # didn't happen
+        ignore_days_where_these_codes_occur=None,
         # Set date limits
         between=None,
         # Matching rule
@@ -1000,6 +1021,9 @@ class StudyDefinition:
     ):
         codelist_table = self.create_codelist_table(codelist, codes_are_case_sensitive)
         date_condition = make_date_filter("ConsultationDate", between)
+        not_an_ignored_day_condition = self._none_of_these_codes_occur_on_same_day(
+            from_table, ignore_days_where_these_codes_occur
+        )
 
         # Result ordering
         if find_first_match_in_period:
@@ -1048,10 +1072,10 @@ class StudyDefinition:
               ROW_NUMBER() OVER (
                 PARTITION BY Patient_ID ORDER BY ConsultationDate {ordering}
               ) AS rownum
-              FROM {from_table}
+              FROM {from_table}{additional_join}
               INNER JOIN {codelist_table}
               ON {code_column} = {codelist_table}.code
-              WHERE {date_condition}
+              WHERE {date_condition} AND {not_an_ignored_day_condition}
             ) t
             WHERE rownum = 1
             """
@@ -1061,10 +1085,10 @@ class StudyDefinition:
               Patient_ID AS patient_id,
               {column_definition} AS {column_name},
               {date_aggregate}(ConsultationDate) AS date
-            FROM {from_table}
+            FROM {from_table}{additional_join}
             INNER JOIN {codelist_table}
             ON {code_column} = {codelist_table}.code
-            WHERE {date_condition}
+            WHERE {date_condition} AND {not_an_ignored_day_condition}
             GROUP BY Patient_ID
             """
 
@@ -1081,15 +1105,14 @@ class StudyDefinition:
         codelist,
         # Set date limits
         between=None,
-        ignore_days_where_these_clinical_codes_occur=None,
+        ignore_days_where_these_codes_occur=None,
         episode_defined_as=None,
     ):
         codelist_table = self.create_codelist_table(codelist, case_sensitive=False)
-        assert ignore_days_where_these_clinical_codes_occur.system == "ctv3"
-        ignore_list_table = self.create_codelist_table(
-            ignore_days_where_these_clinical_codes_occur, case_sensitive=True
-        )
         date_condition = make_date_filter("ConsultationDate", between)
+        not_an_ignored_day_condition = self._none_of_these_codes_occur_on_same_day(
+            "MedicationIssue", ignore_days_where_these_codes_occur
+        )
         if episode_defined_as is not None:
             pattern = r"^series of events each <= (\d+) days apart$"
             match = re.match(pattern, episode_defined_as)
@@ -1123,16 +1146,7 @@ class StudyDefinition:
             ON MedicationIssue.MultilexDrug_ID = MedicationDictionary.MultilexDrug_ID
             INNER JOIN {codelist_table}
             ON DMD_ID = {codelist_table}.code
-            WHERE
-              {date_condition}
-              AND NOT EXISTS (
-                SELECT * FROM CodedEvent AS sameday
-                INNER JOIN {ignore_list_table}
-                ON sameday.CTV3Code = {ignore_list_table}.code
-                WHERE
-                  sameday.Patient_ID = MedicationIssue.Patient_ID
-                  AND CAST(sameday.ConsultationDate AS date) = CAST(MedicationIssue.ConsultationDate AS date)
-              )
+            WHERE {date_condition} AND {not_an_ignored_day_condition}
         ) t
         GROUP BY Patient_ID
         """
@@ -1147,10 +1161,10 @@ class StudyDefinition:
         episode_defined_as=None,
     ):
         codelist_table = self.create_codelist_table(codelist, case_sensitive=True)
-        ignore_list_table = self.create_codelist_table(
-            ignore_days_where_these_codes_occur, case_sensitive=True
-        )
         date_condition = make_date_filter("ConsultationDate", between)
+        not_an_ignored_day_condition = self._none_of_these_codes_occur_on_same_day(
+            "CodedEvent", ignore_days_where_these_codes_occur
+        )
         if episode_defined_as is not None:
             pattern = r"^series of events each <= (\d+) days apart$"
             match = re.match(pattern, episode_defined_as)
@@ -1182,20 +1196,36 @@ class StudyDefinition:
             FROM CodedEvent
             INNER JOIN {codelist_table}
             ON CTV3Code = {codelist_table}.code
-            WHERE
-              {date_condition}
-              AND NOT EXISTS (
-                SELECT * FROM CodedEvent AS sameday
-                INNER JOIN {ignore_list_table}
-                ON sameday.CTV3Code = {ignore_list_table}.code
-                WHERE
-                  sameday.Patient_ID = CodedEvent.Patient_ID
-                  AND CAST(sameday.ConsultationDate AS date) = CAST(CodedEvent.ConsultationDate AS date)
-              )
+            WHERE {date_condition} AND {not_an_ignored_day_condition}
         ) t
         GROUP BY Patient_ID
         """
         return ["patient_id", "episode_count"], sql
+
+    def _none_of_these_codes_occur_on_same_day(self, joined_table, codelist):
+        """
+        Generates a SQL condition that filters rows in `joined_table` so that
+        they only include events which happened on days where none of the codes
+        in `codelist` occur in the CodedEvents table.
+
+        We use this to support queries like "give me all the times a patient
+        was prescribed this drug, but ignore any days on which they were having
+        their annual COPD review".
+        """
+        if codelist is None:
+            return "1 = 1"
+        assert codelist.system == "ctv3"
+        codelist_table = self.create_codelist_table(codelist, case_sensitive=True)
+        return f"""
+        NOT EXISTS (
+          SELECT * FROM CodedEvent AS sameday
+          INNER JOIN {codelist_table}
+          ON sameday.CTV3Code = {codelist_table}.code
+          WHERE
+            sameday.Patient_ID = {joined_table}.Patient_ID
+            AND CAST(sameday.ConsultationDate AS date) = CAST({joined_table}.ConsultationDate AS date)
+        )
+        """
 
     def patients_registered_practice_as_of(self, date, returning=None):
         if returning == "stp_code":
@@ -1242,6 +1272,7 @@ class StudyDefinition:
             assert round_to_nearest == 100
             column = "ImdRankRounded"
         elif returning == "rural_urban_classification":
+            assert round_to_nearest is None
             column = "RuralUrbanClassificationCode"
         else:
             raise ValueError(f"Unsupported `returning` value: {returning}")
@@ -1261,6 +1292,50 @@ class StudyDefinition:
                 PARTITION BY Patient_ID ORDER BY StartDate DESC, EndDate DESC
               ) AS rownum
               FROM PatientAddress
+              WHERE StartDate <= {quote(date)} AND EndDate > {quote(date)}
+            ) t
+            WHERE rownum = 1
+            """,
+        )
+
+    def patients_care_home_status_as_of(self, date, categorised_as):
+        # Get a column name which matches the type of the supplied categories.
+        # (Needs refactoring, see docstring.)
+        column = self.invent_column_name_for_type(
+            self.infer_type_from_categories(categorised_as.keys())
+        )
+        # These are the columns to which the categorisation expression is
+        # allowed to refer
+        allowed_columns = {
+            "IsPotentialCareHome": ColumnExpression(
+                "ISNULL(PotentialCareHomeAddressID, 0)", column_type="int",
+            ),
+            "LocationRequiresNursing": ColumnExpression(
+                "LocationRequiresNursing", column_type="str"
+            ),
+            "LocationDoesNotRequireNursing": ColumnExpression(
+                "LocationDoesNotRequireNursing", column_type="str"
+            ),
+        }
+        case_expression = self.get_case_expression(allowed_columns, categorised_as)
+        return (
+            ["patient_id", column],
+            f"""
+            SELECT
+              Patient_ID AS patient_id,
+              {case_expression} AS {column}
+            FROM (
+              SELECT
+                PatientAddress.Patient_ID AS Patient_ID,
+                PotentialCareHomeAddress.PatientAddress_ID AS PotentialCareHomeAddressID,
+                LocationRequiresNursing,
+                LocationDoesNotRequireNursing,
+                ROW_NUMBER() OVER (
+                  PARTITION BY PatientAddress.Patient_ID ORDER BY StartDate DESC, EndDate DESC
+                ) AS rownum
+              FROM PatientAddress
+              LEFT JOIN PotentialCareHomeAddress
+              ON PatientAddress.PatientAddress_ID = PotentialCareHomeAddress.PatientAddress_ID
               WHERE StartDate <= {quote(date)} AND EndDate > {quote(date)}
             ) t
             WHERE rownum = 1
@@ -1543,6 +1618,75 @@ class StudyDefinition:
         """
         return self.patients_registered_with_one_practice_between(start_date, end_date)
 
+    def patients_with_test_result_in_sgss(
+        self,
+        pathogen=None,
+        test_result=None,
+        # Set date limits
+        between=None,
+        # Matching rule
+        find_first_match_in_period=None,
+        find_last_match_in_period=None,
+        # Set return type
+        returning="binary_flag",
+        include_date_of_match=False,
+    ):
+        assert pathogen == "SARS-CoV-2"
+        assert test_result in ("positive", "negative", "any")
+        if returning not in ("binary_flag", "date"):
+            raise ValueError(f"Unsupported `returning` value: {returning}")
+
+        date_condition = make_date_filter("date", between)
+        date_aggregate = "MIN" if find_first_match_in_period else "MAX"
+        if test_result == "any":
+            result_condition = "1 = 1"
+        else:
+            flag = 1 if test_result == "positive" else 0
+            result_condition = f"test_result = {quote(flag)}"
+
+        # These are the values we're expecting in our SGSS tables. If we ever
+        # get anything other than these we should throw an error rather than
+        # blindly continuing.
+        positive_descr = "SARS-CoV-2 CORONAVIRUS (Covid-19)"
+        negative_descr = "NEGATIVE SARS-CoV-2 (COVID-19)"
+
+        sql = f"""
+        SELECT
+          patient_id,
+          1 AS has_result,
+          {date_aggregate}(date) AS date,
+          -- We have to calculate something over the error check field
+          -- otherwise it never gets computed
+          MAX(_e) AS _e
+        FROM (
+          SELECT
+            1 AS test_result,
+            Patient_ID AS patient_id,
+            Earliest_Specimen_Date AS date,
+            -- Crude error check so we blow up in the case of unexpected data
+            1 / CASE WHEN Organism_Species_Name = '{positive_descr}' THEN 1 ELSE 0 END AS _e
+          FROM SGSS_Positive
+          UNION ALL
+          SELECT
+            0 AS test_result,
+            Patient_ID AS patient_id,
+            Earliest_Specimen_Date AS date,
+            -- Crude error check so we blow up in the case of unexpected data
+            1 / CASE WHEN Organism_Species_Name = '{negative_descr}' THEN 1 ELSE 0 END AS _e
+          FROM SGSS_Negative
+        ) t
+        WHERE {date_condition} AND {result_condition}
+        GROUP BY patient_id
+        """
+
+        if returning == "date":
+            columns = ["patient_id", "date"]
+        else:
+            columns = ["patient_id", "has_result"]
+            if include_date_of_match:
+                columns.append("date")
+        return columns, sql
+
     def get_case_expression(self, column_definitions, category_definitions):
         category_definitions = category_definitions.copy()
         column_type = self.infer_type_from_categories(category_definitions.keys())
@@ -1807,6 +1951,36 @@ class patients:
         return "address_as_of", process_arguments(locals())
 
     @staticmethod
+    def care_home_status_as_of(
+        date, categorised_as=None, return_expectations=None,  # Required keyword
+    ):
+        """
+        TPP have attempted to match patient addresses to care homes as stored
+        in the CQC database. At its most simple this query returns a boolean
+        indicating whether the patient's address (as of the supplied time)
+        matched with a care home.
+
+        It is also possible return a more complex categorisation based on
+        attributes of the care homes in the CQC database, which can be freely
+        downloaded here:
+        https://www.cqc.org.uk/about-us/transparency/using-cqc-data
+
+        At present the only imported fields are:
+            LocationRequiresNursing
+            LocationDoesNotRequireNursing
+
+        But we can ask for more fields to be imported if needed.
+
+        The `categorised_as` argument acts in effectively the same way as for
+        the `categorised_as` function except that the only columns that can be
+        referred to are those belonging to the care home table (i.e. the two
+        nursing fields above) and the boolean `IsPotentialCareHome`
+        """
+        if categorised_as is None:
+            categorised_as = {1: "IsPotentialCareHome", 0: "DEFAULT"}
+        return "care_home_status_as_of", process_arguments(locals())
+
+    @staticmethod
     def admitted_to_icu(
         on_or_after=None,
         on_or_before=None,
@@ -1962,6 +2136,67 @@ class patients:
             process_arguments(locals()),
         )
 
+    @staticmethod
+    def with_test_result_in_sgss(
+        pathogen=None,
+        test_result="any",
+        # Set date limits
+        on_or_before=None,
+        on_or_after=None,
+        between=None,
+        # Matching rule
+        find_first_match_in_period=None,
+        find_last_match_in_period=None,
+        # Set return type
+        returning="binary_flag",
+        date_format=None,
+        return_expectations=None,
+    ):
+        """
+        Finds lab test results recorded in SGSS (Second Generation Surveillance
+        System). Only SARS-CoV-2 results are included in our data extract so
+        this will throw an error if the specified pathogen is anything other than
+        "SARS-CoV-2".
+
+        `test_result` must be one of: "positive", "negative" or "any"
+
+        The date field used is the date the specimen was taken, rather than the
+        date of the lab result.
+
+        There's an important caveat here: where a patient has multiple positive
+        tests, SGSS groups these into "episodes" (referred to as
+        "Organism-Patient-Illness-Episodes"). Each pathogen has a maximum
+        episode duration (usually 2 weeks) and unless positive tests are
+        separated by longer than this period they are assumed to be the same
+        episode of illness. The specimen date recorded is the *earliest*
+        positive specimen within the episode.
+
+        For SARS-CoV-2 the episode length has been set to infinity, meaning
+        that once a patient has tested positive every positive test will be
+        part of the same episode and record the same specimen date.
+
+        This means that using `find_last_match_in_period` is pointless when
+        querying for positive results as only one date will ever be recorded and
+        it will be the earliest.
+
+        Our natural assumption, though it doesn't seem to be explicity stated
+        in the documentation, is that every negative result is treated as
+        unique.
+
+        For more detail on SGSS in general see:
+        https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/739854/PHE_Laboratory_Reporting_Guidelines.pdf
+
+        Information about the SARS-CoV-2 episode length was via email from
+        someone at the National Infection Service:
+
+            The COVID-19 episode length in SGSS was set to indefinite, so all
+            COVID-19 records from a single patient will be classified as one
+            episode. This may change, but is set as it is due to limited
+            information around re-infection and virus clearance.
+
+        """
+        return "with_test_result_in_sgss", process_arguments(locals())
+
 
 def process_arguments(args):
     """
@@ -1990,6 +2225,16 @@ def process_arguments(args):
     if args.pop("return_last_date_in_period", None):
         args["returning"] = "date"
         args["find_last_match_in_period"] = True
+
+    # In the public API of the `with_these_medications` function we use the
+    # phrase "clinical codes" (as opposed to just "codes") to make it clear
+    # that these are distinct from the SNOMED codes used to query the
+    # medications table. However, for simplicity of implementation we use just
+    # one argument name internally
+    if "ignore_days_where_these_clinical_codes_occur" in args:
+        args["ignore_days_where_these_codes_occur"] = args.pop(
+            "ignore_days_where_these_clinical_codes_occur"
+        )
 
     args = handle_legacy_date_args(args)
 
