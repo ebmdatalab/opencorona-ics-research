@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			08_an_model_checks
+DO FILE NAME:			08_an_model_checks_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					20th of May 2020  
 AUTHOR:					A Schultze 									
@@ -17,7 +17,7 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 * Open a log file
 
 cap log close
-log using $logdir\08_an_model_checks, replace t
+log using $logdir\08_an_model_checks_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
@@ -69,20 +69,19 @@ graph close
 		  
 stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.smoke_nomiss				///
+										i.asthma_ever				///
 										i.imd 						///
 										i.ckd	 					///		
 										i.hypertension			 	///		
 										i.heart_failure				///		
 										i.other_heart_disease		///		
 										i.diabetes 					///		
-										i.cancer_ever 				///	
-										i.immunodef_any		 		///							
+										i.cancer_ever 				///					
 										i.statin 					///		
 										i.insulin					///		
-										i.oral_steroids 			///		
 										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.gp_consult, strata(stp)	
+										i.pneumococcal_vaccine		///
+										i.exacerbations, strata(stp)	
 estat phtest, detail
 local multivar2_p = round(r(phtest)[2,4],0.001)
  
@@ -110,7 +109,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table4.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 4: Testing the PH assumption - COPD Population") _n
+file write tablecontent ("Table 4: Testing the PH assumption - $population Population") _n
 file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _n
 						

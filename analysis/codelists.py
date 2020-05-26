@@ -149,6 +149,8 @@ hypertension_codes = codelist_from_csv(
 diabetes_codes = codelist_from_csv(
     "codelists/opensafely-diabetes.csv", system="ctv3", column="CTV3ID"
 )
+hba1c_new_codes = codelist(["XaPbt", "Xaeze", "Xaezd"], system="ctv3")
+hba1c_old_codes = codelist(["X772q", "XaERo", "XaERp"], system="ctv3")
 
 systolic_blood_pressure_codes = codelist(["2469."], system="ctv3")
 diastolic_blood_pressure_codes = codelist(["246A."], system="ctv3")

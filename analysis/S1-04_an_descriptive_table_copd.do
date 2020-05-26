@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			04_an_descriptive_table_copd
+DO FILE NAME:			S1-04_an_descriptive_table_asthma
 PROJECT:				ICS in COVID-19 
 AUTHOR:					A Schultze, A Wong, C Rentsch 
 						Adapted from K Baskharan, A Wong 
@@ -7,16 +7,17 @@ DATE: 					10th of May 2020
 DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure
 						Generalised to produce same columns as levels of exposure
 						Output to a textfile for further formatting
-DATASETS USED:			$Tempdir\analysis_dataset.dta
+						SENSITIVITY 1: New COPD exposure definition 
+DATASETS USED:			$tempdir\analysis_dataset.dta
 DATASETS CREATED: 		None
 OTHER OUTPUT: 			Results in txt: $outdir\table1.txt 
-						Log file: $logdir\04_an_descriptive_table_copd
+						Log file: $logdir\S1-04_an_descriptive_table_copd
 							
 ==============================================================================*/
 
 * Open a log file
 capture log close
-log using $logdir\04_an_descriptive_table_copd, replace t
+log using $logdir\S1-04_an_descriptive_table_copd, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset, clear
@@ -51,6 +52,12 @@ syntax, variable(varname) condition(string)
 	cou if exposure == 1 
 	local rowdenom = r(N)
 	cou if exposure == 1 & `variable' `condition'
+	local pct = 100*(r(N)/`rowdenom')
+	file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
+
+	cou if exposure == 2
+	local rowdenom = r(N)
+	cou if exposure == 2 & `variable' `condition'
 	local pct = 100*(r(N)/`rowdenom')
 	file write tablecontent %9.0gc (r(N)) (" (") %3.1f  (`pct') (")") _tab
 
@@ -153,31 +160,27 @@ syntax, variable(varname)
 	
 end
 
-/* QUESTION FOR STATA REVIEWER - I WROTE THIS CONTINOUS VAR SUMMARY PROGRAM
-but I don't quite understand why I seem to need ("") on the last row for the 
-maxium value to display properly? Otherwise it seems to just be missing. 
-
-Please check this extra carefully as well
-
-*/ 
 
 /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
 
 *Set up output file
 cap file close tablecontent
-file open tablecontent using ./$outdir/table1.txt, write text replace
+file open tablecontent using ./$outdir/S1table1.txt, write text replace
 
-file write tablecontent ("Table 1: Demographic and Clinical Characteristics - $population") _n
+file write tablecontent ("S1 Table 1: Demographic and Clinical Characteristics - $population") _n
 
 * Exposure labelled columns
 
 local lab0: label exposure 0
 local lab1: label exposure 1
+local lab2: label exposure 2
 local labu: label exposure .u
+
 
 file write tablecontent _tab ("Total")				  			  _tab ///
 							 ("`lab0'")			 			      _tab ///
 							 ("`lab1'")  						  _tab ///
+							 ("`lab2'")			  				  _tab ///
 							 ("`labu'")			  				  _n 
 
 * DEMOGRAPHICS (more than one level, potentially missing) 
@@ -249,7 +252,7 @@ foreach comorb of varlist 	asthma_ever						///
 							oral_steroids 					///
 							flu_vaccine 					///
 							pneumococcal_vaccine			///
-							exacerbations 					///
+							exacerbations					///
 							gp_consult {
 
 local lab: variable label `comorb'
