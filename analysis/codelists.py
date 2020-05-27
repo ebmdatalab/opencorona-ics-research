@@ -253,14 +253,24 @@ pneumococcal_med_codes = codelist_from_csv(
     column="snomed_id",
 )
 
-flu_clinical_codes = codelist_from_csv(
+flu_clinical_given_codes = codelist_from_csv(
     "codelists/opensafely-influenza-vaccination-clinical-codes-given.csv",
     system="ctv3",
     column="CTV3ID",
 )
+flu_clinical_not_given_codes = codelist_from_csv(
+    "codelists/opensafely-influenza-vaccination-clinical-codes-not-given.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
 
-pneumococcal_clinical_codes = codelist_from_csv(
+pneumococcal_clinical_given_codes = codelist_from_csv(
     "codelists/opensafely-pneumococcal-vaccination-clinical-codes-indicative-of-being-administered.csv",
+    system="ctv3",
+    column="CTV3ID",
+)
+pneumococcal_clinical_not_given_codes = codelist_from_csv(
+    "codelists/opensafely-pneumococcal-vaccination-clinical-codes-indicative-of-not-being-administered.csv",
     system="ctv3",
     column="CTV3ID",
 )

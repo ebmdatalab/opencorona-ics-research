@@ -23,6 +23,7 @@ opensafely/inflammatory-bowel-disease/2020-04-07
 opensafely/influenza-like-illness/2020-05-18
 opensafely/influenza-vaccination/2020-05-12
 opensafely/influenza-vaccination-clinical-codes-given/2020-05-21
+opensafely/influenza-vaccination-clinical-codes-not-given/2020-05-19
 opensafely/interstitial-lung-disease/2020-05-12
 opensafely/insulin-medication/2020-04-26
 opensafely/laba-ics-combination-inhaler/2020-05-04
@@ -41,6 +42,7 @@ opensafely/other-respiratory-conditions/2020-05-14
 opensafely/permanent-immunosuppresion/2020-04-24
 opensafely/pneumococcal-vaccination/2020-05-11
 opensafely/pneumococcal-vaccination-clinical-codes-indicative-of-being-administered/2020-05-21
+opensafely/pneumococcal-vaccination-clinical-codes-indicative-of-not-being-administered/2020-05-19
 opensafely/rheumatoid-arthritis/2020-05-12
 opensafely/temporary-immunosuppresion/2020-04-24
 opensafely/saba-inhaler-medications/2020-05-06
