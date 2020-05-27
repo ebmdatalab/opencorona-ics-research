@@ -213,6 +213,9 @@ file write tablecontent _n
 tabulatevariable, variable(imd) min(1) max(5) missing
 file write tablecontent _n 
 
+tabulatevariable, variable(diabcat) min(1) max(4) missing
+file write tablecontent _n 
+
 file write tablecontent _n _n
 
 ** COPD TREATMENT VARIABLES (binary)

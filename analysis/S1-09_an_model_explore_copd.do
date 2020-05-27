@@ -40,10 +40,9 @@ foreach var of varlist 	obese4cat				///
 						hypertension			///	
 						heart_failure			///	
 						other_heart_disease		///	
-						diabetes 				///	
+						diabcat 				///	
 						cancer_ever 			///	
 						statin 					///	
-						insulin					///	
 						oral_steroids 			///	
 						flu_vaccine 			///	
 						pneumococcal_vaccine	///	

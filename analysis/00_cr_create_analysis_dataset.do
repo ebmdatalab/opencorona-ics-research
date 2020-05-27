@@ -47,6 +47,8 @@ foreach var of varlist 	aplastic_anaemia				///
 						heart_failure 					///
 						hiv             				///
 						hypertension     				///
+						hba1c_percentage_date  			///
+						hba1c_mmol_per_mol_date			///
 						esrf 							///
 						ili              				///
 						lung_cancer      				///
@@ -94,9 +96,11 @@ foreach var of varlist 	aplastic_anaemia				///
 /* RENAME VARAIBLES===========================================================*/
 *  An extra 'date' added to the end of some variable names, remove 
 
-rename creatinine_date_date 		creatinine_measured_date
-rename smoking_status_date_date 	smoking_status_measured_date
-rename bmi_date_measured_date  		bmi_measured_date
+rename creatinine_date_date 			creatinine_measured_date
+rename smoking_status_date_date 		smoking_status_measured_date
+rename bmi_date_measured_date  			bmi_measured_date
+rename hba1c_percentage_date_date		hb1ac_percentage_date 
+rename hba1c_mmol_per_mol_date_date		hba1c_mmol_per_mol_date
 
 * Some names too long for loops below, shorten
 
@@ -104,7 +108,7 @@ rename permanent_immunodeficiency_date perm_immunodef_date
 rename temporary_immunodeficiency_date temp_immunodef_date
 
 /* CREATE BINARY VARIABLES====================================================*/
-*  Make indicator variables for all conditions 
+*  Make indicator variables for all conditions where relevant 
 
 foreach var of varlist 	aplastic_anaemia_date				///
 						asthma_ever_date					///
@@ -385,6 +389,52 @@ gen temp2_ckd_date = esrf_date if esrf == 1
 gen ckd_date = max(temp1_ckd_date,temp2_ckd_date) 
 format ckd_date %td 
 
+/* Hb1AC */
+
+/*  Diabetes severity  */
+
+* Set zero or negative to missing
+replace hba1c_percentage   = . if hba1c_percentage <= 0
+replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol <= 0
+
+/* Express  HbA1c as percentage  */ 
+
+* Express all values as perecentage 
+noi summ hba1c_percentage hba1c_mmol_per_mol 
+gen 	hba1c_pct = hba1c_percentage 
+replace hba1c_pct = (hba1c_mmol_per_mol/10.929)+2.15 if hba1c_mmol_per_mol<. 
+
+* Valid % range between 0-20  
+replace hba1c_pct = . if !inrange(hba1c_pct, 0, 20) 
+replace hba1c_pct = round(hba1c_pct, 0.1)
+
+/* Categorise hba1c and diabetes  */
+
+* Group hba1c
+gen 	hba1ccat = 0 if hba1c_pct <  6.5
+replace hba1ccat = 1 if hba1c_pct >= 6.5  & hba1c_pct < 7.5
+replace hba1ccat = 2 if hba1c_pct >= 7.5  & hba1c_pct < 8
+replace hba1ccat = 3 if hba1c_pct >= 8    & hba1c_pct < 9
+replace hba1ccat = 4 if hba1c_pct >= 9    & hba1c_pct !=.
+label define hba1ccat 0 "<6.5%" 1">=6.5-7.4" 2">=7.5-7.9" 3">=8-8.9" 4">=9"
+label values hba1ccat hba1ccat
+tab hba1ccat
+
+* Create diabetes, split by control/not
+gen     diabcat = 1 if diabetes==0
+replace diabcat = 2 if diabetes==1 & inlist(hba1ccat, 0, 1)
+replace diabcat = 3 if diabetes==1 & inlist(hba1ccat, 2, 3, 4)
+replace diabcat = 4 if diabetes==1 & !inlist(hba1ccat, 0, 1, 2, 3, 4)
+
+label define diabcat 	1 "No diabetes" 			///
+						2 "Controlled diabetes"		///
+						3 "Uncontrolled diabetes" 	///
+						4 "Diabetes, no hba1c measure"
+label values diabcat diabcat
+
+* Delete unneeded variables
+drop hba1c_pct hba1c_percentage hba1c_mmol_per_mol
+
 /* OUTCOME AND SURVIVAL TIME==================================================*/
 
 /*  Cohort entry and censor dates  */
@@ -510,6 +560,7 @@ label var copd 							"COPD"
 label var diabetes						"Diabetes"
 label var cancer_ever 					"Cancer"
 label var immunodef_any					"Immunosuppressed (combination algorithm)"
+label var diabcat						"Diabetes Severity"
 
 label var statin 						"Recent Statin"
 label var insulin						"Recent Insulin"

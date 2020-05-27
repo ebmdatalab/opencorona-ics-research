@@ -52,10 +52,9 @@ stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
 										i.hypertension			 	///		
 										i.heart_failure				///		
 										i.other_heart_disease		///		
-										i.diabetes 					///		
+										i.diabcat 					///		
 										i.cancer_ever 				///							
-										i.statin 					///		
-										i.insulin					///		
+										i.statin 					///			
 										i.flu_vaccine 				///	
 										i.pneumococcal_vaccine		///	
 										i.exacerbations 			///
