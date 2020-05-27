@@ -1,0 +1,8 @@
+S1 Table 2: Association between current ICS use and CPNS death - COPD - Sensitivity Exposure Definition Population
+	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+		HR	95% CI	HR	95% CI	HR	95% CI
+Main Analysis
+LABA/LAMA Combination	52 (0.1)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	43 (0.1)	1.31	0.97 - 1.77	1.17	0.87 - 1.59	1.15	0.85 - 1.57
+ICS Triple Combination	166 (0.2)	1.54	1.21 - 1.97	1.46	1.14 - 1.87	1.35	1.05 - 1.73
+

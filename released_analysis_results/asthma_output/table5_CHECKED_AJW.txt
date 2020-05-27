@@ -2,80 +2,77 @@ Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) -
 	HR	95% CI
 Evidence of obesity (4 categories)
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.07	0.73 - 1.56
-ICS (High Dose)	1.53	0.99 - 2.36	
+ICS (Low/Medium Dose)	1.07	0.79 - 1.45
+ICS (High Dose)	1.58	1.11 - 2.23	
 
 Smoking status (missing set to non)
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.05	0.71 - 1.53
-ICS (High Dose)	1.59	1.03 - 2.45	
+ICS (Low/Medium Dose)	1.05	0.78 - 1.44
+ICS (High Dose)	1.62	1.14 - 2.30	
 
 Index of Multiple Deprivation (IMD)
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.06	0.73 - 1.56
-ICS (High Dose)	1.58	1.03 - 2.45	
+ICS (Low/Medium Dose)	1.07	0.78 - 1.45
+ICS (High Dose)	1.62	1.14 - 2.29	
 
 Chronic kidney disease
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.08	0.74 - 1.58
-ICS (High Dose)	1.61	1.04 - 2.49	
+ICS (Low/Medium Dose)	1.08	0.79 - 1.47
+ICS (High Dose)	1.64	1.16 - 2.32	
 
 Diagnosed hypertension
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.06	0.72 - 1.55
-ICS (High Dose)	1.59	1.03 - 2.46	
+ICS (Low/Medium Dose)	1.06	0.78 - 1.45
+ICS (High Dose)	1.62	1.14 - 2.29	
 
 Heart Failure
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.08	0.73 - 1.57
-ICS (High Dose)	1.59	1.03 - 2.46	
+ICS (Low/Medium Dose)	1.07	0.79 - 1.46
+ICS (High Dose)	1.62	1.14 - 2.30	
 
 Other Heart Diseases
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.07	0.73 - 1.57
-ICS (High Dose)	1.60	1.04 - 2.47	
+ICS (Low/Medium Dose)	1.07	0.79 - 1.46
+ICS (High Dose)	1.63	1.15 - 2.31	
 
-Diabetes
+Diabetes Severity
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.09	0.75 - 1.60
-ICS (High Dose)	1.60	1.03 - 2.47	
+ICS (Low/Medium Dose)	1.11	0.81 - 1.50
+ICS (High Dose)	1.65	1.16 - 2.33	
 
 Cancer
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.06	0.72 - 1.55
-ICS (High Dose)	1.60	1.03 - 2.46	
+ICS (Low/Medium Dose)	1.06	0.78 - 1.44
+ICS (High Dose)	1.62	1.14 - 2.30	
 
 Recent Statin
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.05	0.71 - 1.53
-ICS (High Dose)	1.57	1.02 - 2.43	
-
-Recent Insulin
-SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.08	0.74 - 1.58
-ICS (High Dose)	1.61	1.04 - 2.49	
+ICS (Low/Medium Dose)	1.05	0.78 - 1.44
+ICS (High Dose)	1.61	1.14 - 2.29	
 
 Oral Steroids
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.05	0.72 - 1.54
-ICS (High Dose)	1.55	1.00 - 2.40	
+ICS (Low/Medium Dose)	1.05	0.78 - 1.44
+ICS (High Dose)	1.59	1.12 - 2.25	
 
 Flu vaccine
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.05	0.72 - 1.54
-ICS (High Dose)	1.59	1.03 - 2.46	
+ICS (Low/Medium Dose)	1.06	0.78 - 1.44
+ICS (High Dose)	1.63	1.15 - 2.31	
 
 Pneumococcal Vaccine
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.06	0.72 - 1.55
-ICS (High Dose)	1.60	1.03 - 2.47	
+ICS (Low/Medium Dose)	1.06	0.78 - 1.44
+ICS (High Dose)	1.63	1.15 - 2.30	
 
 Exacerbation in last year
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.04	0.71 - 1.52
-ICS (High Dose)	1.49	0.96 - 2.31	
+ICS (Low/Medium Dose)	1.04	0.77 - 1.42
+ICS (High Dose)	1.52	1.07 - 2.17	
 
 GP consultation in last year
 SABA only	1.00 (ref)	
-ICS (Low/Medium Dose)	1.05	0.72 - 1.54
-ICS (High Dose)	1.59	1.03 - 
+ICS (Low/Medium Dose)	1.06	0.78 - 1.44
+ICS (High Dose)	1.62	1.14 - 2.30	
+
+

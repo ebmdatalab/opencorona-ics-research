@@ -1,0 +1,6 @@
+S1 Table 4: Testing the PH assumption - COPD - Sensitivity Exposure Definition Population
+	Univariable	Age/Sex Adjusted	Age/Sex and Comorbidity Adjusted	
+	p-value	p-value	p-value	
+ICS Dual Combination	.246	.198	.278
+ICS Triple Combination	.008	.008	.014
+

@@ -1,24 +1,21 @@
----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\00_cr_create
-> _analysis_dataset.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\00_cr_create_analysis_dataset.log
   log type:  text
- opened on:  22 May 2020, 13:54:09
+ opened on:  27 May 2020, 10:35:39
 
 . 
-. /* SET FU DATES===============================================================*
-> / 
+. /* SET FU DATES===============================================================*/ 
 . * Censoring dates for each outcome (largely, last date outcome data available)
 . 
 . global cpnsdeathcensor          = "23/04/2020"
 
-. global onscoviddeathcensor      = "23/04/2020"
+. global onscoviddeathcensor      = "02/05/2020"
 
 . global indexdate                        = "01/03/2020"
 
 . 
-. /* RENAME VARAIBLES===========================================================*
-> /
+. /* RENAME VARAIBLES===========================================================*/
 . 
 . rename bmi_date_measured                                bmi_date_measured
   (all newnames==oldnames)
@@ -28,75 +25,45 @@
 . rename bp_sys_date_measured                                     bp_sys_date
 
 . 
-. /* CONVERT STRINGS TO DATE====================================================*
-> /
+. /* CONVERT STRINGS TO DATE====================================================*/
 . /* Comorb dates are given with month only, so adding day 15 to enable
->    them to be processed as dates                                               
->                                            */
+>    them to be processed as dates                                                                           
+>                */
 . 
 . foreach var of varlist  aplastic_anaemia                                ///
->                                                 asthma_ever                    
->                          ///
->                                                 bmi_date_measured              
->                  ///
->                                                 copd                           
->                  ///
->                                                 creatinine_date                
->                  ///
->                                                 diabetes                       
->                  ///
->                                                 haem_cancer                    
->                  ///
->                                                 heart_failure                  
->                  ///
->                                                 hiv                            
->                  ///
->                                                 hypertension                   
->                  ///
->                                                 esrf                           
->                          ///
->                                                 ili                            
->                  ///
->                                                 lung_cancer                    
->                  ///
->                                                 other_cancer                   
->                  ///
->                                                 other_heart_disease            
->                  ///
->                                                 other_respiratory              
->                  ///
->                                                 permanent_immunodeficiency     
->  ///
->                                                 smoking_status_date            
->                  ///
->                                                 temporary_immunodeficiency     
->  ///
->                                                 insulin                        
->                          ///
->                                                 statin                         
->                          ///
->                                                 ics_single                     
->  ///
->                                                 low_med_dose_ics               
->                  ///
->                                                 high_dose_ics                  
->                  ///
->                                                 saba_single                    
->  ///
->                                                 sama_single                    
->  ///
->                                                 laba_single                    
->  ///
->                                                 lama_single                    
->  ///
->                                                 laba_ics                       
->      ///
->                                                 laba_lama                      
->      ///
->                                                 laba_lama_ics                  
->                  ///
->                                                 oral_steroids                  
->                  ///
+>                                                 asthma_ever                                             ///
+>                                                 bmi_date_measured                               ///
+>                                                 copd                                            ///
+>                                                 creatinine_date                                 ///
+>                                                 diabetes                                        ///
+>                                                 haem_cancer                                     ///
+>                                                 heart_failure                                   ///
+>                                                 hiv                                             ///
+>                                                 hypertension                                    ///
+>                                                 hba1c_percentage_date                   ///
+>                                                 hba1c_mmol_per_mol_date                 ///
+>                                                 esrf                                                    ///
+>                                                 ili                                             ///
+>                                                 lung_cancer                                     ///
+>                                                 other_cancer                                    ///
+>                                                 other_heart_disease                             ///
+>                                                 other_respiratory                               ///
+>                                                 permanent_immunodeficiency      ///
+>                                                 smoking_status_date                             ///
+>                                                 temporary_immunodeficiency      ///
+>                                                 insulin                                                 ///
+>                                                 statin                                                  ///
+>                                                 ics_single                      ///
+>                                                 low_med_dose_ics                                ///
+>                                                 high_dose_ics                                   ///
+>                                                 saba_single                     ///
+>                                                 sama_single                     ///
+>                                                 laba_single                     ///
+>                                                 lama_single                     ///
+>                                                 laba_ics                            ///
+>                                                 laba_lama                           ///
+>                                                 laba_lama_ics                                   ///
+>                                                 oral_steroids                                   ///
 >                         ltra_single {
   2.                                                         
 .                 capture confirm string variable `var'
@@ -108,8 +75,7 @@
 .                 else {
   8.                                 replace `var' = `var' + "-15"
   9.                                 rename `var' `var'_dstr
- 10.                                 replace `var'_dstr = " " if `var'_dstr == "-
-> 15"
+ 10.                                 replace `var'_dstr = " " if `var'_dstr == "-15"
  11.                                 gen `var'_date = date(`var'_dstr, "YMD") 
  12.                                 order `var'_date, after(`var'_dstr)
  13.                                 drop `var'_dstr
@@ -130,8 +96,8 @@ variable bmi_date_measured was str7 now str10
 (85,123 missing values generated)
 variable creatinine_date was str7 now str10
 (1,298,080 real changes made)
-(198,085 real changes made)
-(198,085 missing values generated)
+(702,728 real changes made)
+(702,728 missing values generated)
 variable diabetes was str7 now str10
 (1,298,080 real changes made)
 (1,138,223 real changes made)
@@ -152,6 +118,14 @@ variable hypertension was str7 now str10
 (1,298,080 real changes made)
 (988,139 real changes made)
 (988,139 missing values generated)
+variable hba1c_percentage_date was str7 now str10
+(1,298,080 real changes made)
+(939,667 real changes made)
+(939,667 missing values generated)
+variable hba1c_mmol_per_mol_date was str7 now str10
+(1,298,080 real changes made)
+(465,669 real changes made)
+(465,669 missing values generated)
 variable esrf was str7 now str10
 (1,298,080 real changes made)
 (1,296,312 real changes made)
@@ -244,15 +218,18 @@ variable ltra_single was str7 now str10
 . 
 . * Note - outcome dates are handled separtely below 
 . 
-. /* RENAME VARAIBLES===========================================================*
-> /
+. /* RENAME VARAIBLES===========================================================*/
 . *  An extra 'date' added to the end of some variable names, remove 
 . 
-. rename creatinine_date_date             creatinine_measured_date
+. rename creatinine_date_date                     creatinine_measured_date
 
-. rename smoking_status_date_date         smoking_status_measured_date
+. rename smoking_status_date_date                 smoking_status_measured_date
 
-. rename bmi_date_measured_date           bmi_measured_date
+. rename bmi_date_measured_date                   bmi_measured_date
+
+. rename hba1c_percentage_date_date               hb1ac_percentage_date 
+
+. rename hba1c_mmol_per_mol_date_date             hba1c_mmol_per_mol_date
 
 . 
 . * Some names too long for loops below, shorten
@@ -262,77 +239,45 @@ variable ltra_single was str7 now str10
 . rename temporary_immunodeficiency_date temp_immunodef_date
 
 . 
-. /* CREATE BINARY VARIABLES====================================================*
-> /
-. *  Make indicator variables for all conditions 
+. /* CREATE BINARY VARIABLES====================================================*/
+. *  Make indicator variables for all conditions where relevant 
 . 
 . foreach var of varlist  aplastic_anaemia_date                           ///
->                                                 asthma_ever_date               
->                          ///
->                                                 bmi_measured_date              
->                          ///
->                                                 copd_date                      
->                  ///
->                                                 creatinine_measured_date       
->                  ///
->                                                 diabetes_date                  
->                  ///
->                                                 haem_cancer_date               
->                  ///
->                                                 heart_failure_date             
->                          ///
->                                                 hiv_date                       
->                  ///
->                                                 hypertension_date              
->                  ///
->                                                 esrf_date                      
->                                  ///
->                                                 ili_date                       
->                  ///
->                                                 lung_cancer_date               
->                  ///
->                                                 other_cancer_date              
->                  ///
->                                                 other_heart_disease_date       
->                  ///
->                                                 other_respiratory_date         
->                  ///
->                                                 perm_immunodef_date            
->                  ///
->                                                 smoking_status_measured_date   
->          ///
->                                                 temp_immunodef_date            
->                  ///
->                                                 insulin_date                   
->                          ///
->                                                 statin_date                    
->                          ///
->                                                 ics_single_date                
+>                                                 asthma_ever_date                                        ///
+>                                                 bmi_measured_date                                       ///
+>                                                 copd_date                                       ///
+>                                                 creatinine_measured_date                        ///
+>                                                 diabetes_date                                   ///
+>                                                 haem_cancer_date                                ///
+>                                                 heart_failure_date                                      ///
+>                                                 hiv_date                                        ///
+>                                                 hypertension_date                               ///
+>                                                 esrf_date                                                  
 >      ///
->                                                 low_med_dose_ics_date          
->                  ///
->                                                 high_dose_ics_date             
->                          ///
->                                                 saba_single_date               
->      ///
->                                                 sama_single_date               
->      ///
->                                                 laba_single_date               
->      ///
->                                                 lama_single_date               
->      ///
->                                                 laba_ics_date                  
->      ///
->                                                 laba_lama_date                 
->      ///
->                                                 laba_lama_ics_date             
->                          ///
->                                                 oral_steroids_date             
->                          ///
+>                                                 ili_date                                        ///
+>                                                 lung_cancer_date                                ///
+>                                                 other_cancer_date                               ///
+>                                                 other_heart_disease_date                        ///
+>                                                 other_respiratory_date                          ///
+>                                                 perm_immunodef_date                             ///
+>                                                 smoking_status_measured_date            ///
+>                                                 temp_immunodef_date                             ///
+>                                                 insulin_date                                            ///
+>                                                 statin_date                                             ///
+>                                                 ics_single_date                     ///
+>                                                 low_med_dose_ics_date                           ///
+>                                                 high_dose_ics_date                                      ///
+>                                                 saba_single_date                    ///
+>                                                 sama_single_date                    ///
+>                                                 laba_single_date                    ///
+>                                                 lama_single_date                    ///
+>                                                 laba_ics_date                       ///
+>                                                 laba_lama_date                      ///
+>                                                 laba_lama_ics_date                                      ///
+>                                                 oral_steroids_date                                      ///
 >                         ltra_single_date {
   2.         
-.         /* date ranges are applied in python, so presence of date indicates pre
-> sence of 
+.         /* date ranges are applied in python, so presence of date indicates presence of 
 >           disease in the correct time frame */ 
 .         local newvar =  substr("`var'", 1, length("`var'") - 5)
   3.         gen `newvar' = (`var'!=. )
@@ -341,8 +286,7 @@ variable ltra_single was str7 now str10
 . }
 
 . 
-. /* CREATE VARIABLES===========================================================*
-> /
+. /* CREATE VARIABLES===========================================================*/
 . 
 . /* DEMOGRAPHICS */ 
 . 
@@ -360,14 +304,10 @@ variable ltra_single was str7 now str10
 
 . 
 . label define ethnicity  1 "White"                                       ///
->                                                 2 "Mixed"                      
->                  ///
->                                                 3 "Asian or Asian British"     
->  ///
->                                                 4 "Black"                      
->                  ///
->                                                 5 "Other"                      
->                  ///
+>                                                 2 "Mixed"                                       ///
+>                                                 3 "Asian or Asian British"      ///
+>                                                 4 "Black"                                       ///
+>                                                 5 "Other"                                       ///
 >                                                 .u "Unknown"
 
 . 
@@ -410,8 +350,7 @@ variable ltra_single was str7 now str10
 (imd: 1027009 changes made)
 
 . 
-. label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u 
-> "Unknown"
+. label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
 
 . label values imd imd 
 
@@ -462,7 +401,7 @@ variable ltra_single was str7 now str10
 . 
 . * Recode strange values 
 . replace bmi = . if bmi == 0 
-(89,245 real changes made, 89,245 to missing)
+(89,243 real changes made, 89,243 to missing)
 
 . replace bmi = . if !inrange(bmi, 15, 50)
 (16,887 real changes made, 16,887 to missing)
@@ -488,7 +427,7 @@ variable ltra_single was str7 now str10
 (0 real changes made)
 
 . replace bmi_measured_date = . if bmi == . 
-(27,596 real changes made, 27,596 to missing)
+(27,594 real changes made, 27,594 to missing)
 
 . replace bmi_measured_date = . if bmi == . 
 (0 real changes made)
@@ -498,25 +437,25 @@ variable ltra_single was str7 now str10
 (1,298,080 missing values generated)
 
 . recode  bmicat . = 1 if bmi < 18.5
-(bmicat: 19340 changes made)
+(bmicat: 19342 changes made)
 
 . recode  bmicat . = 2 if bmi < 25
-(bmicat: 344398 changes made)
+(bmicat: 344397 changes made)
 
 . recode  bmicat . = 3 if bmi < 30
-(bmicat: 398686 changes made)
+(bmicat: 398688 changes made)
 
 . recode  bmicat . = 4 if bmi < 35
-(bmicat: 241443 changes made)
+(bmicat: 241441 changes made)
 
 . recode  bmicat . = 5 if bmi < 40
-(bmicat: 113101 changes made)
+(bmicat: 113102 changes made)
 
 . recode  bmicat . = 6 if bmi < .
 (bmicat: 68393 changes made)
 
 . replace bmicat = .u if bmi >= .
-(112,719 real changes made, 112,719 to missing)
+(112,717 real changes made, 112,717 to missing)
 
 . 
 . label define bmicat 1 "Underweight (<18.5)"     ///
@@ -524,8 +463,7 @@ variable ltra_single was str7 now str10
 >                                         3 "Overweight (25-29.9)"        ///
 >                                         4 "Obese I (30-34.9)"           ///
 >                                         5 "Obese II (35-39.9)"          ///
->                                         6 "Obese III (40+)"                    
->  ///
+>                                         6 "Obese III (40+)"                     ///
 >                                         .u "Unknown (.u)"
 
 .                                         
@@ -534,16 +472,13 @@ variable ltra_single was str7 now str10
 . 
 . * Create less  granular categorisation
 . recode bmicat 1/3 .u = 1 4 = 2 5 = 3 6 = 4, gen(obese4cat)
-(1278740 differences between bmicat and obese4cat)
+(1278738 differences between bmicat and obese4cat)
 
 . 
 . label define obese4cat  1 "No record of obesity"        ///
->                                                 2 "Obese I (30-34.9)"          
->  ///
->                                                 3 "Obese II (35-39.9)"         
->  ///
->                                                 4 "Obese III (40+)"            
->  
+>                                                 2 "Obese I (30-34.9)"           ///
+>                                                 3 "Obese II (35-39.9)"          ///
+>                                                 4 "Obese III (40+)"             
 
 . 
 . label values obese4cat obese4cat
@@ -561,10 +496,10 @@ variable ltra_single was str7 now str10
 (701,885 missing values generated)
 
 . replace smoke = 2  if smoking_status == "E"
-(502,605 real changes made)
+(502,611 real changes made)
 
 . replace smoke = 3  if smoking_status == "S"
-(197,147 real changes made)
+(197,141 real changes made)
 
 . replace smoke = .u if smoking_status == "M"
 (2,133 real changes made, 2,133 to missing)
@@ -617,8 +552,7 @@ variable ltra_single was str7 now str10
 >                                          other_cancer ==1)              
 
 .                                          
-. gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_dat
-> e)
+. gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_date)
 (1,230,288 missing values generated)
 
 . format cancer_ever_date %td
@@ -639,11 +573,9 @@ variable ltra_single was str7 now str10
 . * temporary immunodeficiency or aplastic anaemia last year
 . gen temp1  = max(hiv, perm_immunodef)
 
-. gen temp2  = inrange(temp_immunodef_date, (date("$indexdate", "DMY") - 365), da
-> te("$indexdate", "DMY"))
+. gen temp2  = inrange(temp_immunodef_date, (date("$indexdate", "DMY") - 365), date("$indexdate", "DMY"))
 
-. gen temp3  = inrange(aplastic_anaemia_date, (date("$indexdate", "DMY") - 365), 
-> date("$indexdate", "DMY"))
+. gen temp3  = inrange(aplastic_anaemia_date, (date("$indexdate", "DMY") - 365), date("$indexdate", "DMY"))
 
 . 
 . egen immunodef_any = rowmax(temp1 temp2 temp3)
@@ -657,7 +589,7 @@ variable ltra_single was str7 now str10
 . 
 . * Set implausible creatinine values to missing (Note: zero changed to missing)
 . replace creatinine = . if !inrange(creatinine, 20, 3000) 
-(200,827 real changes made, 200,827 to missing)
+(703,615 real changes made, 703,615 to missing)
 
 . 
 . * Remove creatinine dates if no measurements, and vice versa 
@@ -666,89 +598,83 @@ variable ltra_single was str7 now str10
 (0 real changes made)
 
 . replace creatinine_measured_date = . if creatinine == . 
-(2,742 real changes made, 2,742 to missing)
+(887 real changes made, 887 to missing)
 
 . replace creatinine_measured = . if creatinine == . 
-(200,827 real changes made, 200,827 to missing)
+(703,615 real changes made, 703,615 to missing)
 
 . 
 . * Divide by 88.4 (to convert umol/l to mg/dl)
 . gen SCr_adj = creatinine/88.4
-(200,827 missing values generated)
+(703,615 missing values generated)
 
 . 
 . gen min = .
 (1,298,080 missing values generated)
 
 . replace min = SCr_adj/0.7 if male==0
-(675,222 real changes made)
+(376,483 real changes made)
 
 . replace min = SCr_adj/0.9 if male==1
-(422,006 real changes made)
+(217,971 real changes made)
 
 . replace min = min^-0.329  if male==0
-(675,222 real changes made)
+(376,483 real changes made)
 
 . replace min = min^-0.411  if male==1
-(422,006 real changes made)
+(217,971 real changes made)
 
 . replace min = 1 if min<1
-(723,624 real changes made)
+(397,485 real changes made)
 
 . 
 . gen max=.
 (1,298,080 missing values generated)
 
 . replace max=SCr_adj/0.7 if male==0
-(675,222 real changes made)
+(376,483 real changes made)
 
 . replace max=SCr_adj/0.9 if male==1
-(422,006 real changes made)
+(217,971 real changes made)
 
 . replace max=max^-1.209
-(1,097,228 real changes made)
+(594,454 real changes made)
 
 . replace max=1 if max>1
-(574,456 real changes made)
+(900,595 real changes made)
 
 . 
 . gen egfr=min*max*141
-(200,852 missing values generated)
+(703,626 missing values generated)
 
 . replace egfr=egfr*(0.993^age)
-(1,097,228 real changes made)
+(594,454 real changes made)
 
 . replace egfr=egfr*1.018 if male==0
-(675,222 real changes made)
+(376,483 real changes made)
 
 . label var egfr "egfr calculated using CKD-EPI formula with no eth"
 
 . 
 . * Categorise into ckd stages
 . egen egfr_cat = cut(egfr), at(0, 15, 30, 45, 60, 5000)
-(200852 missing values generated)
+(703626 missing values generated)
 
 . recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd_egfr)
-(1097228 differences between egfr_cat and ckd_egfr)
+(594454 differences between egfr_cat and ckd_egfr)
 
 . 
 . * 0 = "No CKD"  2 "stage 3a" 3 "stage 3b" 4 "stage 4" 5 "stage 5"
 . 
 . * Add in end stage renal failure and create a single CKD variable 
-. gen ckd = 1 if esrf == 1
-(1,296,312 missing values generated)
-
-. replace ckd = 0 if esrf == 0
-(1,296,312 real changes made)
+. * Missing assumed to not have CKD 
+. gen ckd = 0
 
 . replace ckd = 1 if ckd_egfr != . & ckd_egfr >= 1
-(72,475 real changes made)
+(60,700 real changes made)
 
-. replace ckd = 0 if ckd_egfr == .
-(38 real changes made)
-
-. replace ckd = 0 if ckd_egfr < 1
-(492 real changes made)
+. replace ckd = 1 if esrf == 1
+(898 real changes made)
 
 . 
 . label define ckd 0 "No CKD" 1 "CKD"
@@ -760,19 +686,116 @@ variable ltra_single was str7 now str10
 . 
 . * Create date (most recent measure prior to index)
 . gen temp1_ckd_date = creatinine_measured_date if ckd_egfr >=1
-(1,224,342 missing values generated)
+(1,237,369 missing values generated)
 
 . gen temp2_ckd_date = esrf_date if esrf == 1
 (1,296,312 missing values generated)
 
 . gen ckd_date = max(temp1_ckd_date,temp2_ckd_date) 
-(1,223,812 missing values generated)
+(1,236,471 missing values generated)
 
 . format ckd_date %td 
 
 . 
-. /* OUTCOME AND SURVIVAL TIME==================================================*
-> /
+. /* Hb1AC */
+. 
+. /*  Diabetes severity  */
+. 
+. * Set zero or negative to missing
+. replace hba1c_percentage   = . if hba1c_percentage <= 0
+(1,087,034 real changes made, 1,087,034 to missing)
+
+. replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol <= 0
+(470,275 real changes made, 470,275 to missing)
+
+. 
+. /* Express  HbA1c as percentage  */ 
+. 
+. * Express all values as perecentage 
+. noi summ hba1c_percentage hba1c_mmol_per_mol 
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+hba1c_perc~e |    211,046    10.60789    2025.924         .1     930709
+hba1c_mmol~l |    827,805     40.8482    162.0534         .6      45000
+
+. gen     hba1c_pct = hba1c_percentage 
+(1,087,034 missing values generated)
+
+. replace hba1c_pct = (hba1c_mmol_per_mol/10.929)+2.15 if hba1c_mmol_per_mol<. 
+(827,805 real changes made)
+
+. 
+. * Valid % range between 0-20  
+. replace hba1c_pct = . if !inrange(hba1c_pct, 0, 20) 
+(45 real changes made, 45 to missing)
+
+. replace hba1c_pct = round(hba1c_pct, 0.1)
+(827,815 real changes made)
+
+. 
+. /* Categorise hba1c and diabetes  */
+. 
+. * Group hba1c
+. gen     hba1ccat = 0 if hba1c_pct <  6.5
+(568,028 missing values generated)
+
+. replace hba1ccat = 1 if hba1c_pct >= 6.5  & hba1c_pct < 7.5
+(53,394 real changes made)
+
+. replace hba1ccat = 2 if hba1c_pct >= 7.5  & hba1c_pct < 8
+(14,191 real changes made)
+
+. replace hba1ccat = 3 if hba1c_pct >= 8    & hba1c_pct < 9
+(15,929 real changes made)
+
+. replace hba1ccat = 4 if hba1c_pct >= 9    & hba1c_pct !=.
+(19,481 real changes made)
+
+. label define hba1ccat 0 "<6.5%" 1">=6.5-7.4" 2">=7.5-7.9" 3">=8-8.9" 4">=9"
+
+. label values hba1ccat hba1ccat
+
+. tab hba1ccat
+
+   hba1ccat |      Freq.     Percent        Cum.
+------------+-----------------------------------
+      <6.5% |    730,052       87.64       87.64
+  >=6.5-7.4 |     53,394        6.41       94.05
+  >=7.5-7.9 |     14,191        1.70       95.75
+    >=8-8.9 |     15,929        1.91       97.66
+        >=9 |     19,481        2.34      100.00
+------------+-----------------------------------
+      Total |    833,047      100.00
+
+. 
+. * Create diabetes, split by control/not
+. gen     diabcat = 1 if diabetes==0
+(159,857 missing values generated)
+
+. replace diabcat = 2 if diabetes==1 & inlist(hba1ccat, 0, 1)
+(106,436 real changes made)
+
+. replace diabcat = 3 if diabetes==1 & inlist(hba1ccat, 2, 3, 4)
+(49,164 real changes made)
+
+. replace diabcat = 4 if diabetes==1 & !inlist(hba1ccat, 0, 1, 2, 3, 4)
+(4,257 real changes made)
+
+. 
+. label define diabcat    1 "No diabetes"                         ///
+>                                                 2 "Controlled diabetes"         ///
+>                                                 3 "Uncontrolled diabetes"       ///
+>                                                 4 "Diabetes, no hba1c measure"
+
+. label values diabcat diabcat
+
+. 
+. * Delete unneeded variables
+. drop hba1c_pct hba1c_percentage hba1c_mmol_per_mol
+
+. 
+. /* OUTCOME AND SURVIVAL TIME==================================================*/
 . 
 . /*  Cohort entry and censor dates  */
 . 
@@ -782,8 +805,7 @@ variable ltra_single was str7 now str10
 . 
 . * Date of study end (typically: last date of outcome data available)
 . **** NOTE!! ITU ADMISSION TO BE REPLACED WITH ECDS OUTCOME 
-. gen cpnsdeathcensor_date                = date("$cpnsdeathcensor",             
->  "DMY")
+. gen cpnsdeathcensor_date                = date("$cpnsdeathcensor",              "DMY")
 
 . gen onscoviddeathcensor_date    = date("$onscoviddeathcensor",  "DMY")
 
@@ -809,13 +831,13 @@ variable ltra_single was str7 now str10
   6.         format `var' %td 
   7.         
 . }
-(1,295,898 missing values generated)
+(1,295,710 missing values generated)
 (1,297,674 missing values generated)
 
 . 
 . * Date of Covid death in ONS
 . gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
-(1,297,472 missing values generated)
+(1,297,408 missing values generated)
 
 . 
 . format died_date_ons %td
@@ -834,29 +856,24 @@ variable ltra_single was str7 now str10
 . * For looping later, name must be stime_binary_outcome_name
 . 
 . * Survival time = last followup date (first: end study, death, or that outcome)
-. gen stime_cpnsdeath     = min(cpnsdeathcensor_date,     died_date_cpns, died_da
-> te_ons)
+. gen stime_cpnsdeath     = min(cpnsdeathcensor_date,     died_date_cpns, died_date_ons)
 
-. gen stime_onscoviddeath = min(onscoviddeathcensor_date,                        
->          died_date_ons)
+. gen stime_onscoviddeath = min(onscoviddeathcensor_date,                                 died_date_ons)
 
 . 
 . * If outcome was after censoring occurred, set to zero
-. replace cpnsdeath               = 0 if (died_date_cpns          > cpnsdeathcens
-> or_date) 
+. replace cpnsdeath               = 0 if (died_date_cpns          > cpnsdeathcensor_date) 
 (15 real changes made)
 
-. replace onscoviddeath   = 0 if (died_date_onscovid      > onscoviddeathcensor_d
-> ate) 
-(93 real changes made)
+. replace onscoviddeath   = 0 if (died_date_onscovid      > onscoviddeathcensor_date) 
+(34 real changes made)
 
 . 
 . * Format date variables
 . format  stime* %td 
 
 . 
-. /* LABEL VARIABLES============================================================*
-> /
+. /* LABEL VARIABLES============================================================*/
 . *  Label variables you are intending to keep, drop the rest 
 . 
 . * Demographics
@@ -872,29 +889,23 @@ variable ltra_single was str7 now str10
 
 . label var male                                          "Male"
 
-. label var bmi                                           "Body Mass Index (BMI, 
-> kg/m2)"
+. label var bmi                                           "Body Mass Index (BMI, kg/m2)"
 
 . label var bmicat                                        "Grouped BMI"
 
-. label var bmi_measured_date             "Body Mass Index (BMI, kg/m2), date mea
-> sured"
+. label var bmi_measured_date             "Body Mass Index (BMI, kg/m2), date measured"
 
-. label var obese4cat                                     "Evidence of obesity (4
->  categories)"
+. label var obese4cat                                     "Evidence of obesity (4 categories)"
 
 . label var smoke                                         "Smoking status"
 
-. label var smoke_nomiss                          "Smoking status (missing set to
->  non)"
+. label var smoke_nomiss                          "Smoking status (missing set to non)"
 
-. label var imd                                           "Index of Multiple Depr
-> ivation (IMD)"
+. label var imd                                           "Index of Multiple Deprivation (IMD)"
 
 . label var ethnicity                                     "Ethnicity"
 
-. label var stp                                           "Sustainability and Tra
-> nsformation Partnership"
+. label var stp                                           "Sustainability and Transformation Partnership"
 
 . 
 . label var age1                                          "Age spline 1"
@@ -920,8 +931,7 @@ variable ltra_single was str7 now str10
 
 . label var lama_single                           "Single LAMA"
 
-. label var laba_ics                                      "LABA ICS"             
->  
+. label var laba_ics                                      "LABA ICS"              
 
 . label var laba_lama                             "LABA LAMA"
 
@@ -962,18 +972,15 @@ variable ltra_single was str7 now str10
 . * Comorbidities of interest 
 . label var asthma_ever                                   "Asthma ever"
 
-. label var ckd                                                   "Chronic kidney
->  disease" 
+. label var ckd                                                   "Chronic kidney disease" 
 
-. label var egfr_cat                                              "Calculated eGF
-> R"
+. label var egfr_cat                                              "Calculated eGFR"
 
 . label var hypertension                              "Diagnosed hypertension"
 
 . label var heart_failure                             "Heart Failure"
 
-. label var ili                                                   "Infleunza Like
->  Illness"
+. label var ili                                                   "Infleunza Like Illness"
 
 . label var other_respiratory                     "Other Respiratory Diseases"
 
@@ -985,45 +992,39 @@ variable ltra_single was str7 now str10
 
 . label var cancer_ever                                   "Cancer"
 
-. label var immunodef_any                                 "Immunosuppressed (comb
-> ination algorithm)"
+. label var immunodef_any                                 "Immunosuppressed (combination algorithm)"
+
+. label var diabcat                                               "Diabetes Severity"
 
 . 
 . label var statin                                                "Recent Statin"
 
-. label var insulin                                               "Recent Insulin
-> "
+. label var insulin                                               "Recent Insulin"
 
 . label var flu_vaccine                                   "Flu vaccine"
 
 . label var pneumococcal_vaccine                  "Pneumococcal Vaccine"
 
-. label var gp_consult                                    "GP consultation in las
-> t year"
+. label var gp_consult                                    "GP consultation in last year"
 
 . label var gp_consult_count                              "GP consultation count"
 
-. label var exacerbations                                 "Exacerbation in last y
-> ear"
+. label var exacerbations                                 "Exacerbation in last year"
 
 . label var exacerbation_count                    "Exacerbation Count"
 
 . 
 . label var asthma_ever_date                              "Asthma date"
 
-. label var ckd_date                                      "Chronic kidney disease
->  Date" 
+. label var ckd_date                                      "Chronic kidney disease Date" 
 
-. label var hypertension_date                         "Diagnosed hypertension Dat
-> e"
+. label var hypertension_date                         "Diagnosed hypertension Date"
 
 . label var heart_failure_date                    "Heart Failure Date"
 
-. label var ili_date                                              "Infleunza Like
->  Illness Date"
+. label var ili_date                                              "Infleunza Like Illness Date"
 
-. label var other_respiratory_date                "Other Respiratory Diseases Dat
-> e"
+. label var other_respiratory_date                "Other Respiratory Diseases Date"
 
 . label var other_heart_disease_date              "Other Heart Diseases Date"
 
@@ -1042,18 +1043,16 @@ variable ltra_single was str7 now str10
 . * Outcomes and follow-up
 . label var enter_date                                    "Date of study entry"
 
-. label var cpnsdeathcensor_date                  "Date of admin censoring for cp
-> ns deaths"
+. label var cpnsdeathcensor_date                  "Date of admin censoring for cpns deaths"
 
-. label var onscoviddeathcensor_date              "Date of admin censoring for ON
-> S deaths"
+. label var onscoviddeathcensor_date              "Date of admin censoring for ONS deaths"
 
 . 
-. label var cpnsdeath                                             "Failure/censor
-> ing indicator for outcome: CPNS covid death"
+. label var cpnsdeath                                             "Failure/censoring indicator for outcome: C
+> PNS covid death"
 
-. label var onscoviddeath                                 "Failure/censoring indi
-> cator for outcome: ONS covid death"
+. label var onscoviddeath                                 "Failure/censoring indicator for outcome: ONS covid
+>  death"
 
 . 
 . label var died_date_cpns                                "Date of CPNS Death"
@@ -1062,27 +1061,21 @@ variable ltra_single was str7 now str10
 
 . 
 . * Survival times
-. label var  stime_cpnsdeath                              "Survival time (date); 
-> outcome CPNS covid death"
+. label var  stime_cpnsdeath                              "Survival time (date); outcome CPNS covid death"
 
-. label var  stime_onscoviddeath                  "Survival time (date); outcome 
-> ONS covid death"
+. label var  stime_onscoviddeath                  "Survival time (date); outcome ONS covid death"
 
 . 
-. /* TIDY DATA==================================================================*
-> /
+. /* TIDY DATA==================================================================*/
 . *  Drop variables that are needed (those labelled)
 . ds, not(varlabel)
-icu_date_a~d  bp_dias       hiv_date      esrf          SCr_adj
-died_ons_c~y  bp_dias_date  hiv           flu_vacci~le  min
-died_ons_c~g  lung_cance~e  perm_immun~e  flu_vaccin~d  max
-ethnicity_~e  lung_cancer   perm_immun~f  flu_vaccin~l  temp1_ckd_~e
-bmi_measured  haem_cance~e  temp_immun~e  pneumococ~le  temp2_ckd_~e
-smoking_st~e  haem_cancer   temp_immun~f  pneumococc~d  died_dat~ons
-smoking_st~d  other_canc~e  creatinine    pneumococc~l
-high_dose_~g  other_cancer  creatinine~e  has_consul~y
-bp_sys        aplastic_a~e  creatinine~d  bmi_time
-bp_sys_date   aplastic_a~a  esrf_date     bmi_age
+icu_date_a~d  high_dose_~g  lung_cance~e  aplastic_a~a  creatinine    flu_vaccin~l  SCr_adj
+died_ons_c~y  bp_sys        lung_cancer   hiv_date      creatinine~e  pneumococ~le  min
+died_ons_c~g  bp_sys_date   haem_cance~e  hiv           creatinine~d  pneumococc~d  max
+ethnicity_~e  bp_dias       haem_cancer   perm_immun~e  esrf_date     pneumococc~l  temp1_ckd_~e
+bmi_measured  bp_dias_date  other_canc~e  perm_immun~f  esrf          has_consul~y  temp2_ckd_~e
+smoking_st~e  hba1c_mmol~e  other_cancer  temp_immun~e  flu_vacci~le  bmi_time      hba1ccat
+smoking_st~d  hb1ac_perc~e  aplastic_a~e  temp_immun~f  flu_vaccin~d  bmi_age       died_dat~ons
 
 . drop `r(varlist)'
 
@@ -1091,8 +1084,7 @@ bp_sys_date   aplastic_a~a  esrf_date     bmi_age
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\00_cr_create
-> _analysis_dataset.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\00_cr_create_analysis_dataset.log
   log type:  text
- closed on:  22 May 2020, 13:55:35
----------------------------------------------------------------------------------
+ closed on:  27 May 2020, 10:37:11
+-------------------------------------------------------------------------------------------------------------

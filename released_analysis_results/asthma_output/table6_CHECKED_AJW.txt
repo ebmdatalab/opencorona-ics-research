@@ -1,0 +1,8 @@
+Table 6: Association between current ICS use and COVID-19 death - Asthma Population ethnicity == 1
+	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+		HR	95% CI	HR	95% CI	HR	95% CI
+Main Analysis
+SABA only	12 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS (Low/Medium Dose)	115 (0.0)	1.93	1.18 - 3.17	1.44	0.88 - 2.37	1.58	0.96 - 2.60
+ICS (High Dose)	35 (0.0)	3.75	2.19 - 6.41	2.67	1.56 - 4.57	2.55	1.49 - 4.39
+

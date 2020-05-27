@@ -1,64 +1,59 @@
----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descript
-> ive_plots_copd.log
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descriptive_plots_copd.log
   log type:  text
- opened on:  22 May 2020, 13:49:30
+ opened on:  27 May 2020, 10:30:36
 
 . 
 . * Open Stata dataset
-. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 . 
-. /* Sense check outcomes=======================================================*
-> / 
-. tab exposure cpnsdeath
+. /* Sense check outcomes=======================================================*/ 
+. tab exposure $outcome
 
                       |   Failure/censoring
                       |     indicator for
-                      |  outcome: CPNS covid
+                      |  outcome: ONS covid
        COPD Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-LABA/LAMA Combination |    43,230         52 |    43,282 
-      ICS Combination |   105,042        209 |   105,251 
+LABA/LAMA Combination |    43,189         87 |    43,276 
+      ICS Combination |   104,917        314 |   105,231 
 ----------------------+----------------------+----------
-                Total |   148,272        261 |   148,533 
+                Total |   148,106        401 |   148,507 
 
 . 
-. /* Generate KM PLOT===========================================================*
-> / 
+. /* Generate KM PLOT===========================================================*/ 
 . 
 . count if exposure != .u
-  148,533
+  148,507
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 148533 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 148507 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
-. sts graph, by(exposure) failure                                                
->                                  ///     
->                    title("Time to hospital COVID-19 death, $population populati
-> on", justification(left) size(medsmall) )           ///
->                    xtitle("Days since 1 Mar 2020", size(small))                
->                          ///
->                    yscale(range(0, 0.005))                                     
->                                                  ///
->                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small)
-> )        ///
->                    xscale(range(30, 84))                                       
->                                                  ///
->                    xlabel(0 (20) 100, labsize(small))                          
->                                  ///                             
->                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label (
-> 2 "ICS Combination") region(lwidth(none)) order(2 1) position(12))       ///
+. sts graph, by(exposure) failure                                                                            
+>      ///     
+>                    title("Time to death, $population population", justification(left) size(medsmall) )     
+>         ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                                         ///
+>                    yscale(range(0, 0.005))                                                                 
+>                      ///
+>                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small))        ///
+>                    xscale(range(30, 84))                                                                   
+>                      ///
+>                    xlabel(0 (20) 100, labsize(small))                                                      
+>      ///                             
+>                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Combination") region(
+> lwidth(none)) order(2 1) position(12))       ///
 >                    graphregion(fcolor(white)) ///       
->                    risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "
-> ICS Combination") title(,size(vsmall))) ///
+>                    risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "ICS Combination") title(,siz
+> e(vsmall))) ///
 >                    saving(kmplot1, replace) 
 
-         failure _d:  cpnsdeath
-   analysis time _t:  (stime_cpnsdeath-origin)
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
              origin:  time enter_date
   enter on or after:  time enter_date
                  id:  patient_id
@@ -82,8 +77,7 @@ RUNNING THE KM PLOT FOR 148533 PEOPLE WITH NON-MISSING EXPOSURE
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descript
-> ive_plots_copd.log
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descriptive_plots_copd.log
   log type:  text
- closed on:  22 May 2020, 13:49:37
----------------------------------------------------------------------------------
+ closed on:  27 May 2020, 10:30:43
+-------------------------------------------------------------------------------------------------------------

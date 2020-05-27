@@ -1,0 +1,428 @@
+--------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\06_an_models_asthma.log
+  log type:  text
+ opened on:  22 May 2020, 10:48:36
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+
+. 
+. /* Sense check outcomes=======================================================*/ 
+. 
+. tab exposure cpnsdeath, missing row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: CPNS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    43,230         52 |    43,282 
+                      |     99.88       0.12 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |   105,042        209 |   105,251 
+                      |     99.80       0.20 |    100.00 
+----------------------+----------------------+----------
+                Other |   143,185        150 |   143,335 
+                      |     99.90       0.10 |    100.00 
+----------------------+----------------------+----------
+                Total |   291,457        411 |   291,868 
+                      |     99.86       0.14 |    100.00 
+
+. 
+. /* Main Model=================================================================*/
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3106.5553
+Iteration 1:   log likelihood = -3100.7919
+Iteration 2:   log likelihood = -3100.7247
+Iteration 3:   log likelihood = -3100.7247
+Refining estimates:
+Iteration 0:   log likelihood = -3100.7247
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,507                  Number of obs    =     148,507
+No. of failures =          261
+Time at risk    =      7838493
+                                                LR chi2(1)       =       11.66
+Log likelihood  =   -3100.7247                  Prob > chi2      =      0.0006
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.655991   .2566276     3.25   0.001     1.222216    2.243716
+----------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/univar, replace 
+file ./copd_tempdata/univar.ster saved
+
+. 
+. /* Multivariable models */ 
+. 
+. * Age and Gender 
+. * Age fit as spline in first instance, categorical below 
+. 
+. stcox i.exposure i.male age1 age2 age3 
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3106.5553
+Iteration 1:   log likelihood = -3042.2896
+Iteration 2:   log likelihood = -2992.6499
+Iteration 3:   log likelihood = -2990.8971
+Iteration 4:   log likelihood = -2990.8874
+Iteration 5:   log likelihood = -2990.8874
+Refining estimates:
+Iteration 0:   log likelihood = -2990.8874
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      148,507                  Number of obs    =     148,507
+No. of failures =          261
+Time at risk    =      7838493
+                                                LR chi2(5)       =      231.34
+Log likelihood  =   -2990.8874                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.563032   .2423232     2.88   0.004      1.15346    2.118034
+          1.male |   2.124234   .2929928     5.46   0.000     1.621053    2.783604
+            age1 |   1.003114   .0441136     0.07   0.944     .9202738     1.09341
+            age2 |   1.185902   .1003251     2.02   0.044     1.004705    1.399777
+            age3 |   .5126707   .1774241    -1.93   0.054     .2601695    1.010231
+----------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/multivar1, replace 
+file ./copd_tempdata/multivar1.ster saved
+
+. 
+. * Age, Gender and Comorbidities 
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss        
+>                   ///
+>                                                                                 i.imd                 
+>                           ///
+>                                                                                 i.ckd                 
+>                           ///             
+>                                                                                 i.hypertension        
+>                   ///             
+>                                                                                 i.heart_failure       
+>                   ///             
+>                                                                                 i.other_heart_disease 
+>           ///             
+>                                                                                 i.diabetes            
+>                           ///             
+>                                                                                 i.cancer_ever         
+>                   ///                                                     
+>                                                                                 i.statin              
+>                           ///             
+>                                                                                 i.insulin             
+>                           ///             
+>                                                                                 i.flu_vaccine         
+>                   ///     
+>                                                                                 i.pneumococcal_vaccine
+>           ///     
+>                                                                                 i.exacerbations       
+>                   ///
+>                                                                                 i.gp_consult, strata(s
+> tp)                               
+
+         failure _d:  cpnsdeath
+   analysis time _t:  (stime_cpnsdeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -1015.1487
+Iteration 1:   log likelihood = -971.21963
+Iteration 2:   log likelihood = -967.17436
+Iteration 3:   log likelihood = -966.89395
+Iteration 4:   log likelihood = -966.88361
+Iteration 5:   log likelihood = -966.88359
+Iteration 6:   log likelihood = -966.88359
+Refining estimates:
+Iteration 0:   log likelihood = -966.88359
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =       33,978                  Number of obs    =      33,978
+No. of failures =          140
+Time at risk    =      1788146
+                                                LR chi2(25)      =       96.53
+Log likelihood  =   -966.88359                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------------
+                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------------+----------------------------------------------------------------
+              exposure |
+      ICS Combination  |   1.034255   .2024932     0.17   0.863     .7046504    1.518034
+                1.male |   1.755388   .3286111     3.01   0.003     1.216262    2.533491
+                  age1 |   1.026847   .1240822     0.22   0.826     .8103043    1.301257
+                  age2 |   1.008299    .194247     0.04   0.966     .6912048    1.470862
+                  age3 |   1.018261    .719293     0.03   0.980     .2550208    4.065767
+                       |
+             obese4cat |
+    Obese I (30-34.9)  |    1.09547   .2277283     0.44   0.661     .7288714    1.646454
+   Obese II (35-39.9)  |   .9244274   .3042548    -0.24   0.811     .4849743    1.762085
+      Obese III (40+)  |   1.447784   .5927164     0.90   0.366     .6489712    3.229847
+                       |
+          smoke_nomiss |
+              Current  |   .4529573   .1465491    -2.45   0.014     .2402486    .8539919
+                       |
+                   imd |
+                    2  |   1.246056   .3128674     0.88   0.381     .7617507    2.038274
+                    3  |   .8649923   .2405932    -0.52   0.602     .5014814    1.492003
+                    4  |   1.058186   .2993679     0.20   0.842     .6077873    1.842352
+      5 most deprived  |   1.546232   .4398382     1.53   0.125      .885408    2.700262
+                       |
+                   ckd |
+                  CKD  |    7.16743   5.365686     2.63   0.009     1.652481    31.08783
+        1.hypertension |   .8903438   .1707632    -0.61   0.545     .6113668    1.296623
+       1.heart_failure |   1.492587   .2880643     2.08   0.038     1.022494    2.178807
+ 1.other_heart_disease |   1.178267   .2205546     0.88   0.381      .816415    1.700499
+            1.diabetes |   1.792779   .3349426     3.12   0.002     1.243077    2.585566
+         1.cancer_ever |   1.032986   .2144598     0.16   0.876     .6876621    1.551721
+              1.statin |   .7604311   .1417563    -1.47   0.142     .5276944    1.095815
+             1.insulin |   .7718456   .2805558    -0.71   0.476     .3785557    1.573733
+         1.flu_vaccine |   .7949355   .1696161    -1.08   0.282     .5232512    1.207685
+1.pneumococcal_vaccine |   1.118319   .3061719     0.41   0.683     .6539206    1.912523
+       1.exacerbations |   1.272749   .2398751     1.28   0.201      .879664    1.841488
+          1.gp_consult |   .7796388   .5609635    -0.35   0.729     .1903002    3.194093
+----------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+.                                                                                 
+. estimates save ./$tempdir/multivar2, replace 
+file ./copd_tempdata/multivar2.ster saved
+
+. 
+. /* MODEL CHANGES TO DO: 
+> - Diabetes as severity, remove insulin 
+> */ 
+. 
+. /* Print table================================================================*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table2.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 2: Association between current ICS use and CPNS death - COPD Populatio
+> n") _n
+
+. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
+>                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _n
+
+. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n
+
+. file write tablecontent ("Main Analysis") _n                                    
+
+. 
+. * Row headings 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+. local lab2: label exposure 2
+
+.  
+. /* Counts */
+.  
+. * First row, exposure = 0 (reference)
+. 
+.         cou if exposure == 0 
+  43,282
+
+.         local rowdenom = r(N)
+
+.         cou if exposure == 0 & cpnsdeath == 1
+  52
+
+.         local pct = 100*(r(N)/`rowdenom') 
+
+.         
+.         file write tablecontent ("`lab0'") _tab
+
+.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+.         file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
+
+.         
+. * Second row, exposure = 1 (comparator)
+. 
+. file write tablecontent ("`lab1'") _tab  
+
+. 
+.         cou if exposure == 1 
+  105,251
+
+.         local rowdenom = r(N)
+
+.         cou if exposure == 1 & cpnsdeath == 1
+  209
+
+.         local pct = 100*(r(N)/`rowdenom') 
+
+.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+. 
+. /* Main Model */ 
+. estimates use ./$tempdir/univar 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.655991   .2566276     3.25   0.001     1.222216    2.243716
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. 
+. estimates use ./$tempdir/multivar1 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.563032   .2423232     2.88   0.004      1.15346    2.118034
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. 
+. estimates use ./$tempdir/multivar2 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.034255   .2024932     0.17   0.863     .7046504    1.518034
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. * Third row, exposure = 2 (comparator)
+. 
+. file write tablecontent ("`lab2'") _tab  
+
+. 
+.         cou if exposure == 2
+  0
+
+.         local rowdenom = r(N)
+
+.         cou if exposure == 2 & cpnsdeath == 1
+  0
+
+.         local pct = 100*(r(N)/`rowdenom') 
+
+.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+. 
+. /* Main Model */ 
+. estimates use ./$tempdir/univar 
+
+. lincom 2.exposure, eform
+regressor I2.exposure not found
+r(111);
+
+end of do-file
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "C:\Users\ALEXWA~1\AppData\Local\Temp\6\STD7728_000000.tmp"
+
+. clear
+
+. import delimited `c(pwd)'/input_asthma.csv, clear
+(68 vars, 1,298,080 obs)
+
+. set more off 
+
+. 
+. * Create directories required 
+. 
+. capture mkdir asthma_output
+
+. capture mkdir asthma_log
+
+. capture mkdir asthma_tempdata
+
+. 
+. global population "Asthma"
+
+. global outdir  "asthma_output" 
+
+. global logdir  "asthma_log"
+
+. global tempdir "asthma_tempdata"
+
+. 
+. /*  Pre-analysis data manipulation  */
+. 
+. do "00_cr_create_analysis_dataset.do"
+
+. /*==============================================================================
+> DO FILE NAME:                   00_cr_create_analysis_dataset
+> PROJECT:                                ICS in COVID-19 
+> DATE:                                   6th of May 2020 
+> AUTHOR:                                 A Wong, A Schultze, C Rentsch
+>                                                 adapted from K Baskharan, E Williamson                
+>                                                           
+> DESCRIPTION OF FILE:    program 00, data management for ICS project  
+>                                                 reformat variables 
+>                                                 categorise variables
+>                                                 label variables 
+> DATASETS USED:                  data in memory (from analysis/input_xxx.csv)
+> 
+> DATASETS CREATED:               none
+> OTHER OUTPUT:                   logfiles, printed to folder analysis/$logdir
+>                                                         
+> ==============================================================================*/
+. 
+. * Open a log file
+. 
+. cap log close

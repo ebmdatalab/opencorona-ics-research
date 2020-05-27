@@ -1,0 +1,21 @@
+S1 Table 3: Current ICS use and death, Age Interaction - COPD - Sensitivity Exposure Definition Population
+	N	Univariable			Age/Sex Adjusted			Age/Sex and Comorbidity Adjusted			
+		HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	
+Agegroup				.743			.745			.767
+3
+LABA/LAMA Combination	1 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	2 (0.0)	1.36	0.19 - 9.67		1.38	0.19 - 9.82		1.27	0.18 - 9.04	
+ICS Triple Combination	5 (0.1)	1.75	0.34 - 9.00		1.78	0.34 - 9.16		1.58	0.31 - 8.13	
+4
+LABA/LAMA Combination	6 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	4 (0.0)	1.52	0.53 - 4.34		1.55	0.54 - 4.41		1.42	0.50 - 4.06	
+ICS Triple Combination	12 (0.1)	1.00	0.39 - 2.54		1.01	0.40 - 2.56		0.89	0.35 - 2.25	
+5
+LABA/LAMA Combination	20 (0.1)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	17 (0.1)	1.31	0.77 - 2.24		1.32	0.77 - 2.24		1.28	0.75 - 2.19	
+ICS Triple Combination	69 (0.2)	1.84	1.20 - 2.80		1.83	1.20 - 2.79		1.68	1.10 - 2.56	
+6
+LABA/LAMA Combination	25 (0.3)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	20 (0.3)	1.11	0.74 - 1.65		1.12	0.75 - 1.67		1.11	0.74 - 1.66	
+ICS Triple Combination	80 (0.6)	1.31	0.95 - 1.83		1.32	0.95 - 1.83		1.23	0.88 - 1.72	
+

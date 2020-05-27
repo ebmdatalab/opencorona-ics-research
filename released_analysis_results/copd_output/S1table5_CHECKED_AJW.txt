@@ -1,0 +1,78 @@
+S1 Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) - COPD - Sensitivity Exposure Definition population
+	HR	95% CI
+Evidence of obesity (4 categories)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.16	0.85 - 1.58
+ICS Triple Combination	1.42	1.11 - 1.83	
+
+Smoking status (missing set to non)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.12	0.83 - 1.53
+ICS Triple Combination	1.38	1.08 - 1.77	
+
+Index of Multiple Deprivation (IMD)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.40	1.09 - 1.80	
+
+Chronic kidney disease
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.17	0.86 - 1.60
+ICS Triple Combination	1.45	1.13 - 1.85	
+
+Diagnosed hypertension
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.42	1.10 - 1.81	
+
+Heart Failure
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.17	0.86 - 1.59
+ICS Triple Combination	1.41	1.10 - 1.81	
+
+Other Heart Diseases
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.16	0.85 - 1.57
+ICS Triple Combination	1.42	1.11 - 1.82	
+
+Diabetes Severity
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.42	1.11 - 1.82	
+
+Cancer
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.42	1.10 - 1.81	
+
+Recent Statin
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.42	1.10 - 1.81	
+
+Oral Steroids
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.14	0.84 - 1.56
+ICS Triple Combination	1.37	1.07 - 1.77	
+
+Flu vaccine
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.41	1.10 - 1.81	
+
+Pneumococcal Vaccine
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.84 - 1.56
+ICS Triple Combination	1.41	1.10 - 1.81	
+
+Exacerbation in last year
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.14	0.84 - 1.55
+ICS Triple Combination	1.36	1.06 - 1.75	
+
+GP consultation in last year
+LABA/LAMA Combination	1.00 (ref)	
+ICS Dual Combination	1.15	0.85 - 1.56
+ICS Triple Combination	1.41	1.10 - 1.81	
+
+

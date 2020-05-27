@@ -1,66 +1,60 @@
----------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
-> ptive_plots.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots.log
   log type:  text
- opened on:  22 May 2020, 13:57:19
+ opened on:  27 May 2020, 10:38:54
 
 . 
 . * Open Stata dataset
-. use $tempdir\analysis_dataset_STSET_cpnsdeath, clear
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
 
 . 
-. /* Sense check outcomes=======================================================*
-> / 
-. tab exposure cpnsdeath
+. /* Sense check outcomes=======================================================*/ 
+. tab exposure $outcome
 
                       |   Failure/censoring
                       |     indicator for
-                      |  outcome: CPNS covid
+                      |  outcome: ONS covid
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   108,392         30 |   108,422 
-ICS (Low/Medium Dose) |   608,525        225 |   608,750 
-      ICS (High Dose) |   100,983         64 |   101,047 
+            SABA only |   108,373         46 |   108,419 
+ICS (Low/Medium Dose) |   608,387        350 |   608,737 
+      ICS (High Dose) |   100,943        101 |   101,044 
 ----------------------+----------------------+----------
-                Total |   817,900        319 |   818,219 
+                Total |   817,703        497 |   818,200 
 
 . 
-. /* Generate KM PLOT===========================================================*
-> / 
+. /* Generate KM PLOT===========================================================*/ 
 . 
 . count if exposure != .u
-  818,219
+  818,200
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 818219 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 818200 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
-. sts graph, by(exposure) failure                                                
->                                  ///     
->                    title("Time to hospital COVID-19 death, $population populati
-> on", justification(left) size(medsmall) )           ///
->                    xtitle("Days since 1 Mar 2020", size(small))                
->                          ///
->                    yscale(range(0, 0.005))                                     
->                                                  ///
->                    ylabel(0 (0.005) 0.02, angle(0) format(%4.3f) labsize(small)
-> )        ///
->                    xscale(range(30, 84))                                       
->                                                  ///
->                    xlabel(0 (20) 100, labsize(small))                          
->                                  ///                             
->                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/
-> Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))   
->   ///
+. sts graph, by(exposure) failure                                                                            
+>      ///     
+>                    title("Time to COVID-19 death, $population population", justification(left) size(medsmal
+> l) )            ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                                         ///
+>                    yscale(range(0, 0.005))                                                                 
+>                      ///
+>                    ylabel(0 (0.005) 0.01, angle(0) format(%4.3f) labsize(small))        ///
+>                    xscale(range(30, 84))                                                                   
+>                      ///
+>                    xlabel(0 (20) 100, labsize(small))                                                      
+>      ///                             
+>                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/Medium Dose)") label (3 "ICS
+>  (High Dose)")region(lwidth(none)) position(12))     ///
 >                    graphregion(fcolor(white)) ///       
->                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Med
-> ium Dose)" 3 "ICS (High Dose)") title(,size(vsmall))) ///
+>                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Medium Dose)" 3 "ICS (High Dose
+> )") title(,size(vsmall))) ///
 >                    saving(kmplot1, replace)
 
-         failure _d:  cpnsdeath
-   analysis time _t:  (stime_cpnsdeath-origin)
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
              origin:  time enter_date
   enter on or after:  time enter_date
                  id:  patient_id
@@ -84,8 +78,7 @@ RUNNING THE KM PLOT FOR 818219 PEOPLE WITH NON-MISSING EXPOSURE
 . * Close log file 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descri
-> ptive_plots.log
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots.log
   log type:  text
- closed on:  22 May 2020, 13:57:44
----------------------------------------------------------------------------------
+ closed on:  27 May 2020, 10:39:18
+-------------------------------------------------------------------------------------------------------------

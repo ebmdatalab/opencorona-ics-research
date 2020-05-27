@@ -1,16 +1,17 @@
-Table 3: Current ICS use and CPNS death, Age Interaction - COPD Population
+Table 3: Current ICS use and ONS COVID-19 death, Age Interaction - COPD Population
 	N	Univariable			Age/Sex Adjusted			Age/Sex and Comorbidity Adjusted			
 		HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	
-Agegroup				.76			.761			.755
+Agegroup				.6890000000000001			.7010000000000001			.724
 3
 LABA/LAMA Combination	1 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
-ICS Combination	7 (0.0)	3.28	0.40 - 26.65		3.35	0.41 - 27.21		2.98	0.37 - 24.28	
+ICS Combination	7 (0.0)	1.64	0.34 - 7.89		1.67	0.35 - 8.03		1.54	0.32 - 7.40	
 4
 LABA/LAMA Combination	6 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
-ICS Combination	16 (0.1)	1.14	0.45 - 2.91		1.15	0.45 - 2.94		1.02	0.40 - 2.60	
+ICS Combination	16 (0.1)	1.16	0.49 - 2.76		1.17	0.49 - 2.78		1.07	0.45 - 2.54	
 5
 LABA/LAMA Combination	20 (0.1)	1.00 (ref)		1.00 (ref)		1.00 (ref)
-ICS Combination	86 (0.2)	1.72	1.06 - 2.79		1.71	1.05 - 2.79		1.59	0.97 - 2.59	
+ICS Combination	86 (0.2)	1.70	1.12 - 2.56		1.70	1.12 - 2.56		1.62	1.07 - 2.45	
 6
 LABA/LAMA Combination	25 (0.3)	1.00 (ref)		1.00 (ref)		1.00 (ref)
-ICS Combination	100 (0.5)	1.50	0.97 - 2.32		1.51	0.97 - 2.33		1.43	0.92 - 2.23	
+ICS Combination	100 (0.5)	1.27	0.92 - 1.74		1.27	0.93 - 1.74		1.25	0.91 - 1.72	
+
