@@ -47,6 +47,8 @@ foreach var of varlist 	aplastic_anaemia				///
 						heart_failure 					///
 						hiv             				///
 						hypertension     				///
+						hba1c_percentage	  			///
+						hba1c_mmol_per_mol				///
 						esrf 							///
 						ili              				///
 						lung_cancer      				///
@@ -104,7 +106,7 @@ rename permanent_immunodeficiency_date perm_immunodef_date
 rename temporary_immunodeficiency_date temp_immunodef_date
 
 /* CREATE BINARY VARIABLES====================================================*/
-*  Make indicator variables for all conditions 
+*  Make indicator variables for all conditions where relevant 
 
 foreach var of varlist 	aplastic_anaemia_date				///
 						asthma_ever_date					///
