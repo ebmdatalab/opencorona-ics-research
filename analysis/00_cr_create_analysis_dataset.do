@@ -47,8 +47,6 @@ foreach var of varlist 	aplastic_anaemia				///
 						heart_failure 					///
 						hiv             				///
 						hypertension     				///
-						hba1c_percentage	  			///
-						hba1c_mmol_per_mol				///
 						esrf 							///
 						ili              				///
 						lung_cancer      				///
@@ -395,10 +393,6 @@ format ckd_date %td
 * Set zero or negative to missing
 replace hba1c_percentage   = . if hba1c_percentage <= 0
 replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol <= 0
-
-* Only consider measurements in last 15 months
-replace hba1c_percentage   = . if hba1c_percentage_date   < d(1/12/2018)
-replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol_date < d(1/12/2018)
 
 /* Express  HbA1c as percentage  */ 
 
