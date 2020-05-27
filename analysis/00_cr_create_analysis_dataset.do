@@ -47,6 +47,8 @@ foreach var of varlist 	aplastic_anaemia				///
 						heart_failure 					///
 						hiv             				///
 						hypertension     				///
+						hba1c_percentage_date  			///
+						hba1c_mmol_per_mol_date			///
 						esrf 							///
 						ili              				///
 						lung_cancer      				///
@@ -94,9 +96,11 @@ foreach var of varlist 	aplastic_anaemia				///
 /* RENAME VARAIBLES===========================================================*/
 *  An extra 'date' added to the end of some variable names, remove 
 
-rename creatinine_date_date 		creatinine_measured_date
-rename smoking_status_date_date 	smoking_status_measured_date
-rename bmi_date_measured_date  		bmi_measured_date
+rename creatinine_date_date 			creatinine_measured_date
+rename smoking_status_date_date 		smoking_status_measured_date
+rename bmi_date_measured_date  			bmi_measured_date
+rename hba1c_percentage_date_date		hb1ac_percentage_date 
+rename hba1c_mmol_per_mol_date_date		hba1c_mmol_per_mol_date
 
 * Some names too long for loops below, shorten
 
