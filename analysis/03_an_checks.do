@@ -108,6 +108,12 @@ tab agegroup age70, m
 * Smoking
 tab smoke smoke_nomiss, m
 
+* Diabetes
+tab diabcat diabetes, m
+
+* CKD
+tab ckd egfr_cat, m
+
 /* Treatment variables */ 
 
 foreach var of varlist 	high_dose_ics		///
