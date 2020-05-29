@@ -115,15 +115,3 @@ restore
 
 * Close log file 
 log close
-
-
-
-
-
-
-
-
-
-
-
-

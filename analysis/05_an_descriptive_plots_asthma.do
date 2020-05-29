@@ -16,7 +16,7 @@ OTHER OUTPUT: 			Results in svg: $outdir\kmplot1
 
 * Open a log file
 capture log close
-log using $logdir\05_an_descriptive_plots, replace t
+log using $logdir\05_an_descriptive_plots_asthma, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_$outcome, clear

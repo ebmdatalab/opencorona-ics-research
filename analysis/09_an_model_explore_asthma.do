@@ -65,5 +65,3 @@ file close tablecontent
 
 * Close log file 
 log close
-
-
