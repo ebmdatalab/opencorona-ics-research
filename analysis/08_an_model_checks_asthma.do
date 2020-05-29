@@ -103,19 +103,7 @@ graph export "$outdir/schoenplot2b.svg", as(svg) replace
 * Close window 
 graph close
 		  
-stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
-										i.smoke_nomiss				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///					
-										i.statin 					///		
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///
-										i.exacerbations, strata(stp)	
+stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)	
 estat phtest, detail
 local multivar2_p1 = round(r(phtest)[2,4],0.001)
 local multivar2_p2 = round(r(phtest)[3,4],0.001)

@@ -71,37 +71,11 @@ lrtest A B
 local multivar1_p = round(r(p),0.001)
 
 * Age, Gender and Comorbidities 
-stcox i.exposure i.agegroup i.male   	i.obese4cat					///
-										i.smoke_nomiss				///
-										i.asthma_ever				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///							
-										i.statin 					///		
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.exacerbations, strata(stp)					
+stcox i.exposure i.agegroup i.male $varlist, strata(stp)					
 										
 estimates store A
 
-stcox i.exposure##i.agegroup i.male     i.obese4cat					///
-										i.smoke_nomiss				///
-										i.asthma_ever				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///							
-										i.statin 					///			
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.exacerbations, strata(stp)			
+stcox i.exposure##i.agegroup i.male $varlist, strata(stp)			
 estimates store B
 estimates save ./$tempdir/multivar2_int, replace 
 

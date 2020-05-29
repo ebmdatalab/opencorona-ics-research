@@ -33,22 +33,8 @@ file write tablecontent _tab ("HR") _tab ("95% CI") _n
 
 /* Adjust one covariate at a time=============================================*/
 
-foreach var of varlist 	obese4cat				///
-						smoke_nomiss			///
-						imd 					///
-						ckd	 					///		
-						hypertension			///	
-						heart_failure			///	
-						other_heart_disease		///	
-						diabcat 				///	
-						cancer_ever 			///	
-						statin 					///	
-						oral_steroids 			///	
-						flu_vaccine 			///	
-						pneumococcal_vaccine	///	
-						exacerbations 			///
-						gp_consult { 
-	
+foreach var of varlist $varlist { 
+	local var: subinstr local var "i." ""
 	local lab: variable label `var'
 	file write tablecontent ("`lab'") _n 
 	
