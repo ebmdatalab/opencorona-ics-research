@@ -33,7 +33,7 @@ file write tablecontent _tab ("HR") _tab ("95% CI") _n
 
 /* Adjust one covariate at a time=============================================*/
 
-foreach var of varlist $varlist { 
+foreach var in $varlist { 
 	local var: subinstr local var "i." ""
 	local lab: variable label `var'
 	file write tablecontent ("`lab'") _n 
