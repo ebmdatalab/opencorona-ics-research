@@ -18,6 +18,22 @@ global outcome "onscoviddeath"
 global outdir  	  "copd_output" 
 global logdir     "copd_log"
 global tempdir    "copd_tempdata"
+global covariates 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.gp_consult				///
+					i.asthma_ever				///
+					i.immunodef_any
 
 /*  Pre-analysis data manipulation  */
 
@@ -59,6 +75,21 @@ global outcome "onscoviddeath"
 global outdir  "asthma_output" 
 global logdir  "asthma_log"
 global tempdir "asthma_tempdata"
+global covariates 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.gp_consult				///
+					i.immunodef_any
 
 
 /*  Pre-analysis data manipulation  */

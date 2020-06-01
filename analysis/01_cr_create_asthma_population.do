@@ -83,8 +83,3 @@ drop lama_check
 
 * Close log file 
 log close					   
-					   
-					   
-					   
-					   
-					   

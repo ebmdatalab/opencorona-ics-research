@@ -245,31 +245,14 @@ file write tablecontent _n
 
 ** COMORBIDITIES (binary)
 
-foreach comorb of varlist 	asthma_ever						///
-							ckd								///
-							copd							///
-							hypertension			 		///
-							heart_failure					///
-							other_heart_disease		 		///
-							diabetes 						///
-							cancer_ever 					///
-							immunodef_any		 			///
-							other_respiratory 				///
-							statin 							///
-							insulin							///
-							oral_steroids 					///
-							flu_vaccine 					///
-							pneumococcal_vaccine			///
-							exacerbations					///
-							gp_consult {
-
-local lab: variable label `comorb'
-file write tablecontent ("`lab'") _n 
-							
-generaterow, variable(`comorb') condition("==0")
-generaterow, variable(`comorb') condition("==1")
-file write tablecontent _n
-
+foreach comorb in $varlist { 
+	local comorb: subinstr local comorb "i." ""
+	local lab: variable label `comorb'
+	file write tablecontent ("`lab'") _n 
+								
+	generaterow, variable(`comorb') condition("==0")
+	generaterow, variable(`comorb') condition("==1")
+	file write tablecontent _n
 }
 
 * COMORBIDITIES (continous)

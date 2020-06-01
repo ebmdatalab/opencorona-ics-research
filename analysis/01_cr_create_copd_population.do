@@ -84,9 +84,3 @@ datacheck ltra_single == 0, nol
 
 * Close log file 
 log close
-
-
-
-
-
-
