@@ -17,8 +17,10 @@ study = StudyDefinition(
     ## STUDY POPULATION (required)
     population=patients.satisfying(
         """
-        has_asthma OR
-        (asthma_ever AND any_asthma_med) AND
+        (
+          has_asthma OR
+          (asthma_ever AND any_asthma_med)
+        ) AND
         (age >=18 AND age <= 110) AND
         has_follow_up AND NOT
         copd AND NOT
