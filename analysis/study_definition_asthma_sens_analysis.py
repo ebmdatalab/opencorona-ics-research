@@ -57,7 +57,6 @@ study = StudyDefinition(
             laba_single OR
             sama_single OR
             saba_single OR
-            oral_steroids OR
             ics_single OR
             low_med_dose_ics OR
             low_med_dose_ics_multiple_ingredient OR
