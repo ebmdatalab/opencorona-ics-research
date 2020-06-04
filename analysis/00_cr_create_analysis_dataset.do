@@ -24,7 +24,7 @@ log using $logdir\00_cr_create_analysis_dataset, replace t
 * Censoring dates for each outcome (largely, last date outcome data available)
 
 global cpnsdeathcensor 		= "23/04/2020"
-global onscoviddeathcensor 	= "02/05/2020"
+global onscoviddeathcensor 	= "06/05/2020"
 global indexdate 			= "01/03/2020"
 
 /* RENAME VARAIBLES===========================================================*/
@@ -471,12 +471,18 @@ foreach var of varlist 	died_date_ons 		///
 * Date of Covid death in ONS
 gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
 
+* Date of non-COVID death in ONS 
+* If missing date of death resulting died_date will also be missing
+gen died_date_onsnoncovid = died_date_ons if died_ons_covid_flag_any != 1 
+
 format died_date_ons %td
 format died_date_onscovid %td 
+format died_date_onsnoncovid %td
 
 * Binary indicators for outcomes
 gen cpnsdeath 		= (died_date_cpns		< .)
 gen onscoviddeath 	= (died_date_onscovid 	< .)
+gen onsnoncoviddeath = (died_date_onsnoncovid < .)
 
 /*  Create survival times  */
 
@@ -486,9 +492,13 @@ gen onscoviddeath 	= (died_date_onscovid 	< .)
 gen stime_cpnsdeath  	= min(cpnsdeathcensor_date, 	died_date_cpns, died_date_ons)
 gen stime_onscoviddeath = min(onscoviddeathcensor_date, 				died_date_ons)
 
+* Equivalent to onscoviddeath, but creating a separate variable for clarity 
+gen stime_onsnoncoviddeath = min(onscoviddeathcensor_date, died_date_ons)
+
 * If outcome was after censoring occurred, set to zero
 replace cpnsdeath 		= 0 if (died_date_cpns		> cpnsdeathcensor_date) 
 replace onscoviddeath 	= 0 if (died_date_onscovid	> onscoviddeathcensor_date) 
+replace onsnoncoviddeath = 0 if (died_date_onsnoncovid > onscoviddeathcensor_date)
 
 * Format date variables
 format  stime* %td 
@@ -592,16 +602,19 @@ label var onscoviddeathcensor_date 		"Date of admin censoring for ONS deaths"
 
 label var cpnsdeath						"Failure/censoring indicator for outcome: CPNS covid death"
 label var onscoviddeath					"Failure/censoring indicator for outcome: ONS covid death"
+label var onsnoncoviddeath				"Failure/censoring indicator for outcome: ONS non-covid death"
 
 label var died_date_cpns				"Date of CPNS Death"
-label var died_date_onscovid 			"Date of ONS Death"
+label var died_date_onscovid 			"Date of ONS COVID Death"
+label var died_date_onsnoncovid			"Date of ONS non-COVID death"
 
 * Survival times
 label var  stime_cpnsdeath 				"Survival time (date); outcome CPNS covid death"
 label var  stime_onscoviddeath 			"Survival time (date); outcome ONS covid death"
+label var  stime_onsnoncoviddeath		"Survival tme (date); outcome ONS non covid death"
 
 /* TIDY DATA==================================================================*/
-*  Drop variables that are needed (those labelled)
+*  Drop variables that are not needed (those not labelled)
 ds, not(varlabel)
 drop `r(varlist)'
 	

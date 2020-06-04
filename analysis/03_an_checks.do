@@ -92,7 +92,7 @@ foreach var of varlist  asthma_ever					///
 * Outcome dates
 
 summ  stime_cpnsdeath stime_onscoviddeath,   format
-summ  died_date_ons died_date_cpns died_date_onscovid, format
+summ  died_date_onsnoncovid died_date_cpns died_date_onscovid, format
 
 
 /* LOGICAL RELATIONSHIPS======================================================*/ 
