@@ -186,6 +186,10 @@ do "S1-10_an_models_ethnicity_copd"
 
 /* COPD */
 
+clear
+import delimited `c(pwd)'/input_copd.csv, clear
+set more off 
+
 * Create directories required 
 
 capture mkdir copd_output_sens2
