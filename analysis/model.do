@@ -14,7 +14,7 @@ capture mkdir copd_tempdata
 * Set globals that will print in programs and direct output
 
 global population "COPD"
-global outcome "onscoviddeath"
+global outcome 	  "onscoviddeath"
 global outdir  	  "copd_output" 
 global logdir     "copd_log"
 global tempdir    "copd_tempdata"
@@ -34,6 +34,9 @@ global covariates 	i.obese4cat					///
 					i.gp_consult				///
 					i.asthma_ever				///
 					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
 
 /*  Pre-analysis data manipulation  */
 
@@ -70,11 +73,11 @@ capture mkdir asthma_output
 capture mkdir asthma_log
 capture mkdir asthma_tempdata
 
-global population "Asthma"
-global outcome "onscoviddeath"
-global outdir  "asthma_output" 
-global logdir  "asthma_log"
-global tempdir "asthma_tempdata"
+global population   "Asthma"
+global outcome 		"onscoviddeath"
+global outdir  		"asthma_output" 
+global logdir  		"asthma_log"
+global tempdir 		"asthma_tempdata"
 global covariates 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
@@ -91,6 +94,8 @@ global covariates 	i.obese4cat					///
 					i.gp_consult				///
 					i.immunodef_any
 
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
 
 /*  Pre-analysis data manipulation  */
 
@@ -122,11 +127,34 @@ clear
 import delimited `c(pwd)'/input_copd.csv, clear
 set more off 
 
+capture mkdir copd_output_sens1
+capture mkdir copd_log_sens1
+capture mkdir copd_tempdata_sens1
+
 global population "COPD - Sensitivity Exposure Definition"
-global outcome "onscoviddeath"
-global outdir  	  "copd_output" 
-global logdir     "copd_log"
-global tempdir    "copd_tempdata"
+global outcome 	  "onscoviddeath"
+global outdir  	  "copd_output_sens1" 
+global logdir     "copd_log_sens1"
+global tempdir    "copd_tempdata_sens1"
+global covariates 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.gp_consult				///
+					i.asthma_ever				///
+					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
 
 /*  Pre-analysis data manipulation  */
 
@@ -187,6 +215,9 @@ global covariates 	i.obese4cat					///
 					i.gp_consult				///
 					i.asthma_ever				///
 					i.immunodef_any
+										
+global tableoutcome "Non-COVID Death in ONS"
+global ymax 1
 
 /*  Pre-analysis data manipulation  */
 
@@ -241,7 +272,9 @@ global covariates 	i.obese4cat					///
 					i.exacerbations 			///
 					i.gp_consult				///
 					i.immunodef_any
-
+					
+global tableoutcome "Non-COVID Death in ONS"
+global ymax 0.2
 
 /*  Pre-analysis data manipulation  */
 

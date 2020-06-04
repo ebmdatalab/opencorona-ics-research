@@ -43,20 +43,7 @@ stcox i.exposure i.male age1 age2 age3
 estimates save ./$tempdir/multivar1, replace 
 
 * Age, Gender and Comorbidities 
-stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
-										i.smoke_nomiss				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///							
-										i.statin 					///		
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.exacerbations 			///
-										i.gp_consult, strata(stp)				
+stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)				
 										
 estimates save ./$tempdir/multivar2, replace 
 
@@ -71,7 +58,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/S1table2.txt, write text replace
 
 * Column headings 
-file write tablecontent ("S1 Table 2: Association between current ICS use and CPNS death - $population Population") _n
+file write tablecontent ("S1 Table 2: Association between current ICS use and $tableoutcome - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
@@ -89,7 +76,7 @@ local lab2: label exposure 2
 
 	cou if exposure == 0 
 	local rowdenom = r(N)
-	cou if exposure == 0 & cpnsdeath == 1
+	cou if exposure == 0 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	
 	file write tablecontent ("`lab0'") _tab
@@ -102,7 +89,7 @@ file write tablecontent ("`lab1'") _tab
 
 	cou if exposure == 1 
 	local rowdenom = r(N)
-	cou if exposure == 1 & cpnsdeath == 1
+	cou if exposure == 1 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
@@ -125,7 +112,7 @@ file write tablecontent ("`lab2'") _tab
 
 	cou if exposure == 2
 	local rowdenom = r(N)
-	cou if exposure == 2 & cpnsdeath == 1
+	cou if exposure == 2 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
