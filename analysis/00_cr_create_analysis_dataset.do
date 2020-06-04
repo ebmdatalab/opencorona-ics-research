@@ -224,7 +224,7 @@ assert age < .
 assert agegroup < .
 assert age70 < .
 
-* Create restricted cubic splines fir age
+* Create restricted cubic splines for age
 mkspline age = age, cubic nknots(4)
 
 /*  Body Mass Index  */

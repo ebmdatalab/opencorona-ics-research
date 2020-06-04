@@ -293,6 +293,7 @@ file write tablecontent _n
 
 summarizevariable, variable(gp_consult_count)
 summarizevariable, variable(exacerbation_count)
+summarizevariable, variable(age)
 
 file close tablecontent
 
