@@ -61,7 +61,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table2.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 2: Association between current ICS use and Covid death - $population Population") _n
+file write tablecontent ("Table 2: Association between current ICS use and $tableoutcome - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
@@ -79,7 +79,7 @@ local lab2: label exposure 2
 
 	cou if exposure == 0 
 	local rowdenom = r(N)
-	cou if exposure == 0 & cpnsdeath == 1
+	cou if exposure == 0 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	
 	file write tablecontent ("`lab0'") _tab
@@ -92,7 +92,7 @@ file write tablecontent ("`lab1'") _tab
 
 	cou if exposure == 1 
 	local rowdenom = r(N)
-	cou if exposure == 1 & cpnsdeath == 1
+	cou if exposure == 1 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 
@@ -115,7 +115,7 @@ file write tablecontent ("`lab2'") _tab
 
 	cou if exposure == 2
 	local rowdenom = r(N)
-	cou if exposure == 2 & cpnsdeath == 1
+	cou if exposure == 2 & $outcome == 1
 	local pct = 100*(r(N)/`rowdenom') 
 	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
 

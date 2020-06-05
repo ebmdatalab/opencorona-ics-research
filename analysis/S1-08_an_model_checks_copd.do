@@ -103,19 +103,7 @@ graph export "$outdir/schoenplotS2b.svg", as(svg) replace
 * Close window 
 graph close
 		  
-stcox i.exposure i.male age1 age2 age3 	i.obese4cat					///
-										i.smoke_nomiss				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///					
-										i.statin 					///			
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///
-										i.exacerbations, strata(stp)	
+stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)	
 estat phtest, detail
 local multivar2_p1 = round(r(phtest)[2,4],0.001)
 local multivar2_p2 = round(r(phtest)[3,4],0.001)
@@ -158,7 +146,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/S1table4.txt, write text replace
 
 * Column headings 
-file write tablecontent ("S1 Table 4: Testing the PH assumption - $population Population") _n
+file write tablecontent ("S1 Table 4: Testing the PH assumption for $tableoutcome - $population Population") _n
 file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _n
 						

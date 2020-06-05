@@ -51,6 +51,12 @@ drop dup_check
 * INCLUSION 1: Asthma in 3 years before 1 March 2020 
 datacheck asthma_ever == 1, nol
 
+* Check time from index to asthma, if asthma 
+* + 15 because dates are imputed for covariates 
+gen asthma_time = ((enter_date - asthma_ever_date) + 15)/365.25
+datacheck asthma_time > 3, nol
+drop asthma_time
+
 * INCLUSION 2: >=18 and <=110 at 1 March 2020 
 assert age < .
 assert age >= 18 

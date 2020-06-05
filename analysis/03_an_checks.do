@@ -66,6 +66,7 @@ foreach var of varlist 	high_dose_ics		///
 						laba_lama_ics 		///
 						ltra_single	 {
 						
+	tab `var', missing					
 	summ `var'_date, format
 
 }
@@ -89,11 +90,16 @@ foreach var of varlist  asthma_ever					///
 
 }
 
+foreach comorb in $varlist { 
+
+	local comorb: subinstr local comorb "i." ""
+	tab `comorb', m
+	
+}
+
 * Outcome dates
-
 summ  stime_cpnsdeath stime_onscoviddeath,   format
-summ  died_date_ons died_date_cpns died_date_onscovid, format
-
+summ  died_date_onsnoncovid died_date_cpns died_date_onscovid, format
 
 /* LOGICAL RELATIONSHIPS======================================================*/ 
 
@@ -154,11 +160,6 @@ tab smoke imd, 			row
 tab smoke hypertension, row 
                             
 tab ethnicity imd, 		row 
-
-
-/*  Relationships with demographic/lifestyle variables  */ 
-						*exacerbation				///
-						*exacerbation_count			///
 
 * Relationships with age
 foreach var of varlist  ckd     					///	

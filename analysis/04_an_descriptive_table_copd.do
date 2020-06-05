@@ -139,6 +139,22 @@ syntax, variable(varname)
 	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
 	
 	qui summarize `variable', d
+	file write tablecontent ("Mean (SD)") _tab 
+	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+							
+	qui summarize `variable' if exposure == 0, d
+	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+
+	qui summarize `variable' if exposure == 1, d
+	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+	
+	qui summarize `variable' if exposure == 2, d
+	file write tablecontent (r(mean)) (" (") (r(sd))  (")") _tab
+
+	qui summarize `variable' if exposure >= ., d
+	file write tablecontent (r(mean)) (" (") (r(sd))  (")") _n
+	
+	qui summarize `variable', d
 	file write tablecontent ("Min, Max") _tab 
 	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
 							
@@ -250,6 +266,7 @@ foreach comorb in $varlist {
 
 summarizevariable, variable(gp_consult_count)
 summarizevariable, variable(exacerbation_count)
+summarizevariable, variable(age)
 
 file close tablecontent
 

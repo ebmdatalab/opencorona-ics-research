@@ -87,7 +87,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table3.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 3: Current ICS use and COVID-19 death, Age Interaction - $population Population") _n
+file write tablecontent ("Table 3: Current ICS use and $tableoutcome, Age Interaction - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab _tab  ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///
@@ -121,7 +121,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 0 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 0  & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 0  & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 			
@@ -134,7 +134,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 1 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 1 & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 1 & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
@@ -158,7 +158,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 2 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 2 & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 2 & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab

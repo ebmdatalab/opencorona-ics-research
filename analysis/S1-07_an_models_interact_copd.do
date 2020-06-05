@@ -71,35 +71,11 @@ lrtest A B
 local multivar1_p = round(r(p),0.001)
 
 * Age, Gender and Comorbidities 
-stcox i.exposure i.agegroup i.male   	i.obese4cat					///
-										i.smoke_nomiss				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///							
-										i.statin 					///			
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.exacerbations, strata(stp)					
+stcox i.exposure i.agegroup i.male  $varlist, strata(stp)					
 										
 estimates store A
 
-stcox i.exposure##i.agegroup i.male     i.obese4cat					///
-										i.smoke_nomiss				///
-										i.imd 						///
-										i.ckd	 					///		
-										i.hypertension			 	///		
-										i.heart_failure				///		
-										i.other_heart_disease		///		
-										i.diabcat 					///		
-										i.cancer_ever 				///							
-										i.statin 					///			
-										i.flu_vaccine 				///	
-										i.pneumococcal_vaccine		///	
-										i.exacerbations	, strata(stp)			
+stcox i.exposure##i.agegroup i.male $varlist, strata(stp)			
 estimates store B
 estimates save ./$tempdir/multivar2_int, replace 
 
@@ -111,7 +87,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/S1table3.txt, write text replace
 
 * Column headings 
-file write tablecontent ("S1 Table 3: Current ICS use and death, Age Interaction - $population Population") _n
+file write tablecontent ("S1 Table 3: Current ICS use and $tableoutcome, Age Interaction - $population Population") _n
 file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab _tab ("Age/Sex Adjusted") _tab _tab _tab  ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _tab _n
 file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("p (interaction)") _tab ("HR") _tab ///
@@ -145,7 +121,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 0 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 0  & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 0  & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 			
@@ -158,7 +134,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 1 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 1 & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 1 & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
@@ -182,7 +158,7 @@ syntax, variable(varname) min(real) max(real)
 
 			cou if exposure == 2 & `variable' == `varlevel'
 			local rowdenom = r(N)
-			cou if exposure == 2 & `variable' == `varlevel' & cpnsdeath == 1
+			cou if exposure == 2 & `variable' == `varlevel' & $outcome == 1
 			local pct = 100*(r(N)/`rowdenom')
 			
 		file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab

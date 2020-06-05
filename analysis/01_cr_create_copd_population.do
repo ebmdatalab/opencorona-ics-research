@@ -67,11 +67,12 @@ datacheck inlist(smoke, 2, 3), nol
 
 * EXCLUSION 2: No diagnosis of conflicting respiratory conditions 
 * Check time from index to asthma, if asthma 
-* - 15 because dates are imputed for covariates 
+* + 15 because dates are imputed for covariates 
 datacheck other_respiratory == 0, nol
-gen asthma_time = ((enter_date - asthma_ever_date) - 15)/365.25
+gen asthma_time = ((enter_date - asthma_ever_date) + 15)/365.25
 
 datacheck asthma_time > 3, nol
+drop asthma_time
 
 * EXCLUSION 4: Nebulising treament 
 * [VARIABLE NOT EXPORTED, CANNOT QUANTIFY]

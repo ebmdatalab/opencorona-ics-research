@@ -146,7 +146,7 @@ cap file close tablecontent
 file open tablecontent using ./$outdir/table4.txt, write text replace
 
 * Column headings 
-file write tablecontent ("Table 4: Testing the PH assumption - $population Population") _n
+file write tablecontent ("Table 4: Testing the PH assumption for $tableoutcome - $population Population") _n
 file write tablecontent _tab ("Univariable") _tab ("Age/Sex Adjusted") _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _n
 						
