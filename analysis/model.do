@@ -308,7 +308,61 @@ do "09_an_model_explore_asthma.do"
 
 /* 	SENSITIVITY 4=============================================================*/
 *   Asthma population: ever diagnosis + recent treatment 
-*   Requires new input.csv file to be generated, on hold for now 
+
+clear
+import delimited `c(pwd)'/input_asthma_sens_analysis.csv, clear
+set more off 
+
+* Create directories required 
+
+capture mkdir asthma_output_sens3
+capture mkdir asthma_log_sens3
+capture mkdir asthma_tempdata_sens3
+
+global population "Asthma"
+global outcome "onscoviddeath"
+global outdir  "asthma_output_sens3" 
+global logdir  "asthma_log_sens3"
+global tempdir "asthma_tempdata_sens3"
+global covariates 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.gp_consult				///
+					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
+
+/*  Pre-analysis data manipulation  */
+
+do "00_cr_create_analysis_dataset.do"
+
+* COPD specific data manipulation   
+do "01_cr_create_asthma_population.do"
+do "02_cr_create_asthma_exposure.do"
+
+/*  Checks  */
+
+do "03_an_checks.do"
+
+/* Run analysis */ 
+
+* Asthma specific analyses 
+do "04_an_descriptive_table_asthma.do"
+do "05_an_descriptive_plots_asthma.do"
+do "06_an_models_asthma.do"
+do "08_an_model_checks_asthma.do"
+do "09_an_model_explore_asthma.do"
 
 
 
