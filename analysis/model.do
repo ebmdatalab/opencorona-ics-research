@@ -18,7 +18,7 @@ global outcome 	  "onscoviddeath"
 global outdir  	  "copd_output" 
 global logdir     "copd_log"
 global tempdir    "copd_tempdata"
-global covariates 	i.obese4cat					///
+global varlist 		i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
@@ -78,7 +78,7 @@ global outcome 		"onscoviddeath"
 global outdir  		"asthma_output" 
 global logdir  		"asthma_log"
 global tempdir 		"asthma_tempdata"
-global covariates 	i.obese4cat					///
+global varlist	 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
@@ -136,7 +136,7 @@ global outcome 	  "onscoviddeath"
 global outdir  	  "copd_output_sens1" 
 global logdir     "copd_log_sens1"
 global tempdir    "copd_tempdata_sens1"
-global covariates 	i.obese4cat					///
+global varlist	 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
@@ -203,7 +203,7 @@ global outcome "onsnoncoviddeath"
 global outdir  	  "copd_output_sens2" 
 global logdir     "copd_log_sens2"
 global tempdir    "copd_tempdata_sens2"
-global covariates 	i.obese4cat					///
+global varlist	 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
@@ -261,7 +261,7 @@ global outcome "onsnoncoviddeath"
 global outdir  "asthma_output_sens2" 
 global logdir  "asthma_log_sens2"
 global tempdir "asthma_tempdata_sens2"
-global covariates 	i.obese4cat					///
+global varlist	 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
@@ -324,7 +324,7 @@ global outcome "onscoviddeath"
 global outdir  "asthma_output_sens3" 
 global logdir  "asthma_log_sens3"
 global tempdir "asthma_tempdata_sens3"
-global covariates 	i.obese4cat					///
+global varlist	 	i.obese4cat					///
 					i.smoke_nomiss				///
 					i.imd 						///
 					i.ckd	 					///
