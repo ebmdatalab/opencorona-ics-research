@@ -31,7 +31,6 @@ global varlist 		i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.asthma_ever				///
 					i.immunodef_any
 					
@@ -91,7 +90,6 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.immunodef_any
 
 global tableoutcome "COVID-19 Death in ONS"
@@ -149,7 +147,6 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.asthma_ever				///
 					i.immunodef_any
 					
@@ -216,7 +213,6 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.asthma_ever				///
 					i.immunodef_any
 										
@@ -274,7 +270,6 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.immunodef_any
 					
 global tableoutcome "Non-COVID Death in ONS"
@@ -337,7 +332,6 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
-					i.gp_consult				///
 					i.immunodef_any
 					
 global tableoutcome "COVID-19 Death in ONS"
