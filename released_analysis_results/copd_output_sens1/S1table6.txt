@@ -1,0 +1,8 @@
+S1 Table 6: Association between current ICS use and COVID-19 Death in ONS - COPD - Sensitivity Exposure Definition Population ethnicity == 1
+	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+		HR	95% CI	HR	95% CI	HR	95% CI
+Main Analysis
+LABA/LAMA Combination	76 (0.2)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	72 (0.3)	1.37	1.00 - 1.90	1.22	0.88 - 1.68	1.24	0.89 - 1.72
+ICS Triple Combination	166 (0.3)	1.24	0.95 - 1.63	1.17	0.89 - 1.54	1.10	0.83 - 1.45
+

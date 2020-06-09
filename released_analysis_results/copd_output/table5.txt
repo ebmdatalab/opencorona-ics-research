@@ -1,0 +1,63 @@
+Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) - COPD population
+	HR	95% CI
+Evidence of obesity (4 categories)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.39	1.09 - 1.75
+
+Smoking status (missing set to non)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.35	1.06 - 1.71
+
+Index of Multiple Deprivation (IMD)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.37	1.08 - 1.73
+
+Chronic kidney disease
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.41	1.11 - 1.78
+
+Diagnosed hypertension
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.74
+
+Heart Failure
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.75
+
+Other Heart Diseases
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.75
+
+Diabetes Severity
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.75
+
+Cancer
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.74
+
+Recent Statin
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.74
+
+Flu vaccine
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.74
+
+Pneumococcal Vaccine
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.37	1.09 - 1.74
+
+Exacerbation in last year
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.34	1.06 - 1.69
+
+Asthma ever
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.41	1.11 - 1.79
+
+Immunosuppressed (combination algorithm)
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.38	1.09 - 1.74
+
+

@@ -1,0 +1,59 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\09_an_model_explore_copd.log
+  log type:  text
+ opened on:   9 Jun 2020, 11:00:02
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Print table================================================================*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table5.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) - $population population") _n
+
+. file write tablecontent _tab ("HR") _tab ("95% CI") _n
+
+. 
+. /* Adjust one covariate at a time=============================================*/
+. 
+. foreach var in $varlist { 
+  2.         local var: subinstr local var "i." ""
+  3.         local lab: variable label `var'
+  4.         file write tablecontent ("`lab'") _n 
+  5.         
+.         qui stcox i.exposure i.male age1 age2 age3 i.`var', strata(stp) 
+  6.                 
+.                 local lab0: label exposure 0
+  7.                 local lab1: label exposure 1
+  8. 
+.                 file write tablecontent ("`lab0'") _tab
+  9.                 file write tablecontent ("1.00 (ref)") _tab _n
+ 10.                 file write tablecontent ("`lab1'") _tab  
+ 11.                 
+.                 qui lincom 1.exposure, eform
+ 12.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n _n
+ 13.                                                                         
+. }       
+
+. 
+. file write tablecontent _n
+
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\09_an_model_explore_copd.log
+  log type:  text
+ closed on:   9 Jun 2020, 11:01:16
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
