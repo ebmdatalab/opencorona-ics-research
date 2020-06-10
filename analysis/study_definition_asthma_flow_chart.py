@@ -97,8 +97,8 @@ study = StudyDefinition(
             high_dose_ics_multiple_ingredient OR
             high_dose_ics_single_ing OR
             high_dose_ics
-
-            """
+            """,
+        return_expectations={"incidence": 0.9},
     ),
     age_cat=patients.satisfying(
         "age >=35 AND age <= 110",
