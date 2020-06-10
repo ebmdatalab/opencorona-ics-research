@@ -1,0 +1,67 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\09_an_model_explore_asthma.log
+  log type:  text
+ opened on:   9 Jun 2020, 12:02:32
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Print table================================================================*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table5.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) - $population population") _n
+
+. file write tablecontent _tab ("HR") _tab ("95% CI") _n
+
+. 
+. /* Adjust one covariate at a time=============================================*/
+. 
+. foreach var in $varlist { 
+  2.         local var: subinstr local var "i." ""
+  3.         local lab: variable label `var'
+  4.         file write tablecontent ("`lab'") _n 
+  5.         
+.         capture stcox i.exposure i.male age1 age2 age3 i.`var', strata(stp)     
+  6.         if !_rc {
+  7.                 local lab0: label exposure 0
+  8.                 local lab1: label exposure 1
+  9.                 local lab2: label exposure 2
+ 10. 
+.                 file write tablecontent ("`lab0'") _tab
+ 11.                 file write tablecontent ("1.00 (ref)") _tab _n
+ 12.                 file write tablecontent ("`lab1'") _tab  
+ 13.                 
+.                 qui lincom 1.exposure, eform
+ 14.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n
+ 15.                 
+.                 file write tablecontent ("`lab2'") _tab  
+ 16.                 
+.                 qui lincom 2.exposure, eform
+ 17.                 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab _n _n                                                 
+ 18.                                                                         
+.         }
+ 19.         else di "*WARNING `var' MODEL DID NOT SUCCESSFULLY FIT*"
+ 20. }
+
+. 
+. file write tablecontent _n
+
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\09_an_model_explore_asthma.log
+  log type:  text
+ closed on:   9 Jun 2020, 12:10:02
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

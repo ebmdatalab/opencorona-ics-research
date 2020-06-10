@@ -1,0 +1,77 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-05_an_descriptive_plots.log
+  log type:  text
+ opened on:   9 Jun 2020, 11:35:21
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Sense check outcomes=======================================================*/ 
+. tab exposure $outcome
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    43,188         90 |    43,278 
+ ICS Dual Combination |    29,780         88 |    29,868 
+ICS Triple Combinatio |    75,099        243 |    75,342 
+----------------------+----------------------+----------
+                Total |   148,067        421 |   148,488 
+
+. 
+. /* Generate KM PLOT===========================================================*/ 
+. 
+. count if exposure != .u
+  148,488
+
+. noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
+RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
+
+. 
+. sts graph, by(exposure) failure                                                                                 ///     
+>                    title("Time to $tableoutcome, $population population", justification(left) size(medsmall) )             ///
+>                    xtitle("Days since 1 Mar 2020", size(small))                                         ///
+>                    yscale(range(0, $ymax))                                                                                      ///
+>                    ylabel(0 ($ymax) 0.02, angle(0) format(%4.3f) labsize(small))        ///
+>                    xscale(range(30, 84))                                                                                        ///
+>                    xlabel(0 (20) 100, labsize(small))                                                           ///                             
+>                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Dual Combination") label (3 "ICS Triple Combination") region(lwidth(none)) position(12))  ///
+>                    graphregion(fcolor(white)) ///       
+>                    risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "ICS Dual Combination" 3 "ICS Triple Combination") title(,size(vsmall))) ///
+>                    saving(kmplotS1, replace)
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+(note: file kmplotS1.gph not found)
+(file kmplotS1.gph saved)
+(file kmplotS1.gph saved)
+
+. 
+. graph export "$outdir/kmplotS1.svg", as(svg) replace
+(file copd_output_sens1/kmplotS1.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase kmplotS1.gph
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-05_an_descriptive_plots.log
+  log type:  text
+ closed on:   9 Jun 2020, 11:35:28
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

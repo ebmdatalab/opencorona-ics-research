@@ -1,0 +1,21 @@
+Table 3: Current ICS use and COVID-19 Death in ONS, Age Interaction - Asthma Population
+	N	Univariable			Age/Sex Adjusted			Age/Sex and Comorbidity Adjusted			
+		HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	
+Agegroup				.12			.117			.179
+3
+SABA only	6 (0.0)	1.00 (ref)			1.00 (ref)			1.00 (ref)
+ICS (Low/Medium Dose)	47 (0.0)	1.64	0.70 - 3.83		1.65	0.71 - 3.87		1.67	0.71 - 3.92	
+ICS (High Dose)	13 (0.0)	2.85	1.08 - 7.49		2.91	1.11 - 7.65		2.53	0.96 - 6.66	
+4
+SABA only	9 (0.1)	1.00 (ref)			1.00 (ref)			1.00 (ref)
+ICS (Low/Medium Dose)	39 (0.0)	0.57	0.28 - 1.18		0.58	0.28 - 1.19		0.65	0.31 - 1.34	
+ICS (High Dose)	19 (0.1)	1.55	0.70 - 3.44		1.58	0.71 - 3.49		1.45	0.65 - 3.21	
+5
+SABA only	14 (0.2)	1.00 (ref)			1.00 (ref)			1.00 (ref)
+ICS (Low/Medium Dose)	97 (0.1)	0.80	0.46 - 1.40		0.80	0.46 - 1.40		0.90	0.52 - 1.58	
+ICS (High Dose)	33 (0.2)	1.56	0.84 - 2.92		1.56	0.84 - 2.92		1.46	0.78 - 2.74	
+6
+SABA only	20 (0.4)	1.00 (ref)			1.00 (ref)			1.00 (ref)
+ICS (Low/Medium Dose)	179 (0.4)	1.13	0.71 - 1.80		1.13	0.71 - 1.79		1.31	0.82 - 2.08	
+ICS (High Dose)	39 (0.5)	1.39	0.81 - 2.38		1.38	0.80 - 2.36		1.37	0.80 - 2.36	
+

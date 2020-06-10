@@ -1,0 +1,73 @@
+Table 5: 1 by 1 comorbidity adjustments (after age/sex and strata adjustments) - Asthma population
+	HR	95% CI
+Evidence of obesity (4 categories)
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.76	0.64 - 0.91
+ICS (High Dose)	0.91	0.74 - 1.12	
+
+Smoking status (missing set to non)
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.78	0.66 - 0.92
+ICS (High Dose)	0.92	0.75 - 1.14	
+
+Index of Multiple Deprivation (IMD)
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.77	0.65 - 0.91
+ICS (High Dose)	0.91	0.74 - 1.12	
+
+Chronic kidney disease
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.78	0.65 - 0.92
+ICS (High Dose)	0.92	0.74 - 1.13	
+
+Diagnosed hypertension
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.76	0.64 - 0.91
+ICS (High Dose)	0.91	0.73 - 1.12	
+
+Heart Failure
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.78	0.65 - 0.92
+ICS (High Dose)	0.90	0.73 - 1.12	
+
+Other Heart Diseases
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.77	0.65 - 0.91
+ICS (High Dose)	0.91	0.74 - 1.12	
+
+Diabetes Severity
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.78	0.66 - 0.93
+ICS (High Dose)	0.92	0.74 - 1.13	
+
+Cancer
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.77	0.65 - 0.91
+ICS (High Dose)	0.90	0.73 - 1.11	
+
+Recent Statin
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.77	0.65 - 0.91
+ICS (High Dose)	0.91	0.74 - 1.13	
+
+Flu vaccine
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.78	0.66 - 0.93
+ICS (High Dose)	0.93	0.75 - 1.15	
+
+Pneumococcal Vaccine
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.76	0.64 - 0.90
+ICS (High Dose)	0.91	0.74 - 1.12	
+
+Exacerbation in last year
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.75	0.63 - 0.89
+ICS (High Dose)	0.86	0.69 - 1.06	
+
+Immunosuppressed (combination algorithm)
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	0.76	0.64 - 0.91
+ICS (High Dose)	0.91	0.74 - 1.12	
+
+

@@ -1,0 +1,342 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\10_an_models_ethnicity_copd.log
+  log type:  text
+ opened on:   9 Jun 2020, 11:01:16
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Restrict population========================================================*/ 
+. 
+. preserve 
+
+. drop if ethnicity != 1
+(73,088 observations deleted)
+
+. 
+. /* Sense check outcomes=======================================================*/ 
+. 
+. tab exposure $outcome, missing row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    32,379         76 |    32,455 
+                      |     99.77       0.23 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |    79,444        238 |    79,682 
+                      |     99.70       0.30 |    100.00 
+----------------------+----------------------+----------
+                Other |   106,352        228 |   106,580 
+                      |     99.79       0.21 |    100.00 
+----------------------+----------------------+----------
+                Total |   218,175        542 |   218,717 
+                      |     99.75       0.25 |    100.00 
+
+. 
+. /* Main Model=================================================================*/
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure 
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3648.8415
+Iteration 1:   log likelihood =   -3647.04
+Iteration 2:   log likelihood =  -3647.035
+Iteration 3:   log likelihood =  -3647.035
+Refining estimates:
+Iteration 0:   log likelihood =  -3647.035
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      112,137                  Number of obs    =     112,137
+No. of failures =          314
+Time at risk    =      7362069
+                                                LR chi2(1)       =        3.61
+Log likelihood  =    -3647.035                  Prob > chi2      =      0.0573
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.278128   .1684007     1.86   0.063     .9872421    1.654722
+----------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/univar, replace 
+file ./copd_tempdata/univar.ster saved
+
+. 
+. /* Multivariable models */ 
+. 
+. * Age and Gender 
+. * Age fit as spline in first instance, categorical below 
+. 
+. stcox i.exposure i.male age1 age2 age3 
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood = -3648.8415
+Iteration 1:   log likelihood = -3498.0645
+Iteration 2:   log likelihood = -3469.9249
+Iteration 3:   log likelihood = -3468.7922
+Iteration 4:   log likelihood = -3468.7548
+Iteration 5:   log likelihood = -3468.7547
+Iteration 6:   log likelihood = -3468.7547
+Refining estimates:
+Iteration 0:   log likelihood = -3468.7547
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      112,137                  Number of obs    =     112,137
+No. of failures =          314
+Time at risk    =      7362069
+                                                LR chi2(5)       =      360.17
+Log likelihood  =   -3468.7547                  Prob > chi2      =      0.0000
+
+----------------------------------------------------------------------------------
+              _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-----------------+----------------------------------------------------------------
+        exposure |
+ICS Combination  |   1.186819   .1564431     1.30   0.194      .916604    1.536695
+          1.male |   1.660446   .1981893     4.25   0.000     1.314093    2.098086
+            age1 |   1.028437   .0513596     0.56   0.574     .9325437    1.134191
+            age2 |   1.155041   .1044789     1.59   0.111     .9673918     1.37909
+            age3 |   .6013289   .2140924    -1.43   0.153     .2992658    1.208279
+----------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/multivar1, replace 
+file ./copd_tempdata/multivar1.ster saved
+
+. 
+. * Age, Gender and Comorbidities 
+. stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)                            
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood =    -2688.5
+Iteration 1:   log likelihood = -2476.2713
+Iteration 2:   log likelihood = -2440.9101
+Iteration 3:   log likelihood = -2439.7563
+Iteration 4:   log likelihood = -2439.7244
+Iteration 5:   log likelihood = -2439.7243
+Iteration 6:   log likelihood = -2439.7243
+Refining estimates:
+Iteration 0:   log likelihood = -2439.7243
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      112,137                  Number of obs    =     112,137
+No. of failures =          314
+Time at risk    =      7362069
+                                                LR chi2(27)      =      497.55
+Log likelihood  =   -2439.7243                  Prob > chi2      =      0.0000
+
+---------------------------------------------------------------------------------------------
+                         _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------------+----------------------------------------------------------------
+                   exposure |
+           ICS Combination  |   1.133852   .1538583     0.93   0.355     .8690649    1.479313
+                     1.male |   1.627961   .1992856     3.98   0.000     1.280693    2.069394
+                       age1 |   1.024383   .0513486     0.48   0.631     .9285271    1.130134
+                       age2 |   1.129467   .1025837     1.34   0.180     .9452864    1.349534
+                       age3 |   .6526519   .2336793    -1.19   0.233     .3235284    1.316591
+                            |
+                  obese4cat |
+         Obese I (30-34.9)  |   1.179549   .1700173     1.15   0.252     .8892541     1.56461
+        Obese II (35-39.9)  |   1.323853   .2721716     1.36   0.172     .8847912    1.980791
+           Obese III (40+)  |   1.944955   .5126498     2.52   0.012     1.160248    3.260383
+                            |
+               smoke_nomiss |
+                   Current  |   .5571332   .0988839    -3.30   0.001     .3934429    .7889261
+                            |
+                        imd |
+                         2  |   1.045222   .1855088     0.25   0.803     .7381341     1.48007
+                         3  |   .7331715   .1438798    -1.58   0.114      .499072     1.07708
+                         4  |   1.185099   .2138991     0.94   0.347     .8319949    1.688062
+           5 most deprived  |   1.498543   .2722373     2.23   0.026     1.049623    2.139466
+                            |
+                        ckd |
+                       CKD  |   1.642332   .2080339     3.92   0.000     1.281266    2.105147
+             1.hypertension |   .9669353   .1228466    -0.26   0.791     .7537971    1.240339
+            1.heart_failure |   1.862674   .2536769     4.57   0.000     1.426304     2.43255
+      1.other_heart_disease |   1.079451    .138336     0.60   0.551     .8396883    1.387675
+                            |
+                    diabcat |
+       Controlled diabetes  |   1.570046   .2085683     3.40   0.001     1.210144    2.036985
+     Uncontrolled diabetes  |   1.687931   .3310405     2.67   0.008     1.149253      2.4791
+Diabetes, no hba1c measure  |   1.306724   1.314288     0.27   0.790      .181993    9.382379
+                            |
+              1.cancer_ever |   1.132681     .15665     0.90   0.368      .863746     1.48535
+                   1.statin |   .8857052   .1113807    -0.97   0.334     .6922253    1.133264
+              1.flu_vaccine |   .7120603   .1116419    -2.17   0.030     .5236719    .9682204
+     1.pneumococcal_vaccine |   .9845707   .1807543    -0.08   0.933     .6870328    1.410965
+            1.exacerbations |   1.495766   .1796551     3.35   0.001     1.182025    1.892783
+              1.asthma_ever |   .8880021   .1191401    -0.89   0.376     .6826707    1.155092
+            1.immunodef_any |   1.048455   1.052451     0.05   0.962     .1465897    7.498871
+---------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+.                                                                                 
+. estimates save ./$tempdir/multivar2, replace 
+file ./copd_tempdata/multivar2.ster saved
+
+. 
+. /* MODEL CHANGES TO DO: 
+> - Diabetes as severity, remove insulin 
+> */ 
+. 
+. /* Print table================================================================*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table6.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 6: Association between current ICS use and $tableoutcome - $population Population, ethnicity == 1") _n
+
+. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
+>                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _n
+
+. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n
+
+. file write tablecontent ("Main Analysis") _n                                    
+
+. 
+. * Row headings 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+.  
+. /* Counts */
+.  
+. * First row, exposure = 0 (reference)
+. 
+.         cou if exposure == 0 
+  32,455
+
+.         local rowdenom = r(N)
+
+.         cou if exposure == 0 & $outcome == 1
+  76
+
+.         local pct = 100*(r(N)/`rowdenom') 
+
+.         
+.         file write tablecontent ("`lab0'") _tab
+
+.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+.         file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
+
+.         
+. * Second row, exposure = 1 (comparator)
+. 
+. file write tablecontent ("`lab1'") _tab  
+
+. 
+.         cou if exposure == 1 
+  79,682
+
+.         local rowdenom = r(N)
+
+.         cou if exposure == 1 & $outcome == 1
+  238
+
+.         local pct = 100*(r(N)/`rowdenom') 
+
+.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+
+. 
+. /* Main Model */ 
+. estimates use ./$tempdir/univar 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.278128   .1684007     1.86   0.063     .9872421    1.654722
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. 
+. estimates use ./$tempdir/multivar1 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.186819   .1564431     1.30   0.194      .916604    1.536695
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. 
+. estimates use ./$tempdir/multivar2 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.133852   .1538583     0.93   0.355     .8690649    1.479313
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. 
+. file write tablecontent _n
+
+. file close tablecontent
+
+. 
+. restore 
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\10_an_models_ethnicity_copd.log
+  log type:  text
+ closed on:   9 Jun 2020, 11:01:32
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+Table 3: Current ICS use and COVID-19 Death in ONS, Age Interaction - COPD Population
+	N	Univariable			Age/Sex Adjusted			Age/Sex and Comorbidity Adjusted			
+		HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	HR	95% CI	p (interaction)	
+Agegroup				.884			.891			.898
+3
+LABA/LAMA Combination	2 (0.0)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	7 (0.0)	1.64	0.34 - 7.90		1.67	0.35 - 8.02		1.54	0.32 - 7.44	
+4
+LABA/LAMA Combination	7 (0.1)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	20 (0.1)	1.22	0.52 - 2.89		1.23	0.52 - 2.91		1.13	0.48 - 2.68	
+5
+LABA/LAMA Combination	30 (0.2)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	121 (0.3)	1.61	1.08 - 2.40		1.61	1.08 - 2.40		1.55	1.03 - 2.31	
+6
+LABA/LAMA Combination	51 (0.7)	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	183 (0.9)	1.35	0.99 - 1.84		1.35	0.99 - 1.84		1.33	0.97 - 1.82	
+
