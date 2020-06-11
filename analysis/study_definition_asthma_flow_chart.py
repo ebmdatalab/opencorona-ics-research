@@ -73,15 +73,15 @@ study = StudyDefinition(
         on_or_before="2020-02-29",
         return_expectations={"incidence": 0.8},
     ),
-    age_cat=patients.satisfying(
-        "age >=35 AND age <= 110", return_expectations={"incidence": 0.9},
-    ),
     age=patients.age_as_of(
         "2020-02-29",
         return_expectations={
             "rate": "universal",
             "int": {"distribution": "population_ages"},
         },
+    ),
+    age_cat=patients.satisfying(
+        "age >=35 AND age <= 110", return_expectations={"incidence": 0.9},
     ),
     has_follow_up=patients.registered_with_one_practice_between(
         "2019-02-28", "2020-02-29", return_expectations={"incidence": 0.9}
