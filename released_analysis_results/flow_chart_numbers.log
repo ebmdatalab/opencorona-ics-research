@@ -1,11 +1,11 @@
-------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\flow_chart_numbers.log
   log type:  text
- opened on:  11 Jun 2020, 10:04:46
+ opened on:  11 Jun 2020, 22:40:13
 
 . import delimited input_copd_flow_chart.csv, clear
-(9 vars, 33,278,642 obs)
+(10 vars, 33,278,642 obs)
 
 . 
 . /*
@@ -116,34 +116,34 @@
   1,789,189
 
 . drop if age_cat!=1
-(601,504 observations deleted)
+(278,967 observations deleted)
 
 . count
-  1,187,685
+  1,510,222
 
 . drop if copd==1
-(171,684 observations deleted)
+(174,060 observations deleted)
 
 . count
-  1,016,001
+  1,336,162
 
 . drop if other_respiratory==1
-(25,943 observations deleted)
+(28,051 observations deleted)
 
 . count
-  990,058
+  1,308,111
 
 . drop if nebules==1
-(7,728 observations deleted)
+(8,793 observations deleted)
 
 . count
-  982,330
+  1,299,318
 
 . drop if lama_no_ics==1
-(1,493 observations deleted)
+(1,574 observations deleted)
 
 . count
-  980,837
+  1,297,744
 
 . restore
 
@@ -190,34 +190,34 @@
   1,913,383
 
 . drop if age_cat!=1
-(618,679 observations deleted)
+(284,737 observations deleted)
 
 . count
-  1,294,704
+  1,628,646
 
 . drop if copd==1
-(241,217 observations deleted)
+(243,681 observations deleted)
 
 . count
-  1,053,487
+  1,384,965
 
 . drop if other_respiratory==1
-(27,928 observations deleted)
+(30,243 observations deleted)
 
 . count
-  1,025,559
+  1,354,722
 
 . drop if nebules==1
-(7,912 observations deleted)
+(9,004 observations deleted)
 
 . count
-  1,017,647
+  1,345,718
 
 . drop if lama_no_ics==1
-(1,835 observations deleted)
+(1,918 observations deleted)
 
 . count
-  1,015,812
+  1,343,800
 
 . restore
 
@@ -227,5 +227,5 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\flow_chart_numbers.log
   log type:  text
- closed on:  11 Jun 2020, 10:08:37
-------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  11 Jun 2020, 22:44:23
+------------------------------------------------------------------------------------------------------
