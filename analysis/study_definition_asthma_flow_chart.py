@@ -73,33 +73,6 @@ study = StudyDefinition(
         on_or_before="2020-02-29",
         return_expectations={"incidence": 0.8},
     ),
-    any_asthma_med=patients.satisfying(
-        """
-        ltra_single OR
-        laba_lama_ics OR
-        laba_lama OR
-        laba_ics OR
-        lama_single OR
-        laba_single OR
-        sama_single OR
-        saba_single OR
-        ics_single OR
-        low_med_dose_ics OR
-        low_med_dose_ics_multiple_ingredient OR
-        low_med_dose_ics_single_ingredient OR
-        high_dose_ics_multiple_ingredient OR
-        high_dose_ics_single_ing OR
-        high_dose_ics
-        """,
-        return_expectations={"incidence": 0.9},
-    ),
-    asthma_sensitivity=patients.satisfying(
-        """
-        has_asthma OR
-        (asthma_ever AND any_asthma_med)
-        """,
-        return_expectations={"incidence": 0.9},
-    ),
     age_cat=patients.satisfying(
         "age >=35 AND age <= 110",
         return_expectations={"incidence": 0.9},
@@ -127,20 +100,6 @@ study = StudyDefinition(
         nebulised_med_codes,
         between=["2019-02-28", "2020-02-29"],
         return_expectations={"incidence": 0.05},
-    ),
-    lama_no_ics=patients.satisfying(
-        """(lama_single OR laba_lama) AND NOT (
-        high_dose_ics OR
-        high_dose_ics_single_ing OR
-        high_dose_ics_multiple_ingredient OR
-        low_med_dose_ics_single_ingredient OR
-        low_med_dose_ics_multiple_ingredient OR
-        low_med_dose_ics OR
-        ics_single OR
-        laba_ics OR
-        laba_lama_ics
-        )
-        """,
     ),
     #### HIGH DOSE ICS - all preparation
     high_dose_ics=patients.with_these_medications(
@@ -237,5 +196,46 @@ study = StudyDefinition(
         leukotriene_med_codes,
         between=["2019-11-01", "2020-02-29"],
         return_expectations={"incidence": 0.05},
+    ),
+    lama_no_ics=patients.satisfying(
+        """(lama_single OR laba_lama) AND NOT (
+        high_dose_ics OR
+        high_dose_ics_single_ing OR
+        high_dose_ics_multiple_ingredient OR
+        low_med_dose_ics_single_ingredient OR
+        low_med_dose_ics_multiple_ingredient OR
+        low_med_dose_ics OR
+        ics_single OR
+        laba_ics OR
+        laba_lama_ics
+        )
+        """,
+    ),
+    any_asthma_med=patients.satisfying(
+        """
+        ltra_single OR
+        laba_lama_ics OR
+        laba_lama OR
+        laba_ics OR
+        lama_single OR
+        laba_single OR
+        sama_single OR
+        saba_single OR
+        ics_single OR
+        low_med_dose_ics OR
+        low_med_dose_ics_multiple_ingredient OR
+        low_med_dose_ics_single_ingredient OR
+        high_dose_ics_multiple_ingredient OR
+        high_dose_ics_single_ing OR
+        high_dose_ics
+        """,
+        return_expectations={"incidence": 0.9},
+    ),
+    asthma_sensitivity=patients.satisfying(
+        """
+        has_asthma OR
+        (asthma_ever AND any_asthma_med)
+        """,
+        return_expectations={"incidence": 0.9},
     ),
 )
