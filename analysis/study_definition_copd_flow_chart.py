@@ -30,15 +30,16 @@ study = StudyDefinition(
     copd=patients.with_these_clinical_events(
         copd_codes, on_or_before="2020-02-29", return_expectations={"incidence": 0.4},
     ),
-    age=patients.age_as_of(
-        "2020-02-29",
-        return_expectations={
-            "rate": "universal",
-            "int": {"distribution": "population_ages"},
-        },
-    ),
     age_cat=patients.satisfying(
-        "age >=35 AND age <= 110", return_expectations={"incidence": 0.9},
+        "age >=35 AND age <= 110",
+        return_expectations={"incidence": 0.9},
+        age=patients.age_as_of(
+            "2020-02-29",
+            return_expectations={
+                "rate": "universal",
+                "int": {"distribution": "population_ages"},
+            },
+        ),
     ),
     ever_smoked=patients.with_these_clinical_events(
         filter_codes_by_category(clear_smoking_codes, include=["S", "E"]),
