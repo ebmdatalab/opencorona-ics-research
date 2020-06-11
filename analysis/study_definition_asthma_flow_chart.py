@@ -73,31 +73,31 @@ study = StudyDefinition(
         on_or_before="2020-02-29",
         return_expectations={"incidence": 0.8},
     ),
+    any_asthma_med=patients.satisfying(
+        """
+        ltra_single OR
+        laba_lama_ics OR
+        laba_lama OR
+        laba_ics OR
+        lama_single OR
+        laba_single OR
+        sama_single OR
+        saba_single OR
+        ics_single OR
+        low_med_dose_ics OR
+        low_med_dose_ics_multiple_ingredient OR
+        low_med_dose_ics_single_ingredient OR
+        high_dose_ics_multiple_ingredient OR
+        high_dose_ics_single_ing OR
+        high_dose_ics
+        """,
+        return_expectations={"incidence": 0.9},
+    ),
     asthma_sensitivity=patients.satisfying(
         """
         has_asthma OR
         (asthma_ever AND any_asthma_med)
         """,
-        return_expectations={"incidence": 0.9},
-    ),
-    any_asthma_med=patients.satisfying(
-        """
-            ltra_single OR
-            laba_lama_ics OR
-            laba_lama OR
-            laba_ics OR
-            lama_single OR
-            laba_single OR
-            sama_single OR
-            saba_single OR
-            ics_single OR
-            low_med_dose_ics OR
-            low_med_dose_ics_multiple_ingredient OR
-            low_med_dose_ics_single_ingredient OR
-            high_dose_ics_multiple_ingredient OR
-            high_dose_ics_single_ing OR
-            high_dose_ics
-            """,
         return_expectations={"incidence": 0.9},
     ),
     age_cat=patients.satisfying(
