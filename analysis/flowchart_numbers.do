@@ -1,5 +1,5 @@
 
-log using $logdir\flow_chart_numbers, replace t
+log using `c(pwd)'\flow_chart_numbers, replace t
 import delimited input_copd_flow_chart.csv, clear
 
 /*
@@ -14,13 +14,13 @@ nebules AND NOT
 ltra_single
 */
 count
+drop if has_follow_up!=1
+count
 drop if copd!=1
 count
 drop if age_cat!=1
 count
 drop if ever_smoked!=1
-count
-drop if has_follow_up!=1
 count
 drop if recent_asthma==1
 count
@@ -58,11 +58,11 @@ nebules AND NOT
 */
 preserve
 count
+drop if has_follow_up!=1
+count
 drop if has_asthma!=1
 count
 drop if age_cat!=1
-count
-drop if has_follow_up!=1
 count
 drop if copd==1
 count
@@ -100,11 +100,11 @@ nebules AND NOT
 */
 preserve
 count
+drop if has_follow_up!=1
+count
 drop if asthma_sensitivity!=1
 count
 drop if age_cat!=1
-count
-drop if has_follow_up!=1
 count
 drop if copd==1
 count
