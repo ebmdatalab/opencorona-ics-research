@@ -13,3 +13,4 @@ analysis/*
 venv/
 .cache
 *.exe
+!summary_results15Jun2020_ctr.xlsx
