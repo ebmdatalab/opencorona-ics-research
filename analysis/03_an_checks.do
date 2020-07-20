@@ -23,9 +23,6 @@ log using $logdir\03_an_checks, replace t
 * Open Stata dataset
 use $tempdir\analysis_dataset, clear
 
-*run ssc install if not already installed on your computer
-*ssc install datacheck 
-
 *Duplicate patient check
 datacheck _n==1, by(patient_id) nol
 
