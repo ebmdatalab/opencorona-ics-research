@@ -2,7 +2,8 @@
 DO FILE NAME:			08_an_model_checks_asthma
 PROJECT:				ICS in COVID-19 
 DATE: 					20th of May 2020  
-AUTHOR:					A Schultze 									
+AUTHOR:					A Schultze 
+VERSION: 				Stata 16.1									
 DESCRIPTION OF FILE:	program 08 
 						check the PH assumption, produce graphs 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)

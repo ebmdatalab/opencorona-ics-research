@@ -3,7 +3,8 @@ DO FILE NAME:			00_cr_create_analysis_dataset
 PROJECT:				ICS in COVID-19 
 DATE: 					6th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
-						adapted from K Baskharan, E Williamson 										
+						adapted from K Baskharan, E Williamson 	
+VERSION: 				Stata 16.1
 DESCRIPTION OF FILE:	program 00, data management for ICS project  
 						reformat variables 
 						categorise variables

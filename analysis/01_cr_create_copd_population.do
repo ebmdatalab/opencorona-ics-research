@@ -3,7 +3,8 @@ DO FILE NAME:			01_cr_create_copd_population
 PROJECT:				ICS in COVID-19 
 DATE: 					14th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
-						adapted from K Baskharan, E Williamson 										
+						adapted from K Baskharan, E Williamson 
+VERSION: 				Stata 16.1
 DESCRIPTION OF FILE:	program 01, COPD population for ICS project  
 						check inclusion/exclusion citeria
 						drop patients if not relevant 

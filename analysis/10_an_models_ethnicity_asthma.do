@@ -2,7 +2,8 @@
 DO FILE NAME:			10_models_ethnicity 
 PROJECT:				ICS in COVID-19 
 DATE: 					22nd of May 2020  
-AUTHOR:					A Schultze 									
+AUTHOR:					A Schultze 
+VERSION: 				Stata 16.1									
 DESCRIPTION OF FILE:	program 10, restrict to known ethnicity == 1 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 

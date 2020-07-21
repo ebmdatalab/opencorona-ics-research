@@ -3,7 +3,8 @@ DO FILE NAME:			02_cr_create_asthma_exposure
 PROJECT:				ICS in COVID-19 
 DATE: 					14th of May 2020 
 AUTHOR:					A Wong, A Schultze, C Rentsch
-						adapted from K Baskharan, E Williamson 										
+						adapted from K Baskharan, E Williamson
+VERSION: 				Stata 16.1
 DESCRIPTION OF FILE:	create exposure of interest 
 DATASETS USED:			data in memory (from analysis/input_asthma.csv)
 
