@@ -4,6 +4,7 @@ PROJECT:				ICS in COVID-19
 AUTHORS:				A Schultze, A Wong, C Rentsch 
 						adapted from K Baskharan, E Williamson 
 DATE: 					12th of May 2020 
+VERSION: 				Stata 16.1
 DESCRIPTION OF FILE:	create KM plot
 						save KM plot 
 						

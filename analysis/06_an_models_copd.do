@@ -2,7 +2,8 @@
 DO FILE NAME:			06_models_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
-AUTHOR:					A Schultze 									
+AUTHOR:					A Schultze 
+VERSION: 				Stata 16.1									
 DESCRIPTION OF FILE:	program 06 
 						univariable regression
 						multivariable regression 

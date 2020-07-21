@@ -3,7 +3,8 @@ DO FILE NAME:			S1-04_an_descriptive_table_asthma
 PROJECT:				ICS in COVID-19 
 AUTHOR:					A Schultze, A Wong, C Rentsch 
 						Adapted from K Baskharan, A Wong 
-DATE: 					10th of May 2020 
+DATE: 					10th of May 2020
+VERSION: 				Stata 16.1 
 DESCRIPTION OF FILE:	Produce a table of baseline characteristics, by exposure
 						Generalised to produce same columns as levels of exposure
 						Output to a textfile for further formatting

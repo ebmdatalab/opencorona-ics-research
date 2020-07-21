@@ -2,7 +2,8 @@
 DO FILE NAME:			07_models_interact_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					18th of May 2020  
-AUTHOR:					A Schultze 						
+AUTHOR:					A Schultze
+VERSION: 				Stata 16.1 						
 DESCRIPTION OF FILE:	program 07, evaluate age interaction 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)
 

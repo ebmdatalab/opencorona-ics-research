@@ -3,7 +3,8 @@ DO FILE NAME:			03_an_checks
 PROJECT:				ICS in COVID-19 
 AUTHOR:					A Wong, A Schultze, C Rentsch
 						Adapted from K Baskharan, E Williamson
-DATE: 					10th of May 2020 
+DATE: 					10th of May 2020
+VERSION: 				Stata 16.1 
 DESCRIPTION OF FILE:	Run sanity checks on all variables
 							- Check variables take expected ranges 
 							- Cross-check logical relationships 
@@ -22,9 +23,6 @@ log using $logdir\03_an_checks, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset, clear
-
-*run ssc install if not already installed on your computer
-*ssc install datacheck 
 
 *Duplicate patient check
 datacheck _n==1, by(patient_id) nol

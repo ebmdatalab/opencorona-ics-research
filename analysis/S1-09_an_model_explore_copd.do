@@ -2,7 +2,8 @@
 DO FILE NAME:			S1-09_model_exploration_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					22nd of May 2020  
-AUTHOR:					A Schultze 									
+AUTHOR:					A Schultze 		
+VERSION: 				Stata 16.1							
 DESCRIPTION OF FILE:	program 09 
 						explore different models 
 DATASETS USED:			data in memory ($tempdir/analysis_dataset_STSET_outcome)

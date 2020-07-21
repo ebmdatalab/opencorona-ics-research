@@ -3,7 +3,8 @@ DO FILE NAME:			S1-05_an_descriptive_plots
 PROJECT:				ICS in COVID-19 
 AUTHORS:				A Schultze, A Wong, C Rentsch 
 						adapted from K Baskharan, E Williamson 
-DATE: 					22nd of May 2020 
+DATE: 					22nd of May 2020
+VERSION: 				Stata 16.1 
 DESCRIPTION OF FILE:	create KM plot
 						save KM plot 
 						
