@@ -41,7 +41,7 @@ estimates save ./$tempdir/univar, replace
 /* Multivariable models */ 
 
 * Age and Gender 
-* Age fit as spline in first instance, categorical below 
+* Age fit as spline 
 
 stcox i.exposure i.male age1 age2 age3 
 estimates save ./$tempdir/multivar1, replace 
@@ -50,10 +50,6 @@ estimates save ./$tempdir/multivar1, replace
 stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)				
 										
 estimates save ./$tempdir/multivar2, replace 
-
-/* MODEL CHANGES TO DO: 
-- Diabetes as severity, remove insulin 
-*/ 
 
 /* Print table================================================================*/ 
 *  Print the results for the main model 

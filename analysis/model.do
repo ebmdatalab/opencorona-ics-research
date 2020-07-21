@@ -60,8 +60,10 @@ do "08_an_model_checks_copd.do"
 do "09_an_model_explore_copd.do"
 do "10_an_models_ethnicity_copd.do"
 
+* Post peer review requested different adjustments
+do "Extra_06_an_models_copd" 
+ 
 /* 	ASTHMA ===================================================================*/
-
 clear
 import delimited `c(pwd)'/input_asthma.csv, clear
 set more off 
@@ -117,6 +119,9 @@ do "07_an_models_interact_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
 do "10_an_models_ethnicity_asthma.do"
+
+* Post peer review requested different adjustments
+do "Extra_06_an_models_asthma" 
 
 /* 	SENSITIVITY 1=============================================================*/
 *   Redefine copd exposure to triple therapy 
