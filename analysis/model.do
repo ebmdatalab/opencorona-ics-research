@@ -296,8 +296,6 @@ do "06_an_models_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
 
-
-
 /* 	SENSITIVITY 3=============================================================*/
 *   Asthma high/low dose classification 
 
