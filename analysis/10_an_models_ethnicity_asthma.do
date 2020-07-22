@@ -62,39 +62,42 @@ file open tablecontent using ./$outdir/table6.txt, write text replace
 
 * Column headings 
 file write tablecontent ("Table 6: Association between current ICS use and $tableoutcome - $population Population ethnicity == 1") _n
-file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
+file write tablecontent _tab _tab _tab _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 						("Age/Sex and Comorbidity Adjusted") _tab _tab _n
-file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
-						("95% CI") _tab ("HR") _tab ("95% CI") _n
-file write tablecontent ("Main Analysis") _n 					
+file write tablecontent _tab ("Events") _tab ("Person-weeks") _tab ("Rate per 1,000") _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
+						("95% CI") _tab ("HR") _tab ("95% CI") _n			
 
 * Row headings 
 local lab0: label exposure 0
 local lab1: label exposure 1
 local lab2: label exposure 2
  
-/* Counts */
+/* Counts and Rates */
  
 * First row, exposure = 0 (reference)
 
-	cou if exposure == 0 
-	local rowdenom = r(N)
-	cou if exposure == 0 & $outcome == 1
-	local pct = 100*(r(N)/`rowdenom') 
+	count if exposure == 0 & $outcome == 1
+	local event = r(N)
+    bysort exposure: egen total_follow_up = total(_t)
+	summarize total_follow_up if exposure == 0
+	local person_week = r(mean)/7
+	* note, mean is fine as total_follow_up the same for each person 
+	local rate = 1000*(`event'/`person_week')
 	
 	file write tablecontent ("`lab0'") _tab
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+	file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 	file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
 	
 * Second row, exposure = 1 (comparator)
 
 file write tablecontent ("`lab1'") _tab  
 
-	cou if exposure == 1 
-	local rowdenom = r(N)
-	cou if exposure == 1 & $outcome == 1
-	local pct = 100*(r(N)/`rowdenom') 
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+	count if exposure == 1 & $outcome == 1
+	local event = r(N)
+	summarize total_follow_up if exposure == 1
+	local person_week = r(mean)/7
+	local rate = 1000*(`event'/`person_week')
+	file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 
 /* Main Model */ 
 estimates use ./$tempdir/univar 
@@ -113,12 +116,13 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 
 file write tablecontent ("`lab2'") _tab  
 
-	cou if exposure == 2
-	local rowdenom = r(N)
-	cou if exposure == 2 & $outcome == 1
-	local pct = 100*(r(N)/`rowdenom') 
-	file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
-
+	count if exposure == 2 & $outcome == 1
+	local event = r(N)
+	summarize total_follow_up if exposure == 1
+	local person_week = r(mean)/7
+	local rate = 1000*(`event'/`person_week')
+	file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
+	
 /* Main Model */ 
 estimates use ./$tempdir/univar 
 lincom 2.exposure, eform
@@ -135,7 +139,8 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 file write tablecontent _n
 file close tablecontent
 
-restore 
+restore
 
 * Close log file 
 log close
+
