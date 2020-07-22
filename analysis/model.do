@@ -60,8 +60,10 @@ do "08_an_model_checks_copd.do"
 do "09_an_model_explore_copd.do"
 do "10_an_models_ethnicity_copd.do"
 
+* Post peer review requested different adjustments
+do "Extra_06_an_models_copd" 
+ 
 /* 	ASTHMA ===================================================================*/
-
 clear
 import delimited `c(pwd)'/input_asthma.csv, clear
 set more off 
@@ -117,6 +119,9 @@ do "07_an_models_interact_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
 do "10_an_models_ethnicity_asthma.do"
+
+* Post peer review requested different adjustments
+do "Extra_06_an_models_asthma" 
 
 /* 	SENSITIVITY 1=============================================================*/
 *   Redefine copd exposure to triple therapy 
@@ -296,9 +301,6 @@ do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
 
 /* 	SENSITIVITY 3=============================================================*/
-*   Asthma high/low dose classification 
-
-/* 	SENSITIVITY 4=============================================================*/
 *   Asthma population: ever diagnosis + recent treatment 
 
 clear
@@ -354,6 +356,60 @@ do "05_an_descriptive_plots_asthma.do"
 do "06_an_models_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
+
+
+/* 	SENSITIVITY 4=============================================================*/
+*   Post peer review: Include LAMA monotherapy in the LABA/LAMA arm for COPD
+
+clear
+import delimited `c(pwd)'/input_copd.csv, clear
+set more off 
+
+* Create directories required 
+
+capture mkdir copd_output_sens4
+capture mkdir copd_log_sens4
+capture mkdir copd_tempdata_sens4
+
+global population "COPD"
+global outcome "onscoviddeath"
+global outdir  "copd_output_sens4" 
+global logdir  "copd_log_sens4"
+global tempdir "copd_tempdata_sens4"
+global varlist	 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
+
+/*  Pre-analysis data manipulation  */
+
+do "00_cr_create_analysis_dataset.do"
+
+* COPD specific data manipulation   
+do "01_cr_create_copd_population.do"
+do "S4-02_cr_create_copd_exposure.do"
+
+/*  Checks  */
+do "03_an_checks.do"
+
+/* Run analysis */ 
+
+* COPD specific analyses 
+do "04_an_descriptive_table_copd.do"
+do "06_an_models_copd.do"
 
 
 

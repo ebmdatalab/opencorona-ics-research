@@ -41,7 +41,7 @@ estimates save ./$tempdir/univar, replace
 /* Multivariable models */ 
 
 * Age and Gender 
-* Age fit as spline in first instance
+* Age fit as spline 
 
 stcox i.exposure i.male age1 age2 age3 
 estimates save ./$tempdir/multivar1, replace 
