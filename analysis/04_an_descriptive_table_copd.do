@@ -168,15 +168,7 @@ syntax, variable(varname)
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (r(min)) (", ") (r(max)) ("") _n
 	
-end
-
-/* QUESTION FOR STATA REVIEWER - I WROTE THIS CONTINOUS VAR SUMMARY PROGRAM
-but I don't quite understand why I seem to need ("") on the last row for the 
-maxium value to display properly? Otherwise it seems to just be missing. 
-
-Please check this extra carefully as well
-
-*/ 
+end 
 
 /* INVOKE PROGRAMS FOR TABLE 1================================================*/ 
 
@@ -253,14 +245,19 @@ file write tablecontent _n
 ** COMORBIDITIES (categorical and continous)
 
 ** COMORBIDITIES (binary)
-foreach comorb in $varlist { 
-	local comorb: subinstr local comorb "i." ""
-	local lab: variable label `comorb'
-	file write tablecontent ("`lab'") _n 
-								
-	generaterow, variable(`comorb') condition("==0")
-	generaterow, variable(`comorb') condition("==1")
+foreach comorb in $varlist {
+
+    local comorb: subinstr local comorb "i." ""
+    levelsof `comorb'
+    if r(r) == 2 {           
+
+       local lab: variable label `comorb'
+       file write tablecontent ("`lab'") _n
+       generaterow, variable(`comorb') condition("==0")
+       generaterow, variable(`comorb') condition("==1")
+ 
 	file write tablecontent _n
+				
 }
 
 * COMORBIDITIES (continous)

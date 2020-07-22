@@ -263,14 +263,19 @@ file write tablecontent _n
 
 ** COMORBIDITIES (binary)
 
-foreach comorb in $varlist { 
-	local comorb: subinstr local comorb "i." ""
-	local lab: variable label `comorb'
-	file write tablecontent ("`lab'") _n 
-								
-	generaterow, variable(`comorb') condition("==0")
-	generaterow, variable(`comorb') condition("==1")
+foreach comorb in $varlist {
+
+    local comorb: subinstr local comorb "i." ""
+    levelsof `comorb'
+    if r(r) == 2 {           
+
+       local lab: variable label `comorb'
+       file write tablecontent ("`lab'") _n
+       generaterow, variable(`comorb') condition("==0")
+       generaterow, variable(`comorb') condition("==1")
+ 
 	file write tablecontent _n
+				
 }
 
 * COMORBIDITIES (continous)
