@@ -178,10 +178,9 @@ do "03_an_checks.do"
 do "S1-04_an_descriptive_table_copd.do"
 do "S1-05_an_descriptive_plots_copd.do"
 do "S1-06_an_models_copd.do"
-do "S1-07_an_models_interact_copd.do"
 do "S1-08_an_model_checks_copd.do"
 do "S1-09_an_model_explore_copd.do"
-do "S1-10_an_models_ethnicity_copd"
+
 
 /* 	SENSITIVITY 2=============================================================*/
 *   ONS non-COVID death as the outcome 
@@ -314,7 +313,7 @@ capture mkdir asthma_output_sens3
 capture mkdir asthma_log_sens3
 capture mkdir asthma_tempdata_sens3
 
-global population "Asthma"
+global population "Asthma - Ever"
 global outcome "onscoviddeath"
 global outdir  "asthma_output_sens3" 
 global logdir  "asthma_log_sens3"
@@ -372,7 +371,7 @@ capture mkdir copd_output_sens4
 capture mkdir copd_log_sens4
 capture mkdir copd_tempdata_sens4
 
-global population "COPD"
+global population "COPD - LAMA monotherapy"
 global outcome "onscoviddeath"
 global outdir  "copd_output_sens4" 
 global logdir  "copd_log_sens4"
@@ -412,7 +411,27 @@ do "03_an_checks.do"
 do "04_an_descriptive_table_copd.do"
 do "06_an_models_copd.do"
 
+/* 	MAKE FOREST PLOTS=========================================================*/
 
+capture mkdir graph_out
+capture mkdir graph_log
+
+global outdir  "graph_out" 
+global logdir  "graph_log"
+
+do "gr_forestplot_copd"
+do "gr_forestplot_asthma"
+
+/* 	QBA=======================================================================*/
+* Quantiative Bias - evalues outputted in plots
+
+capture mkdir qba_out
+capture mkdir qba_log
+
+global outdir  "qba_out" 
+global logdir  "qba_log"
+
+do "gr_e-value_plot"
 
 
 
