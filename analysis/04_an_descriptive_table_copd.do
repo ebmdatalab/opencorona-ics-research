@@ -255,8 +255,9 @@ foreach comorb in $varlist {
        file write tablecontent ("`lab'") _n
        generaterow, variable(`comorb') condition("==0")
        generaterow, variable(`comorb') condition("==1")
- 
-	file write tablecontent _n
+       file write tablecontent _n
+	   
+	}
 				
 }
 
@@ -270,4 +271,5 @@ file close tablecontent
 
 * Close log file 
 log close
+
 

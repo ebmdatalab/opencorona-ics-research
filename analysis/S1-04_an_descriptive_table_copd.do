@@ -275,6 +275,8 @@ foreach comorb in $varlist {
        generaterow, variable(`comorb') condition("==1")
  
 	file write tablecontent _n
+	
+	}
 				
 }
 
