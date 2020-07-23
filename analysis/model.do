@@ -129,7 +129,7 @@ do "Extra_06_an_models_asthma"
 *   Redefine copd exposure to triple therapy 
 
 clear
-cd..
+cd ..
 import delimited `c(pwd)'/output/input_copd.csv, clear
 cd  `c(pwd)'/analysis
 set more off 
