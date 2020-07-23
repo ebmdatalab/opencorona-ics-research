@@ -1,5 +1,5 @@
+import delimited `c(pwd)'/output/input_copd.csv, clear
 cd  `c(pwd)'/analysis
-import delimited input_copd.csv, clear
 set more off 
 
 
@@ -65,7 +65,9 @@ do "Extra_06_an_models_copd"
  
 /* 	ASTHMA ===================================================================*/
 clear
-import delimited `c(pwd)'/input_asthma.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_asthma.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 * Create directories required 
@@ -127,7 +129,9 @@ do "Extra_06_an_models_asthma"
 *   Redefine copd exposure to triple therapy 
 
 clear
-import delimited `c(pwd)'/input_copd.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_copd.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 capture mkdir copd_output_sens1
@@ -188,7 +192,9 @@ do "S1-09_an_model_explore_copd.do"
 /* COPD */
 
 clear
-import delimited `c(pwd)'/input_copd.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_copd.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 * Create directories required 
@@ -247,7 +253,9 @@ do "09_an_model_explore_copd.do"
 /* 	ASTHMA  */
 
 clear
-import delimited `c(pwd)'/input_asthma.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_asthma.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 * Create directories required 
@@ -304,7 +312,9 @@ do "09_an_model_explore_asthma.do"
 *   Asthma population: ever diagnosis + recent treatment 
 
 clear
-import delimited `c(pwd)'/input_asthma_sens_analysis.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_asthma_sens_analysis.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 * Create directories required 
@@ -362,7 +372,9 @@ do "09_an_model_explore_asthma.do"
 *   Post peer review: Include LAMA monotherapy in the LABA/LAMA arm for COPD
 
 clear
-import delimited `c(pwd)'/input_copd.csv, clear
+cd ..
+import delimited `c(pwd)'/output/input_copd.csv, clear
+cd  `c(pwd)'/analysis
 set more off 
 
 * Create directories required 
@@ -432,6 +444,3 @@ global outdir  "qba_out"
 global logdir  "qba_log"
 
 do "gr_e-value_plot"
-
-
-

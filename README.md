@@ -55,7 +55,7 @@ Your model **must** start by importing the dataset, which will be called
 For portability, the recommended way of starting your model is:
 
 ```stata
-import delimited `c(pwd)'/analysis/input.csv
+import delimited `c(pwd)'/output/input.csv
 ```
 
 ## Defining covariates
