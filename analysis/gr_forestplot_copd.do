@@ -1,16 +1,43 @@
+/*==============================================================================
+DO FILE NAME:			gr_forestplot_copd
+PROJECT:				ICS in COVID-19 
+DATE: 					18th of May 2020  
+AUTHOR:					C Rentsch, adapted by A Schultze
+VERSION: 				Stata 16.1									
+DESCRIPTION OF FILE:	append results datasets
+						plot in forest plots 
+DATASETS USED:			dta saved as 'temp' in each tempdata directory created
+DATASETS CREATED: 		none
+OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
+						forest plot, printed to analysis/$outdir
+							
+==============================================================================*/
+
+* Open a log file
+
+cap log close
+log using $logdir\gr_forestplot_copd, replace t
+
+* All dta outputted from 06, append into one dataset 
+clear
+use copd_tempdata/temp_copd.dta
+append using copd_tempdata/temp_copd_eth.dta
+append using copd_tempdata_sens1/temp_copd.dta
+append using copd_tempdata_sens2/temp_copd.dta
+append using copd_tempdata_sens4/temp_copd.dta
+
+*rename to match the code below 
+rename level analysis 
+gen primsec = outcome + " - " + population 
+drop outcome population
+gen outcome = _n
 
 *need to add in analysis column, in between primsec and title
-
-import excel "C:\Users\lsh1300968\Dropbox\OneDrive\LSHTM\Work\COVID\OpenSAFELY\ICS\summary_results15Jun2020_ctr.xlsx", clear firstrow sheet("COPD")
-
 gen result_label =string(estimate,"%6.2f") + " (" + string(min95,"%6.2f") + "-" + string(max95,"%6.2f") + ")"
 
 egen first_primsec = tag(primsec)
 egen first_analysis = tag(outcome)
 gen order = _n
-
-
-
 
 ** Now for the figure
 
@@ -50,9 +77,9 @@ replace bf_result = result_label if bf_result == ""
 gen bf_primsec = "{bf:" + primsec + "}" 
 
 cap drop x0_*
-gen x0_7 = -5.5
-gen x0_3=-3.5
-gen x0_1=-1.5
+gen x0_7 = -8.5
+gen x0_3=-4
+gen x0_1=-2
 gen x0_14=4
 
 
@@ -103,7 +130,10 @@ graph twoway ///
 		xscale(range(0.01 5))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
-		graphregion(color(white)) ysize(15) xsize(20) saving("C:\Users\lsh1300968\Dropbox\OneDrive\LSHTM\Work\COVID\OpenSAFELY\ICS\forestplot_copd", replace)	/// get rid of rubbish grey/blue around graph
+		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1, replace)	/// get rid of rubbish grey/blue around graph
 
-graph export "C:\Users\lsh1300968\Dropbox\OneDrive\LSHTM\Work\COVID\OpenSAFELY\ICS\forestplot_copd.tif"
-** FYI: to rerun the graph, need to rerun the entire do file -- not sure why
+graph export "$outdir/forestplot1.svg", as(svg) replace
+
+log close 
+
+

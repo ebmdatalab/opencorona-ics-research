@@ -30,6 +30,9 @@ tab exposure onscoviddeath, missing row
 
 /* Main Model=================================================================*/
 
+*Post to a stata dataset for appending with other results later
+capture postfile temp str30 outcome str30 population str30 level str30 title estimate min95 max95 using "$tempdir/temp_copd.dta",replace
+
 /* Univariable model */ 
 
 stcox i.exposure 
@@ -38,19 +41,14 @@ estimates save ./$tempdir/univar, replace
 /* Multivariable models */ 
 
 * Age and Gender 
-* Age fit as spline in first instance, categorical below 
+* Age fit as spline 
 
 stcox i.exposure i.male age1 age2 age3 
 estimates save ./$tempdir/multivar1, replace 
 
 * Age, Gender and Comorbidities 
-stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)				
-										
+stcox i.exposure i.male age1 age2 age3 $varlist, strata(stp)														
 estimates save ./$tempdir/multivar2, replace 
-
-/* MODEL CHANGES TO DO: 
-- Diabetes as severity, remove insulin 
-*/ 
 
 /* Print table================================================================*/ 
 *  Print the results for the main model 
@@ -101,14 +99,22 @@ file write tablecontent ("`lab1'") _tab
 estimates use ./$tempdir/univar 
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
-
+post temp ("$tableoutcome") ("$population") ("Univariable") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01) 
+lincom 2.exposure, eform
+post temp ("$tableoutcome") ("$population") ("Univariable") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 estimates use ./$tempdir/multivar1 
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+post temp ("$tableoutcome") ("$population") ("Age/Sex adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)   
+lincom 2.exposure, eform
+post temp ("$tableoutcome") ("$population") ("Age/Sex adjusted") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 
 estimates use ./$tempdir/multivar2 
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+post temp ("$tableoutcome") ("$population") ("Fully adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)
+lincom 2.exposure, eform
+post temp ("$tableoutcome") ("$population") ("Fully adjusted") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 
 * Third row, exposure = 2 (comparator)
 
@@ -136,6 +142,7 @@ file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(
 
 file write tablecontent _n
 file close tablecontent
+postclose temp  
 
 * Close log file 
 log close

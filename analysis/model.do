@@ -313,7 +313,7 @@ capture mkdir asthma_output_sens3
 capture mkdir asthma_log_sens3
 capture mkdir asthma_tempdata_sens3
 
-global population "Asthma"
+global population "Asthma - Ever"
 global outcome "onscoviddeath"
 global outdir  "asthma_output_sens3" 
 global logdir  "asthma_log_sens3"
@@ -371,7 +371,7 @@ capture mkdir copd_output_sens4
 capture mkdir copd_log_sens4
 capture mkdir copd_tempdata_sens4
 
-global population "COPD"
+global population "COPD - LAMA monotherapy"
 global outcome "onscoviddeath"
 global outdir  "copd_output_sens4" 
 global logdir  "copd_log_sens4"
@@ -411,7 +411,10 @@ do "03_an_checks.do"
 do "04_an_descriptive_table_copd.do"
 do "06_an_models_copd.do"
 
+/* 	MAKE FOREST PLOTS=========================================================*/
 
+do "gr_forestplot_copd"
+do "gr_forestplot_asthma"
 
 
 
