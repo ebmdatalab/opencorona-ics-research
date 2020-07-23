@@ -1,4 +1,4 @@
-from datalab_cohorts import (
+from cohortextractor import (
     StudyDefinition,
     patients,
     filter_codes_by_category,
@@ -68,7 +68,7 @@ study = StudyDefinition(
             high_dose_ics
 
             """
-        )
+        ),
     ),
     ## OUTCOMES (at least one outcome or covariate is required)
     icu_date_admitted=patients.admitted_to_icu(
