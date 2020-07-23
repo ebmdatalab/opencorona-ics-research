@@ -5,6 +5,7 @@ __pycache__
 .python-version
 .idea
 analysis/*
+output/*
 !*.do
 !*.ado
 !*.hlp
