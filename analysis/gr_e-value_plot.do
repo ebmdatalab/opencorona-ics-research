@@ -50,15 +50,29 @@ evalue hr $hr_copd, lcl($lci_copd) ucl($uci_copd) true(1.0) figure(scheme("s1col
 graph save "$outdir/evalue_COPD.gph", replace
 graph export "$outdir/evalue_COPD.svg", replace 
 
+evalue hr $hr_copd, lcl($lci_copd) ucl($uci_copd) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium)))
+* addplot: 
+graph save "$outdir/evalue_protect_COPD.gph", replace
+graph export "$outdir/evalue_protect_COPD.svg", replace 
+
 * Ashtma low-dose ICS
 evalue hr $hr_asthma_ld, lcl($lci_asthma_ld) ucl($uci_asthma_ld) true(1.0) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium))) 
 graph save "$outdir/evalue_Asthma_LD.gph", replace
 graph export "$outdir/evalue_Asthma_LD.svg", replace 
 
+evalue hr $hr_asthma_ld, lcl($lci_asthma_ld) ucl($uci_asthma_ld) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium))) 
+graph save "$outdir/evalue_protect_Asthma_LD.gph", replace
+graph export "$outdir/evalue_protect_Asthma_LD.svg", replace 
+
 * Asthma high-dose ICS
 evalue hr $hr_asthma_hd, lcl($lci_asthma_hd) ucl($uci_asthma_hd) true(1.0) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium)))
 graph save "$outdir/evalue_Asthma_HD.gph", replace 
 graph export "$outdir/evalue_Asthma_HD.svg", replace 
+
+evalue hr $hr_asthma_hd, lcl($lci_asthma_hd) ucl($uci_asthma_hd) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium)))
+graph save "$outdir/evalue_protect_Asthma_HD.gph", replace 
+graph export "$outdir/evalue_protect_Asthma_HD.svg", replace 
+
 *close log
 log close 
 
