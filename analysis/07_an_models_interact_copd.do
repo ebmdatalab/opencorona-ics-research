@@ -119,7 +119,7 @@ syntax, variable(varname) min(real) max(real)
 		
 		file write tablecontent ("`lab0'") _tab
 
-			count if exposure == 0 & $outcome == 1`variable' == `varlevel' & $outcome == 1
+			count if exposure == 0 & $outcome == 1 & `variable' == `varlevel' 
 			local event = r(N)
 			bysort exposure `variable': egen total_follow_up = total(_t)
 			summarize total_follow_up if exposure == 0 & `variable' == `varlevel'
