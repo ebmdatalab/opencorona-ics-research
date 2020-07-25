@@ -135,51 +135,51 @@ syntax, variable(varname)
 	
 	qui summarize `variable', d
 	file write tablecontent ("Median (IQR)") _tab 
-	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
 							
 	qui summarize `variable' if exposure == 0, d
-	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure == 1, d
-	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
 	
 	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure >= ., d
-	file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _n
 	
 	qui summarize `variable', d
 	file write tablecontent ("Mean (SD)") _tab 
-	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
 							
 	qui summarize `variable' if exposure == 0, d
-	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure == 1, d
-	file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
 	
 	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (r(mean)) (" (") (r(sd))  (")") _tab
+	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure >= ., d
-	file write tablecontent (r(mean)) (" (") (r(sd))  (")") _n
+	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
 	
 	qui summarize `variable', d
 	file write tablecontent ("Min, Max") _tab 
-	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
 							
 	qui summarize `variable' if exposure == 0, d
-	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
 
 	qui summarize `variable' if exposure == 1, d
-	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
 	
 	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
 
 	qui summarize `variable' if exposure >= ., d
-	file write tablecontent (r(min)) (", ") (r(max)) ("") _n
+	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _n
 	
 end
 
