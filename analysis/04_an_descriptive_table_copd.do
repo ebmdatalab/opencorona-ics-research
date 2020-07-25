@@ -148,9 +148,6 @@ syntax, variable(varname)
 
 	qui summarize `variable' if exposure == 1, d
 	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
-	
-	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
