@@ -77,10 +77,10 @@ replace bf_result = result_label if bf_result == ""
 gen bf_primsec = "{bf:" + primsec + "}" 
 
 cap drop x0_*
-gen x0_7 = -18
-gen x0_3=-9
+gen x0_7 = -19
+gen x0_3=-9.5
 gen x0_1=-5.5
-gen x0_14=7
+gen x0_14=8.2
 
 
 
@@ -127,7 +127,7 @@ graph twoway ///
 		, legend(off)						/// turn legend off
 		xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2)) 		/// x-axis title (left right bottom top) - legend off
 		xlab(0(1)6, labsize(vsmall)) /// x-axis tick marks
-		xscale(range(0.01 8))					///	resize x-axis
+		xscale(range(0.01 9.5))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
 		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_asthma, replace)	/// get rid of rubbish grey/blue around graph
