@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\04_an_descriptive_table_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 10:37:51
+ opened on:  27 Jul 2020, 14:27:37
 
 . 
 . * Open Stata dataset
@@ -126,52 +126,52 @@
   4.         
 .         qui summarize `variable', d
   5.         file write tablecontent ("Median (IQR)") _tab 
-  6.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  6.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
   7.                                                         
 .         qui summarize `variable' if exposure == 0, d
-  8.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  8.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
   9. 
 .         qui summarize `variable' if exposure == 1, d
- 10.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+ 10.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
  11.         
 .         qui summarize `variable' if exposure == 2, d
- 12.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+ 12.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
  13. 
 .         qui summarize `variable' if exposure >= ., d
- 14.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+ 14.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _n
  15.         
 .         qui summarize `variable', d
  16.         file write tablecontent ("Mean (SD)") _tab 
- 17.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+ 17.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  18.                                                         
 .         qui summarize `variable' if exposure == 0, d
- 19.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+ 19.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  20. 
 .         qui summarize `variable' if exposure == 1, d
- 21.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+ 21.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  22.         
 .         qui summarize `variable' if exposure == 2, d
- 23.         file write tablecontent (r(mean)) (" (") (r(sd))  (")") _tab
+ 23.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  24. 
 .         qui summarize `variable' if exposure >= ., d
- 25.         file write tablecontent (r(mean)) (" (") (r(sd))  (")") _n
+ 25.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
  26.         
 .         
 .         qui summarize `variable', d
  27.         file write tablecontent ("Min, Max") _tab 
- 28.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 28.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
  29.                                                         
 .         qui summarize `variable' if exposure == 0, d
- 30.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 30.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
  31. 
 .         qui summarize `variable' if exposure == 1, d
- 32.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 32.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
  33.         
 .         qui summarize `variable' if exposure == 2, d
- 34.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
+ 34.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
  35. 
 .         qui summarize `variable' if exposure >= ., d
- 36.         file write tablecontent (r(min)) (", ") (r(max)) ("") _n
+ 36.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _n
  37.         
 . end
 
@@ -1122,5 +1122,5 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\04_an_descriptive_table_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 10:38:55
+ closed on:  27 Jul 2020, 14:28:36
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -3,5 +3,5 @@ Table 6: Association between current ICS use and COVID-19 Death in ONS - Asthma 
 	Events	Person-weeks	Rate per 1,000	HR	95% CI	HR	95% CI	HR	95% CI
 SABA only	18	    700867	0.03	1.00 (ref)		1.00 (ref)		1.00 (ref)
 ICS (Low/Medium Dose)	208	   4033235	0.05	2.01	1.24 - 3.25	1.50	0.93 - 2.44	1.65	1.02 - 2.68
-ICS (High Dose)	63	   4033235	0.02	3.65	2.16 - 6.17	2.62	1.55 - 4.42	2.50	1.48 - 4.24
+ICS (High Dose)	63	    671400	0.09	3.65	2.16 - 6.17	2.62	1.55 - 4.42	2.50	1.48 - 4.24
 

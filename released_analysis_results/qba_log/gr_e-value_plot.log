@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\qba_log\gr_e-value_plot.log
   log type:  text
- opened on:  24 Jul 2020, 11:32:16
+ opened on:  27 Jul 2020, 15:15:57
 
 . 
 . ****************************
@@ -13,6 +13,11 @@
 . use copd_tempdata/temp_copd.dta
 
 . 
+. * Keep relevant rows 
+. keep if level == "Fully adjusted"
+(2 observations deleted)
+
+. 
 . * COPD
 . glob hr_copd = estimate
 
@@ -21,9 +26,28 @@
 . glob uci_copd = max95
 
 . 
+. di $hr_copd
+1.39
+
+. di $lci_copd
+1.1
+
+. di $uci_copd
+1.76
+
+. 
 . clear 
 
 . use asthma_tempdata/temp_asthma.dta
+
+. 
+. * Keep relevant rows 
+. 
+. keep if level == "Fully adjusted"
+(4 observations deleted)
+
+. keep if title == "ICS (Low/Medium Dose)"
+(1 observation deleted)
 
 . 
 . * Asthma low-dose ICS
@@ -34,6 +58,30 @@
 . glob uci_asthma_ld = max95
 
 . 
+. di $hr_asthma_ld
+1.14
+
+. di $lci_asthma_ld
+.85000002
+
+. di $uci_asthma_ld
+1.54
+
+. 
+. clear 
+
+. use asthma_tempdata/temp_asthma.dta
+
+. 
+. * Keep relevant rows 
+. 
+. keep if level == "Fully adjusted"
+(4 observations deleted)
+
+. keep if title == "ICS (High Dose)"
+(1 observation deleted)
+
+. 
 . * Asthma high-dose ICS
 . glob hr_asthma_hd = estimate
 
@@ -42,94 +90,92 @@
 . glob uci_asthma_hd = max95
 
 . 
+. di $hr_asthma_hd
+1.55
+
+. di $lci_asthma_hd
+1.1
+
+. di $uci_asthma_hd
+2.1800001
+
+. 
 . **************************
 . /* Create e-value plots */
 . **************************
 . 
 . * COPD 
 . evalue hr $hr_copd, lcl($lci_copd) ucl($uci_copd) true(1.0) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium)))
-   E-value (point estimate): 2.430
-   E-value (CI): 1.738
+   E-value (point estimate): 2.126
+   E-value (CI): 1.432
 
 . * addplot: 
 . graph save "$outdir/evalue_COPD.gph", replace
-(note: file qba_out/evalue_COPD.gph not found)
 (file qba_out/evalue_COPD.gph saved)
 
 . graph export "$outdir/evalue_COPD.svg", replace 
-(note: file qba_out/evalue_COPD.svg not found)
 (file qba_out/evalue_COPD.svg written in SVG format)
 
 . 
 . evalue hr $hr_copd, lcl($lci_copd) ucl($uci_copd) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) margin(medium)))
-   E-value (point estimate): 3.234
-   E-value (CI): 2.420
+   E-value (point estimate): 2.869
+   E-value (CI): 2.093
 
 . * addplot: 
 . graph save "$outdir/evalue_protect_COPD.gph", replace
-(note: file qba_out/evalue_protect_COPD.gph not found)
 (file qba_out/evalue_protect_COPD.gph saved)
 
 . graph export "$outdir/evalue_protect_COPD.svg", replace 
-(note: file qba_out/evalue_protect_COPD.svg not found)
 (file qba_out/evalue_protect_COPD.svg written in SVG format)
 
 . 
 . * Ashtma low-dose ICS
 . evalue hr $hr_asthma_ld, lcl($lci_asthma_ld) ucl($uci_asthma_ld) true(1.0) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) m
 > argin(medium))) 
-   E-value (point estimate): 2.060
-   E-value (CI): 1.110
+   E-value (point estimate): 1.539
+   E-value (CI): 1.000
 
 . graph save "$outdir/evalue_Asthma_LD.gph", replace
-(note: file qba_out/evalue_Asthma_LD.gph not found)
 (file qba_out/evalue_Asthma_LD.gph saved)
 
 . graph export "$outdir/evalue_Asthma_LD.svg", replace 
-(note: file qba_out/evalue_Asthma_LD.svg not found)
 (file qba_out/evalue_Asthma_LD.svg written in SVG format)
 
 . 
 . evalue hr $hr_asthma_ld, lcl($lci_asthma_ld) ucl($uci_asthma_ld) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) m
 > argin(medium))) 
-   E-value (point estimate): 2.791
-   E-value (CI): 1.838
+   E-value (point estimate): 2.203
+   E-value (CI): 1.320
 
 . graph save "$outdir/evalue_protect_Asthma_LD.gph", replace
-(note: file qba_out/evalue_protect_Asthma_LD.gph not found)
 (file qba_out/evalue_protect_Asthma_LD.gph saved)
 
 . graph export "$outdir/evalue_protect_Asthma_LD.svg", replace 
-(note: file qba_out/evalue_protect_Asthma_LD.svg not found)
 (file qba_out/evalue_protect_Asthma_LD.svg written in SVG format)
 
 . 
 . * Asthma high-dose ICS
 . evalue hr $hr_asthma_hd, lcl($lci_asthma_hd) ucl($uci_asthma_hd) true(1.0) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) m
 > argin(medium)))
-   E-value (point estimate): 2.060
-   E-value (CI): 1.110
+   E-value (point estimate): 2.473
+   E-value (CI): 1.432
 
 . graph save "$outdir/evalue_Asthma_HD.gph", replace 
-(note: file qba_out/evalue_Asthma_HD.gph not found)
 (file qba_out/evalue_Asthma_HD.gph saved)
 
 . graph export "$outdir/evalue_Asthma_HD.svg", replace 
-(note: file qba_out/evalue_Asthma_HD.svg not found)
 (file qba_out/evalue_Asthma_HD.svg written in SVG format)
 
 . 
 . evalue hr $hr_asthma_hd, lcl($lci_asthma_hd) ucl($uci_asthma_hd) true(0.8) figure(scheme("s1color") aspect(1.01) ytitle(,size(small) margin(medium)) xtitle(,size(small) m
 > argin(medium)))
-   E-value (point estimate): 2.791
-   E-value (CI): 1.838
+   E-value (point estimate): 3.285
+   E-value (CI): 2.093
 
 . graph save "$outdir/evalue_protect_Asthma_HD.gph", replace 
-(note: file qba_out/evalue_protect_Asthma_HD.gph not found)
 (file qba_out/evalue_protect_Asthma_HD.gph saved)
 
 . graph export "$outdir/evalue_protect_Asthma_HD.svg", replace 
-(note: file qba_out/evalue_protect_Asthma_HD.svg not found)
 (file qba_out/evalue_protect_Asthma_HD.svg written in SVG format)
 
 . 
@@ -138,5 +184,5 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\qba_log\gr_e-value_plot.log
   log type:  text
- closed on:  24 Jul 2020, 11:32:26
+ closed on:  27 Jul 2020, 15:16:09
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

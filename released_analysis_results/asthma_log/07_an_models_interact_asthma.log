@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\07_an_models_interact_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 09:52:08
+ opened on:  27 Jul 2020, 13:49:28
 
 . 
 . * Open Stata dataset
@@ -645,7 +645,7 @@ Likelihood-ratio test                                 LR chi2(6)  =      8.07
  33. 
 .                         count if exposure == 2 & `variable' == `varlevel' & $outcome == 1
  34.                         local event = r(N)
- 35.                         summarize total_follow_up if exposure == 1 & `variable' == `varlevel'
+ 35.                         summarize total_follow_up if exposure == 2 & `variable' == `varlevel'
  36.                         local person_week = r(mean)/7
  37.                         local rate = 1000*(`event'/`person_week')
  38.                         
@@ -687,7 +687,7 @@ total_foll~p |    383,224    2.53e+07           0   2.53e+07   2.53e+07
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |    383,224    2.53e+07           0   2.53e+07   2.53e+07
+total_foll~p |     61,047     4027923           0    4027923    4027923
   9
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
@@ -702,7 +702,7 @@ total_foll~p |    105,897     6984610           0    6984610    6984610
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |    105,897     6984610           0    6984610    6984610
+total_foll~p |     18,970     1250710           0    1250710    1250710
   14
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
@@ -717,7 +717,7 @@ total_foll~p |     79,810     5258390           0    5258390    5258390
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |     79,810     5258390           0    5258390    5258390
+total_foll~p |     13,904      915383           0     915383     915383
   19
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
@@ -732,7 +732,7 @@ total_foll~p |     40,041     2621823           0    2621823    2621823
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |     40,041     2621823           0    2621823    2621823
+total_foll~p |      7,156      467561           0     467561     467561
 
 . 
 . file write tablecontent _n
@@ -745,5 +745,5 @@ total_foll~p |     40,041     2621823           0    2621823    2621823
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\07_an_models_interact_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 09:58:23
+ closed on:  27 Jul 2020, 13:55:10
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

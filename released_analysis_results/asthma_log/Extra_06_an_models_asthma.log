@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\Extra_06_an_models_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 10:20:52
+ opened on:  27 Jul 2020, 14:15:51
 
 . 
 . * Open Stata dataset
@@ -221,7 +221,6 @@ Diabetes, no hba1c measure  |   2.042111   1.191321     1.22   0.221     .650890
 
 . 
 . estimates save ./$tempdir/multivar3, replace 
-(note: file ./asthma_tempdata/multivar3.ster not found)
 file ./asthma_tempdata/multivar3.ster saved
 
 . 
@@ -314,7 +313,6 @@ Diabetes, no hba1c measure  |    2.04464   1.192816     1.23   0.220     .651684
 
 .                                                                                 
 . estimates save ./$tempdir/multivar4, replace 
-(note: file ./asthma_tempdata/multivar4.ster not found)
 file ./asthma_tempdata/multivar4.ster saved
 
 .         
@@ -324,7 +322,6 @@ file ./asthma_tempdata/multivar4.ster saved
 . cap file close tablecontent
 
 . file open tablecontent using ./$outdir/Extratable2.txt, write text replace
-(note: file ./asthma_output/Extratable2.txt not found)
 
 . 
 . * Column headings 
@@ -337,6 +334,8 @@ file ./asthma_tempdata/multivar4.ster saved
 . local lab0: label exposure 0
 
 . local lab1: label exposure 1
+
+. local lab2: label exposure 2
 
 . 
 . /* Main Model */ 
@@ -361,6 +360,21 @@ file ./asthma_tempdata/multivar4.ster saved
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
          (1) |   1.144791   .1748102     0.89   0.376     .8486866    1.544206
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. file write tablecontent _tab ("`lab2'") _tab  
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.547167    .270485     2.50   0.013      1.09831    2.179462
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
@@ -393,6 +407,21 @@ file ./asthma_tempdata/multivar4.ster saved
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
 . 
+. file write tablecontent _tab ("`lab2'") _tab  
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |    1.62186   .2817503     2.78   0.005     1.153831    2.279735
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
 . /* Oral Steroids */ 
 . 
 . file write tablecontent ("W oral steroids") _tab
@@ -420,6 +449,20 @@ file ./asthma_tempdata/multivar4.ster saved
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
 . 
+. file write tablecontent _tab ("`lab2'") _tab  
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |    1.59554   .2781387     2.68   0.007     1.133767    2.245388
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
 . 
 . file write tablecontent _n
 
@@ -431,5 +474,5 @@ file ./asthma_tempdata/multivar4.ster saved
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\Extra_06_an_models_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 10:25:00
+ closed on:  27 Jul 2020, 14:19:46
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\Extra_06_an_models_copd.log
   log type:  text
- opened on:  24 Jul 2020, 09:44:08
+ opened on:  27 Jul 2020, 13:45:08
 
 . 
 . * Open Stata dataset
@@ -217,7 +217,6 @@ Diabetes, no hba1c measure  |   1.661968   1.184742     0.71   0.476     .410997
 
 . 
 . estimates save ./$tempdir/multivar3, replace 
-(note: file ./copd_tempdata/multivar3.ster not found)
 file ./copd_tempdata/multivar3.ster saved
 
 . 
@@ -311,7 +310,6 @@ Diabetes, no hba1c measure  |   1.639612   1.169097     0.69   0.488     .405327
 
 .                                                                                 
 . estimates save ./$tempdir/multivar4, replace 
-(note: file ./copd_tempdata/multivar4.ster not found)
 file ./copd_tempdata/multivar4.ster saved
 
 .         
@@ -321,7 +319,6 @@ file ./copd_tempdata/multivar4.ster saved
 . cap file close tablecontent
 
 . file open tablecontent using ./$outdir/Extratable2.txt, write text replace
-(note: file ./copd_output/Extratable2.txt not found)
 
 . 
 . * Column headings 
@@ -428,5 +425,5 @@ file ./copd_tempdata/multivar4.ster saved
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\Extra_06_an_models_copd.log
   log type:  text
- closed on:  24 Jul 2020, 09:44:50
+ closed on:  27 Jul 2020, 13:45:48
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

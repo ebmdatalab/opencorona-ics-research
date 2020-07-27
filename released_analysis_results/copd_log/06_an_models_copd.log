@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\06_an_models_copd.log
   log type:  text
- opened on:  24 Jul 2020, 09:39:30
+ opened on:  27 Jul 2020, 13:40:54
 
 . 
 . * Open Stata dataset
@@ -345,5 +345,5 @@ total_foll~p |    105,249     6905393           0    6905393    6905393
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\06_an_models_copd.log
   log type:  text
- closed on:  24 Jul 2020, 09:39:55
+ closed on:  27 Jul 2020, 13:41:18
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
