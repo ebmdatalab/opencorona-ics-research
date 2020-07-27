@@ -77,10 +77,10 @@ replace bf_result = result_label if bf_result == ""
 gen bf_primsec = "{bf:" + primsec + "}" 
 
 cap drop x0_*
-gen x0_7 = -8.5
+gen x0_7 = -10
 gen x0_3=-4
 gen x0_1=-2
-gen x0_14=4
+gen x0_14=3.5
 
 
 
@@ -127,12 +127,12 @@ graph twoway ///
 		, legend(off)						/// turn legend off
 		xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2)) 		/// x-axis title (left right bottom top) - legend off
 		xlab(0(0.5)3, labsize(vsmall)) /// x-axis tick marks
-		xscale(range(0.01 5))					///	resize x-axis
+		xscale(range(0.01 4.5))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
-		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1, replace)	/// get rid of rubbish grey/blue around graph
+		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_copd, replace)	/// get rid of rubbish grey/blue around graph
 
-graph export "$outdir/forestplot1.svg", as(svg) replace
+graph export "$outdir/forestplot1_copd.svg", as(svg) replace
 
 log close 
 

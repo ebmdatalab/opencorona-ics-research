@@ -93,6 +93,7 @@ file write tablecontent ("Adjustment Set") _tab _tab ("HR") _tab ("95% CI") _n
 * Row headings 
 local lab0: label exposure 0
 local lab1: label exposure 1
+local lab2: label exposure 2
 
 /* Main Model */ 
 
@@ -104,6 +105,10 @@ file write tablecontent _tab ("`lab1'") _tab
 
 estimates use ./$tempdir/multivar2 
 lincom 1.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+file write tablecontent _tab ("`lab2'") _tab  
+lincom 2.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
 /* No exacerbation history */ 
@@ -118,6 +123,10 @@ estimates use ./$tempdir/multivar3
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
+file write tablecontent _tab ("`lab2'") _tab  
+lincom 2.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
 /* Oral Steroids */ 
 
 file write tablecontent ("W oral steroids") _tab
@@ -130,6 +139,9 @@ estimates use ./$tempdir/multivar4
 lincom 1.exposure, eform
 file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
+file write tablecontent _tab ("`lab2'") _tab  
+lincom 2.exposure, eform
+file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
 file write tablecontent _n
 file close tablecontent
