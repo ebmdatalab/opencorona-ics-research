@@ -130,9 +130,9 @@ graph twoway ///
 		xscale(range(0.01 5))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
-		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1, replace)	/// get rid of rubbish grey/blue around graph
+		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_copd, replace)	/// get rid of rubbish grey/blue around graph
 
-graph export "$outdir/forestplot1.svg", as(svg) replace
+graph export "$outdir/forestplot1_copd.svg", as(svg) replace
 
 log close 
 
