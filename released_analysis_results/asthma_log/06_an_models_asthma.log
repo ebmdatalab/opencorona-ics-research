@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\06_an_models_asthma.log
   log type:  text
- opened on:   9 Jun 2020, 11:06:20
+ opened on:  24 Jul 2020, 09:49:38
 
 . 
 . * Open Stata dataset
@@ -26,19 +26,19 @@
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   108,331         49 |   108,380 
+            SABA only |   108,392         49 |   108,441 
                       |     99.95       0.05 |    100.00 
 ----------------------+----------------------+----------
-ICS (Low/Medium Dose) |   608,221        362 |   608,583 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
                       |     99.94       0.06 |    100.00 
 ----------------------+----------------------+----------
-      ICS (High Dose) |   100,906        104 |   101,010 
+      ICS (High Dose) |   100,972        105 |   101,077 
                       |     99.90       0.10 |    100.00 
 ----------------------+----------------------+----------
-                Other |   466,914        148 |   467,062 
+                Other |   467,215        150 |   467,365 
                       |     99.97       0.03 |    100.00 
 ----------------------+----------------------+----------
-                Total | 1,284,372        663 | 1,285,035 
+                Total | 1,285,176        679 | 1,285,855 
                       |     99.95       0.05 |    100.00 
 
 . 
@@ -54,27 +54,27 @@ ICS (Low/Medium Dose) |   608,221        362 |   608,583
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -7010.8318
-Iteration 1:   log likelihood = -6997.2975
-Iteration 2:   log likelihood = -6996.4557
-Iteration 3:   log likelihood = -6996.4546
+Iteration 0:   log likelihood =  -7201.731
+Iteration 1:   log likelihood = -7188.3024
+Iteration 2:   log likelihood = -7187.5573
+Iteration 3:   log likelihood = -7187.5566
 Refining estimates:
-Iteration 0:   log likelihood = -6996.4546
+Iteration 0:   log likelihood = -7187.5566
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      817,973                  Number of obs    =     817,973
-No. of failures =          515
-Time at risk    =     53932182
-                                                LR chi2(2)       =       28.75
-Log likelihood  =   -6996.4546                  Prob > chi2      =      0.0000
+No. of subjects =      818,490                  Number of obs    =     818,490
+No. of failures =          529
+Time at risk    =     53964849
+                                                LR chi2(2)       =       28.35
+Log likelihood  =   -7187.5566                  Prob > chi2      =      0.0000
 
 ----------------------------------------------------------------------------------------
                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -----------------------+----------------------------------------------------------------
               exposure |
-ICS (Low/Medium Dose)  |   1.315723   .2002779     1.80   0.071     .9763275    1.773101
-      ICS (High Dose)  |   2.278758   .3948474     4.75   0.000     1.622587    3.200284
+ICS (Low/Medium Dose)  |   1.362835     .20702     2.04   0.042     1.011911    1.835456
+      ICS (High Dose)  |   2.300425   .3979932     4.82   0.000     1.638864    3.229038
 ----------------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/univar, replace 
@@ -84,7 +84,7 @@ file ./asthma_tempdata/univar.ster saved
 . /* Multivariable models */ 
 . 
 . * Age and Gender 
-. * Age fit as spline in first instance, categorical below 
+. * Age fit as spline 
 . 
 . stcox i.exposure i.male age1 age2 age3 
 
@@ -94,36 +94,36 @@ file ./asthma_tempdata/univar.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -7010.8318
-Iteration 1:   log likelihood = -6539.3729
-Iteration 2:   log likelihood =  -6473.739
-Iteration 3:   log likelihood = -6469.5292
-Iteration 4:   log likelihood = -6468.4983
-Iteration 5:   log likelihood = -6468.3571
-Iteration 6:   log likelihood = -6468.3533
-Iteration 7:   log likelihood = -6468.3533
+Iteration 0:   log likelihood =  -7201.731
+Iteration 1:   log likelihood = -6727.2325
+Iteration 2:   log likelihood = -6662.5988
+Iteration 3:   log likelihood =  -6658.249
+Iteration 4:   log likelihood = -6657.1834
+Iteration 5:   log likelihood = -6657.0444
+Iteration 6:   log likelihood = -6657.0411
+Iteration 7:   log likelihood = -6657.0411
 Refining estimates:
-Iteration 0:   log likelihood = -6468.3533
+Iteration 0:   log likelihood = -6657.0411
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      817,973                  Number of obs    =     817,973
-No. of failures =          515
-Time at risk    =     53932182
-                                                LR chi2(6)       =     1084.96
-Log likelihood  =   -6468.3533                  Prob > chi2      =      0.0000
+No. of subjects =      818,490                  Number of obs    =     818,490
+No. of failures =          529
+Time at risk    =     53964849
+                                                LR chi2(6)       =     1089.38
+Log likelihood  =   -6657.0411                  Prob > chi2      =      0.0000
 
 ----------------------------------------------------------------------------------------
                     _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -----------------------+----------------------------------------------------------------
               exposure |
-ICS (Low/Medium Dose)  |   .9829626   .1497904    -0.11   0.910      .729164      1.3251
-      ICS (High Dose)  |    1.59459   .2765625     2.69   0.007     1.135059    2.240164
+ICS (Low/Medium Dose)  |   1.020163   .1551406     0.13   0.896      .757223    1.374407
+      ICS (High Dose)  |   1.613729   .2794614     2.76   0.006     1.149269    2.265893
                        |
-                1.male |   1.524406   .1360007     4.73   0.000     1.279853    1.815687
-                  age1 |   1.207842   .0992493     2.30   0.022     1.028173    1.418907
-                  age2 |   .7916128   .1285694    -1.44   0.150     .5757916    1.088329
-                  age3 |   1.947381   .8154454     1.59   0.111     .8570758    4.424688
+                1.male |   1.504651   .1325132     4.64   0.000     1.266109    1.788135
+                  age1 |   1.210453   .0950897     2.43   0.015      1.03772    1.411939
+                  age2 |   .7821648   .1217926    -1.58   0.115     .5764423    1.061306
+                  age3 |   2.020898   .8126089     1.75   0.080     .9189116    4.444419
 ----------------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/multivar1, replace 
@@ -139,68 +139,68 @@ file ./asthma_tempdata/multivar1.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -5339.7846
-Iteration 1:   log likelihood = -4862.4184
-Iteration 2:   log likelihood = -4695.1844
-Iteration 3:   log likelihood = -4690.5341
-Iteration 4:   log likelihood = -4690.2378
-Iteration 5:   log likelihood = -4690.2235
-Iteration 6:   log likelihood = -4690.2235
+Iteration 0:   log likelihood = -5482.5839
+Iteration 1:   log likelihood = -4997.5432
+Iteration 2:   log likelihood = -4829.9297
+Iteration 3:   log likelihood = -4825.2612
+Iteration 4:   log likelihood = -4824.9596
+Iteration 5:   log likelihood =  -4824.946
+Iteration 6:   log likelihood =  -4824.946
 Refining estimates:
-Iteration 0:   log likelihood = -4690.2235
+Iteration 0:   log likelihood =  -4824.946
 
 Stratified Cox regr. -- Breslow method for ties
 
-No. of subjects =      817,973                  Number of obs    =     817,973
-No. of failures =          515
-Time at risk    =     53932182
-                                                LR chi2(28)      =     1299.12
-Log likelihood  =   -4690.2235                  Prob > chi2      =      0.0000
+No. of subjects =      818,490                  Number of obs    =     818,490
+No. of failures =          529
+Time at risk    =     53964849
+                                                LR chi2(28)      =     1315.28
+Log likelihood  =    -4824.946                  Prob > chi2      =      0.0000
 
 ---------------------------------------------------------------------------------------------
                          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ----------------------------+----------------------------------------------------------------
                    exposure |
-     ICS (Low/Medium Dose)  |   1.100623   .1684236     0.63   0.531     .8154233    1.485574
-           ICS (High Dose)  |   1.517433   .2657166     2.38   0.017     1.076605    2.138764
+     ICS (Low/Medium Dose)  |   1.144791   .1748102     0.89   0.376     .8486866    1.544206
+           ICS (High Dose)  |   1.547167    .270485     2.50   0.013      1.09831    2.179462
                             |
-                     1.male |   1.558672   .1445763     4.78   0.000     1.299573    1.869428
-                       age1 |   1.199511   .0986985     2.21   0.027     1.020859    1.409429
-                       age2 |   .7878472   .1290464    -1.46   0.145     .5715029    1.086089
-                       age3 |   1.956505   .8297493     1.58   0.114      .852096     4.49235
+                     1.male |   1.535925   .1405994     4.69   0.000     1.283661    1.837762
+                       age1 |   1.201588    .094378     2.34   0.019     1.030145    1.401563
+                       age2 |   .7790454   .1222021    -1.59   0.111     .5728517    1.059457
+                       age3 |   2.027303   .8248598     1.74   0.082     .9132416    4.500406
                             |
                   obese4cat |
-         Obese I (30-34.9)  |    1.13399    .125894     1.13   0.257     .9122417    1.409641
-        Obese II (35-39.9)  |   1.106505   .1776254     0.63   0.528     .8078138    1.515637
-           Obese III (40+)  |   1.780603   .3197152     3.21   0.001     1.252363    2.531653
+         Obese I (30-34.9)  |    1.14361   .1250702     1.23   0.220     .9229682    1.416997
+        Obese II (35-39.9)  |   1.118823   .1762495     0.71   0.476     .8216195    1.523534
+           Obese III (40+)  |   1.765617   .3130296     3.21   0.001     1.247341    2.499238
                             |
                smoke_nomiss |
-                    Former  |   1.110741   .1033388     1.13   0.259     .9255945    1.332924
-                   Current  |   .6278646   .1627788    -1.80   0.073     .3777333     1.04363
+                    Former  |   1.105273   .1014431     1.09   0.275     .9233057    1.323103
+                   Current  |    .629419   .1588651    -1.83   0.067     .3837928    1.032245
                             |
                         imd |
-                         2  |   1.151113   .1776543     0.91   0.362     .8506478    1.557708
-                         3  |   1.355177   .2028951     2.03   0.042     1.010545    1.817342
-                         4  |   1.611453   .2400858     3.20   0.001     1.203371    2.157922
-           5 most deprived  |   1.811925   .2803171     3.84   0.000     1.337993    2.453731
+                         2  |   1.191277    .181378     1.15   0.250       .88392    1.605508
+                         3  |   1.370203    .203583     2.12   0.034     1.024034    1.833392
+                         4  |   1.612842   .2388067     3.23   0.001     1.206585    2.155885
+           5 most deprived  |   1.890839    .288363     4.18   0.000     1.402303    2.549573
                             |
                         ckd |
-                       CKD  |    1.46368   .1557749     3.58   0.000     1.188106     1.80317
-             1.hypertension |    1.37051   .1495602     2.89   0.004     1.106606    1.697351
-            1.heart_failure |    1.45729   .1975361     2.78   0.005     1.117288    1.900757
-      1.other_heart_disease |   1.170242   .1282687     1.43   0.151     .9440099     1.45069
+                       CKD  |   1.452152    .152974     3.54   0.000     1.181256    1.785172
+             1.hypertension |   1.358296   .1460935     2.85   0.004     1.100126    1.677053
+            1.heart_failure |    1.47402   .1972703     2.90   0.004     1.133929    1.916112
+      1.other_heart_disease |   1.170935   .1268764     1.46   0.145     .9468933    1.447986
                             |
                     diabcat |
-       Controlled diabetes  |   1.707026    .187333     4.87   0.000     1.376662    2.116669
-     Uncontrolled diabetes  |   2.604663   .3575205     6.97   0.000      1.99028    3.408701
-Diabetes, no hba1c measure  |    2.12694   1.241255     1.29   0.196     .6776486    6.675838
+       Controlled diabetes  |   1.673222   .1821346     4.73   0.000     1.351755    2.071138
+     Uncontrolled diabetes  |   2.662427    .357741     7.29   0.000     2.045995     3.46458
+Diabetes, no hba1c measure  |   2.049076   1.195459     1.23   0.219     .6530637    6.429256
                             |
-              1.cancer_ever |   1.428716   .1619646     3.15   0.002     1.144065    1.784191
-                   1.statin |   .8459586   .0843321    -1.68   0.093      .695816    1.028499
-              1.flu_vaccine |   .8215095    .092215    -1.75   0.080      .659272    1.023671
-     1.pneumococcal_vaccine |   .8215477   .1356975    -1.19   0.234     .5943431    1.135608
-            1.exacerbations |   1.302411   .1281279     2.69   0.007     1.074012    1.579382
-            1.immunodef_any |    1.17243   .6822148     0.27   0.785     .3747911    3.667625
+              1.cancer_ever |   1.480409   .1643678     3.53   0.000     1.190896    1.840303
+                   1.statin |   .8565244   .0843728    -1.57   0.116     .7061408    1.038935
+              1.flu_vaccine |    .815003   .0898607    -1.86   0.064     .6566098    1.011605
+     1.pneumococcal_vaccine |   .7952829   .1311861    -1.39   0.165     .5755876    1.098833
+            1.exacerbations |   1.279446   .1246753     2.53   0.011     1.057004    1.548699
+            1.immunodef_any |   2.365231   1.372398     1.48   0.138     .7585314    7.375194
 ---------------------------------------------------------------------------------------------
                                                              Stratified by stp
 
@@ -209,11 +209,11 @@ Diabetes, no hba1c measure  |    2.12694   1.241255     1.29   0.196     .677648
 file ./asthma_tempdata/multivar2.ster saved
 
 . 
-. /* MODEL CHANGES TO DO: 
-> - Diabetes as severity, remove insulin 
-> */ 
-. 
 . /* Print table================================================================*/ 
+. * Post to Stata dataset 
+. capture postfile temp str30 outcome str30 population str30 level str30 title estimate min95 max95 using "$tempdir/temp_asthma.dta",replace
+
+. 
 . *  Print the results for the main model 
 . 
 . cap file close tablecontent
@@ -224,13 +224,11 @@ file ./asthma_tempdata/multivar2.ster saved
 . * Column headings 
 . file write tablecontent ("Table 2: Association between current ICS use and $tableoutcome - $population Population") _n
 
-. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
+. file write tablecontent _tab _tab _tab _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 >                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 
-. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
->                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n
-
-. file write tablecontent ("Main Analysis") _n                                    
+. file write tablecontent _tab ("Events") _tab ("Person-weeks") _tab ("Rate per 1,000") _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n                       
 
 . 
 . * Row headings 
@@ -241,24 +239,32 @@ file ./asthma_tempdata/multivar2.ster saved
 . local lab2: label exposure 2
 
 .  
-. /* Counts */
+. /* Counts and Rates */
 .  
 . * First row, exposure = 0 (reference)
 . 
-.         cou if exposure == 0 
-  108,380
-
-.         local rowdenom = r(N)
-
-.         cou if exposure == 0 & $outcome == 1
+.         count if exposure == 0 & $outcome == 1
   49
 
-.         local pct = 100*(r(N)/`rowdenom') 
+.         local event = r(N)
+
+.     bysort exposure: egen total_follow_up = total(_t)
+
+.         summarize total_follow_up if exposure == 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+total_foll~p |    108,441     7150186           0    7150186    7150186
+
+.         local person_week = r(mean)/7
+
+.         * note, mean is fine as total_follow_up the same for each person 
+.         local rate = 1000*(`event'/`person_week')
 
 .         
 .         file write tablecontent ("`lab0'") _tab
 
-.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+.         file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 
 .         file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
 
@@ -268,17 +274,22 @@ file ./asthma_tempdata/multivar2.ster saved
 . file write tablecontent ("`lab1'") _tab  
 
 . 
-.         cou if exposure == 1 
-  608,583
+.         count if exposure == 1 & $outcome == 1
+  375
 
-.         local rowdenom = r(N)
+.         local event = r(N)
 
-.         cou if exposure == 1 & $outcome == 1
-  362
+.         summarize total_follow_up if exposure == 1
 
-.         local pct = 100*(r(N)/`rowdenom') 
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+total_foll~p |    608,972    4.02e+07           0   4.02e+07   4.02e+07
 
-.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+.         local person_week = r(mean)/7
+
+.         local rate = 1000*(`event'/`person_week')
+
+.         file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 
 . 
 . /* Main Model */ 
@@ -291,10 +302,24 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.315723   .2002779     1.80   0.071     .9763275    1.773101
+         (1) |   1.362835     .20702     2.04   0.042     1.011911    1.835456
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. post temp ("$tableoutcome") ("$population") ("Univariable") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01) 
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   2.300425   .3979932     4.82   0.000     1.638864    3.229038
+------------------------------------------------------------------------------
+
+. post temp ("$tableoutcome") ("$population") ("Univariable") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)  
 
 . 
 . estimates use ./$tempdir/multivar1 
@@ -306,10 +331,24 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   .9829626   .1497904    -0.11   0.910      .729164      1.3251
+         (1) |   1.020163   .1551406     0.13   0.896      .757223    1.374407
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. post temp ("$tableoutcome") ("$population") ("Age/Sex adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)   
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.613729   .2794614     2.76   0.006     1.149269    2.265893
+------------------------------------------------------------------------------
+
+. post temp ("$tableoutcome") ("$population") ("Age/Sex adjusted") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 
 . 
 . estimates use ./$tempdir/multivar2 
@@ -321,10 +360,24 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.100623   .1684236     0.63   0.531     .8154233    1.485574
+         (1) |   1.144791   .1748102     0.89   0.376     .8486866    1.544206
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. post temp ("$tableoutcome") ("$population") ("Fully adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)
+
+. lincom 2.exposure, eform
+
+ ( 1)  2.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.547167    .270485     2.50   0.013      1.09831    2.179462
+------------------------------------------------------------------------------
+
+. post temp ("$tableoutcome") ("$population") ("Fully adjusted") ("`lab2'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 
 . 
 . * Third row, exposure = 2 (comparator)
@@ -332,19 +385,24 @@ file ./asthma_tempdata/multivar2.ster saved
 . file write tablecontent ("`lab2'") _tab  
 
 . 
-.         cou if exposure == 2
-  101,010
+.         count if exposure == 2 & $outcome == 1
+  105
 
-.         local rowdenom = r(N)
+.         local event = r(N)
 
-.         cou if exposure == 2 & $outcome == 1
-  104
+.         summarize total_follow_up if exposure == 1
 
-.         local pct = 100*(r(N)/`rowdenom') 
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+total_foll~p |    608,972    4.02e+07           0   4.02e+07   4.02e+07
 
-.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+.         local person_week = r(mean)/7
 
-. 
+.         local rate = 1000*(`event'/`person_week')
+
+.         file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
+
+.         
 . /* Main Model */ 
 . estimates use ./$tempdir/univar 
 
@@ -355,7 +413,7 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   2.278758   .3948474     4.75   0.000     1.622587    3.200284
+         (1) |   2.300425   .3979932     4.82   0.000     1.638864    3.229038
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
@@ -370,7 +428,7 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |    1.59459   .2765625     2.69   0.007     1.135059    2.240164
+         (1) |   1.613729   .2794614     2.76   0.006     1.149269    2.265893
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
@@ -385,7 +443,7 @@ file ./asthma_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.517433   .2657166     2.38   0.017     1.076605    2.138764
+         (1) |   1.547167    .270485     2.50   0.013      1.09831    2.179462
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
@@ -395,11 +453,13 @@ file ./asthma_tempdata/multivar2.ster saved
 
 . file close tablecontent
 
+. postclose temp  
+
 . 
 . * Close log file 
 . log close
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\06_an_models_asthma.log
   log type:  text
- closed on:   9 Jun 2020, 11:08:33
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:52:08
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

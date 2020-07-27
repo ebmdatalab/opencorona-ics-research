@@ -1,7 +1,6 @@
 Table 2: Association between current ICS use and Non-COVID Death in ONS - COPD Population
-	N	Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
-		HR	95% CI	HR	95% CI	HR	95% CI
-Main Analysis
-LABA/LAMA Combination	304 (0.7)	1.00 (ref)		1.00 (ref)		1.00 (ref)
-ICS Combination	973 (0.9)	1.32	1.16 - 1.50	1.25	1.10 - 1.43	1.23	1.07 - 1.40
+				Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+	Events	Person-weeks	Rate per 1,000	HR	95% CI	HR	95% CI	HR	95% CI
+LABA/LAMA Combination	318	    406580	0.78	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Combination	1021	    986485	1.03	1.32	1.17 - 1.50	1.26	1.11 - 1.43	1.23	1.08 - 1.40
 

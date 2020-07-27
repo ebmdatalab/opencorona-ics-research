@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots_asthma.log
   log type:  text
- opened on:   9 Jun 2020, 11:05:56
+ opened on:  24 Jul 2020, 09:49:13
 
 . 
 . * Open Stata dataset
@@ -18,20 +18,20 @@
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   108,331         49 |   108,380 
-ICS (Low/Medium Dose) |   608,221        362 |   608,583 
-      ICS (High Dose) |   100,906        104 |   101,010 
+            SABA only |   108,392         49 |   108,441 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
+      ICS (High Dose) |   100,972        105 |   101,077 
 ----------------------+----------------------+----------
-                Total |   817,458        515 |   817,973 
+                Total |   817,961        529 |   818,490 
 
 . 
 . /* Generate KM PLOT===========================================================*/ 
 . 
 . count if exposure != .u
-  817,973
+  818,490
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 817973 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 818490 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
 . sts graph, by(exposure) failure                                                                                 ///     
@@ -73,5 +73,5 @@ RUNNING THE KM PLOT FOR 817973 PEOPLE WITH NON-MISSING EXPOSURE
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_descriptive_plots_asthma.log
   log type:  text
- closed on:   9 Jun 2020, 11:06:20
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:49:38
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

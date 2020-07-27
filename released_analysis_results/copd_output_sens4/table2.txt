@@ -1,0 +1,6 @@
+Table 2: Association between current ICS use and COVID-19 Death in ONS - COPD - LAMA monotherapy Population
+				Univariable		Age/Sex Adjusted		Age/Sex and Comorbidity Adjusted		
+	Events	Person-weeks	Rate per 1,000	HR	95% CI	HR	95% CI	HR	95% CI
+LABA/LAMA Combination	163	    747092	0.22	1.00 (ref)		1.00 (ref)		1.00 (ref)
+ICS Dual Combination	244	    712402	0.34	1.57	1.29 - 1.92	1.47	1.21 - 1.80	1.41	1.15 - 1.73
+

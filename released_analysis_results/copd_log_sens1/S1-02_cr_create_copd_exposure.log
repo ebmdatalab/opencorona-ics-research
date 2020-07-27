@@ -1,46 +1,46 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-02_cr_create_copd_exposure.log
   log type:  text
- opened on:   9 Jun 2020, 11:34:52
+ opened on:  24 Jul 2020, 10:25:34
 
 . 
 . /* TREATMENT EXPOSURE=========================================================*/        
 . 
 . /* LABA LAMA */ 
 . gen exposure = .u
-(291,805 missing values generated)
+(292,097 missing values generated)
 
 . 
 . * At least one prescription in LABA-LAMA combination list 
 . replace exposure = 0 if laba_lama == 1 
-(46,153 real changes made)
+(46,184 real changes made)
 
 . * OR at least one prescription of LABA AND at least one prescription of LAMA
 . replace exposure = 0 if laba_single == 1 & lama_single == 1 
-(2,247 real changes made)
+(2,249 real changes made)
 
 .                                                 
 . * AND no prescription for an ICS 
 . recode exposure(0 = .u) if ics_single == 1 
-(exposure: 1491 changes made)
+(exposure: 1493 changes made)
 
 . recode exposure(0 = .u) if laba_ics == 1 
-(exposure: 1902 changes made)
+(exposure: 1905 changes made)
 
 . recode exposure(0 = .u) if laba_lama_ics == 1 
-(exposure: 1729 changes made)
+(exposure: 1727 changes made)
 
 . 
 . /* Dual combination ICS */
 .                                 
 . * Any prescription for a LABA ICS combination product 
 . replace exposure = 1 if laba_ics == 1 
-(75,526 real changes made)
+(75,552 real changes made)
 
 . * OR Any prescription for single ICS + Single LABA
 . replace exposure = 1 if ics_single == 1 & laba_single == 1 
-(425 real changes made)
+(426 real changes made)
 
 . 
 . * Note: ICS and LAMA only considered "Other", as per protocol                                   
@@ -48,16 +48,16 @@
 . /* Triple combination ICS */ 
 . * Any prescription for a LABA LAMA ICS combination 
 . replace exposure = 2 if laba_lama_ics == 1
-(33,031 real changes made)
+(33,040 real changes made)
 
 . replace exposure = 2 if laba_ics == 1 & lama_single == 1 
-(40,999 real changes made)
+(41,008 real changes made)
 
 . replace exposure = 2 if laba_single == 1 & lama_single == 1 & ics_single == 1 
 (143 real changes made)
 
 . replace exposure = 2 if laba_lama == 1 & ics_single == 1 
-(1,169 real changes made)
+(1,171 real changes made)
 
 . 
 . * Define missing for tables 
@@ -94,13 +94,13 @@ obs. time interval:  (stime_onscoviddeath[_n-1], stime_onscoviddeath]
             origin:  time enter_date
 
 ------------------------------------------------------------------------------
-    291,805  total observations
+    292,097  total observations
           0  exclusions
 ------------------------------------------------------------------------------
-    291,805  observations remaining, representing
-    291,805  subjects
-        720  failures in single-failure-per-subject data
-   19166755  total analysis time at risk and under observation
+    292,097  observations remaining, representing
+    292,097  subjects
+        742  failures in single-failure-per-subject data
+   19184453  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =        66
@@ -114,5 +114,5 @@ file copd_tempdata_sens1\analysis_dataset_STSET_onscoviddeath.dta saved
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-02_cr_create_copd_exposure.log
   log type:  text
- closed on:   9 Jun 2020, 11:34:56
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 10:25:38
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

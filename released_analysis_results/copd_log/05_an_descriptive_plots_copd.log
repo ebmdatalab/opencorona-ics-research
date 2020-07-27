@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descriptive_plots_copd.log
   log type:  text
- opened on:   9 Jun 2020, 10:57:07
+ opened on:  24 Jul 2020, 09:39:22
 
 . 
 . * Open Stata dataset
@@ -18,19 +18,19 @@
        COPD Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-LABA/LAMA Combination |    43,188         90 |    43,278 
-      ICS Combination |   104,879        331 |   105,210 
+LABA/LAMA Combination |    43,217         91 |    43,308 
+      ICS Combination |   104,911        338 |   105,249 
 ----------------------+----------------------+----------
-                Total |   148,067        421 |   148,488 
+                Total |   148,128        429 |   148,557 
 
 . 
 . /* Generate KM PLOT===========================================================*/ 
 . 
 . count if exposure != .u
-  148,488
+  148,557
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 148557 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
 . sts graph, by(exposure) failure                                                                                 ///     
@@ -50,7 +50,6 @@ RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
              origin:  time enter_date
   enter on or after:  time enter_date
                  id:  patient_id
-(note: file kmplot1.gph not found)
 (file kmplot1.gph saved)
 (file kmplot1.gph saved)
 
@@ -72,5 +71,5 @@ RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descriptive_plots_copd.log
   log type:  text
- closed on:   9 Jun 2020, 10:57:14
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:39:30
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

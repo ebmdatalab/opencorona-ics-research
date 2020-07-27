@@ -1,11 +1,14 @@
-------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\flow_chart_numbers.log
+       log:  E:\analyses\opensafely-ics-research\analysis/flow_chart_numbers.log
   log type:  text
- opened on:  11 Jun 2020, 22:40:13
+ opened on:  24 Jul 2020, 09:49:55
+
+. cd `c(pwd)'/output/
+E:\analyses\opensafely-ics-research\output
 
 . import delimited input_copd_flow_chart.csv, clear
-(10 vars, 33,278,642 obs)
+(9 vars, 33,356,521 obs)
 
 . 
 . /*
@@ -20,60 +23,60 @@
 > ltra_single
 > */
 . count
-  33,278,642
+  33,356,521
 
 . drop if has_follow_up!=1
-(11,628,965 observations deleted)
+(11,695,479 observations deleted)
 
 . count
-  21,649,677
+  21,661,042
 
 . drop if copd!=1
-(21,075,251 observations deleted)
+(21,085,975 observations deleted)
 
 . count
-  574,426
+  575,067
 
 . drop if age_cat!=1
-(6,423 observations deleted)
+(6,424 observations deleted)
 
 . count
-  568,003
+  568,643
 
 . drop if ever_smoked!=1
-(51,330 observations deleted)
+(51,399 observations deleted)
 
 . count
-  516,673
+  517,244
 
 . drop if recent_asthma==1
-(146,643 observations deleted)
+(146,891 observations deleted)
 
 . count
-  370,030
+  370,353
 
 . drop if other_respiratory==1
-(65,217 observations deleted)
+(65,279 observations deleted)
 
 . count
-  304,813
+  305,074
 
 . drop if nebules==1
-(9,738 observations deleted)
+(9,743 observations deleted)
 
 . count
-  295,075
+  295,331
 
 . drop if ltra_single==1
-(1,959 observations deleted)
+(1,955 observations deleted)
 
 . count
-  293,116
+  293,376
 
 . 
 . 
 . import delimited input_asthma_flow_chart.csv, clear
-(27 vars, 33,278,642 obs)
+(27 vars, 33,356,521 obs)
 
 . 
 . /*
@@ -101,49 +104,49 @@
 . preserve
 
 . count
-  33,278,642
+  33,356,521
 
 . drop if has_follow_up!=1
-(11,628,965 observations deleted)
+(11,695,479 observations deleted)
 
 . count
-  21,649,677
+  21,661,042
 
 . drop if has_asthma!=1
-(19,860,488 observations deleted)
+(19,870,502 observations deleted)
 
 . count
-  1,789,189
+  1,790,540
 
 . drop if age_cat!=1
-(278,967 observations deleted)
+(279,195 observations deleted)
 
 . count
-  1,510,222
+  1,511,345
 
 . drop if copd==1
-(174,060 observations deleted)
+(174,359 observations deleted)
 
 . count
-  1,336,162
+  1,336,986
 
 . drop if other_respiratory==1
-(28,051 observations deleted)
+(28,087 observations deleted)
 
 . count
-  1,308,111
+  1,308,899
 
 . drop if nebules==1
-(8,793 observations deleted)
+(8,797 observations deleted)
 
 . count
-  1,299,318
+  1,300,102
 
 . drop if lama_no_ics==1
-(1,574 observations deleted)
+(1,573 observations deleted)
 
 . count
-  1,297,744
+  1,298,529
 
 . restore
 
@@ -175,49 +178,49 @@
 . preserve
 
 . count
-  33,278,642
+  33,356,521
 
 . drop if has_follow_up!=1
-(11,628,965 observations deleted)
+(11,695,479 observations deleted)
 
 . count
-  21,649,677
+  21,661,042
 
 . drop if asthma_sensitivity!=1
-(19,736,294 observations deleted)
+(19,746,105 observations deleted)
 
 . count
-  1,913,383
+  1,914,937
 
 . drop if age_cat!=1
-(284,737 observations deleted)
+(284,992 observations deleted)
 
 . count
-  1,628,646
+  1,629,945
 
 . drop if copd==1
-(243,681 observations deleted)
+(244,024 observations deleted)
 
 . count
-  1,384,965
+  1,385,921
 
 . drop if other_respiratory==1
-(30,243 observations deleted)
+(30,284 observations deleted)
 
 . count
-  1,354,722
+  1,355,637
 
 . drop if nebules==1
-(9,004 observations deleted)
+(9,008 observations deleted)
 
 . count
-  1,345,718
+  1,346,629
 
 . drop if lama_no_ics==1
-(1,918 observations deleted)
+(1,912 observations deleted)
 
 . count
-  1,343,800
+  1,344,717
 
 . restore
 
@@ -225,7 +228,7 @@
 . 
 . log close
       name:  <unnamed>
-       log:  E:\analyses\opensafely-ics-research\analysis\flow_chart_numbers.log
+       log:  E:\analyses\opensafely-ics-research\analysis/flow_chart_numbers.log
   log type:  text
- closed on:  11 Jun 2020, 22:44:23
-------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:53:49
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

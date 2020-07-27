@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\10_an_models_ethnicity_copd.log
   log type:  text
- opened on:   9 Jun 2020, 11:01:16
+ opened on:  24 Jul 2020, 09:43:49
 
 . 
 . * Open Stata dataset
@@ -14,7 +14,7 @@
 . preserve 
 
 . drop if ethnicity != 1
-(73,088 observations deleted)
+(73,089 observations deleted)
 
 . 
 . /* Sense check outcomes=======================================================*/ 
@@ -34,16 +34,16 @@
        COPD Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-LABA/LAMA Combination |    32,379         76 |    32,455 
-                      |     99.77       0.23 |    100.00 
+LABA/LAMA Combination |    32,421         77 |    32,498 
+                      |     99.76       0.24 |    100.00 
 ----------------------+----------------------+----------
-      ICS Combination |    79,444        238 |    79,682 
+      ICS Combination |    79,493        242 |    79,735 
                       |     99.70       0.30 |    100.00 
 ----------------------+----------------------+----------
-                Other |   106,352        228 |   106,580 
-                      |     99.79       0.21 |    100.00 
+                Other |   106,540        235 |   106,775 
+                      |     99.78       0.22 |    100.00 
 ----------------------+----------------------+----------
-                Total |   218,175        542 |   218,717 
+                Total |   218,454        554 |   219,008 
                       |     99.75       0.25 |    100.00 
 
 . 
@@ -59,26 +59,26 @@ LABA/LAMA Combination |    32,379         76 |    32,455
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -3648.8415
-Iteration 1:   log likelihood =   -3647.04
-Iteration 2:   log likelihood =  -3647.035
-Iteration 3:   log likelihood =  -3647.035
+Iteration 0:   log likelihood = -3707.1712
+Iteration 1:   log likelihood = -3705.2792
+Iteration 2:   log likelihood = -3705.2738
+Iteration 3:   log likelihood = -3705.2738
 Refining estimates:
-Iteration 0:   log likelihood =  -3647.035
+Iteration 0:   log likelihood = -3705.2738
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      112,137                  Number of obs    =     112,137
-No. of failures =          314
-Time at risk    =      7362069
-                                                LR chi2(1)       =        3.61
-Log likelihood  =    -3647.035                  Prob > chi2      =      0.0573
+No. of subjects =      112,233                  Number of obs    =     112,233
+No. of failures =          319
+Time at risk    =      7367850
+                                                LR chi2(1)       =        3.79
+Log likelihood  =   -3705.2738                  Prob > chi2      =      0.0514
 
 ----------------------------------------------------------------------------------
               _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -----------------+----------------------------------------------------------------
         exposure |
-ICS Combination  |   1.278128   .1684007     1.86   0.063     .9872421    1.654722
+ICS Combination  |   1.283568   .1679427     1.91   0.056     .9932237    1.658786
 ----------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/univar, replace 
@@ -98,33 +98,33 @@ file ./copd_tempdata/univar.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -3648.8415
-Iteration 1:   log likelihood = -3498.0645
-Iteration 2:   log likelihood = -3469.9249
-Iteration 3:   log likelihood = -3468.7922
-Iteration 4:   log likelihood = -3468.7548
-Iteration 5:   log likelihood = -3468.7547
-Iteration 6:   log likelihood = -3468.7547
+Iteration 0:   log likelihood = -3707.1712
+Iteration 1:   log likelihood = -3551.5502
+Iteration 2:   log likelihood = -3522.6159
+Iteration 3:   log likelihood = -3521.4834
+Iteration 4:   log likelihood = -3521.4451
+Iteration 5:   log likelihood = -3521.4449
+Iteration 6:   log likelihood = -3521.4449
 Refining estimates:
-Iteration 0:   log likelihood = -3468.7547
+Iteration 0:   log likelihood = -3521.4449
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      112,137                  Number of obs    =     112,137
-No. of failures =          314
-Time at risk    =      7362069
-                                                LR chi2(5)       =      360.17
-Log likelihood  =   -3468.7547                  Prob > chi2      =      0.0000
+No. of subjects =      112,233                  Number of obs    =     112,233
+No. of failures =          319
+Time at risk    =      7367850
+                                                LR chi2(5)       =      371.45
+Log likelihood  =   -3521.4449                  Prob > chi2      =      0.0000
 
 ----------------------------------------------------------------------------------
               _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -----------------+----------------------------------------------------------------
         exposure |
-ICS Combination  |   1.186819   .1564431     1.30   0.194      .916604    1.536695
-          1.male |   1.660446   .1981893     4.25   0.000     1.314093    2.098086
-            age1 |   1.028437   .0513596     0.56   0.574     .9325437    1.134191
-            age2 |   1.155041   .1044789     1.59   0.111     .9673918     1.37909
-            age3 |   .6013289   .2140924    -1.43   0.153     .2992658    1.208279
+ICS Combination  |   1.190663   .1558603     1.33   0.182     .9212226    1.538909
+          1.male |   1.653262   .1956404     4.25   0.000     1.311033    2.084824
+            age1 |   1.029894    .051546     0.59   0.556     .9336626    1.136044
+            age2 |   1.151969   .1041549     1.56   0.118     .9648944    1.375314
+            age3 |   .6101638   .2167505    -1.39   0.164     .3041384    1.224113
 ----------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/multivar1, replace 
@@ -140,66 +140,66 @@ file ./copd_tempdata/multivar1.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood =    -2688.5
-Iteration 1:   log likelihood = -2476.2713
-Iteration 2:   log likelihood = -2440.9101
-Iteration 3:   log likelihood = -2439.7563
-Iteration 4:   log likelihood = -2439.7244
-Iteration 5:   log likelihood = -2439.7243
-Iteration 6:   log likelihood = -2439.7243
+Iteration 0:   log likelihood = -2726.8094
+Iteration 1:   log likelihood = -2510.4075
+Iteration 2:   log likelihood = -2474.0984
+Iteration 3:   log likelihood = -2472.9474
+Iteration 4:   log likelihood = -2472.9133
+Iteration 5:   log likelihood = -2472.9132
+Iteration 6:   log likelihood = -2472.9132
 Refining estimates:
-Iteration 0:   log likelihood = -2439.7243
+Iteration 0:   log likelihood = -2472.9132
 
 Stratified Cox regr. -- Breslow method for ties
 
-No. of subjects =      112,137                  Number of obs    =     112,137
-No. of failures =          314
-Time at risk    =      7362069
-                                                LR chi2(27)      =      497.55
-Log likelihood  =   -2439.7243                  Prob > chi2      =      0.0000
+No. of subjects =      112,233                  Number of obs    =     112,233
+No. of failures =          319
+Time at risk    =      7367850
+                                                LR chi2(27)      =      507.79
+Log likelihood  =   -2472.9132                  Prob > chi2      =      0.0000
 
 ---------------------------------------------------------------------------------------------
                          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ----------------------------+----------------------------------------------------------------
                    exposure |
-           ICS Combination  |   1.133852   .1538583     0.93   0.355     .8690649    1.479313
-                     1.male |   1.627961   .1992856     3.98   0.000     1.280693    2.069394
-                       age1 |   1.024383   .0513486     0.48   0.631     .9285271    1.130134
-                       age2 |   1.129467   .1025837     1.34   0.180     .9452864    1.349534
-                       age3 |   .6526519   .2336793    -1.19   0.233     .3235284    1.316591
+           ICS Combination  |   1.135361   .1530438     0.94   0.346     .8717541    1.478678
+                     1.male |   1.632642   .1983187     4.04   0.000     1.286751    2.071511
+                       age1 |   1.028326   .0516898     0.56   0.578     .9318463    1.134795
+                       age2 |   1.125269   .1021899     1.30   0.194     .9417935    1.344489
+                       age3 |   .6631019   .2368895    -1.15   0.250     .3292253    1.335572
                             |
                   obese4cat |
-         Obese I (30-34.9)  |   1.179549   .1700173     1.15   0.252     .8892541     1.56461
-        Obese II (35-39.9)  |   1.323853   .2721716     1.36   0.172     .8847912    1.980791
-           Obese III (40+)  |   1.944955   .5126498     2.52   0.012     1.160248    3.260383
+         Obese I (30-34.9)  |   1.165842   .1674835     1.07   0.285     .8797457    1.544978
+        Obese II (35-39.9)  |   1.308211   .2686623     1.31   0.191      .874721    1.956527
+           Obese III (40+)  |   1.953188   .5140598     2.54   0.011     1.166047    3.271688
                             |
                smoke_nomiss |
-                   Current  |   .5571332   .0988839    -3.30   0.001     .3934429    .7889261
+                   Current  |   .5812651   .1011513    -3.12   0.002     .4132843    .8175224
                             |
                         imd |
-                         2  |   1.045222   .1855088     0.25   0.803     .7381341     1.48007
-                         3  |   .7331715   .1438798    -1.58   0.114      .499072     1.07708
-                         4  |   1.185099   .2138991     0.94   0.347     .8319949    1.688062
-           5 most deprived  |   1.498543   .2722373     2.23   0.026     1.049623    2.139466
+                         2  |     1.0317   .1824083     0.18   0.860     .7295546    1.458978
+                         3  |   .7411493   .1440607    -1.54   0.123     .5063533     1.08482
+                         4  |   1.189818   .2131367     0.97   0.332      .837532    1.690283
+           5 most deprived  |   1.505488   .2714408     2.27   0.023     1.057317     2.14363
                             |
                         ckd |
-                       CKD  |   1.642332   .2080339     3.92   0.000     1.281266    2.105147
-             1.hypertension |   .9669353   .1228466    -0.26   0.791     .7537971    1.240339
-            1.heart_failure |   1.862674   .2536769     4.57   0.000     1.426304     2.43255
-      1.other_heart_disease |   1.079451    .138336     0.60   0.551     .8396883    1.387675
+                       CKD  |    1.59146   .2002983     3.69   0.000     1.243555    2.036697
+             1.hypertension |    .952293   .1196185    -0.39   0.697     .7444753    1.218122
+            1.heart_failure |   1.861068    .251898     4.59   0.000     1.427417    2.426462
+      1.other_heart_disease |   1.087963   .1383579     0.66   0.507     .8479411    1.395927
                             |
                     diabcat |
-       Controlled diabetes  |   1.570046   .2085683     3.40   0.001     1.210144    2.036985
-     Uncontrolled diabetes  |   1.687931   .3310405     2.67   0.008     1.149253      2.4791
-Diabetes, no hba1c measure  |   1.306724   1.314288     0.27   0.790      .181993    9.382379
+       Controlled diabetes  |   1.564541   .2063088     3.39   0.001     1.208211     2.02596
+     Uncontrolled diabetes  |    1.68702   .3301993     2.67   0.008     1.149516    2.475856
+Diabetes, no hba1c measure  |   1.272919    1.28022     0.24   0.810     .1773033    9.138705
                             |
-              1.cancer_ever |   1.132681     .15665     0.90   0.368      .863746     1.48535
-                   1.statin |   .8857052   .1113807    -0.97   0.334     .6922253    1.133264
-              1.flu_vaccine |   .7120603   .1116419    -2.17   0.030     .5236719    .9682204
-     1.pneumococcal_vaccine |   .9845707   .1807543    -0.08   0.933     .6870328    1.410965
-            1.exacerbations |   1.495766   .1796551     3.35   0.001     1.182025    1.892783
-              1.asthma_ever |   .8880021   .1191401    -0.89   0.376     .6826707    1.155092
-            1.immunodef_any |   1.048455   1.052451     0.05   0.962     .1465897    7.498871
+              1.cancer_ever |   1.151841   .1573634     1.03   0.301     .8812565    1.505508
+                   1.statin |   .8737379   .1089255    -1.08   0.279     .6843294    1.115571
+              1.flu_vaccine |   .7157512   .1112107    -2.15   0.031     .5278441    .9705513
+     1.pneumococcal_vaccine |   .9701414   .1779228    -0.17   0.869     .6772136    1.389775
+            1.exacerbations |   1.518026   .1804734     3.51   0.000     1.202493    1.916355
+              1.asthma_ever |   .9041659   .1198509    -0.76   0.447     .6972971    1.172407
+            1.immunodef_any |   2.241962   2.249712     0.80   0.421     .3136782    16.02405
 ---------------------------------------------------------------------------------------------
                                                              Stratified by stp
 
@@ -208,13 +208,12 @@ Diabetes, no hba1c measure  |   1.306724   1.314288     0.27   0.790      .18199
 file ./copd_tempdata/multivar2.ster saved
 
 . 
-. /* MODEL CHANGES TO DO: 
-> - Diabetes as severity, remove insulin 
-> */ 
-. 
 . /* Print table================================================================*/ 
-. *  Print the results for the main model 
+. * Post to Stata dataset 
+. capture postfile temp str30 outcome str30 population str30 level str30 title estimate min95 max95 using "$tempdir/temp_copd_eth.dta",replace
+
 . 
+. *  Print the results for the main model 
 . cap file close tablecontent
 
 . file open tablecontent using ./$outdir/table6.txt, write text replace
@@ -223,13 +222,11 @@ file ./copd_tempdata/multivar2.ster saved
 . * Column headings 
 . file write tablecontent ("Table 6: Association between current ICS use and $tableoutcome - $population Population, ethnicity == 1") _n
 
-. file write tablecontent _tab ("N") _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
+. file write tablecontent _tab _tab _tab _tab ("Univariable") _tab _tab ("Age/Sex Adjusted") _tab _tab ///
 >                                                 ("Age/Sex and Comorbidity Adjusted") _tab _tab _n
 
-. file write tablecontent _tab _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
->                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n
-
-. file write tablecontent ("Main Analysis") _n                                    
+. file write tablecontent _tab ("Events") _tab ("Person-weeks") _tab ("Rate per 1,000") _tab ("HR") _tab ("95% CI") _tab ("HR") _tab ///
+>                                                 ("95% CI") _tab ("HR") _tab ("95% CI") _n                               
 
 . 
 . * Row headings 
@@ -238,24 +235,32 @@ file ./copd_tempdata/multivar2.ster saved
 . local lab1: label exposure 1
 
 .  
-. /* Counts */
+. /* Counts and Rates */
 .  
 . * First row, exposure = 0 (reference)
 . 
-.         cou if exposure == 0 
-  32,455
+.         count if exposure == 0 & $outcome == 1
+  77
 
-.         local rowdenom = r(N)
+.         local event = r(N)
 
-.         cou if exposure == 0 & $outcome == 1
-  76
+.     bysort exposure: egen total_follow_up = total(_t)
 
-.         local pct = 100*(r(N)/`rowdenom') 
+.         summarize total_follow_up if exposure == 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+total_foll~p |     32,498     2135646           0    2135646    2135646
+
+.         local person_week = r(mean)/7
+
+.         * note, mean is fine as total_follow_up the same for each person 
+.         local rate = 1000*(`event'/`person_week')
 
 .         
 .         file write tablecontent ("`lab0'") _tab
 
-.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+.         file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 
 .         file write tablecontent ("1.00 (ref)") _tab _tab ("1.00 (ref)") _tab _tab ("1.00 (ref)") _n
 
@@ -265,17 +270,22 @@ file ./copd_tempdata/multivar2.ster saved
 . file write tablecontent ("`lab1'") _tab  
 
 . 
-.         cou if exposure == 1 
-  79,682
+.         count if exposure == 1 & $outcome == 1
+  242
 
-.         local rowdenom = r(N)
+.         local event = r(N)
 
-.         cou if exposure == 1 & $outcome == 1
-  238
+.         summarize total_follow_up if exposure == 1
 
-.         local pct = 100*(r(N)/`rowdenom') 
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+total_foll~p |     79,735     5232204           0    5232204    5232204
 
-.         file write tablecontent (r(N)) (" (") %3.1f (`pct') (")") _tab
+.         local person_week = r(mean)/7
+
+.         local rate = 1000*(`event'/`person_week')
+
+.         file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
 
 . 
 . /* Main Model */ 
@@ -288,10 +298,12 @@ file ./copd_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.278128   .1684007     1.86   0.063     .9872421    1.654722
+         (1) |   1.283568   .1679427     1.91   0.056     .9932237    1.658786
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. post temp ("$tableoutcome") ("$population - eth") ("Univariable") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)     
 
 . 
 . estimates use ./$tempdir/multivar1 
@@ -303,10 +315,12 @@ file ./copd_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.186819   .1564431     1.30   0.194      .916604    1.536695
+         (1) |   1.190663   .1558603     1.33   0.182     .9212226    1.538909
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
+
+. post temp ("$tableoutcome") ("$population - eth") ("Age/Sex adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)    
 
 . 
 . estimates use ./$tempdir/multivar2 
@@ -318,19 +332,22 @@ file ./copd_tempdata/multivar2.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.133852   .1538583     0.93   0.355     .8690649    1.479313
+         (1) |   1.135361   .1530438     0.94   0.346     .8717541    1.478678
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
 
-. 
+. post temp ("$tableoutcome") ("$population - eth") ("Fully adjusted") ("`lab1'") (round(r(estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)
+
 . 
 . file write tablecontent _n
 
 . file close tablecontent
 
+. postclose temp  
+
 . 
-. restore 
+. restore
 
 . 
 . * Close log file 
@@ -338,5 +355,5 @@ file ./copd_tempdata/multivar2.ster saved
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\10_an_models_ethnicity_copd.log
   log type:  text
- closed on:   9 Jun 2020, 11:01:32
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:44:08
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

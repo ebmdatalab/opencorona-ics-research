@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens3\01_cr_create_asthma_population.log
   log type:  text
- opened on:   9 Jun 2020, 12:12:23
+ opened on:  24 Jul 2020, 11:04:11
 
 . 
 . /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
@@ -11,7 +11,7 @@
 DROP MISSING GENDER:
 
 . drop if inlist(sex,"I", "U")
-(37 observations deleted)
+(29 observations deleted)
 
 . 
 . noi di "DROP AGE <18:"
@@ -39,14 +39,14 @@ DROP AGE MISSING:
 DROP IMD MISSING
 
 . drop if imd == .u
-(13,032 observations deleted)
+(13,042 observations deleted)
 
 . 
 . noi di "DROP IF DEAD BEFORE INDEX"
 DROP IF DEAD BEFORE INDEX
 
 . drop if stime_$outcome  <= date("$indexdate", "DMY")
-(25 observations deleted)
+(29 observations deleted)
 
 . 
 . /* CHECK INCLUSION AND EXCLUSION CRITERIA=====================================*/ 
@@ -71,7 +71,7 @@ Duplicates in terms of patient_id
 
 . datacheck asthma_time > 3, nol
 
- (118894 contradictions)
+ (118992 contradictions)
 
 . drop asthma_time
 
@@ -109,7 +109,7 @@ Duplicates in terms of patient_id
 >                        ics_single != 1 & ///
 >                                            laba_ics != 1 & ///
 >                                            laba_lama_ics != 1 
-(1,330,667 missing values generated)
+(1,331,617 missing values generated)
 
 .                                            
 . datacheck lama_check >=., nol
@@ -122,5 +122,5 @@ Duplicates in terms of patient_id
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens3\01_cr_create_asthma_population.log
   log type:  text
- closed on:   9 Jun 2020, 12:12:33
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 11:04:22
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
