@@ -22,23 +22,51 @@ log using $logdir\gr_e-value_plot, replace t
 clear
 use copd_tempdata/temp_copd.dta
 
+* Keep relevant rows 
+keep if level == "Fully adjusted"
+
 * COPD
 glob hr_copd = estimate
 glob lci_copd = min95
 glob uci_copd = max95
 
+di $hr_copd
+di $lci_copd
+di $uci_copd
+
 clear 
 use asthma_tempdata/temp_asthma.dta
+
+* Keep relevant rows 
+
+keep if level == "Fully adjusted"
+keep if title == "ICS (Low/Medium Dose)"
 
 * Asthma low-dose ICS
 glob hr_asthma_ld = estimate
 glob lci_asthma_ld = min95
 glob uci_asthma_ld = max95
 
+di $hr_asthma_ld
+di $lci_asthma_ld
+di $uci_asthma_ld
+
+clear 
+use asthma_tempdata/temp_asthma.dta
+
+* Keep relevant rows 
+
+keep if level == "Fully adjusted"
+keep if title == "ICS (High Dose)"
+
 * Asthma high-dose ICS
 glob hr_asthma_hd = estimate
 glob lci_asthma_hd = min95
 glob uci_asthma_hd = max95
+
+di $hr_asthma_hd
+di $lci_asthma_hd
+di $uci_asthma_hd
 
 **************************
 /* Create e-value plots */
