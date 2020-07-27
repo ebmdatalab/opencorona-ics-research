@@ -33,8 +33,8 @@ noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
 sts graph, by(exposure) failure 							    			///	
 		   title("Time to $tableoutcome, $population population", justification(left) size(medsmall) )  	   ///
 		   xtitle("Days since 1 Mar 2020", size(small))						///
-		   yscale(range(0, $ymax)) 											///
-		   ylabel(0 ($ymax) 0.01, angle(0) format(%4.3f) labsize(small))	///
+		   yscale(range(0, 0.0011)) 											///
+		   ylabel(0 (0.0005) 0.001, angle(0) format(%5.4f) labsize(small))	///
 		   xscale(range(30, 84)) 											///
 		   xlabel(0 (20) 100, labsize(small))				   				///				
 		   legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))	///
