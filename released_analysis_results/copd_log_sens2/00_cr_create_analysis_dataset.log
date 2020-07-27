@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens2\00_cr_create_analysis_dataset.log
   log type:  text
- opened on:   9 Jun 2020, 11:40:35
+ opened on:  24 Jul 2020, 10:30:21
 
 . 
 . /* SET FU DATES===============================================================*/ 
@@ -83,135 +83,135 @@
 .         format `var'_date %td
  16. }
 variable aplastic_anaemia was str7 now str10
-(293,081 real changes made)
-(293,055 real changes made)
-(293,055 missing values generated)
+(293,376 real changes made)
+(293,350 real changes made)
+(293,350 missing values generated)
 variable asthma_ever was str7 now str10
-(293,081 real changes made)
-(237,627 real changes made)
-(237,627 missing values generated)
+(293,376 real changes made)
+(237,872 real changes made)
+(237,872 missing values generated)
 variable bmi_date_measured was str7 now str10
-(293,081 real changes made)
-(4,865 real changes made)
-(4,865 missing values generated)
+(293,376 real changes made)
+(4,879 real changes made)
+(4,879 missing values generated)
 variable copd was str7 now str10
-(293,081 real changes made)
+(293,376 real changes made)
 (0 real changes made)
 variable creatinine_date was str7 now str10
-(293,081 real changes made)
-(82,237 real changes made)
-(82,237 missing values generated)
+(293,376 real changes made)
+(82,279 real changes made)
+(82,279 missing values generated)
 variable diabetes was str7 now str10
-(293,081 real changes made)
-(222,169 real changes made)
-(222,169 missing values generated)
+(293,376 real changes made)
+(222,360 real changes made)
+(222,360 missing values generated)
 variable haem_cancer was str7 now str10
-(293,081 real changes made)
-(289,439 real changes made)
-(289,439 missing values generated)
+(293,376 real changes made)
+(289,728 real changes made)
+(289,728 missing values generated)
 variable heart_failure was str7 now str10
-(293,081 real changes made)
-(268,387 real changes made)
-(268,387 missing values generated)
+(293,376 real changes made)
+(268,622 real changes made)
+(268,622 missing values generated)
 variable hiv was str7 now str10
-(293,081 real changes made)
-(291,795 real changes made)
-(291,795 missing values generated)
+(293,376 real changes made)
+(292,992 real changes made)
+(292,992 missing values generated)
 variable hypertension was str7 now str10
-(293,081 real changes made)
-(147,561 real changes made)
-(147,561 missing values generated)
+(293,376 real changes made)
+(147,676 real changes made)
+(147,676 missing values generated)
 variable hba1c_percentage_date was str7 now str10
-(293,081 real changes made)
-(175,147 real changes made)
-(175,147 missing values generated)
+(293,376 real changes made)
+(175,362 real changes made)
+(175,362 missing values generated)
 variable hba1c_mmol_per_mol_date was str7 now str10
-(293,081 real changes made)
-(45,555 real changes made)
-(45,555 missing values generated)
+(293,376 real changes made)
+(45,614 real changes made)
+(45,614 missing values generated)
 variable esrf was str7 now str10
-(293,081 real changes made)
-(292,385 real changes made)
-(292,385 missing values generated)
+(293,376 real changes made)
+(292,678 real changes made)
+(292,678 missing values generated)
 variable ili was str7 now str10
-(293,081 real changes made)
-(290,069 real changes made)
-(290,069 missing values generated)
+(293,376 real changes made)
+(290,356 real changes made)
+(290,356 missing values generated)
 variable lung_cancer was str7 now str10
-(293,081 real changes made)
-(287,717 real changes made)
-(287,717 missing values generated)
+(293,376 real changes made)
+(287,985 real changes made)
+(287,985 missing values generated)
 variable other_cancer was str7 now str10
-(293,081 real changes made)
-(259,669 real changes made)
-(259,669 missing values generated)
+(293,376 real changes made)
+(259,904 real changes made)
+(259,904 missing values generated)
 variable other_heart_disease was str7 now str10
-(293,081 real changes made)
-(227,345 real changes made)
-(227,345 missing values generated)
+(293,376 real changes made)
+(227,519 real changes made)
+(227,519 missing values generated)
 variable permanent_immunodeficiency was str7 now str10
-(293,081 real changes made)
-(292,851 real changes made)
-(292,851 missing values generated)
+(293,376 real changes made)
+(293,146 real changes made)
+(293,146 missing values generated)
 variable smoking_status_date was str7 now str10
-(293,081 real changes made)
+(293,376 real changes made)
 (0 real changes made)
 variable temporary_immunodeficiency was str7 now str10
-(293,081 real changes made)
-(292,943 real changes made)
-(292,943 missing values generated)
+(293,376 real changes made)
+(293,238 real changes made)
+(293,238 missing values generated)
 variable insulin was str7 now str10
-(293,081 real changes made)
-(284,322 real changes made)
-(284,322 missing values generated)
+(293,376 real changes made)
+(284,609 real changes made)
+(284,609 missing values generated)
 variable statin was str7 now str10
-(293,081 real changes made)
-(151,097 real changes made)
-(151,097 missing values generated)
+(293,376 real changes made)
+(151,264 real changes made)
+(151,264 missing values generated)
 variable ics_single was str7 now str10
-(293,081 real changes made)
-(285,743 real changes made)
-(285,743 missing values generated)
+(293,376 real changes made)
+(286,028 real changes made)
+(286,028 missing values generated)
 variable low_med_dose_ics was str7 now str10
-(293,081 real changes made)
-(205,460 real changes made)
-(205,460 missing values generated)
+(293,376 real changes made)
+(205,712 real changes made)
+(205,712 missing values generated)
 variable high_dose_ics was str7 now str10
-(293,081 real changes made)
-(267,284 real changes made)
-(267,284 missing values generated)
+(293,376 real changes made)
+(267,573 real changes made)
+(267,573 missing values generated)
 variable saba_single was str7 now str10
-(293,081 real changes made)
-(125,572 real changes made)
-(125,572 missing values generated)
+(293,376 real changes made)
+(125,766 real changes made)
+(125,766 missing values generated)
 variable sama_single was str7 now str10
-(293,081 real changes made)
-(289,750 real changes made)
-(289,750 missing values generated)
+(293,376 real changes made)
+(290,043 real changes made)
+(290,043 missing values generated)
 variable laba_single was str7 now str10
-(293,081 real changes made)
-(284,988 real changes made)
-(284,988 missing values generated)
+(293,376 real changes made)
+(285,265 real changes made)
+(285,265 missing values generated)
 variable lama_single was str7 now str10
-(293,081 real changes made)
-(205,120 real changes made)
-(205,120 missing values generated)
+(293,376 real changes made)
+(205,345 real changes made)
+(205,345 missing values generated)
 variable laba_ics was str7 now str10
-(293,081 real changes made)
-(217,228 real changes made)
-(217,228 missing values generated)
+(293,376 real changes made)
+(217,495 real changes made)
+(217,495 missing values generated)
 variable laba_lama was str7 now str10
-(293,081 real changes made)
-(246,705 real changes made)
-(246,705 missing values generated)
+(293,376 real changes made)
+(246,970 real changes made)
+(246,970 missing values generated)
 variable laba_lama_ics was str7 now str10
-(293,081 real changes made)
-(259,894 real changes made)
-(259,894 missing values generated)
+(293,376 real changes made)
+(260,182 real changes made)
+(260,182 missing values generated)
 variable oral_steroids was str7 now str10
-(293,081 real changes made)
-(231,248 real changes made)
-(231,248 missing values generated)
+(293,376 real changes made)
+(231,492 real changes made)
+(231,492 missing values generated)
 
 . 
 . * Note - outcome dates are handled separtely below 
@@ -289,15 +289,15 @@ variable oral_steroids was str7 now str10
 . 
 . * Sex
 . gen male = 1 if sex == "M"
-(134,347 missing values generated)
+(134,492 missing values generated)
 
 . replace male = 0 if sex == "F"
-(134,342 real changes made)
+(134,487 real changes made)
 
 . 
 . * Ethnicity 
 . replace ethnicity = .u if ethnicity == .
-(67,020 real changes made, 67,020 to missing)
+(67,013 real changes made, 67,013 to missing)
 
 . 
 . label define ethnicity  1 "White"                                       ///
@@ -315,10 +315,10 @@ variable oral_steroids was str7 now str10
 . rename stp stp_old
 
 . bysort stp_old: gen stp = 1 if _n==1
-(293,049 missing values generated)
+(293,344 missing values generated)
 
 . replace stp = sum(stp)
-(293,080 real changes made)
+(293,375 real changes made)
 
 . drop stp_old
 
@@ -332,19 +332,19 @@ variable oral_steroids was str7 now str10
 . 
 . * add one to create groups 1 - 5 
 . replace imd = imd + 1
-(293,081 real changes made)
+(293,376 real changes made)
 
 . 
 . * - 1 is missing, should be excluded from population 
 . replace imd = .u if imd_o == -1
-(1,228 real changes made, 1,228 to missing)
+(1,231 real changes made, 1,231 to missing)
 
 . drop imd_o
 
 . 
 . * Reverse the order (so high is more deprived)
 . recode imd 5 = 1 4 = 2 3 = 3 2 = 4 1 = 5 .u = .u
-(imd: 232671 changes made)
+(imd: 232891 changes made)
 
 . 
 . label define imd 1 "1 least deprived" 2 "2" 3 "3" 4 "4" 5 "5 most deprived" .u "Unknown"
@@ -361,7 +361,7 @@ variable oral_steroids was str7 now str10
 >                60/69.9999 = 4 ///
 >                    70/79.9999 = 5 ///
 >                    80/max = 6, gen(agegroup) 
-(293081 differences between age and agegroup)
+(293376 differences between age and agegroup)
 
 . 
 . label define agegroup   1 "18-<40" ///
@@ -378,7 +378,7 @@ variable oral_steroids was str7 now str10
 . * Create binary age
 . recode age min/69.999 = 0 ///
 >            70/max = 1, gen(age70)
-(293081 differences between age and age70)
+(293376 differences between age and age70)
 
 . 
 . * Check there are no missing ages
@@ -398,18 +398,18 @@ variable oral_steroids was str7 now str10
 . 
 . * Recode strange values 
 . replace bmi = . if bmi == 0 
-(5,640 real changes made, 5,640 to missing)
+(5,658 real changes made, 5,658 to missing)
 
 . replace bmi = . if !inrange(bmi, 15, 50)
-(2,602 real changes made, 2,602 to missing)
+(2,609 real changes made, 2,609 to missing)
 
 . 
 . * Restrict to within 10 years of index and aged > 16 
 . gen bmi_time = (date("$indexdate", "DMY") - bmi_measured_date)/365.25
-(4,865 missing values generated)
+(4,879 missing values generated)
 
 . gen bmi_age = age - bmi_time
-(4,865 missing values generated)
+(4,879 missing values generated)
 
 . 
 . replace bmi = . if bmi_age < 16 
@@ -424,35 +424,35 @@ variable oral_steroids was str7 now str10
 (0 real changes made)
 
 . replace bmi_measured_date = . if bmi == . 
-(3,377 real changes made, 3,377 to missing)
+(3,388 real changes made, 3,388 to missing)
 
 . replace bmi_measured_date = . if bmi == . 
 (0 real changes made)
 
 . 
 . gen     bmicat = .
-(293,081 missing values generated)
+(293,376 missing values generated)
 
 . recode  bmicat . = 1 if bmi < 18.5
-(bmicat: 11410 changes made)
+(bmicat: 11417 changes made)
 
 . recode  bmicat . = 2 if bmi < 25
-(bmicat: 89567 changes made)
+(bmicat: 89655 changes made)
 
 . recode  bmicat . = 3 if bmi < 30
-(bmicat: 95869 changes made)
+(bmicat: 95967 changes made)
 
 . recode  bmicat . = 4 if bmi < 35
-(bmicat: 55793 changes made)
+(bmicat: 55833 changes made)
 
 . recode  bmicat . = 5 if bmi < 40
-(bmicat: 22149 changes made)
+(bmicat: 22175 changes made)
 
 . recode  bmicat . = 6 if bmi < .
-(bmicat: 10051 changes made)
+(bmicat: 10062 changes made)
 
 . replace bmicat = .u if bmi >= .
-(8,242 real changes made, 8,242 to missing)
+(8,267 real changes made, 8,267 to missing)
 
 . 
 . label define bmicat 1 "Underweight (<18.5)"     ///
@@ -469,7 +469,7 @@ variable oral_steroids was str7 now str10
 . 
 . * Create less  granular categorisation
 . recode bmicat 1/3 .u = 1 4 = 2 5 = 3 6 = 4, gen(obese4cat)
-(281671 differences between bmicat and obese4cat)
+(281959 differences between bmicat and obese4cat)
 
 . 
 . label define obese4cat  1 "No record of obesity"        ///
@@ -490,13 +490,13 @@ variable oral_steroids was str7 now str10
 
 . 
 . gen     smoke = 1  if smoking_status == "N"
-(293,081 missing values generated)
+(293,376 missing values generated)
 
 . replace smoke = 2  if smoking_status == "E"
-(185,196 real changes made)
+(185,366 real changes made)
 
 . replace smoke = 3  if smoking_status == "S"
-(107,885 real changes made)
+(108,010 real changes made)
 
 . replace smoke = .u if smoking_status == "M"
 (0 real changes made)
@@ -550,7 +550,7 @@ variable oral_steroids was str7 now str10
 
 .                                          
 . gen cancer_ever_date = max(haem_cancer_date, lung_cancer_date, other_cancer_date)
-(252,889 missing values generated)
+(253,105 missing values generated)
 
 . format cancer_ever_date %td
 
@@ -586,7 +586,7 @@ variable oral_steroids was str7 now str10
 . 
 . * Set implausible creatinine values to missing (Note: zero changed to missing)
 . replace creatinine = . if !inrange(creatinine, 20, 3000) 
-(82,577 real changes made, 82,577 to missing)
+(82,619 real changes made, 82,619 to missing)
 
 . 
 . * Remove creatinine dates if no measurements, and vice versa 
@@ -598,67 +598,67 @@ variable oral_steroids was str7 now str10
 (340 real changes made, 340 to missing)
 
 . replace creatinine_measured = . if creatinine == . 
-(82,577 real changes made, 82,577 to missing)
+(82,619 real changes made, 82,619 to missing)
 
 . 
 . * Divide by 88.4 (to convert umol/l to mg/dl)
 . gen SCr_adj = creatinine/88.4
-(82,577 missing values generated)
+(82,619 missing values generated)
 
 . 
 . gen min = .
-(293,081 missing values generated)
+(293,376 missing values generated)
 
 . replace min = SCr_adj/0.7 if male==0
-(95,518 real changes made)
+(95,636 real changes made)
 
 . replace min = SCr_adj/0.9 if male==1
-(114,982 real changes made)
+(115,116 real changes made)
 
 . replace min = min^-0.329  if male==0
-(95,518 real changes made)
+(95,636 real changes made)
 
 . replace min = min^-0.411  if male==1
-(114,982 real changes made)
+(115,116 real changes made)
 
 . replace min = 1 if min<1
-(144,066 real changes made)
+(144,240 real changes made)
 
 . 
 . gen max=.
-(293,081 missing values generated)
+(293,376 missing values generated)
 
 . replace max=SCr_adj/0.7 if male==0
-(95,518 real changes made)
+(95,636 real changes made)
 
 . replace max=SCr_adj/0.9 if male==1
-(114,982 real changes made)
+(115,116 real changes made)
 
 . replace max=max^-1.209
-(210,500 real changes made)
+(210,752 real changes made)
 
 . replace max=1 if max>1
-(149,015 real changes made)
+(149,136 real changes made)
 
 . 
 . gen egfr=min*max*141
-(82,581 missing values generated)
+(82,624 missing values generated)
 
 . replace egfr=egfr*(0.993^age)
-(210,500 real changes made)
+(210,752 real changes made)
 
 . replace egfr=egfr*1.018 if male==0
-(95,518 real changes made)
+(95,636 real changes made)
 
 . label var egfr "egfr calculated using CKD-EPI formula with no eth"
 
 . 
 . * Categorise into ckd stages
 . egen egfr_cat = cut(egfr), at(0, 15, 30, 45, 60, 5000)
-(82581 missing values generated)
+(82624 missing values generated)
 
 . recode egfr_cat 0 = 5 15 = 4 30 = 3 45 = 2 60 = 0, generate(ckd_egfr)
-(210500 differences between egfr_cat and ckd_egfr)
+(210752 differences between egfr_cat and ckd_egfr)
 
 . 
 . * 0 = "No CKD"  2 "stage 3a" 3 "stage 3b" 4 "stage 4" 5 "stage 5"
@@ -668,10 +668,10 @@ variable oral_steroids was str7 now str10
 . gen ckd = 0
 
 . replace ckd = 1 if ckd_egfr != . & ckd_egfr >= 1
-(49,787 real changes made)
+(49,845 real changes made)
 
 . replace ckd = 1 if esrf == 1
-(280 real changes made)
+(282 real changes made)
 
 . 
 . label define ckd 0 "No CKD" 1 "CKD"
@@ -683,13 +683,13 @@ variable oral_steroids was str7 now str10
 . 
 . * Create date (most recent measure prior to index)
 . gen temp1_ckd_date = creatinine_measured_date if ckd_egfr >=1
-(243,290 missing values generated)
+(243,526 missing values generated)
 
 . gen temp2_ckd_date = esrf_date if esrf == 1
-(292,385 missing values generated)
+(292,678 missing values generated)
 
 . gen ckd_date = max(temp1_ckd_date,temp2_ckd_date) 
-(243,010 missing values generated)
+(243,244 missing values generated)
 
 . format ckd_date %td 
 
@@ -700,10 +700,10 @@ variable oral_steroids was str7 now str10
 . 
 . * Set zero or negative to missing
 . replace hba1c_percentage   = . if hba1c_percentage <= 0
-(225,392 real changes made, 225,392 to missing)
+(225,638 real changes made, 225,638 to missing)
 
 . replace hba1c_mmol_per_mol = . if hba1c_mmol_per_mol <= 0
-(46,951 real changes made, 46,951 to missing)
+(47,012 real changes made, 47,012 to missing)
 
 . 
 . /* Express  HbA1c as percentage  */ 
@@ -713,41 +713,41 @@ variable oral_steroids was str7 now str10
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-hba1c_perc~e |     67,689    6.470265    3.517789        .03        148
-hba1c_mmol~l |    246,130    42.93478    11.08802          3        184
+hba1c_perc~e |     67,738     6.46986    3.514357        .03        148
+hba1c_mmol~l |    246,364    42.93339    11.08602          3        184
 
 . gen     hba1c_pct = hba1c_percentage 
-(225,392 missing values generated)
+(225,638 missing values generated)
 
 . replace hba1c_pct = (hba1c_mmol_per_mol/10.929)+2.15 if hba1c_mmol_per_mol<. 
-(246,130 real changes made)
+(246,364 real changes made)
 
 . 
 . * Valid % range between 0-20  
 . replace hba1c_pct = . if !inrange(hba1c_pct, 0, 20) 
-(7 real changes made, 7 to missing)
+(8 real changes made, 8 to missing)
 
 . replace hba1c_pct = round(hba1c_pct, 0.1)
-(246,136 real changes made)
+(246,370 real changes made)
 
 . 
 . /* Categorise hba1c and diabetes  */
 . 
 . * Group hba1c
 . gen     hba1ccat = 0 if hba1c_pct <  6.5
-(91,778 missing values generated)
+(91,879 missing values generated)
 
 . replace hba1ccat = 1 if hba1c_pct >= 6.5  & hba1c_pct < 7.5
-(27,369 real changes made)
+(27,401 real changes made)
 
 . replace hba1ccat = 2 if hba1c_pct >= 7.5  & hba1c_pct < 8
-(5,994 real changes made)
+(5,997 real changes made)
 
 . replace hba1ccat = 3 if hba1c_pct >= 8    & hba1c_pct < 9
-(6,199 real changes made)
+(6,202 real changes made)
 
 . replace hba1ccat = 4 if hba1c_pct >= 9    & hba1c_pct !=.
-(6,571 real changes made)
+(6,576 real changes made)
 
 . label define hba1ccat 0 "<6.5%" 1">=6.5-7.4" 2">=7.5-7.9" 3">=8-8.9" 4">=9"
 
@@ -757,24 +757,24 @@ hba1c_mmol~l |    246,130    42.93478    11.08802          3        184
 
    hba1ccat |      Freq.     Percent        Cum.
 ------------+-----------------------------------
-      <6.5% |    201,303       81.36       81.36
-  >=6.5-7.4 |     27,369       11.06       92.42
-  >=7.5-7.9 |      5,994        2.42       94.84
-    >=8-8.9 |      6,199        2.51       97.34
-        >=9 |      6,571        2.66      100.00
+      <6.5% |    201,497       81.36       81.36
+  >=6.5-7.4 |     27,401       11.06       92.42
+  >=7.5-7.9 |      5,997        2.42       94.84
+    >=8-8.9 |      6,202        2.50       97.34
+        >=9 |      6,576        2.66      100.00
 ------------+-----------------------------------
-      Total |    247,436      100.00
+      Total |    247,673      100.00
 
 . 
 . * Create diabetes, split by control/not
 . gen     diabcat = 1 if diabetes==0
-(70,912 missing values generated)
+(71,016 missing values generated)
 
 . replace diabcat = 2 if diabetes==1 & inlist(hba1ccat, 0, 1)
-(51,490 real changes made)
+(51,581 real changes made)
 
 . replace diabcat = 3 if diabetes==1 & inlist(hba1ccat, 2, 3, 4)
-(18,637 real changes made)
+(18,650 real changes made)
 
 . replace diabcat = 4 if diabetes==1 & !inlist(hba1ccat, 0, 1, 2, 3, 4)
 (785 real changes made)
@@ -828,19 +828,19 @@ hba1c_mmol~l |    246,130    42.93478    11.08802          3        184
   6.         format `var' %td 
   7.         
 . }
-(289,988 missing values generated)
-(292,650 missing values generated)
+(288,273 missing values generated)
+(292,646 missing values generated)
 
 . 
 . * Date of Covid death in ONS
 . gen died_date_onscovid = died_date_ons if died_ons_covid_flag_any == 1
-(292,347 missing values generated)
+(292,393 missing values generated)
 
 . 
 . * Date of non-COVID death in ONS 
 . * If missing date of death resulting died_date will also be missing
 . gen died_date_onsnoncovid = died_date_ons if died_ons_covid_flag_any != 1 
-(290,722 missing values generated)
+(289,256 missing values generated)
 
 . 
 . format died_date_ons %td
@@ -874,13 +874,13 @@ hba1c_mmol~l |    246,130    42.93478    11.08802          3        184
 . 
 . * If outcome was after censoring occurred, set to zero
 . replace cpnsdeath               = 0 if (died_date_cpns          > cpnsdeathcensor_date) 
-(16 real changes made)
+(291 real changes made)
 
 . replace onscoviddeath   = 0 if (died_date_onscovid      > onscoviddeathcensor_date) 
-(9 real changes made)
+(236 real changes made)
 
 . replace onsnoncoviddeath = 0 if (died_date_onsnoncovid > onscoviddeathcensor_date)
-(21 real changes made)
+(1,669 real changes made)
 
 . 
 . * Format date variables
@@ -1101,5 +1101,5 @@ ethnicity_~e  bp_sys        hba1c_mmol~e  haem_cance~e  aplastic_a~e  perm_immun
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens2\00_cr_create_analysis_dataset.log
   log type:  text
- closed on:   9 Jun 2020, 11:40:56
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 10:30:43
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens3\02_cr_create_asthma_exposure.log
   log type:  text
- opened on:   9 Jun 2020, 12:12:33
+ opened on:  24 Jul 2020, 11:04:22
 
 . 
 . /* TREATMENT EXPOSURE=========================================================*/        
@@ -11,24 +11,24 @@
 . 
 . * At least one prescription of SABA single 
 . gen exposure = 0 if saba_single == 1
-(685,323 missing values generated)
+(685,871 missing values generated)
 
 . 
 . * And not a LABA, ICS or LTRA single or in combination 
 . recode exposure(0 = .u) if ics_single == 1 
-(exposure: 223358 changes made)
+(exposure: 223512 changes made)
 
 . recode exposure(0 = .u) if laba_ics == 1 
-(exposure: 284761 changes made)
+(exposure: 284902 changes made)
 
 . recode exposure(0 = .u) if laba_lama == 1
 (exposure: 9 changes made)
 
 . recode exposure(0 = .u) if laba_lama_ics == 1 
-(exposure: 669 changes made)
+(exposure: 664 changes made)
 
 . recode exposure(0 = .u) if ltra_single == 1 
-(exposure: 2590 changes made)
+(exposure: 2592 changes made)
 
 . 
 . /* ICS */
@@ -37,17 +37,17 @@
 . 
 . replace exposure = 1 if low_med_dose_ics == 1 & ///
 >                                                 low_med_dose_ics_date == max(low_med_dose_ics_date, high_dose_ics_date)
-(628,754 real changes made)
+(629,214 real changes made)
 
 . replace exposure = 2 if high_dose_ics == 1 & /// 
 >                                                 high_dose_ics_date == max(low_med_dose_ics_date, high_dose_ics_date)    
-(102,716 real changes made)
+(102,787 real changes made)
 
 . 
 . * If both on same date, code above assumes high dose            
 . 
 . replace exposure = .u if exposure >= .
-(465,198 real changes made, 465,198 to missing)
+(465,502 real changes made, 465,502 to missing)
 
 .                                                 
 . label define exposure 0 "SABA only" 1 "ICS (Low/Medium Dose)" 2 "ICS (High Dose)" .u "Other"
@@ -78,13 +78,13 @@ obs. time interval:  (stime_onscoviddeath[_n-1], stime_onscoviddeath]
             origin:  time enter_date
 
 ------------------------------------------------------------------------------
-  1,330,667  total observations
+  1,331,617  total observations
           0  exclusions
 ------------------------------------------------------------------------------
-  1,330,667  observations remaining, representing
-  1,330,667  subjects
-        703  failures in single-failure-per-subject data
-   87747564  total analysis time at risk and under observation
+  1,331,617  observations remaining, representing
+  1,331,617  subjects
+        723  failures in single-failure-per-subject data
+   87808322  total analysis time at risk and under observation
                                                 at risk from t =         0
                                      earliest observed entry t =         0
                                           last observed exit t =        66
@@ -98,5 +98,5 @@ file asthma_tempdata_sens3\analysis_dataset_STSET_onscoviddeath.dta saved
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens3\02_cr_create_asthma_exposure.log
   log type:  text
- closed on:   9 Jun 2020, 12:12:53
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 11:04:42
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

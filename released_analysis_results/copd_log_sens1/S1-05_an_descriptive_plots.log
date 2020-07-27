@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-05_an_descriptive_plots.log
   log type:  text
- opened on:   9 Jun 2020, 11:35:21
+ opened on:  24 Jul 2020, 10:26:05
 
 . 
 . * Open Stata dataset
@@ -18,20 +18,20 @@
        COPD Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-LABA/LAMA Combination |    43,188         90 |    43,278 
- ICS Dual Combination |    29,780         88 |    29,868 
-ICS Triple Combinatio |    75,099        243 |    75,342 
+LABA/LAMA Combination |    43,217         91 |    43,308 
+ ICS Dual Combination |    29,798         89 |    29,887 
+ICS Triple Combinatio |    75,113        249 |    75,362 
 ----------------------+----------------------+----------
-                Total |   148,067        421 |   148,488 
+                Total |   148,128        429 |   148,557 
 
 . 
 . /* Generate KM PLOT===========================================================*/ 
 . 
 . count if exposure != .u
-  148,488
+  148,557
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 148557 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
 . sts graph, by(exposure) failure                                                                                 ///     
@@ -41,7 +41,8 @@ RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
 >                    ylabel(0 ($ymax) 0.02, angle(0) format(%4.3f) labsize(small))        ///
 >                    xscale(range(30, 84))                                                                                        ///
 >                    xlabel(0 (20) 100, labsize(small))                                                           ///                             
->                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Dual Combination") label (3 "ICS Triple Combination") region(lwidth(none)) position(12))  ///
+>                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Dual Combination") label (3 "ICS Triple Combination") region(lwidth(none)) position(
+> 12))  ///
 >                    graphregion(fcolor(white)) ///       
 >                    risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "ICS Dual Combination" 3 "ICS Triple Combination") title(,size(vsmall))) ///
 >                    saving(kmplotS1, replace)
@@ -73,5 +74,5 @@ RUNNING THE KM PLOT FOR 148488 PEOPLE WITH NON-MISSING EXPOSURE
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-05_an_descriptive_plots.log
   log type:  text
- closed on:   9 Jun 2020, 11:35:28
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 10:26:13
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

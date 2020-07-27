@@ -1,8 +1,8 @@
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
   log type:  text
- opened on:   9 Jun 2020, 10:56:40
+ opened on:  24 Jul 2020, 09:38:52
 
 . 
 . /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
@@ -11,7 +11,7 @@
 DROP MISSING GENDER:
 
 . drop if inlist(sex,"I", "U")
-(REDACTED observations deleted)
+([REDACTED] observations deleted)
 
 . 
 . noi di "DROP AGE <35:"
@@ -39,7 +39,7 @@ DROP AGE MISSING:
 DROP IMD MISSING
 
 . drop if imd == .u
-(1,228 observations deleted)
+(1,231 observations deleted)
 
 . 
 . noi di "DROP IF DEAD BEFORE INDEX"
@@ -90,7 +90,7 @@ Duplicates in terms of patient_id
 . datacheck other_respiratory == 0, nol
 
 . gen asthma_time = ((enter_date - asthma_ever_date) + 15)/365.25
-(236,592 missing values generated)
+(236,837 missing values generated)
 
 . 
 . datacheck asthma_time > 3, nol
@@ -116,5 +116,5 @@ Duplicates in terms of patient_id
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\01_cr_create_copd_population.log
   log type:  text
- closed on:   9 Jun 2020, 10:56:42
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ closed on:  24 Jul 2020, 09:38:54
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,432 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\Extra_06_an_models_copd.log
+  log type:  text
+ opened on:  24 Jul 2020, 09:44:08
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Sense check outcomes=======================================================*/ 
+. 
+. tab exposure $outcome, missing row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    43,217         91 |    43,308 
+                      |     99.79       0.21 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |   104,911        338 |   105,249 
+                      |     99.68       0.32 |    100.00 
+----------------------+----------------------+----------
+                Other |   143,227        313 |   143,540 
+                      |     99.78       0.22 |    100.00 
+----------------------+----------------------+----------
+                Total |   291,355        742 |   292,097 
+                      |     99.75       0.25 |    100.00 
+
+. 
+. /* Additional model adjustments===============================================*/
+. 
+. * Original model
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss                          ///
+>                                                                                 i.imd                                           ///
+>                                                                                 i.ckd                                           ///
+>                                                                                 i.hypertension                          ///
+>                                                                                 i.heart_failure                         ///
+>                                                                                 i.other_heart_disease           ///
+>                                                                                 i.diabcat                                       ///
+>                                                                                 i.cancer_ever                           ///
+>                                                                                 i.statin                                        ///
+>                                                                                 i.flu_vaccine                           ///
+>                                                                                 i.pneumococcal_vaccine          ///
+>                                                                                 i.exacerbations                         ///
+>                                                                                 i.asthma_ever                           ///
+>                                                                                 i.immunodef_any, strata(stp)
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood =  -3752.968
+Iteration 1:   log likelihood = -3707.6093
+Iteration 2:   log likelihood = -3467.0015
+Iteration 3:   log likelihood = -3445.1794
+Iteration 4:   log likelihood = -3444.2007
+Iteration 5:   log likelihood =  -3444.179
+Iteration 6:   log likelihood = -3444.1789
+Refining estimates:
+Iteration 0:   log likelihood = -3444.1789
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      148,557                  Number of obs    =     148,557
+No. of failures =          429
+Time at risk    =      9751453
+                                                LR chi2(27)      =      617.58
+Log likelihood  =   -3444.1789                  Prob > chi2      =      0.0000
+
+---------------------------------------------------------------------------------------------
+                         _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------------+----------------------------------------------------------------
+                   exposure |
+           ICS Combination  |    1.39087   .1685448     2.72   0.006     1.096828     1.76374
+                     1.male |    1.72225   .1826043     5.13   0.000     1.399092     2.12005
+                       age1 |    1.04105   .0472369     0.89   0.375     .9524645    1.137874
+                       age2 |   1.095673   .0883443     1.13   0.257     .9355102    1.283257
+                       age3 |   .7214074   .2269358    -1.04   0.299      .389417     1.33643
+                            |
+                  obese4cat |
+         Obese I (30-34.9)  |   1.148933   .1420575     1.12   0.261     .9016745    1.463996
+        Obese II (35-39.9)  |   1.274165   .2301911     1.34   0.180     .8942262    1.815533
+           Obese III (40+)  |   1.772486   .4255288     2.38   0.017     1.107212    2.837492
+                            |
+               smoke_nomiss |
+                   Current  |   .5942096   .0895876    -3.45   0.001      .442187    .7984971
+                            |
+                        imd |
+                         2  |   .9609012   .1434719    -0.27   0.789     .7171104    1.287572
+                         3  |   .7868556   .1263829    -1.49   0.136     .5743506    1.077986
+                         4  |    1.19294   .1815413     1.16   0.246     .8852847    1.607512
+           5 most deprived  |   1.439739   .2257694     2.32   0.020     1.058777    1.957777
+                            |
+                        ckd |
+                       CKD  |   1.651443   .1789556     4.63   0.000     1.335441    2.042219
+             1.hypertension |   .9738829   .1051416    -0.25   0.806      .788152    1.203382
+            1.heart_failure |   1.643566   .1963089     4.16   0.000     1.300526     2.07709
+      1.other_heart_disease |   1.123439   .1236158     1.06   0.290      .905501    1.393831
+                            |
+                    diabcat |
+       Controlled diabetes  |    1.37356   .1595493     2.73   0.006     1.093891     1.72473
+     Uncontrolled diabetes  |     1.6433   .2762112     2.96   0.003     1.182072    2.284491
+Diabetes, no hba1c measure  |   1.638509   1.168344     0.69   0.489     .4050389    6.628281
+                            |
+              1.cancer_ever |   1.060261   .1279851     0.48   0.628     .8368808    1.343266
+                   1.statin |   .8464061   .0907205    -1.56   0.120     .6860319    1.044271
+              1.flu_vaccine |    .864368   .1216364    -1.04   0.300     .6560171    1.138891
+     1.pneumococcal_vaccine |   .9355952    .148654    -0.42   0.675     .6852406    1.277418
+            1.exacerbations |   1.443892   .1497993     3.54   0.000     1.178217    1.769474
+              1.asthma_ever |   .8264591   .0965487    -1.63   0.103     .6573281    1.039108
+            1.immunodef_any |   1.698843   1.703295     0.53   0.597     .2380791    12.12231
+---------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. estimates save ./$tempdir/multivar2, replace 
+file ./copd_tempdata/multivar2.ster saved
+
+. 
+. * Without exacerbations                                                                         
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss                          ///
+>                                                                                 i.imd                                           ///
+>                                                                                 i.ckd                                           ///
+>                                                                                 i.hypertension                          ///
+>                                                                                 i.heart_failure                         ///
+>                                                                                 i.other_heart_disease           ///
+>                                                                                 i.diabcat                                       ///
+>                                                                                 i.cancer_ever                           ///
+>                                                                                 i.statin                                        ///
+>                                                                                 i.flu_vaccine                           ///
+>                                                                                 i.pneumococcal_vaccine          ///
+>                                                                                 i.asthma_ever                           ///
+>                                                                                 i.immunodef_any , strata(stp)           
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood =  -3752.968
+Iteration 1:   log likelihood =  -3710.009
+Iteration 2:   log likelihood = -3471.6715
+Iteration 3:   log likelihood = -3451.1367
+Iteration 4:   log likelihood = -3450.2062
+Iteration 5:   log likelihood = -3450.1851
+Iteration 6:   log likelihood =  -3450.185
+Refining estimates:
+Iteration 0:   log likelihood =  -3450.185
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      148,557                  Number of obs    =     148,557
+No. of failures =          429
+Time at risk    =      9751453
+                                                LR chi2(26)      =      605.57
+Log likelihood  =    -3450.185                  Prob > chi2      =      0.0000
+
+---------------------------------------------------------------------------------------------
+                         _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------------+----------------------------------------------------------------
+                   exposure |
+           ICS Combination  |   1.430185   .1729928     2.96   0.003      1.12832    1.812809
+                     1.male |    1.70212   .1803692     5.02   0.000     1.382899    2.095027
+                       age1 |   1.040586   .0472518     0.88   0.381     .9519757    1.137444
+                       age2 |   1.096849   .0885304     1.15   0.252      .936361    1.284843
+                       age3 |   .7199606   .2267603    -1.04   0.297     .3883404    1.334765
+                            |
+                  obese4cat |
+         Obese I (30-34.9)  |   1.142227   .1412058     1.08   0.282     .8964462    1.455395
+        Obese II (35-39.9)  |   1.267771   .2289918     1.31   0.189     .8897998    1.806299
+           Obese III (40+)  |   1.765192   .4236749     2.37   0.018     1.102782    2.825493
+                            |
+               smoke_nomiss |
+                   Current  |   .5970947   .0899821    -3.42   0.001      .444393    .8022674
+                            |
+                        imd |
+                         2  |    .965637   .1441558    -0.23   0.815     .7206786    1.293857
+                         3  |   .7895991   .1267966    -1.47   0.141     .5763916    1.081672
+                         4  |   1.198446   .1822718     1.19   0.234     .8895274    1.614648
+           5 most deprived  |   1.454657   .2279309     2.39   0.017     1.070004    1.977588
+                            |
+                        ckd |
+                       CKD  |   1.648202   .1785606     4.61   0.000     1.332889    2.038106
+             1.hypertension |   .9724605   .1049935    -0.26   0.796     .7869922    1.201638
+            1.heart_failure |   1.673316   .1998444     4.31   0.000     1.324094    2.114644
+      1.other_heart_disease |   1.132637   .1247495     1.13   0.258     .9127229    1.405539
+                            |
+                    diabcat |
+       Controlled diabetes  |   1.382518   .1605825     2.79   0.005     1.101037     1.73596
+     Uncontrolled diabetes  |   1.665408   .2798644     3.04   0.002     1.198064    2.315055
+Diabetes, no hba1c measure  |   1.661968   1.184742     0.71   0.476     .4109977    6.720569
+                            |
+              1.cancer_ever |   1.067028   .1288199     0.54   0.591     .8421943    1.351884
+                   1.statin |   .8401975   .0900987    -1.62   0.104     .6809304    1.036717
+              1.flu_vaccine |   .8709301   .1225589    -0.98   0.326     .6609988    1.147535
+     1.pneumococcal_vaccine |   .9345793   .1484578    -0.43   0.670     .6845464    1.275937
+              1.asthma_ever |   .8246447   .0963618    -1.65   0.099     .6558458    1.036888
+            1.immunodef_any |    1.67409    1.67847     0.51   0.607     .2346121    11.94558
+---------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+. 
+. estimates save ./$tempdir/multivar3, replace 
+(note: file ./copd_tempdata/multivar3.ster not found)
+file ./copd_tempdata/multivar3.ster saved
+
+. 
+. * Add oral steroids 
+. stcox i.exposure i.male age1 age2 age3  i.obese4cat                                     ///
+>                                                                                 i.smoke_nomiss                          ///
+>                                                                                 i.imd                                           ///
+>                                                                                 i.ckd                                           ///
+>                                                                                 i.hypertension                          ///
+>                                                                                 i.heart_failure                         ///
+>                                                                                 i.other_heart_disease           ///
+>                                                                                 i.diabcat                                       ///
+>                                                                                 i.cancer_ever                           ///
+>                                                                                 i.statin                                        ///
+>                                                                                 i.flu_vaccine                           ///
+>                                                                                 i.pneumococcal_vaccine          ///
+>                                                                                 i.exacerbations                         ///
+>                                                                                 i.immunodef_any                         ///
+>                                                                                 i.asthma_ever                           ///
+>                                                                                 i.oral_steroids, strata(stp)
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+
+Iteration 0:   log likelihood =  -3752.968
+Iteration 1:   log likelihood = -3707.4756
+Iteration 2:   log likelihood =  -3466.778
+Iteration 3:   log likelihood = -3444.9691
+Iteration 4:   log likelihood = -3443.9896
+Iteration 5:   log likelihood = -3443.9679
+Iteration 6:   log likelihood = -3443.9678
+Refining estimates:
+Iteration 0:   log likelihood = -3443.9678
+
+Stratified Cox regr. -- Breslow method for ties
+
+No. of subjects =      148,557                  Number of obs    =     148,557
+No. of failures =          429
+Time at risk    =      9751453
+                                                LR chi2(28)      =      618.00
+Log likelihood  =   -3443.9678                  Prob > chi2      =      0.0000
+
+---------------------------------------------------------------------------------------------
+                         _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+----------------------------+----------------------------------------------------------------
+                   exposure |
+           ICS Combination  |   1.381332   .1680331     2.66   0.008     1.088312    1.753247
+                     1.male |   1.725828   .1830666     5.14   0.000     1.401866    2.124655
+                       age1 |   1.040877    .047227     0.88   0.377     .9523102    1.137681
+                       age2 |   1.095933   .0883591     1.14   0.256     .9357426    1.283547
+                       age3 |   .7214451   .2269261    -1.04   0.299     .3894602    1.336422
+                            |
+                  obese4cat |
+         Obese I (30-34.9)  |   1.148868   .1420605     1.12   0.262     .9016062     1.46394
+        Obese II (35-39.9)  |   1.274707   .2302793     1.34   0.179     .8946199    1.816278
+           Obese III (40+)  |   1.773795   .4258294     2.39   0.017     1.108047    2.839545
+                            |
+               smoke_nomiss |
+                   Current  |   .5946661   .0896648    -3.45   0.001     .4425145    .7991326
+                            |
+                        imd |
+                         2  |   .9610693   .1434999    -0.27   0.790     .7172317    1.287804
+                         3  |   .7861723   .1262785    -1.50   0.134     .5738441    1.077064
+                         4  |   1.192382   .1814602     1.16   0.248     .8848654     1.60677
+           5 most deprived  |   1.439837   .2257652     2.32   0.020     1.058877    1.957857
+                            |
+                        ckd |
+                       CKD  |   1.651203    .178962     4.63   0.000     1.335196    2.042002
+             1.hypertension |   .9739449   .1051441    -0.24   0.807     .7882088    1.203448
+            1.heart_failure |   1.642731   .1961912     4.16   0.000     1.299893     2.07599
+      1.other_heart_disease |   1.123712    .123621     1.06   0.289     .9057605     1.39411
+                            |
+                    diabcat |
+       Controlled diabetes  |   1.374588    .159669     2.74   0.006     1.094709    1.726021
+     Uncontrolled diabetes  |   1.644484   .2764062     2.96   0.003      1.18293    2.286126
+Diabetes, no hba1c measure  |   1.639612   1.169097     0.69   0.488     .4053276    6.632477
+                            |
+              1.cancer_ever |   1.059761   .1279246     0.48   0.631     .8364858    1.342632
+                   1.statin |   .8471288   .0907874    -1.55   0.122     .6866344    1.045137
+              1.flu_vaccine |   .8625014   .1213997    -1.05   0.293     .6545617    1.136499
+     1.pneumococcal_vaccine |    .935712   .1486693    -0.42   0.676     .6853307    1.277568
+            1.exacerbations |   1.417058    .152671     3.24   0.001      1.14731    1.750227
+            1.immunodef_any |   1.702533   1.706999     0.53   0.596     .2385948    12.14871
+              1.asthma_ever |   .8248758   .0963892    -1.65   0.099     .6560291     1.03718
+            1.oral_steroids |   1.072411   .1150034     0.65   0.514      .869121    1.323252
+---------------------------------------------------------------------------------------------
+                                                             Stratified by stp
+
+.                                                                                 
+. estimates save ./$tempdir/multivar4, replace 
+(note: file ./copd_tempdata/multivar4.ster not found)
+file ./copd_tempdata/multivar4.ster saved
+
+.         
+. /* Print table================================================================*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/Extratable2.txt, write text replace
+(note: file ./copd_output/Extratable2.txt not found)
+
+. 
+. * Column headings 
+. file write tablecontent ("Extra Table 2: Different Adjustment Sets") _n
+
+. file write tablecontent ("Adjustment Set") _tab _tab ("HR") _tab ("95% CI") _n                  
+
+. 
+. * Row headings 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+. 
+. /* Main Model */ 
+. 
+. file write tablecontent ("Main Model") _tab
+
+. 
+. file write tablecontent ("`lab0'") _tab
+
+. file write tablecontent ("1.00 (ref)") _tab _tab  _n
+
+. file write tablecontent _tab ("`lab1'") _tab  
+
+. 
+. estimates use ./$tempdir/multivar2 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |    1.39087   .1685448     2.72   0.006     1.096828     1.76374
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. /* No exacerbation history */ 
+. 
+. file write tablecontent ("Wo. Exposure History") _tab
+
+. 
+. file write tablecontent ("`lab0'") _tab
+
+. file write tablecontent ("1.00 (ref)") _tab _tab  _n
+
+. file write tablecontent _tab ("`lab1'") _tab  
+
+. 
+. estimates use ./$tempdir/multivar3 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.430185   .1729928     2.96   0.003      1.12832    1.812809
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. /* Oral Steroids */ 
+. 
+. file write tablecontent ("W oral steroids") _tab
+
+. 
+. file write tablecontent ("`lab0'") _tab
+
+. file write tablecontent ("1.00 (ref)") _tab _tab  _n
+
+. file write tablecontent _tab ("`lab1'") _tab  
+
+. 
+. estimates use ./$tempdir/multivar4 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.381332   .1680331     2.66   0.008     1.088312    1.753247
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
+
+. 
+. 
+. file write tablecontent _n
+
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\Extra_06_an_models_copd.log
+  log type:  text
+ closed on:  24 Jul 2020, 09:44:50
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
-Table 4: Testing the PH assumption for COVID-19 Death in ONS - Asthma Population
+Table 4: Testing the PH assumption for COVID-19 Death in ONS - Asthma - Ever Population
 	Univariable	Age/Sex Adjusted	Age/Sex and Comorbidity Adjusted	
 	p-value	p-value	p-value	
-ICS (Low/Medium Dose)	.63	.55	.6820000000000001
-ICS (High Dose)	.748	.677	.6910000000000001
+ICS (Low/Medium Dose)	.432	.387	.499
+ICS (High Dose)	.597	.555	.551
 

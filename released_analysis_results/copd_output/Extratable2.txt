@@ -1,0 +1,9 @@
+Extra Table 2: Different Adjustment Sets
+Adjustment Set		HR	95% CI
+Main Model	LABA/LAMA Combination	1.00 (ref)		
+	ICS Combination	1.39	1.10 - 1.76
+Wo. Exposure History	LABA/LAMA Combination	1.00 (ref)		
+	ICS Combination	1.43	1.13 - 1.81
+W oral steroids	LABA/LAMA Combination	1.00 (ref)		
+	ICS Combination	1.38	1.09 - 1.75
+

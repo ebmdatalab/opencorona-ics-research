@@ -1,4 +1,4 @@
 Table 4: Testing the PH assumption for Non-COVID Death in ONS- COPD Population
 	Univariable	Age/Sex Adjusted	Age/Sex and Comorbidity Adjusted	
 	p-value	p-value	p-value	
-Treatment Exposure	.877	.902	.98
+Treatment Exposure	.898	.871	.774

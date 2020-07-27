@@ -6,11 +6,11 @@ ICS Combination	1.24	1.09 - 1.41
 
 Smoking status (missing set to non)
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.26	1.11 - 1.44
+ICS Combination	1.27	1.11 - 1.44
 
 Index of Multiple Deprivation (IMD)
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.23	1.08 - 1.41
+ICS Combination	1.24	1.09 - 1.41
 
 Chronic kidney disease
 LABA/LAMA Combination	1.00 (ref)	
@@ -18,15 +18,15 @@ ICS Combination	1.25	1.10 - 1.42
 
 Diagnosed hypertension
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.24	1.09 - 1.42
+ICS Combination	1.24	1.09 - 1.41
 
 Heart Failure
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.24	1.09 - 1.42
+ICS Combination	1.24	1.10 - 1.41
 
 Other Heart Diseases
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.25	1.09 - 1.42
+ICS Combination	1.25	1.10 - 1.42
 
 Diabetes Severity
 LABA/LAMA Combination	1.00 (ref)	
@@ -42,7 +42,7 @@ ICS Combination	1.24	1.09 - 1.41
 
 Flu vaccine
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.24	1.09 - 1.42
+ICS Combination	1.25	1.10 - 1.42
 
 Pneumococcal Vaccine
 LABA/LAMA Combination	1.00 (ref)	
@@ -50,7 +50,7 @@ ICS Combination	1.24	1.09 - 1.41
 
 Exacerbation in last year
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.19	1.05 - 1.36
+ICS Combination	1.20	1.05 - 1.36
 
 Asthma ever
 LABA/LAMA Combination	1.00 (ref)	
@@ -58,6 +58,6 @@ ICS Combination	1.26	1.10 - 1.43
 
 Immunosuppressed (combination algorithm)
 LABA/LAMA Combination	1.00 (ref)	
-ICS Combination	1.24	1.09 - 1.42
+ICS Combination	1.24	1.09 - 1.41
 
 
