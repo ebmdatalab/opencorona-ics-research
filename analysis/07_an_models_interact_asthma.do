@@ -161,7 +161,7 @@ syntax, variable(varname) min(real) max(real)
 
 			count if exposure == 2 & `variable' == `varlevel' & $outcome == 1
 			local event = r(N)
-			summarize total_follow_up if exposure == 1 & `variable' == `varlevel'
+			summarize total_follow_up if exposure == 2 & `variable' == `varlevel'
 			local person_week = r(mean)/7
 			local rate = 1000*(`event'/`person_week')
 			

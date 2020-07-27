@@ -122,7 +122,7 @@ file write tablecontent ("`lab2'") _tab
 
 	count if exposure == 2 & $outcome == 1
 	local event = r(N)
-	summarize total_follow_up if exposure == 1
+	summarize total_follow_up if exposure == 2
 	local person_week = r(mean)/7
 	local rate = 1000*(`event'/`person_week')
 	file write tablecontent (`event') _tab %10.0f (`person_week') _tab %3.2f (`rate') _tab
