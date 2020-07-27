@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\01_cr_create_copd_population.log
   log type:  text
- opened on:  24 Jul 2020, 11:31:14
+ opened on:  27 Jul 2020, 15:56:37
 
 . 
 . /* APPLY INCLUSION/EXCLUIONS==================================================*/ 
@@ -116,5 +116,5 @@ Duplicates in terms of patient_id
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\01_cr_create_copd_population.log
   log type:  text
- closed on:  24 Jul 2020, 11:31:17
+ closed on:  27 Jul 2020, 15:56:39
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

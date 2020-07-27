@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestplot_copd.log
   log type:  text
- opened on:  24 Jul 2020, 11:32:11
+ opened on:  27 Jul 2020, 15:57:31
 
 . 
 . * All dta outputted from 06, append into one dataset 
@@ -117,13 +117,13 @@ variable bfanalysis was str13 now str16
 . 
 . cap drop x0_*
 
-. gen x0_7 = -8.5
+. gen x0_7 = -10
 
 . gen x0_3=-4
 
 . gen x0_1=-2
 
-. gen x0_14=4
+. gen x0_14=3.5
 
 . 
 . 
@@ -183,22 +183,20 @@ variable bfanalysis was str13 now str16
 >                 , legend(off)                                           /// turn legend off
 >                 xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2))              /// x-axis title (left right bottom top) - legend off
 >                 xlab(0(0.5)3, labsize(vsmall)) /// x-axis tick marks
->                 xscale(range(0.01 5))                                   ///     resize x-axis
+>                 xscale(range(0.01 4.5))                                 ///     resize x-axis
 >                 , ylab(none) ytitle("")         /// y-axis no labels or title
 >                 yscale(range(1 `height') lcolor(white))                                 /// resize y-axis
->                 graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1, replace)      /// get rid of rubbish grey/blue around graph
+>                 graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_copd, replace) /// get rid of rubbish grey/blue around graph
 > 
-(note: file forestplot1.gph not found)
-(file forestplot1.gph saved)
+(file forestplot1_copd.gph saved)
 
-. graph export "$outdir/forestplot1.svg", as(svg) replace
-(note: file graph_out/forestplot1.svg not found)
-(file graph_out/forestplot1.svg written in SVG format)
+. graph export "$outdir/forestplot1_copd.svg", as(svg) replace
+(file graph_out/forestplot1_copd.svg written in SVG format)
 
 . 
 . log close 
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestplot_copd.log
   log type:  text
- closed on:  24 Jul 2020, 11:32:14
+ closed on:  27 Jul 2020, 15:57:34
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

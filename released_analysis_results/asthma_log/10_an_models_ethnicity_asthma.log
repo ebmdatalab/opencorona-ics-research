@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\10_an_models_ethnicity_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 10:19:18
+ opened on:  27 Jul 2020, 14:14:21
 
 . 
 . * Open Stata dataset
@@ -396,11 +396,11 @@ total_foll~p |    428,142    2.82e+07           0   2.82e+07   2.82e+07
 
 .         local event = r(N)
 
-.         summarize total_follow_up if exposure == 1
+.         summarize total_follow_up if exposure == 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |    428,142    2.82e+07           0   2.82e+07   2.82e+07
+total_foll~p |     71,303     4699803           0    4699803    4699803
 
 .         local person_week = r(mean)/7
 
@@ -470,5 +470,5 @@ total_foll~p |    428,142    2.82e+07           0   2.82e+07   2.82e+07
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\10_an_models_ethnicity_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 10:20:52
+ closed on:  27 Jul 2020, 14:15:51
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

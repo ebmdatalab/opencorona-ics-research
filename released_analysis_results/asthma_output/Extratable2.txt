@@ -2,8 +2,11 @@ Extra Table 2: Different Adjustment Sets
 Adjustment Set		HR	95% CI
 Main Model	SABA only	1.00 (ref)		
 	ICS (Low/Medium Dose)	1.14	0.85 - 1.54
+	ICS (High Dose)	1.55	1.10 - 2.18
 Wo. Exposure History	SABA only	1.00 (ref)		
 	ICS (Low/Medium Dose)	1.16	0.86 - 1.56
+	ICS (High Dose)	1.62	1.15 - 2.28
 W oral steroids	SABA only	1.00 (ref)		
 	ICS (Low/Medium Dose)	1.16	0.86 - 1.56
+	ICS (High Dose)	1.60	1.13 - 2.25
 

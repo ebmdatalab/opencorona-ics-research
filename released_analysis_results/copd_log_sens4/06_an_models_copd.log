@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\06_an_models_copd.log
   log type:  text
- opened on:  24 Jul 2020, 11:31:46
+ opened on:  27 Jul 2020, 15:57:05
 
 . 
 . * Open Stata dataset
@@ -29,11 +29,11 @@
 LABA/LAMA Combination |    79,418        163 |    79,581 
                       |     99.80       0.20 |    100.00 
 ----------------------+----------------------+----------
- ICS Dual Combination |    75,734        244 |    75,978 
+ ICS Dual Combination |   104,911        338 |   105,249 
                       |     99.68       0.32 |    100.00 
 ----------------------+----------------------+----------
-                Other |   136,203        335 |   136,538 
-                      |     99.75       0.25 |    100.00 
+                Other |   107,026        241 |   107,267 
+                      |     99.78       0.22 |    100.00 
 ----------------------+----------------------+----------
                 Total |   291,355        742 |   292,097 
                       |     99.75       0.25 |    100.00 
@@ -55,29 +55,29 @@ LABA/LAMA Combination |    79,418        163 |    79,581
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -4862.9243
-Iteration 1:   log likelihood = -4852.7484
-Iteration 2:   log likelihood = -4852.7471
+Iteration 0:   log likelihood = -6072.2786
+Iteration 1:   log likelihood = -6060.5546
+Iteration 2:   log likelihood = -6060.5309
+Iteration 3:   log likelihood = -6060.5309
 Refining estimates:
-Iteration 0:   log likelihood = -4852.7471
+Iteration 0:   log likelihood = -6060.5309
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      155,559                  Number of obs    =     155,559
-No. of failures =          407
-Time at risk    =     10216455
-                                                LR chi2(1)       =       20.35
-Log likelihood  =   -4852.7471                  Prob > chi2      =      0.0000
+No. of subjects =      184,830                  Number of obs    =     184,830
+No. of failures =          501
+Time at risk    =     12135035
+                                                LR chi2(1)       =       23.50
+Log likelihood  =   -6060.5309                  Prob > chi2      =      0.0000
 
 ---------------------------------------------------------------------------------------
                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ----------------------+----------------------------------------------------------------
              exposure |
-ICS Dual Combination  |   1.570598   .1588816     4.46   0.000     1.288124    1.915016
+ICS Dual Combination  |   1.571248   .1498344     4.74   0.000     1.303389    1.894154
 ---------------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/univar, replace 
-(note: file ./copd_tempdata_sens4/univar.ster not found)
 file ./copd_tempdata_sens4/univar.ster saved
 
 . 
@@ -94,37 +94,36 @@ file ./copd_tempdata_sens4/univar.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -4862.9243
-Iteration 1:   log likelihood = -4651.0791
-Iteration 2:   log likelihood = -4609.9064
-Iteration 3:   log likelihood = -4607.5591
-Iteration 4:   log likelihood = -4607.3908
-Iteration 5:   log likelihood =  -4607.388
-Iteration 6:   log likelihood =  -4607.388
+Iteration 0:   log likelihood = -6072.2786
+Iteration 1:   log likelihood = -5836.4191
+Iteration 2:   log likelihood = -5790.5008
+Iteration 3:   log likelihood = -5787.8416
+Iteration 4:   log likelihood = -5787.6782
+Iteration 5:   log likelihood = -5787.6762
+Iteration 6:   log likelihood = -5787.6762
 Refining estimates:
-Iteration 0:   log likelihood =  -4607.388
+Iteration 0:   log likelihood = -5787.6762
 
 Cox regression -- Breslow method for ties
 
-No. of subjects =      155,559                  Number of obs    =     155,559
-No. of failures =          407
-Time at risk    =     10216455
-                                                LR chi2(5)       =      511.07
-Log likelihood  =    -4607.388                  Prob > chi2      =      0.0000
+No. of subjects =      184,830                  Number of obs    =     184,830
+No. of failures =          501
+Time at risk    =     12135035
+                                                LR chi2(5)       =      569.20
+Log likelihood  =   -5787.6762                  Prob > chi2      =      0.0000
 
 ---------------------------------------------------------------------------------------
                    _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ----------------------+----------------------------------------------------------------
              exposure |
-ICS Dual Combination  |   1.473302   .1491211     3.83   0.000     1.208195     1.79658
-               1.male |   1.768268   .1876323     5.37   0.000     1.436238    2.177057
-                 age1 |   1.062374   .0559641     1.15   0.251     .9581595    1.177925
-                 age2 |   1.109444   .1005848     1.15   0.252     .9288241    1.325187
-                 age3 |   .6778952   .2348233    -1.12   0.262        .3438    1.336655
+ICS Dual Combination  |   1.484372    .141591     4.14   0.000     1.231256    1.789522
+               1.male |   1.743911   .1668574     5.81   0.000      1.44571     2.10362
+                 age1 |   1.057684   .0470641     1.26   0.208     .9693482     1.15407
+                 age2 |   1.103723   .0855893     1.27   0.203     .9480969    1.284894
+                 age3 |   .6935488   .2073932    -1.22   0.221     .3859585    1.246274
 ---------------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/multivar1, replace 
-(note: file ./copd_tempdata_sens4/multivar1.ster not found)
 file ./copd_tempdata_sens4/multivar1.ster saved
 
 .   
@@ -137,70 +136,69 @@ file ./copd_tempdata_sens4/multivar1.ster saved
   enter on or after:  time enter_date
                  id:  patient_id
 
-Iteration 0:   log likelihood = -3557.6105
-Iteration 1:   log likelihood = -3288.2293
-Iteration 2:   log likelihood = -3242.4002
-Iteration 3:   log likelihood = -3240.0767
-Iteration 4:   log likelihood = -3239.9145
-Iteration 5:   log likelihood = -3239.9119
-Iteration 6:   log likelihood = -3239.9119
+Iteration 0:   log likelihood = -4475.8085
+Iteration 1:   log likelihood = -4426.5944
+Iteration 2:   log likelihood = -4145.2469
+Iteration 3:   log likelihood = -4119.5855
+Iteration 4:   log likelihood = -4118.5745
+Iteration 5:   log likelihood = -4118.5577
+Iteration 6:   log likelihood = -4118.5577
 Refining estimates:
-Iteration 0:   log likelihood = -3239.9119
+Iteration 0:   log likelihood = -4118.5577
 
 Stratified Cox regr. -- Breslow method for ties
 
-No. of subjects =      155,559                  Number of obs    =     155,559
-No. of failures =          407
-Time at risk    =     10216455
-                                                LR chi2(26)      =      635.40
-Log likelihood  =   -3239.9119                  Prob > chi2      =      0.0000
+No. of subjects =      184,830                  Number of obs    =     184,830
+No. of failures =          501
+Time at risk    =     12135035
+                                                LR chi2(26)      =      714.50
+Log likelihood  =   -4118.5577                  Prob > chi2      =      0.0000
 
 ---------------------------------------------------------------------------------------------
                          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 ----------------------------+----------------------------------------------------------------
                    exposure |
-      ICS Dual Combination  |   1.413121   .1456437     3.36   0.001     1.154649    1.729452
-                     1.male |   1.760643    .191271     5.21   0.000     1.422982    2.178429
-                       age1 |   1.063793   .0566633     1.16   0.246     .9583354    1.180855
-                       age2 |   1.073911   .0984048     0.78   0.436     .8973688    1.285185
-                       age3 |   .7573181   .2651646    -0.79   0.427      .381278    1.504232
+      ICS Dual Combination  |   1.410511   .1363041     3.56   0.000     1.167135    1.704637
+                     1.male |   1.716032   .1679065     5.52   0.000     1.416572    2.078796
+                       age1 |   1.056437   .0473767     1.22   0.221     .9675438    1.153496
+                       age2 |   1.072484   .0838488     0.90   0.371     .9201149    1.250084
+                       age3 |   .7678574   .2316729    -0.88   0.381     .4250711    1.387074
                             |
                   obese4cat |
-         Obese I (30-34.9)  |   .9823394   .1289872    -0.14   0.892     .7594402    1.270661
-        Obese II (35-39.9)  |   1.151059   .2237958     0.72   0.469      .786325    1.684975
-           Obese III (40+)  |   1.699069   .4390194     2.05   0.040     1.023931    2.819366
+         Obese I (30-34.9)  |   1.075741   .1244922     0.63   0.528     .8574341     1.34963
+        Obese II (35-39.9)  |   1.211264   .2063746     1.12   0.261     .8673838    1.691477
+           Obese III (40+)  |    1.62534   .3779651     2.09   0.037     1.030389    2.563818
                             |
                smoke_nomiss |
-                   Current  |   .7091865   .1039831    -2.34   0.019     .5320528    .9452926
+                   Current  |   .6599925    .088222    -3.11   0.002     .5078762      .85767
                             |
                         imd |
-                         2  |   .8738333   .1355948    -0.87   0.385     .6446821    1.184436
-                         3  |     .79068   .1276283    -1.46   0.146     .5762398    1.084921
-                         4  |   1.188717   .1823213     1.13   0.260     .8800837    1.605583
-           5 most deprived  |   1.293486   .2121654     1.57   0.117     .9378694    1.783943
+                         2  |   .9122585   .1264899    -0.66   0.508     .6951747    1.197132
+                         3  |   .7772826   .1146322    -1.71   0.088      .582164    1.037797
+                         4  |   1.215659   .1684808     1.41   0.159     .9264923    1.595077
+           5 most deprived  |   1.305528   .1920941     1.81   0.070      .978456    1.741932
                             |
                         ckd |
-                       CKD  |    1.78041   .1969166     5.22   0.000     1.433427    2.211386
-             1.hypertension |   1.023165   .1142107     0.21   0.837     .8221109    1.273389
-            1.heart_failure |   1.673014   .2068551     4.16   0.000     1.312971    2.131788
-      1.other_heart_disease |   1.084445   .1229816     0.71   0.475     .8683141    1.354373
+                       CKD  |   1.692264   .1693475     5.26   0.000     1.390872    2.058966
+             1.hypertension |   1.013595   .1017372     0.13   0.893     .8325821    1.233962
+            1.heart_failure |   1.695664   .1878838     4.77   0.000     1.364661    2.106955
+      1.other_heart_disease |   1.098414   .1119656     0.92   0.357     .8994967    1.341319
                             |
                     diabcat |
-       Controlled diabetes  |   1.250243   .1497111     1.87   0.062      .988705    1.580964
-     Uncontrolled diabetes  |   1.501444   .2645332     2.31   0.021     1.063015    2.120698
-Diabetes, no hba1c measure  |    2.04076   1.456945     1.00   0.318     .5036164    8.269594
+       Controlled diabetes  |   1.281378   .1380428     2.30   0.021     1.037475    1.582622
+     Uncontrolled diabetes  |   1.470826   .2347298     2.42   0.016     1.075765    2.010967
+Diabetes, no hba1c measure  |   1.431159   1.019067     0.50   0.615     .3544733    5.778194
                             |
-              1.cancer_ever |   1.190846   .1430162     1.45   0.146     .9410862    1.506891
-                   1.statin |   .8705622    .096012    -1.26   0.209      .701331    1.080629
-              1.flu_vaccine |   .9632975   .1420233    -0.25   0.800     .7215458    1.286047
-     1.pneumococcal_vaccine |   .8196657   .1427308    -1.14   0.253      .582659    1.153079
-            1.exacerbations |   1.464616   .1606119     3.48   0.001     1.181353    1.815799
-            1.immunodef_any |   1.718987   1.723809     0.54   0.589     .2408149    12.27049
+              1.cancer_ever |   1.157979   .1265586     1.34   0.180     .9346967      1.4346
+                   1.statin |   .8922612   .0888117    -1.15   0.252     .7341202    1.084468
+              1.flu_vaccine |   .8779683   .1139782    -1.00   0.316      .680731    1.132354
+     1.pneumococcal_vaccine |   .8726543   .1311649    -0.91   0.365     .6499827    1.171609
+            1.exacerbations |   1.388262   .1361919     3.34   0.001     1.145425    1.682582
+            1.immunodef_any |   1.339067   1.341816     0.29   0.771     .1878683     9.54446
 ---------------------------------------------------------------------------------------------
                                                              Stratified by stp
 
 . estimates save ./$tempdir/multivar2, replace
-(note: file ./copd_tempdata_sens4/multivar2.ster not found)
 file ./copd_tempdata_sens4/multivar2.ster saved
 
 .    
@@ -211,7 +209,6 @@ file ./copd_tempdata_sens4/multivar2.ster saved
 . cap file close tablecontent
 
 . file open tablecontent using ./$outdir/table2.txt, write text replace
-(note: file ./copd_output_sens4/table2.txt not found)
 
 . 
 . * Column headings 
@@ -266,7 +263,7 @@ total_foll~p |     79,581     5229642           0    5229642    5229642
 
 . 
 .         count if exposure == 1 & $outcome == 1
-  244
+  338
 
 .         local event = r(N)
 
@@ -274,7 +271,7 @@ total_foll~p |     79,581     5229642           0    5229642    5229642
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |     75,978     4986813           0    4986813    4986813
+total_foll~p |    105,249     6905393           0    6905393    6905393
 
 .         local person_week = r(mean)/7
 
@@ -293,7 +290,7 @@ total_foll~p |     75,978     4986813           0    4986813    4986813
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.570598   .1588816     4.46   0.000     1.288124    1.915016
+         (1) |   1.571248   .1498344     4.74   0.000     1.303389    1.894154
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
@@ -310,7 +307,7 @@ total_foll~p |     75,978     4986813           0    4986813    4986813
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.473302   .1491211     3.83   0.000     1.208195     1.79658
+         (1) |   1.484372    .141591     4.14   0.000     1.231256    1.789522
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _tab 
@@ -327,7 +324,7 @@ total_foll~p |     75,978     4986813           0    4986813    4986813
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.413121   .1456437     3.36   0.001     1.154649    1.729452
+         (1) |   1.410511   .1363041     3.56   0.000     1.167135    1.704637
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f (r(ub)) _n 
@@ -347,5 +344,5 @@ total_foll~p |     75,978     4986813           0    4986813    4986813
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\06_an_models_copd.log
   log type:  text
- closed on:  24 Jul 2020, 11:32:11
+ closed on:  27 Jul 2020, 15:57:31
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

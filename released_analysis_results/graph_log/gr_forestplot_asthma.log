@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestplot_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 11:32:14
+ opened on:  27 Jul 2020, 15:15:55
 
 . 
 . * All dta outputted from 06, append into one dataset 
@@ -116,13 +116,13 @@ variable bfanalysis was str13 now str16
 . 
 . cap drop x0_*
 
-. gen x0_7 = -18
+. gen x0_7 = -19
 
-. gen x0_3=-9
+. gen x0_3=-9.5
 
 . gen x0_1=-5.5
 
-. gen x0_14=7
+. gen x0_14=8.2
 
 . 
 . 
@@ -182,20 +182,22 @@ variable bfanalysis was str13 now str16
 >                 , legend(off)                                           /// turn legend off
 >                 xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2))              /// x-axis title (left right bottom top) - legend off
 >                 xlab(0(1)6, labsize(vsmall)) /// x-axis tick marks
->                 xscale(range(0.01 8))                                   ///     resize x-axis
+>                 xscale(range(0.01 9.5))                                 ///     resize x-axis
 >                 , ylab(none) ytitle("")         /// y-axis no labels or title
 >                 yscale(range(1 `height') lcolor(white))                                 /// resize y-axis
->                 graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1, replace)      /// get rid of rubbish grey/blue around graph
+>                 graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_asthma, replace)       /// get rid of rubbish grey/blue around graph
 > 
-(file forestplot1.gph saved)
+(note: file forestplot1_asthma.gph not found)
+(file forestplot1_asthma.gph saved)
 
-. graph export "$outdir/forestplot1.svg", as(svg) replace
-(file graph_out/forestplot1.svg written in SVG format)
+. graph export "$outdir/forestplot1_asthma.svg", as(svg) replace
+(note: file graph_out/forestplot1_asthma.svg not found)
+(file graph_out/forestplot1_asthma.svg written in SVG format)
 
 . 
 . log close 
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestplot_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 11:32:16
+ closed on:  27 Jul 2020, 15:15:57
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

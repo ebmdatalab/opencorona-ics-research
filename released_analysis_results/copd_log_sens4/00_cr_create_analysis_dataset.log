@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\00_cr_create_analysis_dataset.log
   log type:  text
- opened on:  24 Jul 2020, 11:30:52
+ opened on:  27 Jul 2020, 15:56:16
 
 . 
 . /* SET FU DATES===============================================================*/ 
@@ -1101,5 +1101,5 @@ ethnicity_~e  bp_sys        hba1c_mmol~e  haem_cance~e  aplastic_a~e  perm_immun
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\00_cr_create_analysis_dataset.log
   log type:  text
- closed on:  24 Jul 2020, 11:31:14
+ closed on:  27 Jul 2020, 15:56:37
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

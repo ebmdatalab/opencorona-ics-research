@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_table_copd.log
   log type:  text
- opened on:  24 Jul 2020, 09:39:08
+ opened on:  27 Jul 2020, 13:40:35
 
 . 
 . * Open Stata dataset
@@ -120,46 +120,43 @@
   4.         
 .         qui summarize `variable', d
   5.         file write tablecontent ("Median (IQR)") _tab 
-  6.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  6.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
   7.                                                         
 .         qui summarize `variable' if exposure == 0, d
-  8.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+  8.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
   9. 
 .         qui summarize `variable' if exposure == 1, d
- 10.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _tab
+ 10.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
  11. 
 .         qui summarize `variable' if exposure >= ., d
- 12.         file write tablecontent (r(p50)) (" (") (r(p25)) ("-") (r(p75)) (")") _n
+ 12.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _n
  13.         
 .         qui summarize `variable', d
  14.         file write tablecontent ("Mean (SD)") _tab 
- 15.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+ 15.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  16.                                                         
 .         qui summarize `variable' if exposure == 0, d
- 17.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
+ 17.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
  18. 
 .         qui summarize `variable' if exposure == 1, d
- 19.         file write tablecontent (r(mean)) (" (") (r(sd)) (")") _tab
- 20.         
-.         qui summarize `variable' if exposure == 2, d
- 21.         file write tablecontent (r(mean)) (" (") (r(sd))  (")") _tab
- 22. 
+ 19.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+ 20. 
 .         qui summarize `variable' if exposure >= ., d
- 23.         file write tablecontent (r(mean)) (" (") (r(sd))  (")") _n
- 24.         
+ 21.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
+ 22.         
 .         qui summarize `variable', d
- 25.         file write tablecontent ("Min, Max") _tab 
- 26.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
- 27.                                                         
+ 23.         file write tablecontent ("Min, Max") _tab 
+ 24.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 25.                                                         
 .         qui summarize `variable' if exposure == 0, d
- 28.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
- 29. 
+ 26.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 27. 
 .         qui summarize `variable' if exposure == 1, d
- 30.         file write tablecontent (r(min)) (", ") (r(max)) ("") _tab
- 31. 
+ 28.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 29. 
 .         qui summarize `variable' if exposure >= ., d
- 32.         file write tablecontent (r(min)) (", ") (r(max)) ("") _n
- 33.         
+ 30.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _n
+ 31.         
 . end 
 
 . 
@@ -977,5 +974,5 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log\04_an_descriptive_table_copd.log
   log type:  text
- closed on:  24 Jul 2020, 09:39:22
+ closed on:  27 Jul 2020, 13:40:47
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

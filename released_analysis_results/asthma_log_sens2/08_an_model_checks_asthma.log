@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\08_an_model_checks_asthma.log
   log type:  text
- opened on:  24 Jul 2020, 10:41:44
+ opened on:  27 Jul 2020, 14:31:13
 
 . 
 . * Open Stata dataset
@@ -398,5 +398,5 @@ Diabetes, no hba1c measure  |   1.112652   .5586786     0.21   0.832     .415871
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_sens2\08_an_model_checks_asthma.log
   log type:  text
- closed on:  24 Jul 2020, 10:53:32
+ closed on:  27 Jul 2020, 14:42:24
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

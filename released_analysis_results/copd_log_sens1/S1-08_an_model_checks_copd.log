@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-08_an_model_checks_copd.log
   log type:  text
- opened on:  24 Jul 2020, 10:26:37
+ opened on:  27 Jul 2020, 14:20:30
 
 . 
 . * Open Stata dataset
@@ -398,5 +398,5 @@ Diabetes, no hba1c measure  |   1.631164   1.163055     0.69   0.493     .403248
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-08_an_model_checks_copd.log
   log type:  text
- closed on:  24 Jul 2020, 10:28:48
+ closed on:  27 Jul 2020, 14:22:29
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens2\05_an_descriptive_plots_copd.log
   log type:  text
- opened on:  24 Jul 2020, 10:31:13
+ opened on:  27 Jul 2020, 14:23:57
 
 . 
 . * Open Stata dataset
@@ -72,5 +72,5 @@ RUNNING THE KM PLOT FOR 148557 PEOPLE WITH NON-MISSING EXPOSURE
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens2\05_an_descriptive_plots_copd.log
   log type:  text
- closed on:  24 Jul 2020, 10:31:20
+ closed on:  27 Jul 2020, 14:24:04
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

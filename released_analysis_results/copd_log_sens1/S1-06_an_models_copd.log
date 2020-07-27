@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-06_an_models_copd.log
   log type:  text
- opened on:  24 Jul 2020, 10:26:13
+ opened on:  27 Jul 2020, 14:20:07
 
 . 
 . * Open Stata dataset
@@ -387,11 +387,11 @@ total_foll~p |     29,887     1963205           0    1963205    1963205
 
 .         local event = r(N)
 
-.         summarize total_follow_up if exposure == 1
+.         summarize total_follow_up if exposure == 2
 
     Variable |        Obs        Mean    Std. Dev.       Min        Max
 -------------+---------------------------------------------------------
-total_foll~p |     29,887     1963205           0    1963205    1963205
+total_foll~p |     75,362     4942188           0    4942188    4942188
 
 .         local person_week = r(mean)/7
 
@@ -458,5 +458,5 @@ total_foll~p |     29,887     1963205           0    1963205    1963205
       name:  <unnamed>
        log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens1\S1-06_an_models_copd.log
   log type:  text
- closed on:  24 Jul 2020, 10:26:37
+ closed on:  27 Jul 2020, 14:20:30
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
