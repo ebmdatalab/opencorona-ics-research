@@ -37,12 +37,23 @@ recode exposure(0 = .u) if ics_single == 1
 recode exposure(0 = .u) if laba_ics == 1 
 recode exposure(0 = .u) if laba_lama_ics == 1 
 
-/* Dual combination ICS */
-				
-* Any prescription for a LABA ICS combination product 
-replace exposure = 1 if laba_ics == 1 
+*ICS 
+
+* Any prescription for a LABA LAMA ICS combination 
+gen exptemp3 = 1 if laba_lama_ics == 1
+* OR Any prescription for a LABA ICS combination product 
+gen exptemp4 = 1 if laba_ics == 1 
 * OR Any prescription for single ICS + Single LABA
-replace exposure = 1 if ics_single == 1 & laba_single == 1 
+gen exptemp5 = 1 if ics_single == 1 & laba_single == 1 
+* OR Any prescription for single ICS + LABA/LAMA
+gen exptemp6 = 1 if ics_single == 1 & laba_lama == 1
+					
+replace exposure = 1 if exptemp3 == 1 | /// 
+						exptemp4 == 1 | /// 
+						exptemp5 == 1 | ///
+						exptemp6 == 1 
+						
+replace exposure = .u if exposure >= .
 
 * Note: ICS and LAMA only considered "Other", as per protocol					
 
