@@ -444,3 +444,52 @@ global outdir  "qba_out"
 global logdir  "qba_log"
 
 do "gr_e-value_plot"
+
+/* PSM =======================================================================*/
+* Post hoc implementation of PS with IPTW (reviewer request)
+* Create directories required 
+
+capture mkdir copd_output_psm
+capture mkdir copd_log_psm
+capture mkdir copd_tempdata_psm
+
+* Set globals that will print in programs and direct output
+
+global population "COPD - PS"
+global outcome 	  "onscoviddeath"
+global outdir  	  "copd_output_psm" 
+global logdir     "copd_log_psm"
+global tempdir    "copd_tempdata_psm"
+
+global varlist 		i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.asthma_ever				///
+					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
+
+/*  Pre-analysis data manipulation  */
+
+do "00_cr_create_analysis_dataset.do"
+
+* COPD specific data manipulation   
+do "01_cr_create_copd_population.do"
+do "02_cr_create_copd_exposure.do"
+do "02b_cr_derive_ps.do"
+
+* COPD specific analyses 
+do "05b_an_ps_descriptive_plots_copd"
+do "06b_an_ps_models_copd.do"
+
