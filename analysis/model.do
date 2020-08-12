@@ -2,6 +2,7 @@ import delimited `c(pwd)'/output/input_copd.csv, clear
 cd  `c(pwd)'/analysis
 set more off 
 
+adopath + "./extra_ados"
 
 /* COPD ======================================================================*/
 
