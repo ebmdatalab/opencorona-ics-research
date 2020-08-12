@@ -402,6 +402,7 @@ global varlist	 	i.obese4cat					///
 					i.flu_vaccine 				///
 					i.pneumococcal_vaccine		///
 					i.exacerbations 			///
+					i.asthma_ever				///
 					i.immunodef_any
 					
 global tableoutcome "COVID-19 Death in ONS"
