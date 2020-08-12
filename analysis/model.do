@@ -423,31 +423,15 @@ do "03_an_checks.do"
 do "04_an_descriptive_table_copd.do"
 do "06_an_models_copd.do"
 
-/* 	MAKE FOREST PLOTS=========================================================*/
-
-capture mkdir graph_out
-capture mkdir graph_log
-
-global outdir  "graph_out" 
-global logdir  "graph_log"
-
-do "gr_forestplot_copd"
-do "gr_forestplot_asthma"
-
-/* 	QBA=======================================================================*/
-* Quantiative Bias - evalues outputted in plots
-
-capture mkdir qba_out
-capture mkdir qba_log
-
-global outdir  "qba_out" 
-global logdir  "qba_log"
-
-do "gr_e-value_plot"
-
 /* PSM =======================================================================*/
 * Post hoc implementation of PS with IPTW (reviewer request)
 * Create directories required 
+
+clear
+cd ..
+import delimited `c(pwd)'/output/input_copd.csv, clear
+cd  `c(pwd)'/analysis
+set more off 
 
 capture mkdir copd_output_psm
 capture mkdir copd_log_psm
@@ -492,4 +476,26 @@ do "02b_cr_derive_ps.do"
 * COPD specific analyses 
 do "05b_an_ps_descriptive_plots_copd"
 do "06b_an_ps_models_copd.do"
+
+/* 	MAKE FOREST PLOTS=========================================================*/
+
+capture mkdir graph_out
+capture mkdir graph_log
+
+global outdir  "graph_out" 
+global logdir  "graph_log"
+
+do "gr_forestplot_copd"
+do "gr_forestplot_asthma"
+
+/* 	QBA=======================================================================*/
+* Quantiative Bias - evalues outputted in plots
+
+capture mkdir qba_out
+capture mkdir qba_log
+
+global outdir  "qba_out" 
+global logdir  "qba_log"
+
+do "gr_e-value_plot"
 
