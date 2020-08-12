@@ -33,7 +33,7 @@ capture postfile temp str30 outcome str30 population str30 level str30 title est
 
 /* Univariable model */ 
 
-stcox i.exposure 
+stcox i.exposure, vce(robust)
 estimates save ./$tempdir/univar, replace 
 
 /* Print table================================================================*/ 
