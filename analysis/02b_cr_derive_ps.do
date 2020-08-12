@@ -29,14 +29,14 @@ summarize pscore if exposure == 0, detail
 summarize pscore if exposure == 1, detail
 
 * Plot and export graphs of the PS distribution 
-hist pscore, by(exposure, graphregion(fcolor(white))) color(emidblue)
+hist pscore, by(exposure, graphregion(fcolor(white))) color(emidblue) 
 graph export "$outdir/psplot1.svg", as(svg) replace
 graph close 
 
 graph twoway kdensity pscore if exposure == 0 || ///
 			 kdensity pscore if exposure == 1, ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "Pscore - LABA/LAMA Combination") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1))
+			 legend(size(small) label(1 "Pscore - LABA/LAMA Combination") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1)) 
 
 graph export "$outdir/psplot2.svg", as(svg) replace
 graph close
@@ -90,9 +90,6 @@ replace ipw = 1/(1-pscore) if exposure == 0
 
 summarize ipw, d
 
-gen check=1 if ipw == . 
-tab check
-
 * ATT weights 
 gen ipw_att = 1 if exposure == 1 
 replace ipw_att = pscore/(1-pscore) if exposure == 0 
@@ -101,36 +98,72 @@ summarize ipw_att, d
 
 /* Check overlap and standardised differences in the weighted sample==========*/
 
-
 * Plot and export graphs of the PS distribution 
-/* NOTE Don't think I can use pweights for these commands. I've seen on statalist
-a suggestion to multiply up (with the smallest unit) to make the pweights integers and use in fweights. 
-Does anyone have experience of whether this is a reasonable thing? 
+* Adapt probability weights to frequency weights to use in graphs
+* These need to be rounded up for sufficient granularity 
 
-hist pscore, by(exposure, graphregion(fcolor(white))) color(emidblue)
-graph export "$outdir/psplot1.svg", as(svg) replace
+gen ipw_f = round(ipw*100) 
+
+hist pscore [fw = ipw_f], by(exposure, graphregion(fcolor(white))) color(emidblue)
+graph export "$outdir/psplot3.svg", as(svg) replace
 graph close 
 
-graph twoway kdensity pscore [weight = ipw] if exposure == 0 || ///
-			 kdensity pscore [weight = ipw] if exposure == 1, ///
+graph twoway kdensity pscore if exposure == 0 [fw = ipw_f] || ///
+			 kdensity pscore if exposure == 1 [fw = ipw_f], ///
 			 graphregion(fcolor(white)) ///
 			 legend(size(small) label(1 "Pscore - LABA/LAMA Combination") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1))
-
-graph export "$outdir/psplot2.svg", as(svg) replace
+			 
+graph export "$outdir/psplot4.svg", as(svg) replace
 graph close
 
-* Delete unneeded graphs
-erase psplot1.gph
-erase psplot2.gph
 
 * Estimate and tabulate standardised differences 
-* Note, this relies on the stddiff ado, provided in the repo. 
+* Note, this required amending the stddiff ado file 
+* The amended file is saved as Weighted STDs and called before calculating these 
+* The weights are frequency weights used above and in a variable called 'wts'
 
-[PLACEHOLDER - need to amend the ado to allow weights]
-[Fizz can help on Monday]
-[If there is an old adaption anyone has, please let me know]
+gen wts = ipw_f
 
-*/
+run "Weighted STDs.do" 
+
+cap file close tablecontent
+file open tablecontent using ./$outdir/table_stddiff2.txt, write text replace
+
+file write tablecontent ("Table S2: Standardised differences after weighting") _n
+file write tablecontent ("Variable") _tab ("SD") _n
+
+*Gender
+
+    local lab: variable label male 
+    file write tablecontent ("`lab'") _tab
+	
+	tab male exposure
+	stddiff i.male, by(exposure)
+	stddiff2 i.male, by(exposure)
+	file write tablecontent (r(stddiff)[1,1]) _n 
+
+*Age
+
+    local lab: variable label age
+    file write tablecontent ("`lab'") _tab
+	
+	stddiff2 age, by(exposure)
+	file write tablecontent (r(stddiff)[1,1]) _n 
+	
+* All other things 
+
+foreach comorb in $varlist {
+
+    local comorb: subinstr local comorb "i." ""
+    local lab: variable label `comorb'
+    file write tablecontent ("`lab'") _tab
+	
+	stddiff2 `comorb', by(exposure)
+	file write tablecontent (r(stddiff)[1,1]) _n 
+				
+}
+
+file close tablecontent
 
 /* Output weighted dataset for analyses=======================================*/
 
@@ -140,6 +173,9 @@ erase psplot2.gph
 * Those with missing exposure have missing weights and that's why there's an error 
 stset stime_$outcome [pweight = ipw], fail($outcome) id(patient_id) enter(enter_date) origin(enter_date)	
 save $tempdir\analysis_dataset_STSET_IPW_$outcome, replace
+
+* Save a version that does not censor on non-COVID death 
+
 
 
 * Close log file 
