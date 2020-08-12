@@ -476,8 +476,11 @@ do "02_cr_create_copd_exposure.do"
 do "02b_cr_derive_ps.do"
 
 * COPD specific analyses 
+* b = ATE weights; c = ATT weights
 do "05b_an_ps_descriptive_plots_copd"
+do "05c_an_ps_descriptive_plots_copd"
 do "06b_an_ps_models_copd.do"
+do "06c_an_ps_models_copd.do"
 
 /* 	MAKE FOREST PLOTS=========================================================*/
 
