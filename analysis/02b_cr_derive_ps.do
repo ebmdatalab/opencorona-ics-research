@@ -137,7 +137,6 @@ file write tablecontent ("Variable") _tab ("SD") _n
     local lab: variable label male 
     file write tablecontent ("`lab'") _tab
 	
-	tab male exposure)
 	stddiff2 i.male, by(exposure)
 	file write tablecontent (r(stddiff)[1,1]) _n 
 
