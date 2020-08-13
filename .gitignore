@@ -5,6 +5,7 @@ __pycache__
 .python-version
 .idea
 analysis/*
+!*/extra_ado
 output/*
 !*.do
 !*.ado
