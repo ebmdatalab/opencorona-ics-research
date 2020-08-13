@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			02b_cr_derive_ps
+DO FILE NAME:			02b_cr_derive_ps_copd
 PROJECT:				ICS in COVID-19 
 DATE: 					11th of August 2020
 AUTHOR:					A Schultze 
@@ -17,7 +17,7 @@ OTHER OUTPUT: 			logfiles, printed to folder analysis/$logdir
 * Open a log file
 
 cap log close
-log using $logdir\02b_cr_derive_ps, replace t
+log using $logdir\02b_cr_derive_ps_copd, replace t
 
 /* PS Model===================================================================*/
 

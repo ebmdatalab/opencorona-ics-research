@@ -429,6 +429,8 @@ do "06_an_models_copd.do"
 * Post hoc implementation of PS with IPTW (reviewer request)
 * Create directories required 
 
+* COPD 
+
 clear
 cd ..
 import delimited `c(pwd)'/output/input_copd.csv, clear
@@ -473,7 +475,7 @@ do "00_cr_create_analysis_dataset.do"
 * COPD specific data manipulation   
 do "01_cr_create_copd_population.do"
 do "02_cr_create_copd_exposure.do"
-do "02b_cr_derive_ps.do"
+do "02b_cr_derive_ps_copd.do"
 
 * COPD specific analyses 
 * b = ATE weights; c = ATT weights
@@ -481,6 +483,60 @@ do "05b_an_ps_descriptive_plots_copd"
 do "05c_an_ps_descriptive_plots_copd"
 do "06b_an_ps_models_copd.do"
 do "06c_an_ps_models_copd.do"
+
+* Asthma 
+
+clear
+cd ..
+import delimited `c(pwd)'/output/input_asthma_sens_analysis.csv, clear
+cd  `c(pwd)'/analysis
+set more off 
+
+* Create directories required 
+
+capture mkdir asthma_output_psm
+capture mkdir asthma_log_psm
+capture mkdir asthma_tempdata_psm
+
+global population "Asthma - PSM"
+global outcome "onscoviddeath"
+global outdir  "asthma_output_psm" 
+global logdir  "asthma_log_psm"
+global tempdir "asthma_tempdata_psm"
+
+global varlist	 	i.obese4cat					///
+					i.smoke_nomiss				///
+					i.imd 						///
+					i.ckd	 					///
+					i.hypertension			 	///
+					i.heart_failure				///
+					i.other_heart_disease		///
+					i.diabcat 					///
+					i.cancer_ever 				///
+					i.statin 					///
+					i.flu_vaccine 				///
+					i.pneumococcal_vaccine		///
+					i.exacerbations 			///
+					i.immunodef_any
+					
+global tableoutcome "COVID-19 Death in ONS"
+global ymax 0.005
+
+/*  Pre-analysis data manipulation  */
+
+do "00_cr_create_analysis_dataset.do"
+
+* Asthma specific data manipulation   
+do "01_cr_create_asthma_population.do"
+do "02_cr_create_asthma_exposure.do"
+do "02b_cr_derive_ps_asthma.do"
+
+* Asthma specific analyses 
+* b = ATE weights; c = ATT weights
+do "05b_an_ps_descriptive_plots_asthma"
+do "05c_an_ps_descriptive_plots_asthma"
+do "06b_an_ps_models_asthma.do"
+do "06c_an_ps_models_asthma.do"
 
 /* 	MAKE FOREST PLOTS=========================================================*/
 
