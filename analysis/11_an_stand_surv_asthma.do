@@ -1,5 +1,5 @@
 /*==============================================================================
-DO FILE NAME:			11_an_stand_surv_copd
+DO FILE NAME:			11_an_stand_surv_asthma
 PROJECT:				ICS in COVID-19 
 AUTHORS:				A Schultze
 						adapted from K Baskharan A Wong
@@ -13,13 +13,13 @@ DESCRIPTION OF FILE:	fit parametric model
 DATASETS USED:			$tempdir\analysis_dataset_STSET_$outcome.dta
 DATASETS CREATED: 		None
 OTHER OUTPUT: 			Results in svg: $outdir\standsurvplot1
-						Log file: $logdir\11_an_stand_surv_copd 
+						Log file: $logdir\11_an_stand_surv_asthma 
 						
 ==============================================================================*/
 
 * Open a log file
 capture log close
-log using $logdir\11_an_stand_surv_copd, replace t
+log using $logdir\11_an_stand_surv_asthma, replace t
 
 * Open Stata dataset
 use $tempdir\analysis_dataset_STSET_$outcome, clear
@@ -44,33 +44,35 @@ display `tmax'
 range timevar 0 `tmax' `tmaxplus1'
 
 * Generate the standardised predictions 
-stpm2_standsurv, at1(_Iexposure 0) at2(_Iexposure 1) timevar(timevar) ci contrast(difference) fail
+stpm2_standsurv, at1(_Iexposure_1 0 _Iexposure_2 0) at2(_Iexposure_1 1) at3(_Iexposure_2 1) timevar(timevar) ci contrast(difference) fail
 
 * list the standardized curves for longest follow-up, followed by their difference.
 list _at1* if timevar == `tmax', noobs
 list _at2* if timevar == `tmax', noobs
+list _at3* if timevar == `tmax', noobs
 list _contrast* if timevar == `tmax', noobs ab(16)
 
 * Convert them to be expressed in %
-for var _at1 _at2 _at1_lci _at1_uci _at2_lci _at2_uci ///
-_contrast2_1 _contrast2_1_lci _contrast2_1_uci: replace X=100*X
+for var _at1 _at2 _at3 _at1_lci _at1_uci _at2_lci _at2_uci _at3_lci _at3_uci: replace X=100*X
 
 * Plot the survival curves
 twoway  (rarea _at1_lci _at1_uci timevar, color(red%25)) ///
                 (rarea _at2_lci _at2_uci timevar, color(blue%25)) ///
+				(rarea _at3_lci _at3_uci timevar, color(green%25)) ///
                  (line _at1 timevar, sort lcolor(red)) ///
                  (line _at2  timevar, sort lcolor(blue)) ///
-                 , legend(order(1 "LABA/LAMA" 2 "ICS Combination") ///
+				 (line _at3 timevar, sort lcolor(green)) ///
+                 , legend(order(1 "SABA" 2 "ICS Low Dose" 3 "ICS High Dose") ///
 				 ring(0) cols(1) pos(1)) ///
                  ylabel(0 (0.05) $ymax ,angle(h) format(%4.2f)) ///
                  ytitle("Cumulative mortality (%)") ///
                  xtitle("Days from 1 March 2020") ///
-				 saving(adj_survival_curves_copd, replace)
+				 saving(adj_survival_curves_asthma, replace)
 				 
-graph export "$outdir/adj_survival_curves_copd.svg", as(svg) replace
+graph export "$outdir/adj_survival_curves_asthma.svg", as(svg) replace
 
 * Close window 
 graph close
 
 * Delete unneeded graphs
-erase adj_survival_curves_copd.gph
+erase adj_survival_curves_asthma.gph

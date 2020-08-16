@@ -60,9 +60,10 @@ do "07_an_models_interact_copd.do"
 do "08_an_model_checks_copd.do"
 do "09_an_model_explore_copd.do"
 do "10_an_models_ethnicity_copd.do"
+do "11_an_stand_surv_copd.do"
 
 * Post peer review requested different adjustments
-do "Extra_06_an_models_copd" 
+do "Extra_06_an_models_copd.do" 
  
 /* 	ASTHMA ===================================================================*/
 clear
@@ -122,9 +123,10 @@ do "07_an_models_interact_asthma.do"
 do "08_an_model_checks_asthma.do"
 do "09_an_model_explore_asthma.do"
 do "10_an_models_ethnicity_asthma.do"
+do "11_an_stand_surv_asthma.do"
 
 * Post peer review requested different adjustments
-do "Extra_06_an_models_asthma" 
+do "Extra_06_an_models_asthma.do" 
 
 /* 	SENSITIVITY 1=============================================================*/
 *   Redefine copd exposure to triple therapy 
