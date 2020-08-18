@@ -45,7 +45,7 @@ program datacheck
 	qui `by' gen byte `viol' = !(`cond') `if' `in' 
 	if "`flag'" != "" gen byte _contra = `viol' == 1 
 	
-	qui count if `viol'==1
+	qui safecount if `viol'==1
 
 	di _n as txt `"`message' (`r(N)'"' ///
 	      as txt plural(`r(N)', " contradiction") ")" 

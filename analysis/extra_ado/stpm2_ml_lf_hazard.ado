@@ -13,3 +13,4 @@ program stpm2_ml_lf_hazard
 		qui replace `lnf' = `lnf' + exp(`xb0') if _t0>0
 	}	
 end
+

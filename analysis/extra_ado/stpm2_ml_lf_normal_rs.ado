@@ -18,3 +18,4 @@ program stpm2_ml_lf_normal_rs
 		qui replace `lnf' = `lnf' - ln(`st0') if _t0>0
 	}
 end
+

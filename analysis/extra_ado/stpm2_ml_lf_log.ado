@@ -13,3 +13,4 @@ program stpm2_ml_lf_log
 		qui replace `lnf' = `lnf' - ln(1-exp(`xb0')) if _t0>0
 	}
 end
+
