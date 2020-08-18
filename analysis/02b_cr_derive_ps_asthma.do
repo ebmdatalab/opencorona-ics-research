@@ -101,10 +101,10 @@ replace ipw = 1/p2 if exposure == 2
 summarize ipw, d
 
 * ATT weights
-* Multiplied by the comparator pscore (=p0). Unsure whether this is right. 
-gen ipw_att = 1 if exposure == 0 
-replace ipw_att = p0/p1 if exposure == 1
-replace ipw_att = p0/p2 if exposure == 2 
+* Multiplied by the treatment score in high dose (=p2). Unsure whether this is right. 
+gen ipw_att = 1 if exposure == 2
+replace ipw_att = p2/p1 if exposure == 1
+replace ipw_att = p2/p0 if exposure == 0
 
 summarize ipw_att, d
 
