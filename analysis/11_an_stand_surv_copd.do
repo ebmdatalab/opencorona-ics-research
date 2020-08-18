@@ -30,7 +30,7 @@ tab exposure $outcome
 /* Fit the parametric model===================================================*/
 
 xi i.exposure i.male $varlist
-stpm2 _I* age1 age2 age3, scale(hazard) df(3) eform nolog stratify(stp)
+stpm2 _I* age1 age2 age3, scale(hazard) df(3) eform nolog 
 
 /* Predict survival===========================================================*/
 
