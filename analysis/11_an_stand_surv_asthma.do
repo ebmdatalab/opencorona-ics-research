@@ -44,7 +44,7 @@ display `tmax'
 range timevar 0 `tmax' `tmaxplus1'
 
 * Generate the standardised predictions 
-stpm2_standsurv, at1(_Iexposure_1 0 _Iexposure_2 0) at1(_Iexposure_1 1 _Iexposure_2 0) at1(_Iexposure_1 0 _Iexposure_2 1) timevar(timevar) ci contrast(difference) fail
+stpm2_standsurv, at1(_Iexposure_1 0 _Iexposure_2 0) at2(_Iexposure_1 1 _Iexposure_2 0) at3(_Iexposure_1 0 _Iexposure_2 1) timevar(timevar) ci contrast(difference) fail
 
 * list the standardized curves for longest follow-up, followed by their difference.
 list _at1* if timevar == `tmax', noobs
