@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- This is a Stata 16.1 generated SVG file (http://www.stata.com) -->
+
+<svg version="1.1" width="5.50in" height="4.00in" viewBox="0 0 3960 2880" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>Stata Graph - Graph</desc>
+	<rect x="0" y="0" width="3960" height="2880" style="fill:#EAF2F3;stroke:none"/>
+	<rect x="0.00" y="0.00" width="3959.88" height="2880.00" style="fill:#FFFFFF"/>
+	<rect x="2.88" y="2.88" width="3954.12" height="2874.24" style="fill:none;stroke:#EAF2F3;stroke-width:5.76"/>
+	<rect x="851.28" y="490.93" width="2998.83" height="1818.32" style="fill:#FFFFFF"/>
+	<rect x="854.16" y="493.81" width="2993.07" height="1812.56" style="fill:none;stroke:#FFFFFF;stroke-width:5.76"/>
+	<line x1="851.28" y1="2245.89" x2="3850.11" y2="2245.89" style="stroke:#EAF2F3;stroke-width:8.64"/>
+	<line x1="851.28" y1="1400.03" x2="3850.11" y2="1400.03" style="stroke:#EAF2F3;stroke-width:8.64"/>
+	<path d=" M914.51 2246.01 L914.51 2246.01 L914.51 2246.01 L943.22 2246.01 L943.22 2246.01 L972.06 2246.01 L972.06 2246.01 L1000.77 2246.01 L1000.77 2246.01 L1029.48 2246.01 L1029.48 2246.01 L1058.19 2246.01 L1058.19 2246.01 L1086.90 2246.01 L1086.90 2246.01 L1115.61 2246.01 L1115.61 2246.01 L1144.32 2246.01 L1144.32 2246.01 L1173.03 2246.01 L1173.03 2246.01 L1201.74 2246.01 L1201.74 2246.01 L1230.45 2246.01 L1230.45 2246.01 L1259.28 2246.01 L1259.28 2246.01 L1287.99 2246.01 L1287.99 2246.01 L1316.70 2246.01 L1316.70 2246.01 L1345.41 2246.01 L1345.41 2246.01 L1374.12 2246.01 L1374.12 2246.01 L1402.83 2246.01 L1402.83 2246.01 L1431.54 2246.01 L1431.54 2246.01 L1460.25 2246.01 L1460.25 2246.01 L1488.96 2246.01 L1488.96 2246.01 L1517.67 2246.01 L1517.67 2246.01 L1546.38 2246.01 L1546.38 2246.01 L1575.21 2246.01 L1575.21 2246.01 L1603.92 2246.01 L1603.92 2246.01 L1632.63 2246.01 L1632.63 2242.42 L1661.34 2242.42 L1661.34 2239.94 L1690.05 2239.94 L1690.05 2233.14 L1718.76 2233.14 L1718.76 2226.08 L1747.47 2226.08 L1747.47 2215.57 L1776.18 2215.57 L1776.18 2198.98 L1804.89 2198.98 L1804.89 2190.81 L1833.60 2190.81 L1833.60 2186.98 L1862.31 2186.98 L1862.31 2179.18 L1891.15 2179.18 L1891.15 2172.38 L1919.86 2172.38 L1919.86 2155.05 L1948.57 2155.05 L1948.57 2155.05 L1977.28 2155.05 L1977.28 2152.33 L2005.99 2152.33 L2005.99 2116.69 L2034.70 2116.69 L2034.70 2110.13 L2063.41 2110.13 L2063.41 2096.14 L2092.12 2096.14 L2092.12 2092.31 L2120.83 2092.31 L2120.83 2066.69 L2149.54 2066.69 L2149.54 2059.76 L2178.25 2059.76 L2178.25 2048.87 L2207.08 2048.87 L2207.08 2025.48 L2235.79 2025.48 L2235.79 2022.01 L2264.50 2022.01 L2264.50 2010.38 L2293.21 2010.38 L2293.21 2001.22 L2321.92 2001.22 L2321.92 2001.22 L2350.63 2001.22 L2350.63 1996.40 L2379.34 1996.40 L2379.34 1980.56 L2408.05 1980.56 L2408.05 1976.97 L2436.76 1976.97 L2436.76 1961.75 L2465.47 1961.75 L2465.47 1947.39 L2494.18 1947.39 L2494.18 1943.80 L2523.01 1943.80 L2523.01 1935.26 L2551.72 1935.26 L2551.72 1935.26 L2580.43 1935.26 L2580.43 1929.32 L2609.14 1929.32 L2609.14 1925.49 L2637.86 1925.49 L2637.86 1918.80 L2666.57 1918.80 L2666.57 1911.50 L2695.28 1911.50 L2695.28 1889.35 L2723.99 1889.35 L2723.99 1889.35 L2752.70 1889.35 L2752.70 1886.13 L2781.41 1886.13 L2781.41 1886.13 L2810.11 1886.13 L2810.11 1874.13" stroke-linejoin="round" style="fill:none;stroke:#1A476F;stroke-width:8.64"/>
+	<path d=" M914.51 2246.01 L914.51 2246.01 L914.51 2246.01 L943.22 2246.01 L943.22 2246.01 L972.06 2246.01 L972.06 2246.01 L1000.77 2246.01 L1000.77 2246.01 L1029.48 2246.01 L1029.48 2246.01 L1058.19 2246.01 L1058.19 2246.01 L1086.90 2246.01 L1086.90 2246.01 L1115.61 2246.01 L1115.61 2246.01 L1144.32 2246.01 L1144.32 2246.01 L1173.03 2246.01 L1173.03 2246.01 L1201.74 2246.01 L1201.74 2246.01 L1230.45 2246.01 L1230.45 2246.01 L1259.28 2246.01 L1259.28 2246.01 L1287.99 2246.01 L1287.99 2246.01 L1316.70 2246.01 L1316.70 2246.01 L1345.41 2246.01 L1345.41 2242.92 L1374.12 2242.92 L1374.12 2241.31 L1402.83 2241.31 L1402.83 2241.31 L1431.54 2241.31 L1431.54 2237.84 L1460.25 2237.84 L1460.25 2237.84 L1488.96 2237.84 L1488.96 2236.11 L1517.67 2236.11 L1517.67 2234.25 L1546.38 2234.25 L1546.38 2230.66 L1575.21 2230.66 L1575.21 2225.59 L1603.92 2225.59 L1603.92 2223.98 L1632.63 2223.98 L1632.63 2212.35 L1661.34 2212.35 L1661.34 2204.68 L1690.05 2204.68 L1690.05 2198.36 L1718.76 2198.36 L1718.76 2183.27 L1747.47 2183.27 L1747.47 2170.64 L1776.18 2170.64 L1776.18 2157.03 L1804.89 2157.03 L1804.89 2143.17 L1833.60 2143.17 L1833.60 2123.00 L1862.31 2123.00 L1862.31 2111.86 L1891.15 2111.86 L1891.15 2090.57 L1919.86 2090.57 L1919.86 2077.83 L1948.57 2077.83 L1948.57 2061.00 L1977.28 2061.00 L1977.28 2048.37 L2005.99 2048.37 L2005.99 2024.24 L2034.70 2024.24 L2034.70 2000.98 L2063.41 2000.98 L2063.41 1974.99 L2092.12 1974.99 L2092.12 1959.77 L2120.83 1959.77 L2120.83 1946.77 L2149.54 1946.77 L2149.54 1932.17 L2178.25 1932.17 L2178.25 1924.74 L2207.08 1924.74 L2207.08 1910.64 L2235.79 1910.64 L2235.79 1890.09 L2264.50 1890.09 L2264.50 1880.44 L2293.21 1880.44 L2293.21 1870.42 L2321.92 1870.42 L2321.92 1860.02 L2350.63 1860.02 L2350.63 1840.96 L2379.34 1840.96 L2379.34 1832.79 L2408.05 1832.79 L2408.05 1820.17 L2436.76 1820.17 L2436.76 1810.27 L2465.47 1810.27 L2465.47 1803.71 L2494.18 1803.71 L2494.18 1795.54 L2523.01 1795.54 L2523.01 1789.73 L2551.72 1789.73 L2551.72 1780.82 L2580.43 1780.82 L2580.43 1779.09 L2609.14 1779.09 L2609.14 1770.67 L2637.86 1770.67 L2637.86 1762.38 L2666.57 1762.38 L2666.57 1751.61 L2695.28 1751.61 L2695.28 1743.82 L2723.99 1743.82 L2723.99 1735.03 L2752.70 1735.03 L2752.70 1726.86 L2781.41 1726.86 L2781.41 1719.93 L2810.11 1719.93 L2810.11 1710.40" stroke-linejoin="round" style="fill:none;stroke:#90353B;stroke-width:8.64"/>
+	<line x1="851.28" y1="2309.25" x2="851.28" y2="490.93" style="stroke:#000000;stroke-width:5.76"/>
+	<line x1="851.28" y1="2245.89" x2="811.30" y2="2245.89" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="791.26" y="2273.90" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="end">0.000</text>
+	<line x1="851.28" y1="1400.03" x2="811.30" y2="1400.03" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="791.26" y="1428.04" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="end">0.005</text>
+	<line x1="851.28" y1="554.29" x2="811.30" y2="554.29" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="791.26" y="582.31" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="end">0.010</text>
+	<text x="914.64" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">148562.7</text>
+	<text x="1489.08" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">148165</text>
+	<text x="2063.53" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">147514.7</text>
+	<text x="2637.86" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">146868.9</text>
+	<text x="3212.30" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">0</text>
+	<text x="3786.75" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">0</text>
+	<text x="770.96" y="2747.83" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="end">ICS Combination</text>
+	<text x="914.64" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">148514.1</text>
+	<text x="1489.08" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">148210.5</text>
+	<text x="2063.53" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">147748.6</text>
+	<text x="2637.86" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">147228.9</text>
+	<text x="3212.30" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">0</text>
+	<text x="3786.75" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="middle">0</text>
+	<text x="770.96" y="2674.44" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="end">LABA/LAMA Combination</text>
+	<text x="770.96" y="2601.18" style="font-family:'Helvetica';font-size:60.02px;fill:#000000" text-anchor="end">Number at risk</text>
+	<line x1="851.28" y1="2309.25" x2="3850.11" y2="2309.25" style="stroke:#000000;stroke-width:5.76"/>
+	<line x1="914.64" y1="2309.25" x2="914.64" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="914.64" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">0</text>
+	<line x1="1489.08" y1="2309.25" x2="1489.08" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="1489.08" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">20</text>
+	<line x1="2063.53" y1="2309.25" x2="2063.53" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="2063.53" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">40</text>
+	<line x1="2637.86" y1="2309.25" x2="2637.86" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="2637.86" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">60</text>
+	<line x1="3212.30" y1="2309.25" x2="3212.30" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="3212.30" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">80</text>
+	<line x1="3786.75" y1="2309.25" x2="3786.75" y2="2349.22" style="stroke:#000000;stroke-width:5.76"/>
+	<text x="3786.75" y="2425.17" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">100</text>
+	<text x="2350.76" y="2515.14" style="font-family:'Helvetica';font-size:79.94px;fill:#000000" text-anchor="middle">Days since 1 Mar 2020</text>
+	<rect x="1264.11" y="269.91" width="2173.17" height="186.37" style="fill:#FFFFFF"/>
+	<rect x="1266.99" y="272.79" width="2167.41" height="180.61" style="fill:none;stroke:#EAF2F3;stroke-width:5.76"/>
+	<line x1="1307.30" y1="363.09" x2="1681.76" y2="363.09" style="stroke:#90353B;stroke-width:8.64"/>
+	<line x1="2303.48" y1="363.09" x2="2677.83" y2="363.09" style="stroke:#1A476F;stroke-width:8.64"/>
+	<text x="1741.78" y="384.13" style="font-family:'Helvetica';font-size:60.02px;fill:#000000">ICS Combination</text>
+	<text x="2737.84" y="384.13" style="font-family:'Helvetica';font-size:60.02px;fill:#000000">LABA/LAMA Combination</text>
+	<text x="927.38" y="187.99" style="font-family:'Helvetica';font-size:99.99px;fill:#1E2D53">Time to COVID-19 Death in ONS, COPD - PS population IP weighted</text>
+</svg>

@@ -28,9 +28,8 @@ bysort exposure: summarize p0
 bysort exposure: summarize p1 
 bysort exposure: summarize p2 
 
-* Plot and export graphs of the PS distribution 
-* Question to Fizz - what is the best way of illustrating this given 3 groups..
-* Left for now 
+gen check = p0 + p1 + p2 
+summarize check 
 
 * Estimate and tabulate standardised differences 
 * Note, this relies on the stddiff ado, provided in the repo. 
@@ -101,7 +100,7 @@ replace ipw = 1/p2 if exposure == 2
 summarize ipw, d
 
 * ATT weights
-* Multiplied by the treatment score in high dose (=p2). Unsure whether this is right. 
+* Multiplied by the treatment score in high dose (=p2).  
 gen ipw_att = 1 if exposure == 2
 replace ipw_att = p2/p1 if exposure == 1
 replace ipw_att = p2/p0 if exposure == 0

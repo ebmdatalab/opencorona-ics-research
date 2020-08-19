@@ -1,0 +1,18 @@
+Table S3: Standardised differences after weighting - ATT
+Variable	SD - ICS (Low/Medium Dose) vs SABA only	SD - `lab2` vs SABA only
+Male	.00246445	.00128317
+Age (years)	.03109773	.03191501
+Evidence of obesity (4 categories)	.01950439	.02067704
+Smoking status (missing set to non)	.00886483	.01177043
+Index of Multiple Deprivation (IMD)	.01150253	.01301738
+Chronic kidney disease	.02299071	.02349497
+Diagnosed hypertension	.0183992	.01986833
+Heart Failure	.01265758	.01367557
+Other Heart Diseases	.02133507	.02250773
+Diabetes Severity	.01912031	.02100793
+Cancer	.00652343	.00693477
+Recent Statin	.0179116	.01955047
+Flu vaccine	.01859071	.01568614
+Pneumococcal Vaccine	.02345582	.02248354
+Exacerbation in last year	.00697406	.00845054
+Immunosuppressed (combination algorithm)	.0034637	.0038237

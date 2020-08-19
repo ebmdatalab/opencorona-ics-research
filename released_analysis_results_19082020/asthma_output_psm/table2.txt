@@ -1,0 +1,5 @@
+Table 2 - PS: Association between current ICS use and COVID-19 Death in ONS - Asthma - PSM Population
+	HR	95% CI
+SABA only	1.00 (ref)	
+ICS (Low/Medium Dose)	1.05	0.79 - 1.40
+ICS (High Dose)	1.45	1.04 - 2.02	

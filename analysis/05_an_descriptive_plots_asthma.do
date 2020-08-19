@@ -34,8 +34,9 @@ sts graph, by(exposure) failure 							    			///
 		   title("Time to $tableoutcome, $population population", justification(left) size(medsmall) )  	   ///
 		   xtitle("Days since 1 Mar 2020", size(small))						///
 		   yscale(range(0, 0.0011)) 											///
-		   ylabel(0 (0.0005) 0.001, angle(0) format(%5.4f) labsize(small))	///
+		   ylabel(0 "0.0" 0.0005 "0.05" 0.001 "0.1" 0.0015 "0.15" 0.002 "0.2", angle(0) format(%5.4f) labsize(small))	///
 		   xscale(range(30, 84)) 											///
+		   ytitle("Cumulative mortality (%)", size(small))   				///
 		   xlabel(0 (20) 100, labsize(small))				   				///				
 		   legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))	///
 		   graphregion(fcolor(white)) ///	

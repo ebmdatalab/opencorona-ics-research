@@ -24,6 +24,7 @@ use asthma_tempdata/temp_asthma.dta
 append using asthma_tempdata/temp_asthma_eth.dta
 append using asthma_tempdata_sens2/temp_asthma.dta
 append using asthma_tempdata_sens3/temp_asthma.dta
+append using asthma_tempdata_psm/temp_asthma.dta
 
 *rename to match the code below 
 rename level analysis 

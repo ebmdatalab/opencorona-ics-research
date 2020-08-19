@@ -1,0 +1,4 @@
+Table 2 - PS: Association between current ICS use and COVID-19 Death in ONS - COPD - PS Population ATT weights
+	HR	95% CI
+LABA/LAMA Combination	1.00 (ref)	
+ICS Combination	1.45	1.13 - 1.86	

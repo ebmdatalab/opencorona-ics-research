@@ -1,0 +1,133 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\S4-02_
+> cr_create_copd_exposure.log
+  log type:  text
+ opened on:  19 Aug 2020, 09:19:28
+
+. 
+. /* TREATMENT EXPOSURE========================================================
+> =*/        
+. 
+. /* LABA LAMA */ 
+. gen exposure = .u
+(292,097 missing values generated)
+
+. 
+. * At least one prescription in LABA-LAMA combination list 
+. replace exposure = 0 if laba_lama == 1 
+(46,184 real changes made)
+
+. * OR at least one prescription of LABA AND at least one prescription of LAMA
+. replace exposure = 0 if laba_single == 1 & lama_single == 1 
+(2,249 real changes made)
+
+. * OR at least one prescription of LAMA monotherapy 
+. replace exposure = 0 if lama_single == 1
+(81,969 real changes made)
+
+.                                                 
+. * AND no prescription for an ICS 
+. recode exposure(0 = .u) if ics_single == 1 
+(exposure: 3035 changes made)
+
+. recode exposure(0 = .u) if laba_ics == 1 
+(exposure: 45420 changes made)
+
+. recode exposure(0 = .u) if laba_lama_ics == 1 
+(exposure: 2366 changes made)
+
+. 
+. *ICS 
+. 
+. * Any prescription for a LABA LAMA ICS combination 
+. gen exptemp3 = 1 if laba_lama_ics == 1
+(259,057 missing values generated)
+
+. * OR Any prescription for a LABA ICS combination product 
+. gen exptemp4 = 1 if laba_ics == 1 
+(216,545 missing values generated)
+
+. * OR Any prescription for single ICS + Single LABA
+. gen exptemp5 = 1 if ics_single == 1 & laba_single == 1 
+(291,643 missing values generated)
+
+. * OR Any prescription for single ICS + LABA/LAMA
+. gen exptemp6 = 1 if ics_single == 1 & laba_lama == 1
+(290,764 missing values generated)
+
+.                                         
+. replace exposure = 1 if exptemp3 == 1 | /// 
+>                                                 exptemp4 == 1 | /// 
+>                                                 exptemp5 == 1 | ///
+>                                                 exptemp6 == 1 
+(105,249 real changes made)
+
+.                                                 
+. replace exposure = .u if exposure >= .
+(0 real changes made)
+
+. 
+. * Note: ICS and LAMA only considered "Other", as per protocol                
+>                    
+. 
+. * Define missing for tables 
+. replace exposure = .u if exposure >= .
+(0 real changes made)
+
+.                                                 
+. label define exposure 0 "LABA/LAMA Combination" 1 "ICS Dual Combination" .u "
+> Other"
+
+. label values exposure exposure 
+
+. 
+. label var exposure "COPD Treatment Exposure"
+
+. 
+. /* SAVE DATA=================================================================
+> =*/        
+. 
+. sort patient_id
+
+. save $tempdir\analysis_dataset, replace
+file copd_tempdata_sens4\analysis_dataset.dta saved
+
+. 
+. * Save a version set on outcome
+. * Save a version set on survival outcome
+. stset stime_$outcome, fail($outcome) id(patient_id) enter(enter_date) origin(
+> enter_date)        
+
+                id:  patient_id
+     failure event:  onscoviddeath != 0 & onscoviddeath < .
+obs. time interval:  (stime_onscoviddeath[_n-1], stime_onscoviddeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+
+------------------------------------------------------------------------------
+    292,097  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+    292,097  observations remaining, representing
+    292,097  subjects
+        742  failures in single-failure-per-subject data
+   19184453  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =        66
+
+. save $tempdir\analysis_dataset_STSET_$outcome, replace
+file copd_tempdata_sens4\analysis_dataset_STSET_onscoviddeath.dta saved
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_sens4\S4-02_
+> cr_create_copd_exposure.log
+  log type:  text
+ closed on:  19 Aug 2020, 09:19:32
+-------------------------------------------------------------------------------

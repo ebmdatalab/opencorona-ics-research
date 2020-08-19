@@ -1,0 +1,155 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_psm\06b_an_p
+> s_models_copd.log
+  log type:  text
+ opened on:  19 Aug 2020, 10:09:45
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_IPW_$outcome, clear
+
+. 
+. /* Sense check outcomes======================================================
+> =*/ 
+. 
+. tab exposure $outcome, missing row
+
++----------------+
+| Key            |
+|----------------|
+|   frequency    |
+| row percentage |
++----------------+
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    43,217         91 |    43,308 
+                      |     99.79       0.21 |    100.00 
+----------------------+----------------------+----------
+      ICS Combination |   104,911        338 |   105,249 
+                      |     99.68       0.32 |    100.00 
+----------------------+----------------------+----------
+                Other |   143,227        313 |   143,540 
+                      |     99.78       0.22 |    100.00 
+----------------------+----------------------+----------
+                Total |   291,355        742 |   292,097 
+                      |     99.75       0.25 |    100.00 
+
+. 
+. /* Main Model================================================================
+> =*/
+. 
+. *Post to a stata dataset for appending with other results later
+. capture postfile temp str30 outcome str30 population str30 level str30 title 
+> estimate min95 max95 using "$tempdir/temp_copd.dta",replace
+
+. 
+. /* Univariable model */ 
+. 
+. stcox i.exposure, vce(robust)
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+             weight:  [pweight=ipw]
+
+(sum of wgt is 297,076.868665934)
+Iteration 0:   log pseudolikelihood = -9980.0406
+Iteration 1:   log pseudolikelihood = -9966.9949
+Iteration 2:   log pseudolikelihood = -9966.9934
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -9966.9934
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      297,077             Number of obs    =     148,557
+No. of failures      =          792
+Time at risk         =  19507206.64
+                                                Wald chi2(1)     =        8.82
+Log pseudolikelihood =   -9966.9934             Prob > chi2      =      0.0030
+
+                       (Std. Err. adjusted for 148,557 clusters in patient_id)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    exposure |
+ICS Combi..  |   1.441863   .1777047     2.97   0.003     1.132443    1.835827
+------------------------------------------------------------------------------
+
+. estimates save ./$tempdir/univar, replace 
+file ./copd_tempdata_psm/univar.ster saved
+
+. 
+. /* Print table===============================================================
+> =*/ 
+. *  Print the results for the main model 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table2.txt, write text replace
+
+. 
+. * Column headings 
+. file write tablecontent ("Table 2 - PS: Association between current ICS use a
+> nd $tableoutcome - $population Population") _n
+
+. file write tablecontent _tab ("HR") _tab ("95% CI") _n                       
+>    
+
+. 
+. * Row headings 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+.         
+.         file write tablecontent ("`lab0'") _tab
+
+.         file write tablecontent ("1.00 (ref)") _tab _n
+
+.         file write tablecontent ("`lab1'") _tab  
+
+. 
+. /* Main Model */ 
+. estimates use ./$tempdir/univar 
+
+. lincom 1.exposure, eform
+
+ ( 1)  1.exposure = 0
+
+------------------------------------------------------------------------------
+          _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+         (1) |   1.441863   .1777047     2.97   0.003     1.132443    1.835827
+------------------------------------------------------------------------------
+
+. file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f 
+> (r(ub)) _tab 
+
+. post temp ("$tableoutcome") ("$population") ("PS - IPW") ("`lab1'") (round(r(
+> estimate)),0.01) (round(r(lb)),0.01) (round(r(ub)),0.01)           
+
+. 
+. file write tablecontent _n
+
+. file close tablecontent
+
+. postclose temp  
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_psm\06b_an_p
+> s_models_copd.log
+  log type:  text
+ closed on:  19 Aug 2020, 10:09:52
+-------------------------------------------------------------------------------
