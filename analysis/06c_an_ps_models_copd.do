@@ -29,7 +29,7 @@ tab exposure $outcome, missing row
 /* Main Model=================================================================*/
 
 *Post to a stata dataset for appending with other results later
-capture postfile temp str30 outcome str30 population str30 level str30 title estimate min95 max95 using "$tempdir/temp_copd.dta",replace
+capture postfile temp str30 outcome str30 population str30 level str30 title estimate min95 max95 using "$tempdir/temp_copd_att.dta",replace
 
 /* Univariable model */ 
 
@@ -40,7 +40,7 @@ estimates save ./$tempdir/univar, replace
 *  Print the results for the main model 
 
 cap file close tablecontent
-file open tablecontent using ./$outdir/table2.txt, write text replace
+file open tablecontent using ./$outdir/table2att.txt, write text replace
 
 * Column headings 
 file write tablecontent ("Table 2 - PS: Association between current ICS use and $tableoutcome - $population Population ATT weights") _n

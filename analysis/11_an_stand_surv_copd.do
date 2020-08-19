@@ -56,15 +56,16 @@ for var _at1 _at2 _at1_lci _at1_uci _at2_lci _at2_uci ///
 _contrast2_1 _contrast2_1_lci _contrast2_1_uci: replace X=100*X
 
 * Plot the survival curves
-twoway  (rarea _at1_lci _at1_uci timevar, color(red%25)) ///
-                (rarea _at2_lci _at2_uci timevar, color(blue%25)) ///
-                 (line _at1 timevar, sort lcolor(red)) ///
-                 (line _at2  timevar, sort lcolor(blue)) ///
+twoway  (rarea _at1_lci _at1_uci timevar, color(blue%25)) ///
+                (rarea _at2_lci _at2_uci timevar, color(red%25)) ///
+                 (line _at1 timevar, sort lcolor(blue)) ///
+                 (line _at2  timevar, sort lcolor(red)) ///
                  , legend(order(1 "LABA/LAMA" 2 "ICS Combination") ///
-				 ring(0) cols(1) pos(1)) ///
-                 ylabel(0 (0.05) $ymax ,angle(h) format(%4.2f)) ///
-                 ytitle("Cumulative mortality (%)") ///
+				 ring(0) cols(1) pos(1) size(small) region(lwidth(none))) ///
+                 ylabel(0 (0.1) 0.5 ,angle(h) format(%4.2f)) ///
+                 ytitle("Standardised cumulative mortality (%)") ///
                  xtitle("Days from 1 March 2020") ///
+				 graphregion(fcolor(white)) ///
 				 saving(adj_survival_curves_copd, replace)
 				 
 graph export "$outdir/adj_survival_curves_copd.svg", as(svg) replace

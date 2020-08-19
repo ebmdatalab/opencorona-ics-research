@@ -34,10 +34,11 @@ sts graph, by(exposure) failure 							    			///
 		   title("Time to $tableoutcome, $population population", justification(left) size(medsmall) )  	   ///
 		   xtitle("Days since 1 Mar 2020", size(small))						///
 		   yscale(range(0, $ymax)) 											///
-		   ylabel(0 ($ymax) 0.01, angle(0) format(%4.3f) labsize(small))	///
+		   ylabel(0 0.001 "0.1" 0.002 "0.2" 0.003 "0.3" 0.004 "0.4" 0.005 "0.5", angle(0) labsize(small))	///
+		   ytitle("Cumulative mortality (%)", size(small)) ///
 		   xscale(range(30, 84)) 											///
 		   xlabel(0 (20) 100, labsize(small))				   				///				
-		   legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Combination") region(lwidth(none)) order(2 1) position(12))	///
+		   legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Combination") region(lwidth(none)) position(12))	///
 		   graphregion(fcolor(white)) ///	
 		   risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "ICS Combination") title(,size(vsmall))) ///
 		   saving(kmplot1, replace) 

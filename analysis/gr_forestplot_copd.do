@@ -25,6 +25,7 @@ append using copd_tempdata/temp_copd_eth.dta
 append using copd_tempdata_sens1/temp_copd.dta
 append using copd_tempdata_sens2/temp_copd.dta
 append using copd_tempdata_sens4/temp_copd.dta
+append using copd_tempdata_psm/temp_copd.dta
 
 *rename to match the code below 
 rename level analysis 

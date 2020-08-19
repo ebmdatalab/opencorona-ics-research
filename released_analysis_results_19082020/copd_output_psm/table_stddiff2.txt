@@ -1,0 +1,19 @@
+Table S3: Standardised differences after weighting - ATT
+Variable	SD
+Male	.00191297
+Age (years)	.00269147
+Evidence of obesity (4 categories)	.00757069
+Smoking status (missing set to non)	.00364223
+Index of Multiple Deprivation (IMD)	-.00244183
+Chronic kidney disease	.00282707
+Diagnosed hypertension	.00275994
+Heart Failure	-.00318503
+Other Heart Diseases	.00409811
+Diabetes Severity	.00904423
+Cancer	.00136973
+Recent Statin	.00526601
+Flu vaccine	.00342335
+Pneumococcal Vaccine	.00098524
+Exacerbation in last year	.00152897
+Asthma ever	-.00070674
+Immunosuppressed (combination algorithm)	.00254257

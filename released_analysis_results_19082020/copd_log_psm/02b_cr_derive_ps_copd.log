@@ -1,0 +1,869 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_psm\02b_cr_d
+> erive_ps_copd.log
+  log type:  text
+ opened on:  19 Aug 2020, 10:08:22
+
+. 
+. /* PS Model==================================================================
+> =*/
+. 
+. logit exposure i.male age1 age2 age3 $varlist
+
+Iteration 0:   log likelihood = -89655.788  
+Iteration 1:   log likelihood = -86908.492  
+Iteration 2:   log likelihood =  -86869.49  
+Iteration 3:   log likelihood = -86869.482  
+
+Logistic regression                             Number of obs     =    148,557
+                                                LR chi2(26)       =    5572.61
+                                                Prob > chi2       =     0.0000
+Log likelihood = -86869.482                     Pseudo R2         =     0.0311
+
+------------------------------------------------------------------------------
+    exposure |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      1.male |   .0076919   .0118868     0.65   0.518    -.0156057    .0309895
+        age1 |   .0048351   .0021602     2.24   0.025     .0006012    .0090691
+        age2 |  -.0062269   .0051033    -1.22   0.222    -.0162292    .0037753
+        age3 |   .0206892   .0246152     0.84   0.401    -.0275556    .0689341
+             |
+   obese4cat |
+Obese I ..)  |  -.0647838   .0152377    -4.25   0.000    -.0946491   -.0349184
+Obese II..)  |  -.0698176   .0221191    -3.16   0.002    -.1131703   -.0264649
+Obese II..)  |  -.0146435   .0318533    -0.46   0.646    -.0770748    .0477879
+             |
+smoke_nomiss |
+    Current  |  -.2362174   .0130621   -18.08   0.000    -.2618186   -.2106161
+             |
+         imd |
+          2  |   .0132566    .018829     0.70   0.481    -.0236477    .0501608
+          3  |   .0209944   .0187374     1.12   0.263    -.0157303     .057719
+          4  |   .0822062   .0190023     4.33   0.000     .0449624      .11945
+5 most de..  |  -.0344245   .0188461    -1.83   0.068    -.0713623    .0025132
+             |
+         ckd |
+        CKD  |  -.1191551   .0169176    -7.04   0.000     -.152313   -.0859971
+1.hyperten~n |   .0326691   .0127429     2.56   0.010     .0076934    .0576447
+1.heart_f~re |   .0531112   .0214747     2.47   0.013     .0110216    .0952007
+1.other_h~se |  -.0543958    .015168    -3.59   0.000    -.0841245   -.0246671
+             |
+     diabcat |
+Controlle..  |   .0190243   .0161474     1.18   0.239    -.0126239    .0506726
+Uncontrol..  |  -.0437796   .0252955    -1.73   0.084     -.093358    .0057987
+Diabetes,..  |   .2275553   .1187739     1.92   0.055    -.0052372    .4603479
+             |
+1.cancer_e~r |  -.0492729   .0168061    -2.93   0.003    -.0822121   -.0163336
+    1.statin |  -.0580519   .0132569    -4.38   0.000     -.084035   -.0320689
+1.flu_vacc~e |   .0403854   .0152464     2.65   0.008      .010503    .0702678
+1.pneumoco~e |  -.2102974   .0143497   -14.66   0.000    -.2384223   -.1821725
+1.exacerba~s |    .362673   .0142299    25.49   0.000     .3347829    .3905631
+1.asthma_e~r |   .9215423   .0160506    57.41   0.000     .8900837    .9530008
+1.immunode~y |   .0671904   .1229562     0.55   0.585    -.1737994    .3081802
+       _cons |   .4771869   .1254269     3.80   0.000     .2313546    .7230192
+------------------------------------------------------------------------------
+
+. predict pscore, pr 
+
+. 
+. * Check PS distribution 
+. summarize pscore if exposure == 0, detail
+
+                        Pr(exposure)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .5592026       .5029051
+ 5%     .5842707       .5049784
+10%     .6027261        .507914       Obs              43,308
+25%     .6334359        .512302       Sum of Wgt.      43,308
+
+50%     .6715991                      Mean           .6835083
+                        Largest       Std. Dev.      .0739994
+75%     .7103598       .9009161
+90%      .812682       .9021426       Variance       .0054759
+95%     .8438255       .9022511       Skewness       .8726254
+99%     .8783404       .9028286       Kurtosis       3.310556
+
+. summarize pscore if exposure == 1, detail
+
+                        Pr(exposure)
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .5665766       .5063032
+ 5%     .5981273       .5075259
+10%     .6195013       .5099924       Obs             105,249
+25%     .6505567       .5112113       Sum of Wgt.     105,249
+
+50%     .6949298                      Mean            .718749
+                        Largest       Std. Dev.      .0875726
+75%     .8029682       .9074495
+90%     .8506344        .908264       Variance        .007669
+95%     .8661242       .9107572       Skewness       .4032515
+99%     .8919555       .9124448       Kurtosis       2.025435
+
+. 
+. * Plot and export graphs of the PS distribution 
+. hist pscore, by(exposure, graphregion(fcolor(white))) color(emidblue) 
+
+. graph export "$outdir/psplot1.svg", as(svg) replace
+(file copd_output_psm/psplot1.svg written in SVG format)
+
+. graph close 
+
+. 
+. graph twoway kdensity pscore if exposure == 0 || ///
+>                          kdensity pscore if exposure == 1, ///
+>                          graphregion(fcolor(white)) ///
+>                          legend(size(small) label(1 "Pscore - LABA/LAMA Combi
+> nation") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1)
+> ) 
+
+. 
+. graph export "$outdir/psplot2.svg", as(svg) replace
+(file copd_output_psm/psplot2.svg written in SVG format)
+
+. graph close
+
+. 
+. * Estimate and tabulate standardised differences 
+. * Note, this relies on the stddiff ado, provided in the repo. 
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table_stddiff.txt, write text replace
+
+. 
+. file write tablecontent ("Table S1: Standardised differences before weighting
+> ") _n
+
+. file write tablecontent ("Variable") _tab ("SD") _n
+
+. 
+. *Gender
+. 
+.     local lab: variable label male 
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff i.male, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+        male |                         |                         |
+           0 |     19717        (45.5) |     48731        (46.3) |    0.01552
+           1 |     23591        (54.5) |     56518        (53.7) | 
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+. 
+. *Age
+. 
+.     local lab: variable label age
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff age, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         age |     70.03        10.095 |     70.76        10.055 |   -0.07235
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+.         
+. * All other things 
+. 
+. foreach comorb in $varlist {
+  2. 
+.     local comorb: subinstr local comorb "i." ""
+  3.     local lab: variable label `comorb'
+  4.     file write tablecontent ("`lab'") _tab
+  5.         
+.         stddiff `comorb', by(exposure)
+  6.         file write tablecontent (r(stddiff)[1,1]) _n 
+  7.                                 
+. }
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+   obese4cat |     1.473        .79578 |     1.465        .79572 |    0.01044
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+smoke_nomiss |     2.399        .48964 |     2.337        .47282 |    0.12745
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         imd |     3.072        1.4208 |     3.047        1.4091 |    0.01827
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         ckd |     .1787        .38308 |     .1745        .37952 |    0.01102
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+hypertension |     .5011            .5 |     .5159        .49975 |   -0.02958
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+heart_fai~re |     .0892        .28503 |    .09469        .29279 |   -0.01901
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+other_hea~se |     .2322        .42222 |     .2292        .42031 |    0.00711
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+     diabcat |     1.307        .59286 |      1.31        .59361 |   -0.00559
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ cancer_ever |      .144        .35106 |     .1433        .35034 |    0.00202
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+      statin |     .5259        .49933 |     .5163        .49974 |    0.01934
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ flu_vaccine |     .7994        .40048 |     .8108         .3917 |   -0.02877
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+pneumococc~e |     .2545         .4356 |     .2024        .40182 |    0.12431
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+exacerbati~s |     .1971        .39778 |     .2599        .43857 |   -0.15006
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ asthma_ever |     .1288        .33495 |     .2773        .44767 |   -0.37569
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+immunodef_~y |    .00224       .047274 |   .002242         .0473 |   -0.00005
+------------------------------------------------------------------------------
+
+. 
+. 
+. file close tablecontent
+
+. 
+. /* Create weights============================================================
+> =*/
+. 
+. * ATE weights 
+. gen ipw = 1/pscore if exposure == 1 
+(186,848 missing values generated)
+
+. replace ipw = 1/(1-pscore) if exposure == 0 
+(43,308 real changes made)
+
+. 
+. summarize ipw, d
+
+                             ipw
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     1.123723       1.095957
+ 5%     1.166434       1.097987
+10%     1.187285       1.101002       Obs             148,557
+25%     1.350371        1.10199       Sum of Wgt.     148,557
+
+50%     1.515604                      Mean            1.99975
+                        Largest       Std. Dev.      1.140837
+75%     2.593162       10.09246
+90%     3.265242       10.21896       Variance       1.301508
+95%     3.998973       10.23029       Skewness       2.554152
+99%     6.732582       10.29109       Kurtosis       11.39629
+
+. 
+. * ATT weights 
+. gen ipw_att = 1 if exposure == 1 
+(186,848 missing values generated)
+
+. replace ipw_att = pscore/(1-pscore) if exposure == 0 
+(43,308 real changes made)
+
+. 
+. summarize ipw_att, d
+
+                           ipw_att
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            1              1
+ 5%            1              1
+10%            1              1       Obs             148,557
+25%            1              1       Sum of Wgt.     148,557
+
+50%            1                      Mean           1.416663
+                        Largest       Std. Dev.      .9288455
+75%     1.593162       9.092457
+90%     2.265242       9.218956       Variance        .862754
+95%     2.998973        9.23029       Skewness       3.519236
+99%     5.732582       9.291091       Kurtosis       18.19567
+
+. 
+. /* Check overlap and standardised differences in the weighted sample=========
+> =*/
+. 
+. * Plot and export graphs of the PS distribution 
+. * Adapt probability weights to frequency weights to use in graphs
+. * These need to be rounded up for sufficient granularity 
+. 
+. gen ipw_f = round(ipw*100) 
+(143,540 missing values generated)
+
+. 
+. hist pscore [fw = ipw_f], by(exposure, graphregion(fcolor(white))) color(emid
+> blue)
+
+. graph export "$outdir/psplot3.svg", as(svg) replace
+(file copd_output_psm/psplot3.svg written in SVG format)
+
+. graph close 
+
+. 
+. graph twoway kdensity pscore if exposure == 0 [fw = ipw_f] || ///
+>                          kdensity pscore if exposure == 1 [fw = ipw_f], ///
+>                          graphregion(fcolor(white)) ///
+>                          legend(size(small) label(1 "Pscore - LABA/LAMA Combi
+> nation") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1)
+> )
+
+.                          
+. graph export "$outdir/psplot4.svg", as(svg) replace
+(file copd_output_psm/psplot4.svg written in SVG format)
+
+. graph close
+
+. 
+. * repeat for ATT
+. 
+. gen ipw_fatt = round(ipw_att*100) 
+(143,540 missing values generated)
+
+. 
+. hist pscore [fw = ipw_fatt], by(exposure, graphregion(fcolor(white))) color(e
+> midblue)
+
+. graph export "$outdir/psplot5.svg", as(svg) replace
+(file copd_output_psm/psplot5.svg written in SVG format)
+
+. graph close 
+
+. 
+. graph twoway kdensity pscore if exposure == 0 [fw = ipw_fatt] || ///
+>                          kdensity pscore if exposure == 1 [fw = ipw_fatt], //
+> /
+>                          graphregion(fcolor(white)) ///
+>                          legend(size(small) label(1 "Pscore - LABA/LAMA Combi
+> nation") label (2 "Pscore - ICS Combination") region(lwidth(none)) order(2 1)
+> )
+
+.                          
+. graph export "$outdir/psplot6.svg", as(svg) replace
+(file copd_output_psm/psplot6.svg written in SVG format)
+
+. graph close
+
+. 
+. * Estimate and tabulate standardised differences 
+. * Note, this required amending the stddiff ado file 
+. * The amended file is saved as Weighted STDs and called before calculating th
+> ese 
+. * The weights are frequency weights used above and in a variable called 'wts'
+. 
+. gen wts = ipw_f
+(143,540 missing values generated)
+
+. 
+. run "Weighted STDs.do" 
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table_stddiff2.txt, write text replace
+
+. 
+. file write tablecontent ("Table S2: Standardised differences after weighting 
+> - ATE") _n
+
+. file write tablecontent ("Variable") _tab ("SD") _n
+
+. 
+. *Gender
+. 
+.     local lab: variable label male 
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff2 i.male, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+        male |                         |                         |
+           0 |   6852916        (46.1) |   6847732        (46.1) |    0.00100
+           1 |   7998637        (53.9) |   8008572        (53.9) | 
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+. 
+. *Age
+. 
+.     local lab: variable label age
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff2 age, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         age |     70.57        10.064 |     70.55        10.079 |    0.00171
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+.         
+. * All other things 
+. 
+. foreach comorb in $varlist {
+  2. 
+.     local comorb: subinstr local comorb "i." ""
+  3.     local lab: variable label `comorb'
+  4.     file write tablecontent ("`lab'") _tab
+  5.         
+.         stddiff2 `comorb', by(exposure)
+  6.         file write tablecontent (r(stddiff)[1,1]) _n 
+  7.                                 
+. }
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+   obese4cat |     1.471        .79972 |     1.468        .79627 |    0.00459
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+smoke_nomiss |     2.356        .47896 |     2.355        .47863 |    0.00231
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         imd |     3.052        1.4121 |     3.053        1.4125 |   -0.00130
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         ckd |     .1765        .38121 |     .1758        .38066 |    0.00170
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+hypertension |     .5125        .49984 |     .5117        .49986 |    0.00165
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+heart_fai~re |    .09243        .28963 |    .09304         .2905 |   -0.00212
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+other_hea~se |     .2313        .42165 |     .2302        .42098 |    0.00248
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+     diabcat |     1.313        .59613 |      1.31        .59385 |    0.00547
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ cancer_ever |     .1438        .35089 |     .1435        .35061 |    0.00081
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+      statin |      .521        .49956 |     .5193        .49963 |    0.00327
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ flu_vaccine |     .8084        .39357 |     .8075        .39428 |    0.00231
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+pneumococc~e |     .2179        .41282 |     .2177        .41267 |    0.00054
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+exacerbati~s |      .242        .42831 |     .2416        .42807 |    0.00095
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ asthma_ever |     .2338        .42323 |      .234        .42336 |   -0.00051
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+immunodef_~y |   .002328       .048192 |   .002251       .047395 |    0.00160
+------------------------------------------------------------------------------
+
+. 
+. file close tablecontent
+
+. 
+. * Repeat for ATT
+. 
+. drop wts
+
+. gen wts = ipw_fatt
+(143,540 missing values generated)
+
+. 
+. run "Weighted STDs.do" 
+
+. 
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/table_stddiff2.txt, write text replace
+
+. 
+. file write tablecontent ("Table S3: Standardised differences after weighting 
+> - ATT") _n
+
+. file write tablecontent ("Variable") _tab ("SD") _n
+
+. 
+. *Gender
+. 
+.     local lab: variable label male 
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff2 i.male, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+        male |                         |                         |
+           0 |   4881216        (46.4) |   4873100        (46.3) |    0.00191
+           1 |   5639537        (53.6) |   5651800        (53.7) | 
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+. 
+. *Age
+. 
+.     local lab: variable label age
+
+.     file write tablecontent ("`lab'") _tab
+
+.         
+.         stddiff2 age, by(exposure)
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         age |     70.79        10.043 |     70.76        10.055 |    0.00269
+------------------------------------------------------------------------------
+
+.         file write tablecontent (r(stddiff)[1,1]) _n 
+
+.         
+. * All other things 
+. 
+. foreach comorb in $varlist {
+  2. 
+.     local comorb: subinstr local comorb "i." ""
+  3.     local lab: variable label `comorb'
+  4.     file write tablecontent ("`lab'") _tab
+  5.         
+.         stddiff2 `comorb', by(exposure)
+  6.         file write tablecontent (r(stddiff)[1,1]) _n 
+  7.                                 
+. }
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+   obese4cat |     1.471        .80134 |     1.465        .79572 |    0.00757
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+smoke_nomiss |     2.339        .47341 |     2.337        .47282 |    0.00364
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         imd |     3.043        1.4084 |     3.047        1.4091 |   -0.00244
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+         ckd |     .1755        .38043 |     .1745        .37951 |    0.00283
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+hypertension |     .5173         .4997 |     .5159        .49975 |    0.00276
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+heart_fai~re |    .09376        .29149 |    .09469        .29279 |   -0.00319
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+other_hea~se |     .2309        .42141 |     .2292        .42031 |    0.00410
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+     diabcat |     1.316        .59746 |      1.31        .59361 |    0.00904
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ cancer_ever |     .1437        .35083 |     .1433        .35034 |    0.00137
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+      statin |     .5189        .49964 |     .5163        .49974 |    0.00527
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ flu_vaccine |     .8121        .39063 |     .8108         .3917 |    0.00342
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+pneumococc~e |     .2028        .40211 |     .2024        .40181 |    0.00099
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+exacerbati~s |     .2605        .43893 |     .2599        .43857 |    0.00153
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+ asthma_ever |      .277        .44751 |     .2773        .44767 |   -0.00071
+------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------
+             |   exposure=LABA/LAMA    |  exposure=Combination   |
+             | Mean or N     SD or (%) | Mean or N     SD or (%) |  Std Diff
+-------------+-------------------------+-------------------------+------------
+immunodef_~y |   .002364       .048565 |   .002242         .0473 |    0.00254
+------------------------------------------------------------------------------
+
+. 
+. file close tablecontent
+
+. 
+. /* Output weighted dataset for analyses======================================
+> =*/
+. 
+. * Save a version set on survival outcome with IP weights (ATE)
+. * Note that this will throw a probable error for invalid weights 
+. * This is because we have people with missing exposure in the dataset which w
+> e allow to drop at this stage
+. * Those with missing exposure have missing weights and that's why there's an 
+> error 
+. stset stime_$outcome [pweight = ipw], fail($outcome) id(patient_id) enter(ent
+> er_date) origin(enter_date)        
+
+                id:  patient_id
+     failure event:  onscoviddeath != 0 & onscoviddeath < .
+obs. time interval:  (stime_onscoviddeath[_n-1], stime_onscoviddeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+            weight:  [pweight=ipw]
+
+------------------------------------------------------------------------------
+    292,097  total observations
+    143,540  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+    148,557  observations remaining, representing
+    148,557  subjects
+        429  failures in single-failure-per-subject data
+  9,751,453  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =        66
+
+. save $tempdir\analysis_dataset_STSET_IPW_$outcome, replace
+file copd_tempdata_psm\analysis_dataset_STSET_IPW_onscoviddeath.dta saved
+
+. 
+. * Save a version weighted on ATT weights
+. stset stime_$outcome [pweight = ipw_att], fail($outcome) id(patient_id) enter
+> (enter_date) origin(enter_date)    
+
+                id:  patient_id
+     failure event:  onscoviddeath != 0 & onscoviddeath < .
+obs. time interval:  (stime_onscoviddeath[_n-1], stime_onscoviddeath]
+ enter on or after:  time enter_date
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time enter_date
+            weight:  [pweight=ipw_att]
+
+------------------------------------------------------------------------------
+    292,097  total observations
+    143,540  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+    148,557  observations remaining, representing
+    148,557  subjects
+        429  failures in single-failure-per-subject data
+  9,751,453  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =        66
+
+. save $tempdir\analysis_dataset_STSET_IPWATT_$outcome, replace
+file copd_tempdata_psm\analysis_dataset_STSET_IPWATT_onscoviddeath.dta saved
+
+. 
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log_psm\02b_cr_d
+> erive_ps_copd.log
+  log type:  text
+ closed on:  19 Aug 2020, 10:09:34
+-------------------------------------------------------------------------------

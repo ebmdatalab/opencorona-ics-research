@@ -30,7 +30,7 @@ tab exposure $outcome
 /* Fit the parametric model===================================================*/
 
 xi i.exposure i.male $varlist
-stpm2 _I* age1 age2 age3, scale(hazard) df(3) eform nolog 
+stpm2 _I* age1 age2 age3, scale(hazard) df(2) eform nolog 
 
 /* Predict survival===========================================================*/
 
@@ -63,10 +63,11 @@ twoway  (rarea _at1_lci _at1_uci timevar, color(red%25)) ///
                  (line _at2  timevar, sort lcolor(blue)) ///
 				 (line _at3 timevar, sort lcolor(green)) ///
                  , legend(order(1 "SABA" 2 "ICS Low Dose" 3 "ICS High Dose") ///
-				 ring(0) cols(1) pos(1)) ///
-                 ylabel(0 (0.05) $ymax ,angle(h) format(%4.2f)) ///
-                 ytitle("Cumulative mortality (%)") ///
+				 ring(0) cols(1) pos(1) size(small) region(lwidth(none))) ///
+                 ylabel(0 (0.05) 0.2, angle(h) format(%4.2f)) ///
+                 ytitle("Standardised cumulative mortality (%)") ///
                  xtitle("Days from 1 March 2020") ///
+				 graphregion(fcolor(white)) ///
 				 saving(adj_survival_curves_asthma, replace)
 				 
 graph export "$outdir/adj_survival_curves_asthma.svg", as(svg) replace
