@@ -3,7 +3,7 @@
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\06c_an
 > _ps_models_asthma.log
   log type:  text
- opened on:  19 Aug 2020, 10:20:15
+ opened on:  19 Aug 2020, 18:06:31
 
 . 
 . * Open Stata dataset
@@ -28,19 +28,19 @@
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   134,004         63 |   134,067 
+            SABA only |   108,392         49 |   108,441 
                       |     99.95       0.05 |    100.00 
 ----------------------+----------------------+----------
-ICS (Low/Medium Dose) |   626,271        398 |   626,669 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
                       |     99.94       0.06 |    100.00 
 ----------------------+----------------------+----------
-      ICS (High Dose) |   102,677        110 |   102,787 
-                      |     99.89       0.11 |    100.00 
+      ICS (High Dose) |   100,972        105 |   101,077 
+                      |     99.90       0.10 |    100.00 
 ----------------------+----------------------+----------
-                Other |   467,942        152 |   468,094 
+                Other |   467,215        150 |   467,365 
                       |     99.97       0.03 |    100.00 
 ----------------------+----------------------+----------
-                Total | 1,330,894        723 | 1,331,617 
+                Total | 1,285,176        679 | 1,285,855 
                       |     99.95       0.05 |    100.00 
 
 . 
@@ -63,30 +63,30 @@ ICS (Low/Medium Dose) |   626,271        398 |   626,669
                  id:  patient_id
              weight:  [pweight=ipw_att]
 
-(sum of wgt is 309,290.375085648)
-Iteration 0:   log pseudolikelihood = -3398.9532
-Iteration 1:   log pseudolikelihood =  -3395.505
-Iteration 2:   log pseudolikelihood = -3395.4967
-Iteration 3:   log pseudolikelihood = -3395.4967
+(sum of wgt is 304,169.737277899)
+Iteration 0:   log pseudolikelihood = -3144.6792
+Iteration 1:   log pseudolikelihood = -3140.2335
+Iteration 2:   log pseudolikelihood = -3140.2185
+Iteration 3:   log pseudolikelihood = -3140.2185
 Refining estimates:
-Iteration 0:   log pseudolikelihood = -3395.4967
+Iteration 0:   log pseudolikelihood = -3140.2185
 
 Cox regression -- Breslow method for ties
 
-No. of subjects      =      309,290             Number of obs    =     863,523
-No. of failures      =          269
-Time at risk         =  20384017.68
-                                                Wald chi2(2)     =        9.50
-Log pseudolikelihood =   -3395.4967             Prob > chi2      =      0.0086
+No. of subjects      =      304,170             Number of obs    =     818,490
+No. of failures      =          249
+Time at risk         =  20048318.22
+                                                Wald chi2(2)     =        9.71
+Log pseudolikelihood =   -3140.2185             Prob > chi2      =      0.0078
 
-                       (Std. Err. adjusted for 863,523 clusters in patient_id)
+                       (Std. Err. adjusted for 818,490 clusters in patient_id)
 ------------------------------------------------------------------------------
              |               Robust
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
     exposure |
-ICS (Low..)  |     .98735   .1665053    -0.08   0.940     .7094564    1.374094
-ICS (Hig..)  |   1.382101   .2566382     1.74   0.081     .9604674    1.988826
+ICS (Low..)  |    1.09749   .2105679     0.48   0.628      .753505    1.598507
+ICS (Hig..)  |    1.53533   .3187341     2.07   0.039     1.022098    2.306274
 ------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/univar, replace 
@@ -100,7 +100,6 @@ file ./asthma_tempdata_psm/univar.ster saved
 . cap file close tablecontent
 
 . file open tablecontent using ./$outdir/table2att.txt, write text replace
-(note: file ./asthma_output_psm/table2att.txt not found)
 
 . 
 . * Column headings 
@@ -136,7 +135,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |     .98735   .1665053    -0.08   0.940     .7094564    1.374094
+         (1) |    1.09749   .2105679     0.48   0.628      .753505    1.598507
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f 
@@ -152,7 +151,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.382101   .2566382     1.74   0.081     .9604674    1.988826
+         (1) |    1.53533   .3187341     2.07   0.039     1.022098    2.306274
 ------------------------------------------------------------------------------
 
 . post temp ("$tableoutcome") ("$population") ("PS - IPW-ATT") ("`lab2'") (roun
@@ -170,7 +169,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.382101   .2566382     1.74   0.081     .9604674    1.988826
+         (1) |    1.53533   .3187341     2.07   0.039     1.022098    2.306274
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f 
@@ -190,5 +189,5 @@ file ./asthma_tempdata_psm/univar.ster saved
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\06c_an
 > _ps_models_asthma.log
   log type:  text
- closed on:  19 Aug 2020, 10:20:54
+ closed on:  19 Aug 2020, 18:07:15
 -------------------------------------------------------------------------------

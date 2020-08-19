@@ -44,20 +44,20 @@ graph twoway kdensity p0 if exposure == 0 || ///
 graph export "$outdir/psplot1.svg", as(svg) replace
 graph close
 
-graph twoway kdensity p0 if exposure == 0 || ///
-			 kdensity p0 if exposure == 1 || ///
-			 kdensity p0 if exposure == 2, ///
+graph twoway kdensity p1 if exposure == 0 || ///
+			 kdensity p1 if exposure == 1 || ///
+			 kdensity p1 if exposure == 2, ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P1 - SABA") label (2 "P1 - LD ICS") label (3 "P1 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot2.svg", as(svg) replace
 graph close
 
-graph twoway kdensity p0 if exposure == 0 || ///
-			 kdensity p0 if exposure == 1 || ///
-			 kdensity p0 if exposure == 2, ///
+graph twoway kdensity p2 if exposure == 0 || ///
+			 kdensity p2 if exposure == 1 || ///
+			 kdensity p2 if exposure == 2, ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P2 - SABA") label (2 "P2 - LD ICS") label (3 "P2 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot3.svg", as(svg) replace
 graph close
@@ -166,7 +166,7 @@ graph twoway kdensity p1 if exposure == 0  [fw = ipw_f]|| ///
 			 kdensity p1 if exposure == 1  [fw = ipw_f]|| ///
 			 kdensity p1 if exposure == 2  [fw = ipw_f], ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P1 - SABA") label (2 "P1 - LD ICS") label (3 "P1 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot5.svg", as(svg) replace
 graph close
@@ -175,7 +175,7 @@ graph twoway kdensity p2 if exposure == 0  [fw = ipw_f]|| ///
 			 kdensity p2 if exposure == 1  [fw = ipw_f]|| ///
 			 kdensity p2 if exposure == 2  [fw = ipw_f], ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P2 - SABA") label (2 "P2 - LD ICS") label (3 "P2 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot6.svg", as(svg) replace
 graph close
@@ -193,7 +193,7 @@ graph twoway kdensity p1 if exposure == 0  [fw = ipw_fatt]|| ///
 			 kdensity p1 if exposure == 1  [fw = ipw_fatt]|| ///
 			 kdensity p1 if exposure == 2  [fw = ipw_fatt], ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P1 - SABA") label (2 "P1 - LD ICS") label (3 "P1 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot8.svg", as(svg) replace
 graph close
@@ -202,7 +202,7 @@ graph twoway kdensity p2 if exposure == 0  [fw = ipw_fatt]|| ///
 			 kdensity p2 if exposure == 1  [fw = ipw_fatt]|| ///
 			 kdensity p2 if exposure == 2  [fw = ipw_fatt], ///
 			 graphregion(fcolor(white)) ///
-			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+			 legend(size(small) label(1 "P2 - SABA") label (2 "P2 - LD ICS") label (3 "P2 - HD ICS") region(lwidth(none))) 
 
 graph export "$outdir/psplot9.svg", as(svg) replace
 graph close

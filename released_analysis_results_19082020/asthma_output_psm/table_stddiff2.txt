@@ -1,18 +1,18 @@
 Table S3: Standardised differences after weighting - ATT
 Variable	SD - ICS (Low/Medium Dose) vs SABA only	SD - `lab2` vs SABA only
-Male	.00246445	.00128317
-Age (years)	.03109773	.03191501
-Evidence of obesity (4 categories)	.01950439	.02067704
-Smoking status (missing set to non)	.00886483	.01177043
-Index of Multiple Deprivation (IMD)	.01150253	.01301738
-Chronic kidney disease	.02299071	.02349497
-Diagnosed hypertension	.0183992	.01986833
-Heart Failure	.01265758	.01367557
-Other Heart Diseases	.02133507	.02250773
-Diabetes Severity	.01912031	.02100793
-Cancer	.00652343	.00693477
-Recent Statin	.0179116	.01955047
-Flu vaccine	.01859071	.01568614
-Pneumococcal Vaccine	.02345582	.02248354
-Exacerbation in last year	.00697406	.00845054
-Immunosuppressed (combination algorithm)	.0034637	.0038237
+Male	.00197843	.00276438
+Age (years)	.02452706	.02578125
+Evidence of obesity (4 categories)	.01766467	.01904679
+Smoking status (missing set to non)	.0040691	.00752316
+Index of Multiple Deprivation (IMD)	.01179471	.01350516
+Chronic kidney disease	.02079124	.0216233
+Diagnosed hypertension	.01228415	.01407921
+Heart Failure	.00910582	.01053839
+Other Heart Diseases	.01768929	.01923399
+Diabetes Severity	.01328383	.01546454
+Cancer	.00442179	.00492324
+Recent Statin	.01066121	.0127148
+Flu vaccine	.02060794	.01824828
+Pneumococcal Vaccine	.01801519	.01724776
+Exacerbation in last year	.0074552	.00917089
+Immunosuppressed (combination algorithm)	.00310104	.00334448

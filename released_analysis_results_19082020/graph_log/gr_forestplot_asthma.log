@@ -3,7 +3,7 @@
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestpl
 > ot_asthma.log
   log type:  text
- opened on:  19 Aug 2020, 09:33:24
+ opened on:  19 Aug 2020, 18:09:45
 
 . 
 . * All dta outputted from 06, append into one dataset 
@@ -19,6 +19,34 @@
 
 . append using asthma_tempdata_psm/temp_asthma.dta
 
+. 
+. replace population = "Asthma - Ethn." if _n == 7
+(1 real change made)
+
+. replace population = "Asthma - Ethn." if _n == 8
+(1 real change made)
+
+. replace population = "Asthma - Ethn." if _n == 9
+(1 real change made)
+
+. 
+. replace population = "Asthma - Ethn." if _n == 10
+(1 real change made)
+
+. replace population = "Asthma - Ethn." if _n == 11
+(1 real change made)
+
+. replace population = "Asthma - Ethn." if _n == 12
+(1 real change made)
+
+. 
+. replace population = "Asthma - PS" if _n == 25
+(1 real change made)
+
+. replace population = "Asthma - PS" if _n == 26
+(1 real change made)
+
+. 
 . 
 . *rename to match the code below 
 . rename level analysis 
@@ -222,5 +250,5 @@ variable bfanalysis was str13 now str16
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestpl
 > ot_asthma.log
   log type:  text
- closed on:  19 Aug 2020, 09:33:25
+ closed on:  19 Aug 2020, 18:09:48
 -------------------------------------------------------------------------------
