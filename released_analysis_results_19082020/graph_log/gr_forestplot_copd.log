@@ -3,7 +3,7 @@
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestpl
 > ot_copd.log
   log type:  text
- opened on:  19 Aug 2020, 09:33:22
+ opened on:  19 Aug 2020, 11:55:14
 
 . 
 . * All dta outputted from 06, append into one dataset 
@@ -20,6 +20,46 @@
 . append using copd_tempdata_sens4/temp_copd.dta
 
 . append using copd_tempdata_psm/temp_copd.dta
+
+. 
+. replace population = "COPD - Ethn." if _n == 4
+(1 real change made)
+
+. replace population = "COPD - Ethn." if _n == 5
+(1 real change made)
+
+. replace population = "COPD - Ethn." if _n == 6
+(1 real change made)
+
+. 
+. replace population = "COPD - Dual/Triple" if _n == 7
+(1 real change made)
+
+. replace population = "COPD - Dual/Triple" if _n == 8
+(1 real change made)
+
+. replace population = "COPD - Dual/Triple" if _n == 9
+(1 real change made)
+
+. 
+. replace population = "COPD - Dual/Triple" if _n == 10
+(1 real change made)
+
+. replace population = "COPD - Dual/Triple" if _n == 11
+(1 real change made)
+
+. replace population = "COPD - Dual/Triple" if _n == 12
+(1 real change made)
+
+. 
+. replace population = "COPD - LAMA mono" if _n == 16
+(1 real change made)
+
+. replace population = "COPD - LAMA mono" if _n == 17
+(1 real change made)
+
+. replace population = "COPD - LAMA mono" if _n == 18
+(1 real change made)
 
 . 
 . *rename to match the code below 
@@ -122,16 +162,14 @@ variable bfanalysis was str13 now str16
 . 
 . cap drop x0_*
 
-. gen x0_7 = -10
+. gen x0_7 = -16
 
-. gen x0_3=-4
+. gen x0_3=-7
 
-. gen x0_1=-2
+. gen x0_1=-4
 
-. gen x0_14=3.5
+. gen x0_14=4
 
-. 
-. 
 . 
 . cap drop obs
 
@@ -223,5 +261,5 @@ variable bfanalysis was str13 now str16
        log:  E:\analyses\opensafely-ics-research\analysis\graph_log\gr_forestpl
 > ot_copd.log
   log type:  text
- closed on:  19 Aug 2020, 09:33:24
+ closed on:  19 Aug 2020, 11:55:16
 -------------------------------------------------------------------------------

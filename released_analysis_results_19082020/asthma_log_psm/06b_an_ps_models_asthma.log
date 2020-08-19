@@ -3,7 +3,7 @@
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\06b_an
 > _ps_models_asthma.log
   log type:  text
- opened on:  19 Aug 2020, 10:19:35
+ opened on:  19 Aug 2020, 18:05:46
 
 . 
 . * Open Stata dataset
@@ -28,19 +28,19 @@
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   134,004         63 |   134,067 
+            SABA only |   108,392         49 |   108,441 
                       |     99.95       0.05 |    100.00 
 ----------------------+----------------------+----------
-ICS (Low/Medium Dose) |   626,271        398 |   626,669 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
                       |     99.94       0.06 |    100.00 
 ----------------------+----------------------+----------
-      ICS (High Dose) |   102,677        110 |   102,787 
-                      |     99.89       0.11 |    100.00 
+      ICS (High Dose) |   100,972        105 |   101,077 
+                      |     99.90       0.10 |    100.00 
 ----------------------+----------------------+----------
-                Other |   467,942        152 |   468,094 
+                Other |   467,215        150 |   467,365 
                       |     99.97       0.03 |    100.00 
 ----------------------+----------------------+----------
-                Total | 1,330,894        723 | 1,331,617 
+                Total | 1,285,176        679 | 1,285,855 
                       |     99.95       0.05 |    100.00 
 
 . 
@@ -63,30 +63,30 @@ ICS (Low/Medium Dose) |   626,271        398 |   626,669
                  id:  patient_id
              weight:  [pweight=ipw]
 
-(sum of wgt is 2,588,926.5223775)
-Iteration 0:   log pseudolikelihood = -26906.236
-Iteration 1:   log pseudolikelihood = -26880.191
-Iteration 2:   log pseudolikelihood = -26880.121
-Iteration 3:   log pseudolikelihood = -26880.121
+(sum of wgt is 2,454,529.2335883)
+Iteration 0:   log pseudolikelihood = -24491.015
+Iteration 1:   log pseudolikelihood = -24462.588
+Iteration 2:   log pseudolikelihood = -24462.496
+Iteration 3:   log pseudolikelihood = -24462.496
 Refining estimates:
-Iteration 0:   log pseudolikelihood = -26880.121
+Iteration 0:   log pseudolikelihood = -24462.496
 
 Cox regression -- Breslow method for ties
 
-No. of subjects      =    2,588,927             Number of obs    =     863,523
-No. of failures      =        1,822
-Time at risk         =  170666463.7
-                                                Wald chi2(2)     =        8.60
-Log pseudolikelihood =   -26880.121             Prob > chi2      =      0.0136
+No. of subjects      =    2,454,529             Number of obs    =     818,490
+No. of failures      =        1,665
+Time at risk         =  161816240.9
+                                                Wald chi2(2)     =        8.90
+Log pseudolikelihood =   -24462.496             Prob > chi2      =      0.0117
 
-                       (Std. Err. adjusted for 863,523 clusters in patient_id)
+                       (Std. Err. adjusted for 818,490 clusters in patient_id)
 ------------------------------------------------------------------------------
              |               Robust
           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
     exposure |
-ICS (Low..)  |   1.051549   .1530362     0.35   0.730      .790589    1.398648
-ICS (Hig..)  |   1.449572   .2470042     2.18   0.029     1.037998    2.024337
+ICS (Low..)  |   1.096231   .1796161     0.56   0.575     .7951219    1.511369
+ICS (Hig..)  |   1.521938    .284764     2.24   0.025     1.054707     2.19615
 ------------------------------------------------------------------------------
 
 . estimates save ./$tempdir/univar, replace 
@@ -135,7 +135,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.051549   .1530362     0.35   0.730      .790589    1.398648
+         (1) |   1.096231   .1796161     0.56   0.575     .7951219    1.511369
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f 
@@ -151,7 +151,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.449572   .2470042     2.18   0.029     1.037998    2.024337
+         (1) |   1.521938    .284764     2.24   0.025     1.054707     2.19615
 ------------------------------------------------------------------------------
 
 . post temp ("$tableoutcome") ("$population") ("PS - IPW") ("`lab2'") (round(r(
@@ -169,7 +169,7 @@ file ./asthma_tempdata_psm/univar.ster saved
 ------------------------------------------------------------------------------
           _t |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
 -------------+----------------------------------------------------------------
-         (1) |   1.449572   .2470042     2.18   0.029     1.037998    2.024337
+         (1) |   1.521938    .284764     2.24   0.025     1.054707     2.19615
 ------------------------------------------------------------------------------
 
 . file write tablecontent %4.2f (r(estimate)) _tab %4.2f (r(lb)) (" - ") %4.2f 
@@ -189,5 +189,5 @@ file ./asthma_tempdata_psm/univar.ster saved
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\06b_an
 > _ps_models_asthma.log
   log type:  text
- closed on:  19 Aug 2020, 10:20:15
+ closed on:  19 Aug 2020, 18:06:31
 -------------------------------------------------------------------------------

@@ -58,10 +58,10 @@
 	<circle cx="9963.45" cy="8211.60" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
 	<circle cx="10142.10" cy="8534.70" r="44.10" style="fill:#000000"/>
 	<circle cx="10142.10" cy="8534.70" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
-	<circle cx="9885.60" cy="8857.80" r="44.10" style="fill:#000000"/>
-	<circle cx="9885.60" cy="8857.80" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
-	<circle cx="10064.25" cy="9181.35" r="44.10" style="fill:#000000"/>
-	<circle cx="10064.25" cy="9181.35" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
+	<circle cx="9936.00" cy="8857.80" r="44.10" style="fill:#000000"/>
+	<circle cx="9936.00" cy="8857.80" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
+	<circle cx="10128.60" cy="9181.35" r="44.10" style="fill:#000000"/>
+	<circle cx="10128.60" cy="9181.35" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
 	<line x1="9895.05" y1="1100.25" x2="10275.30" y2="1100.25" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="10275.30" y1="1182.60" x2="10275.30" y2="1017.45" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="9895.05" y1="1182.60" x2="9895.05" y2="1017.45" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
@@ -134,12 +134,12 @@
 	<line x1="9949.95" y1="8534.70" x2="10403.55" y2="8534.70" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="10403.55" y1="8617.05" x2="10403.55" y2="8451.90" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="9949.95" y1="8617.05" x2="9949.95" y2="8451.90" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9757.35" y1="8857.80" x2="10059.75" y2="8857.80" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="10059.75" y1="8940.15" x2="10059.75" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9757.35" y1="8940.15" x2="9757.35" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9872.10" y1="9180.90" x2="10344.15" y2="9180.90" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="10344.15" y1="9263.25" x2="10344.15" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9872.10" y1="9263.25" x2="9872.10" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9798.75" y1="8857.80" x2="10124.10" y2="8857.80" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="10124.10" y1="8940.15" x2="10124.10" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9798.75" y1="8940.15" x2="9798.75" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9913.50" y1="9180.90" x2="10440.00" y2="9180.90" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="10440.00" y1="9263.25" x2="10440.00" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9913.50" y1="9263.25" x2="9913.50" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<circle cx="10055.25" cy="1100.70" r="44.10" style="fill:#000000"/>
 	<circle cx="10055.25" cy="1100.70" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
 	<circle cx="10485.90" cy="1423.80" r="44.10" style="fill:#000000"/>
@@ -188,10 +188,10 @@
 	<circle cx="9963.45" cy="8211.60" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
 	<circle cx="10142.10" cy="8534.70" r="44.10" style="fill:#000000"/>
 	<circle cx="10142.10" cy="8534.70" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
-	<circle cx="9885.60" cy="8857.80" r="44.10" style="fill:#000000"/>
-	<circle cx="9885.60" cy="8857.80" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
-	<circle cx="10064.25" cy="9181.35" r="44.10" style="fill:#000000"/>
-	<circle cx="10064.25" cy="9181.35" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
+	<circle cx="9936.00" cy="8857.80" r="44.10" style="fill:#000000"/>
+	<circle cx="9936.00" cy="8857.80" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
+	<circle cx="10128.60" cy="9181.35" r="44.10" style="fill:#000000"/>
+	<circle cx="10128.60" cy="9181.35" r="27.90" style="fill:none;stroke:#000000;stroke-width:32.40"/>
 	<line x1="9895.05" y1="1100.25" x2="10275.30" y2="1100.25" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="10275.30" y1="1182.60" x2="10275.30" y2="1017.45" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="9895.05" y1="1182.60" x2="9895.05" y2="1017.45" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
@@ -264,19 +264,19 @@
 	<line x1="9949.95" y1="8534.70" x2="10403.55" y2="8534.70" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="10403.55" y1="8617.05" x2="10403.55" y2="8451.90" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<line x1="9949.95" y1="8617.05" x2="9949.95" y2="8451.90" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9757.35" y1="8857.80" x2="10059.75" y2="8857.80" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="10059.75" y1="8940.15" x2="10059.75" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9757.35" y1="8940.15" x2="9757.35" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9872.10" y1="9180.90" x2="10344.15" y2="9180.90" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="10344.15" y1="9263.25" x2="10344.15" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
-	<line x1="9872.10" y1="9263.25" x2="9872.10" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9798.75" y1="8857.80" x2="10124.10" y2="8857.80" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="10124.10" y1="8940.15" x2="10124.10" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9798.75" y1="8940.15" x2="9798.75" y2="8775.00" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9913.50" y1="9180.90" x2="10440.00" y2="9180.90" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="10440.00" y1="9263.25" x2="10440.00" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
+	<line x1="9913.50" y1="9263.25" x2="9913.50" y2="9098.10" stroke-linecap="round" style="stroke:#000000;stroke-width:16.20"/>
 	<text x="885.60" y="1179.11" style="font-family:'Helvetica';font-weight:bold;font-size:225.00px;fill:#000000">COVID-19 Death in ONS - Asthma</text>
 	<text x="885.60" y="1502.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="1825.76" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="2148.86" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="2471.96" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="2795.51" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
-	<text x="885.60" y="3118.61" style="font-family:'Helvetica';font-weight:bold;font-size:225.00px;fill:#000000">COVID-19 Death in ONS - Asthma - ethnicity</text>
+	<text x="885.60" y="3118.61" style="font-family:'Helvetica';font-weight:bold;font-size:225.00px;fill:#000000">COVID-19 Death in ONS - Asthma - Ethn.</text>
 	<text x="885.60" y="3441.71" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="3765.26" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="4088.36" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
@@ -294,7 +294,7 @@
 	<text x="885.60" y="7966.91" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="8290.01" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="8613.56" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
-	<text x="885.60" y="8936.66" style="font-family:'Helvetica';font-weight:bold;font-size:225.00px;fill:#000000">COVID-19 Death in ONS - Asthma - PSM</text>
+	<text x="885.60" y="8936.66" style="font-family:'Helvetica';font-weight:bold;font-size:225.00px;fill:#000000">COVID-19 Death in ONS - Asthma - PS</text>
 	<text x="885.60" y="9259.76" style="font-family:'Helvetica';font-size:225.00px;fill:#000000"></text>
 	<text x="885.60" y="720.61" style="font-family:'Helvetica';font-size:299.70px;fill:#000000"></text>
 	<text x="5237.55" y="1179.11" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">Univariable</text>
@@ -321,8 +321,8 @@
 	<text x="5237.55" y="7966.91" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">Age/Sex adjusted</text>
 	<text x="5237.55" y="8290.01" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">Fully adjusted</text>
 	<text x="5237.55" y="8613.56" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">Fully adjusted</text>
-	<text x="5237.55" y="8936.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">PS - IPW-ATT</text>
-	<text x="5237.55" y="9259.76" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">PS - IPW-ATT</text>
+	<text x="5237.55" y="8936.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">PS - IPW</text>
+	<text x="5237.55" y="9259.76" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">PS - IPW</text>
 	<text x="5237.55" y="720.61" style="font-family:'Helvetica';font-weight:bold;font-size:299.70px;fill:#000000">Analysis</text>
 	<text x="7069.95" y="1179.11" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">ICS (Low/Medium Dose)</text>
 	<text x="7069.95" y="1502.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000">ICS (High Dose)</text>
@@ -375,8 +375,8 @@
 	<text x="13188.60" y="7966.91" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.62 (1.19-2.21)</text>
 	<text x="13188.60" y="8290.46" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.16 (0.89-1.51)</text>
 	<text x="13188.60" y="8613.56" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.55 (1.13-2.12)</text>
-	<text x="13188.60" y="8936.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">0.99 (0.71-1.37)</text>
-	<text x="13188.60" y="9260.21" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.38 (0.96-1.99)</text>
+	<text x="13188.60" y="8936.66" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.10 (0.80-1.51)</text>
+	<text x="13188.60" y="9260.21" style="font-family:'Helvetica';font-size:225.00px;fill:#000000" text-anchor="middle">1.52 (1.05-2.20)</text>
 	<text x="13188.60" y="720.61" style="font-family:'Helvetica';font-weight:bold;font-size:299.70px;fill:#000000" text-anchor="middle">HR (95% CI)</text>
 	<line x1="490.50" y1="9418.50" x2="490.50" y2="378.00" style="stroke:#FFFFFF;stroke-width:21.60"/>
 	<line x1="490.50" y1="9418.50" x2="14022.00" y2="9418.50" style="stroke:#000000;stroke-width:21.60"/>

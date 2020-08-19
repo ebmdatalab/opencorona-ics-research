@@ -490,7 +490,7 @@ do "06c_an_ps_models_copd.do"
 
 clear
 cd ..
-import delimited `c(pwd)'/output/input_asthma_sens_analysis.csv, clear
+import delimited `c(pwd)'/output/input_asthma.csv, clear
 cd  `c(pwd)'/analysis
 set more off 
 

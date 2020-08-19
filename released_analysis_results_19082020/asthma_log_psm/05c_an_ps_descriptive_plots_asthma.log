@@ -3,7 +3,7 @@
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\05c_an
 > _ps_descriptive_plots_asthma.log
   log type:  text
- opened on:  19 Aug 2020, 10:19:11
+ opened on:  19 Aug 2020, 18:05:20
 
 . 
 . * Open Stata dataset
@@ -20,21 +20,21 @@
      Asthma Treatment |         death
              Exposure |         0          1 |     Total
 ----------------------+----------------------+----------
-            SABA only |   134,004         63 |   134,067 
-ICS (Low/Medium Dose) |   626,271        398 |   626,669 
-      ICS (High Dose) |   102,677        110 |   102,787 
+            SABA only |   108,392         49 |   108,441 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
+      ICS (High Dose) |   100,972        105 |   101,077 
 ----------------------+----------------------+----------
-                Total |   862,952        571 |   863,523 
+                Total |   817,961        529 |   818,490 
 
 . 
 . /* Generate KM PLOT==========================================================
 > =*/ 
 . 
 . count if exposure != .u
-  863,523
+  818,490
 
 . noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
-RUNNING THE KM PLOT FOR 863523 PEOPLE WITH NON-MISSING EXPOSURE
+RUNNING THE KM PLOT FOR 818490 PEOPLE WITH NON-MISSING EXPOSURE
 
 . 
 . sts graph, by(exposure) failure                                              
@@ -88,5 +88,5 @@ RUNNING THE KM PLOT FOR 863523 PEOPLE WITH NON-MISSING EXPOSURE
        log:  E:\analyses\opensafely-ics-research\analysis\asthma_log_psm\05c_an
 > _ps_descriptive_plots_asthma.log
   log type:  text
- closed on:  19 Aug 2020, 10:19:35
+ closed on:  19 Aug 2020, 18:05:46
 -------------------------------------------------------------------------------
