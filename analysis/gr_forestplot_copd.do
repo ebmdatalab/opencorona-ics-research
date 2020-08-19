@@ -27,6 +27,22 @@ append using copd_tempdata_sens2/temp_copd.dta
 append using copd_tempdata_sens4/temp_copd.dta
 append using copd_tempdata_psm/temp_copd.dta
 
+replace population = "COPD - Ethn." if _n == 4
+replace population = "COPD - Ethn." if _n == 5
+replace population = "COPD - Ethn." if _n == 6
+
+replace population = "COPD - Dual/Triple" if _n == 7
+replace population = "COPD - Dual/Triple" if _n == 8
+replace population = "COPD - Dual/Triple" if _n == 9
+
+replace population = "COPD - Dual/Triple" if _n == 10
+replace population = "COPD - Dual/Triple" if _n == 11
+replace population = "COPD - Dual/Triple" if _n == 12
+
+replace population = "COPD - LAMA mono" if _n == 16
+replace population = "COPD - LAMA mono" if _n == 17
+replace population = "COPD - LAMA mono" if _n == 18
+
 *rename to match the code below 
 rename level analysis 
 gen primsec = outcome + " - " + population 
@@ -78,12 +94,10 @@ replace bf_result = result_label if bf_result == ""
 gen bf_primsec = "{bf:" + primsec + "}" 
 
 cap drop x0_*
-gen x0_7 = -10
-gen x0_3=-4
-gen x0_1=-2
-gen x0_14=3.5
-
-
+gen x0_7 = -16
+gen x0_3=-7
+gen x0_1=-4
+gen x0_14=4
 
 cap drop obs
 gen obs = _n 
