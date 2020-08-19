@@ -1,0 +1,329 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\11_an_stan
+> d_surv_asthma.log
+  log type:  text
+ opened on:  19 Aug 2020, 11:10:11
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Sense check outcomes======================================================
+> =*/ 
+. tab exposure $outcome
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |   108,392         49 |   108,441 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
+      ICS (High Dose) |   100,972        105 |   101,077 
+----------------------+----------------------+----------
+                Total |   817,961        529 |   818,490 
+
+. 
+. /* Fit the parametric model==================================================
+> =*/
+. 
+. xi i.exposure i.male $varlist
+i.exposure        _Iexposure_0-2      (naturally coded; _Iexposure_0 omitted)
+i.male            _Imale_0-1          (naturally coded; _Imale_0 omitted)
+i.obese4cat       _Iobese4cat_1-4     (naturally coded; _Iobese4cat_1 omitted)
+i.smoke_nomiss    _Ismoke_nom_1-3     (naturally coded; _Ismoke_nom_1 omitted)
+i.imd             _Iimd_1-5           (naturally coded; _Iimd_1 omitted)
+i.ckd             _Ickd_0-1           (naturally coded; _Ickd_0 omitted)
+i.hypertension    _Ihypertens_0-1     (naturally coded; _Ihypertens_0 omitted)
+i.heart_failure   _Iheart_fai_0-1     (naturally coded; _Iheart_fai_0 omitted)
+i.other_hear~se   _Iother_hea_0-1     (naturally coded; _Iother_hea_0 omitted)
+i.diabcat         _Idiabcat_1-4       (naturally coded; _Idiabcat_1 omitted)
+i.cancer_ever     _Icancer_ev_0-1     (naturally coded; _Icancer_ev_0 omitted)
+i.statin          _Istatin_0-1        (naturally coded; _Istatin_0 omitted)
+i.flu_vaccine     _Iflu_vacci_0-1     (naturally coded; _Iflu_vacci_0 omitted)
+i.pneumococca~e   _Ipneumococ_0-1     (naturally coded; _Ipneumococ_0 omitted)
+i.exacerbations   _Iexacerbat_0-1     (naturally coded; _Iexacerbat_0 omitted)
+i.immunodef_any   _Iimmunodef_0-1     (naturally coded; _Iimmunodef_0 omitted)
+
+. stpm2 _I* age1 age2 age3, scale(hazard) df(2) eform nolog 
+
+Log likelihood = -3803.1882                     Number of obs     =    818,490
+
+------------------------------------------------------------------------------
+             |     exp(b)   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+xb           |
+_Iexposure_1 |   1.109451   .1692974     0.68   0.496     .8226562    1.496228
+_Iexposure_2 |   1.559713   .2723874     2.55   0.011     1.107622    2.196332
+    _Imale_1 |    1.53283    .140082     4.67   0.000     1.281459    1.833511
+_Iobese4ca~2 |    1.11618   .1219788     1.01   0.315     .9009757    1.382788
+_Iobese4ca~3 |   1.071722   .1686038     0.44   0.660     .7873557    1.458793
+_Iobese4ca~4 |   1.680439   .2974642     2.93   0.003     1.187809    2.377381
+_Ismoke_no~2 |   1.046741   .0955906     0.50   0.617     .8751965    1.251909
+_Ismoke_no~3 |   .6057254   .1529107    -1.99   0.047     .3693147    .9934706
+     _Iimd_2 |   1.172051   .1778025     1.05   0.295      .870598    1.577886
+     _Iimd_3 |   1.382698    .202926     2.21   0.027      1.03706    1.843531
+     _Iimd_4 |   1.669756   .2416321     3.54   0.000     1.257404    2.217335
+     _Iimd_5 |      1.922   .2804434     4.48   0.000     1.443952    2.558316
+     _Ickd_1 |   1.396313   .1464939     3.18   0.001     1.136787    1.715088
+_Ihyperten~1 |   1.386689   .1487827     3.05   0.002     1.123701    1.711227
+_Iheart_fa~1 |   1.443985   .1929034     2.75   0.006     1.111348    1.876185
+_Iother_he~1 |    1.15489   .1247702     1.33   0.183     .9345015    1.427255
+ _Idiabcat_2 |    1.89558   .2014748     6.02   0.000     1.539114    2.334605
+ _Idiabcat_3 |   2.812434   .3752808     7.75   0.000     2.165216    3.653117
+ _Idiabcat_4 |   2.315961   1.344511     1.45   0.148     .7422899    7.225851
+_Icancer_e~1 |   1.468367   .1629591     3.46   0.001     1.181323     1.82516
+  _Istatin_1 |   .8947645   .0877568    -1.13   0.257     .7382857    1.084409
+_Iflu_vacc~1 |   .7858665   .0865603    -2.19   0.029     .6332746    .9752265
+_Ipneumoco~1 |   .7953188   .1310715    -1.39   0.165     .5757847    1.098557
+_Iexacerba~1 |   1.259305   .1225947     2.37   0.018     1.040556     1.52404
+_Iimmunode~1 |   2.488119   1.442697     1.57   0.116     .7985743    7.752237
+        age1 |   1.206646    .095238     2.38   0.017     1.033704    1.408521
+        age2 |    .768225   .1209836    -1.67   0.094     .5642055    1.046019
+        age3 |    2.11317   .8627834     1.83   0.067     .9492892    4.704033
+       _rcs1 |   1.332018   .0254094    15.03   0.000     1.283136    1.382762
+       _rcs2 |   1.104563   .0100361    10.95   0.000     1.085067     1.12441
+       _cons |   3.34e-08   9.63e-08    -5.96   0.000     1.17e-10    9.56e-06
+------------------------------------------------------------------------------
+Note: Estimates are transformed only in the first equation.
+
+. 
+. /* Predict survival==========================================================
+> =*/
+. 
+. * set timevar for time points to be plotted
+. summ _t
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+          _t |  1,285,855    65.94315    1.510361          1         66
+
+. local tmax=r(max)
+
+. local tmaxplus1=r(max)+1
+
+. 
+. display `tmax'
+66
+
+. 
+. range timevar 0 `tmax' `tmaxplus1'
+(1,285,788 missing values generated)
+
+. 
+. * Generate the standardised predictions 
+. stpm2_standsurv, at1(_Iexposure_1 0 _Iexposure_2 0) at2(_Iexposure_1 1 _Iexpo
+> sure_2 0) at3(_Iexposure_1 0 _Iexposure_2 1) timevar(timevar) ci contrast(dif
+> ference) fail
+
+. 
+. * list the standardized curves for longest follow-up, followed by their diffe
+> rence.
+. list _at1* if timevar == `tmax', noobs
+
+  +-----------------------------------+
+  |      _at1    _at1_lci    _at1_uci |
+  |-----------------------------------|
+  | .00046604   .00033267   .00065288 |
+  +-----------------------------------+
+
+. list _at2* if timevar == `tmax', noobs
+
+  +----------------------------------+
+  |      _at2   _at2_lci    _at2_uci |
+  |----------------------------------|
+  | .00051692   .0004578   .00058367 |
+  +----------------------------------+
+
+. list _at3* if timevar == `tmax', noobs
+
+  +-----------------------------------+
+  |      _at3    _at3_lci    _at3_uci |
+  |-----------------------------------|
+  | .00072597   .00057599   .00091499 |
+  +-----------------------------------+
+
+. list _contrast* if timevar == `tmax', noobs ab(16)
+
+  +-------------------------------------------------------------------+
+  | _contrast2_1 | _contrast2_1_lci | _contrast2_1_uci | _contrast3_1 |
+  |    .00005088 |       -.00011838 |        .00022014 |    .00025993 |
+  |---------------------------------+---------------------------------|
+  |        _contrast3_1_lci         |        _contrast3_1_uci         |
+  |               .00002919         |               .00049066         |
+  +-------------------------------------------------------------------+
+
+. 
+. * Convert them to be expressed in %
+. for var _at1 _at2 _at3 _at1_lci _at1_uci _at2_lci _at2_uci _at3_lci _at3_uci:
+>  replace X=100*X
+
+->  replace _at1=100*_at1
+(66 real changes made)
+
+->  replace _at2=100*_at2
+(66 real changes made)
+
+->  replace _at3=100*_at3
+(66 real changes made)
+
+->  replace _at1_lci=100*_at1_lci
+(66 real changes made)
+
+->  replace _at1_uci=100*_at1_uci
+(66 real changes made)
+
+->  replace _at2_lci=100*_at2_lci
+(66 real changes made)
+
+->  replace _at2_uci=100*_at2_uci
+(66 real changes made)
+
+->  replace _at3_lci=100*_at3_lci
+(66 real changes made)
+
+->  replace _at3_uci=100*_at3_uci
+(66 real changes made)
+
+. 
+. * Plot the survival curves
+. twoway  (rarea _at1_lci _at1_uci timevar, color(red%25)) ///
+>                 (rarea _at2_lci _at2_uci timevar, color(blue%25)) ///
+>                                 (rarea _at3_lci _at3_uci timevar, color(green
+> %25)) ///
+>                  (line _at1 timevar, sort lcolor(red)) ///
+>                  (line _at2  timevar, sort lcolor(blue)) ///
+>                                  (line _at3 timevar, sort lcolor(green)) ///
+>                  , legend(order(1 "SABA" 2 "ICS Low Dose" 3 "ICS High Dose") 
+> ///
+>                                  ring(0) cols(1) pos(1) size(small) region(lw
+> idth(none))) ///
+>                  ylabel(0 (0.05) 0.2, angle(h) format(%4.2f)) ///
+>                  ytitle("Standardised cumulative mortality (%)") ///
+>                  xtitle("Days from 1 March 2020") ///
+>                                  graphregion(fcolor(white)) ///
+>                                  saving(adj_survival_curves_asthma, replace)
+(note: file adj_survival_curves_asthma.gph not found)
+(file adj_survival_curves_asthma.gph saved)
+
+.                                  
+. graph export "$outdir/adj_survival_curves_asthma.svg", as(svg) replace
+(note: file asthma_output/adj_survival_curves_asthma.svg not found)
+(file asthma_output/adj_survival_curves_asthma.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase adj_survival_curves_asthma.gph
+
+. 
+end of do-file
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STD3f88_000000.tmp"
+
+. * COPD 
+. 
+. clear
+
+. cd ..
+E:\analyses\opensafely-ics-research
+
+. import delimited `c(pwd)'/output/input_copd.csv, clear
+(68 vars, 293,376 obs)
+
+. cd  `c(pwd)'/analysis
+E:\analyses\opensafely-ics-research\analysis
+
+. set more off 
+
+. 
+. capture mkdir copd_output_psm
+
+. capture mkdir copd_log_psm
+
+. capture mkdir copd_tempdata_psm
+
+. 
+. * Set globals that will print in programs and direct output
+. 
+. global population "COPD - PS"
+
+. global outcome    "onscoviddeath"
+
+. global outdir     "copd_output_psm" 
+
+. global logdir     "copd_log_psm"
+
+. global tempdir    "copd_tempdata_psm"
+
+. 
+. global varlist          i.obese4cat                                     ///
+>                                         i.smoke_nomiss                       
+>    ///
+>                                         i.imd                                
+>            ///
+>                                         i.ckd                                
+>            ///
+>                                         i.hypertension                       
+>    ///
+>                                         i.heart_failure                      
+>    ///
+>                                         i.other_heart_disease           ///
+>                                         i.diabcat                            
+>            ///
+>                                         i.cancer_ever                        
+>    ///
+>                                         i.statin                             
+>            ///
+>                                         i.flu_vaccine                        
+>    ///
+>                                         i.pneumococcal_vaccine          ///
+>                                         i.exacerbations                      
+>    ///
+>                                         i.asthma_ever                        
+>    ///
+>                                         i.immunodef_any
+
+.                                         
+. global tableoutcome "COVID-19 Death in ONS"
+
+. global ymax 0.005
+
+. 
+. /*  Pre-analysis data manipulation  */
+. 
+. do "00_cr_create_analysis_dataset.do"
+
+. /*===========================================================================
+> ===
+> DO FILE NAME:                   00_cr_create_analysis_dataset
+> PROJECT:                                ICS in COVID-19 
+> DATE:                                   6th of May 2020 
+> AUTHOR:                                 A Wong, A Schultze, C Rentsch
+>                                                 adapted from K Baskharan, E W
+> illiamson  
+> VERSION:                                Stata 16.1
+> DESCRIPTION OF FILE:    program 00, data management for ICS project  
+>                                                 reformat variables 
+>                                                 categorise variables
+>                                                 label variables 
+> DATASETS USED:                  data in memory (from analysis/input_xxx.csv)
+> 
+> DATASETS CREATED:               none
+> OTHER OUTPUT:                   logfiles, printed to folder analysis/$logdir
+>                                                         
+> =============================================================================
+> =*/
+. 
+. * Open a log file
+. 
+. cap log close

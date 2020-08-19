@@ -26,6 +26,18 @@ append using asthma_tempdata_sens2/temp_asthma.dta
 append using asthma_tempdata_sens3/temp_asthma.dta
 append using asthma_tempdata_psm/temp_asthma.dta
 
+replace population = "Asthma - Ethn." if _n == 7
+replace population = "Asthma - Ethn." if _n == 8
+replace population = "Asthma - Ethn." if _n == 9
+
+replace population = "Asthma - Ethn." if _n == 10
+replace population = "Asthma - Ethn." if _n == 11
+replace population = "Asthma - Ethn." if _n == 12
+
+replace population = "Asthma - PS" if _n == 25
+replace population = "Asthma - PS" if _n == 26
+
+
 *rename to match the code below 
 rename level analysis 
 gen primsec = outcome + " - " + population 

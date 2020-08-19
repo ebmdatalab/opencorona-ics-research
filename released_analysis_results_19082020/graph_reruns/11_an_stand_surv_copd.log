@@ -1,0 +1,435 @@
+---------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\an
+> alysis\copd_log\11_an_stand_surv_copd.log
+  log type:  text
+ opened on:  19 Aug 2020, 08:42:02
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, cle
+> ar
+
+. 
+. /* Sense check outcomes==========================
+> =============================*/ 
+. tab exposure $outcome
+
+                      | Failure/ce
+                      |  nsoring
+                      | indicator
+                      |    for
+                      |  outcome:
+                      | ONS covid
+       COPD Treatment |   death
+             Exposure |         0 |     Total
+----------------------+-----------+----------
+LABA/LAMA Combination |    43,217 |    43,308 
+      ICS Combination |   104,911 |   105,249 
+----------------------+-----------+----------
+                Total |   148,128 |   148,557 
+
+
+                      | Failure/ce
+                      |  nsoring
+                      | indicator
+                      |    for
+                      |  outcome:
+                      | ONS covid
+       COPD Treatment |   death
+             Exposure |         1 |     Total
+----------------------+-----------+----------
+LABA/LAMA Combination |        91 |    43,308 
+      ICS Combination |       338 |   105,249 
+----------------------+-----------+----------
+                Total |       429 |   148,557 
+
+. 
+. /* Fit the parametric model======================
+> =============================*/
+. 
+. xi i.exposure i.male $varlist
+i.exposure        _Iexposure_0-1      (naturally co
+> ded; _Iexposure_0 omitted)
+i.male            _Imale_0-1          (naturally co
+> ded; _Imale_0 omitted)
+i.obese4cat       _Iobese4cat_1-4     (naturally co
+> ded; _Iobese4cat_1 omitted)
+i.smoke_nomiss    _Ismoke_nom_2-3     (naturally co
+> ded; _Ismoke_nom_2 omitted)
+i.imd             _Iimd_1-5           (naturally co
+> ded; _Iimd_1 omitted)
+i.ckd             _Ickd_0-1           (naturally co
+> ded; _Ickd_0 omitted)
+i.hypertension    _Ihypertens_0-1     (naturally co
+> ded; _Ihypertens_0 omitted)
+i.heart_failure   _Iheart_fai_0-1     (naturally co
+> ded; _Iheart_fai_0 omitted)
+i.other_hear~se   _Iother_hea_0-1     (naturally co
+> ded; _Iother_hea_0 omitted)
+i.diabcat         _Idiabcat_1-4       (naturally co
+> ded; _Idiabcat_1 omitted)
+i.cancer_ever     _Icancer_ev_0-1     (naturally co
+> ded; _Icancer_ev_0 omitted)
+i.statin          _Istatin_0-1        (naturally co
+> ded; _Istatin_0 omitted)
+i.flu_vaccine     _Iflu_vacci_0-1     (naturally co
+> ded; _Iflu_vacci_0 omitted)
+i.pneumococca~e   _Ipneumococ_0-1     (naturally co
+> ded; _Ipneumococ_0 omitted)
+i.exacerbations   _Iexacerbat_0-1     (naturally co
+> ded; _Iexacerbat_0 omitted)
+i.asthma_ever     _Iasthma_ev_0-1     (naturally co
+> ded; _Iasthma_ev_0 omitted)
+i.immunodef_any   _Iimmunodef_0-1     (naturally co
+> ded; _Iimmunodef_0 omitted)
+
+. stpm2 _I* age1 age2 age3, scale(hazard) df(3) efo
+> rm nolog 
+
+Log likelihood = -2662.4155                     Num
+> ber of obs                                       
+>                =    148,557
+
+---------------------------------------------------
+> ---------------------------
+             |     exp(b)   Std. Err.      z    P>|
+> z|                                               
+>        [95% Con                                  
+>                f. Interval]
+-------------+-------------------------------------
+> ---------------------------
+xb           |
+_Iexposure_1 |    1.43678    .171871     3.03   0.0
+> 02                                               
+>        1.136495                                  
+>                    1.816406
+    _Imale_1 |   1.691783   .1789805     4.97   0.0
+> 00                                               
+>        1.374968                                  
+>                    2.081597
+_Iobese4ca~2 |   1.131021   .1396579     1.00   0.3
+> 19                                               
+>        .8879014                                  
+>                     1.44071
+_Iobese4ca~3 |   1.236333   .2228501     1.18   0.2
+> 39                                               
+>        .8683714                                  
+>                    1.760213
+_Iobese4ca~4 |   1.770803   .4244577     2.38   0.0
+> 17                                               
+>        1.106978                                  
+>                    2.832705
+_Ismoke_no~3 |   .5956001    .089758    -3.44   0.0
+> 01                                               
+>        .4432791                                  
+>                    .8002623
+     _Iimd_2 |   .9321979   .1382819    -0.47   0.6
+> 36                                               
+>        .6970135                                  
+>                    1.246737
+     _Iimd_3 |   .7814239   .1241954    -1.55   0.1
+> 21                                               
+>        .5722703                                  
+>                    1.067019
+     _Iimd_4 |   1.203505   .1781963     1.25   0.2
+> 11                                               
+>         .900358                                  
+>                    1.608721
+     _Iimd_5 |   1.420817   .2108841     2.37   0.0
+> 18                                               
+>        1.062182                                  
+>                    1.900541
+     _Ickd_1 |   1.581525    .170868     4.24   0.0
+> 00                                               
+>        1.279712                                  
+>                    1.954519
+_Ihyperten~1 |   .9808446   .1058771    -0.18   0.8
+> 58                                               
+>        .7938116                                  
+>                    1.211945
+_Iheart_fa~1 |    1.61191   .1922495     4.00   0.0
+> 00                                               
+>        1.275908                                  
+>                    2.036395
+_Iother_he~1 |   1.106647   .1215152     0.92   0.3
+> 56                                               
+>        .8923658                                  
+>                    1.372382
+ _Idiabcat_2 |   1.400425   .1604052     2.94   0.0
+> 03                                               
+>        1.118827                                  
+>                    1.752899
+ _Idiabcat_3 |   1.622702   .2720526     2.89   0.0
+> 04                                               
+>        1.168238                                  
+>                     2.25396
+ _Idiabcat_4 |   1.920927   1.364146     0.92   0.3
+> 58                                               
+>        .4775627                                  
+>                    7.726652
+_Icancer_e~1 |   1.063532   .1281923     0.51   0.6
+> 09                                               
+>        .8397524                                  
+>                    1.346944
+  _Istatin_1 |    .867005   .0928434    -1.33   0.1
+> 83                                               
+>        .7028627                                  
+>                     1.06948
+_Iflu_vacc~1 |   .8534923   .1198538    -1.13   0.2
+> 59                                               
+>         .648138                                  
+>                    1.123911
+_Ipneumoco~1 |   .9460268   .1501039    -0.35   0.7
+> 27                                               
+>        .6931787                                  
+>                    1.291105
+_Iexacerba~1 |     1.4378   .1483799     3.52   0.0
+> 00                                               
+>        1.174506                                  
+>                    1.760118
+_Iasthma_e~1 |   .8014676   .0931712    -1.90   0.0
+> 57                                               
+>        .6381652                                  
+>                    1.006558
+_Iimmunode~1 |    1.66082   1.664274     0.51   0.6
+> 13                                               
+>        .2329972                                  
+>                    11.83844
+        age1 |   1.040519   .0473417     0.87   0.3
+> 83                                               
+>        .9517477                                  
+>                     1.13757
+        age2 |   1.095956   .0885189     1.13   0.2
+> 57                                               
+>        .9354976                                  
+>                    1.283936
+        age3 |    .724977   .2282736    -1.02   0.3
+> 07                                               
+>        .3911166                                  
+>                    1.343823
+       _rcs1 |   1.841464   .1057251    10.63   0.0
+> 00                                               
+>         1.64548                                  
+>                     2.06079
+       _rcs2 |   1.190057   .0315582     6.56   0.0
+> 00                                               
+>        1.129784                                  
+>                    1.253545
+       _rcs3 |   .9983381   .0030911    -0.54   0.5
+> 91                                               
+>         .992298                                  
+>                    1.004415
+       _cons |    .000026   .0000708    -3.87   0.0
+> 00                                               
+>        1.24e-07                                  
+>                    .0054298
+---------------------------------------------------
+> ---------------------------
+Note: Estimates are transformed only in the first
+      equation.
+
+. 
+. /* Predict survival==============================
+> =============================*/
+. 
+. * set timevar for time points to be plotted
+. summ _t
+
+    Variable |        Obs        Mean    Std. Dev. 
+>       Min        Max
+-------------+-------------------------------------
+> --------------------
+          _t |    292,097    65.67836    3.588934  
+>         1         66
+
+. local tmax=r(max)
+
+. local tmaxplus1=r(max)+1
+
+. 
+. display `tmax'
+66
+
+. 
+. range timevar 0 `tmax' `tmaxplus1'
+(292,030 missing values generated)
+
+. 
+. * Generate the standardised predictions 
+. stpm2_standsurv, at1(_Iexposure 0) at2(_Iexposure
+>  1) timevar(timevar) ci contrast(difference) fail
+
+. 
+. * list the standardized curves for longest follow
+> -up, followed by their difference.
+. list _at1* if timevar == `tmax', noobs
+
+  +-----------------------------------+
+  |      _at1    _at1_lci    _at1_uci |
+  |-----------------------------------|
+  | .00215854   .00174436   .00267106 |
+  +-----------------------------------+
+
+. list _at2* if timevar == `tmax', noobs
+
+  +---------------------------------+
+  |      _at2   _at2_lci   _at2_uci |
+  |---------------------------------|
+  | .00309588   .0027736   .0034556 |
+  +---------------------------------+
+
+. list _contrast* if timevar == `tmax', noobs ab(16
+> )
+
+  +---------------------------------+
+  | _contrast2_1 | _contrast2_1_lci |
+  |    .00093734 |        .00036185 |
+  |---------------------------------|
+  |        _contrast2_1_uci         |
+  |               .00151283         |
+  +---------------------------------+
+
+. 
+. * Convert them to be expressed in %
+. for var _at1 _at2 _at1_lci _at1_uci _at2_lci _at2
+> _uci ///
+> _contrast2_1 _contrast2_1_lci _contrast2_1_uci: r
+> eplace X=100*X
+
+->  replace _at1=100*_at1
+(66 real changes made)
+
+->  replace _at2=100*_at2
+(66 real changes made)
+
+->  replace _at1_lci=100*_at1_lci
+(66 real changes made)
+
+->  replace _at1_uci=100*_at1_uci
+(66 real changes made)
+
+->  replace _at2_lci=100*_at2_lci
+(66 real changes made)
+
+->  replace _at2_uci=100*_at2_uci
+(66 real changes made)
+
+->  replace _contrast2_1=100*_contrast2_1
+(66 real changes made)
+
+->  replace _contrast2_1_lci=100*_contrast2_1_lci
+(66 real changes made)
+
+->  replace _contrast2_1_uci=100*_contrast2_1_uci
+(66 real changes made)
+
+. 
+. * Plot the survival curves
+. twoway  (rarea _at1_lci _at1_uci timevar, color(b
+> lue%25)) ///
+>                 (rarea _at2_lci _at2_uci timevar,
+>  color(red%25)) ///
+>                  (line _at1 timevar, sort lcolor(
+> blue)) ///
+>                  (line _at2  timevar, sort lcolor
+> (red)) ///
+>                  , legend(order(1 "LABA/LAMA" 2 "
+> ICS Combination") ///
+>                                  ring(0) cols(1) 
+> pos(1) size(small) region(lwidth(none))) ///
+>                  ylabel(0 (0.1) 0.5 ,angle(h) for
+> mat(%4.2f)) ///
+>                  ytitle("Standardised cumulative 
+> mortality (%)") ///
+>                  xtitle("Days from 1 March 2020")
+>  ///
+>                                  graphregion(fcol
+> or(white)) ///
+>                                  saving(adj_survi
+> val_curves_copd, replace)
+(file adj_survival_curves_copd.gph saved)
+
+.                                  
+. graph export "$outdir/adj_survival_curves_copd.sv
+> g", as(svg) replace
+(file copd_output/adj_survival_curves_copd.svg writ
+> ten in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase adj_survival_curves_copd.gph
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STD2dc8_000000.tmp"
+
+. clear
+
+. cd ..
+E:\analyses\opensafely-ics-research
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STD2dc8_000000.tmp"
+
+. capture mkdir asthma_tempdata
+
+. 
+. global population   "Asthma"
+
+. global outcome          "onscoviddeath"
+
+. global outdir           "asthma_output" 
+
+. global logdir           "asthma_log"
+
+. global tempdir          "asthma_tempdata"
+
+. global varlist          i.obese4cat              
+>                        ///
+>                                         i.smoke_n
+> omiss                          ///
+>                                         i.imd    
+>                                        ///
+>                                         i.ckd    
+>                                        ///
+>                                         i.hyperte
+> nsion                          ///
+>                                         i.heart_f
+> ailure                         ///
+>                                         i.other_h
+> eart_disease           ///
+>                                         i.diabcat
+>                                        ///
+>                                         i.cancer_
+> ever                           ///
+>                                         i.statin 
+>                                        ///
+>                                         i.flu_vac
+> cine                           ///
+>                                         i.pneumoc
+> occal_vaccine          ///
+>                                         i.exacerb
+> ations                         ///
+>                                         i.immunod
+> ef_any
+
+. 
+. global tableoutcome "COVID-19 Death in ONS"
+
+. global ymax 0.005
+
+. 
+end of do-file
+
+. do "E:\STATATMP\STD2dc8_000000.tmp"
+
+. * Open a log file
+. capture log close
