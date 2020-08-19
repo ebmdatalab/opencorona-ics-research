@@ -31,6 +31,37 @@ bysort exposure: summarize p2
 gen check = p0 + p1 + p2 
 summarize check 
 
+* Check PS distribution 
+* Main interest is for p2, but also of interest to plot the other probabilities 
+
+* Plot and export graphs of the PS distribution 
+graph twoway kdensity p0 if exposure == 0 || ///
+			 kdensity p0 if exposure == 1 || ///
+			 kdensity p0 if exposure == 2, ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot1.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p0 if exposure == 0 || ///
+			 kdensity p0 if exposure == 1 || ///
+			 kdensity p0 if exposure == 2, ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot2.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p0 if exposure == 0 || ///
+			 kdensity p0 if exposure == 1 || ///
+			 kdensity p0 if exposure == 2, ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot3.svg", as(svg) replace
+graph close
+
 * Estimate and tabulate standardised differences 
 * Note, this relies on the stddiff ado, provided in the repo. 
 * Because 3 level treatment, compare both against baseline, so need to create indicators for this
@@ -119,6 +150,63 @@ gen ipw_f = round(ipw*100)
 * repeat for ATT
 
 gen ipw_fatt = round(ipw_att*100) 
+
+* Plots in the weighted populations 
+
+graph twoway kdensity p0 if exposure == 0  [fw = ipw_f] || ///
+			 kdensity p0 if exposure == 1  [fw = ipw_f] || ///
+			 kdensity p0 if exposure == 2  [fw = ipw_f], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot4.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p1 if exposure == 0  [fw = ipw_f]|| ///
+			 kdensity p1 if exposure == 1  [fw = ipw_f]|| ///
+			 kdensity p1 if exposure == 2  [fw = ipw_f], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot5.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p2 if exposure == 0  [fw = ipw_f]|| ///
+			 kdensity p2 if exposure == 1  [fw = ipw_f]|| ///
+			 kdensity p2 if exposure == 2  [fw = ipw_f], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot6.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p0 if exposure == 0  [fw = ipw_fatt] || ///
+			 kdensity p0 if exposure == 1  [fw = ipw_fatt] || ///
+			 kdensity p0 if exposure == 2  [fw = ipw_fatt], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot7.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p1 if exposure == 0  [fw = ipw_fatt]|| ///
+			 kdensity p1 if exposure == 1  [fw = ipw_fatt]|| ///
+			 kdensity p1 if exposure == 2  [fw = ipw_fatt], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot8.svg", as(svg) replace
+graph close
+
+graph twoway kdensity p2 if exposure == 0  [fw = ipw_fatt]|| ///
+			 kdensity p2 if exposure == 1  [fw = ipw_fatt]|| ///
+			 kdensity p2 if exposure == 2  [fw = ipw_fatt], ///
+			 graphregion(fcolor(white)) ///
+			 legend(size(small) label(1 "P0 - SABA") label (2 "P0 - LD ICS") label (3 "P0 - HD ICS") region(lwidth(none))) 
+
+graph export "$outdir/psplot9.svg", as(svg) replace
+graph close
+
 
 * Estimate and tabulate standardised differences 
 * Note, this required amending the stddiff ado file 
