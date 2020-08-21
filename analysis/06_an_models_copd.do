@@ -118,5 +118,59 @@ file write tablecontent _n
 file close tablecontent
 postclose temp  
 
+* At editorial request, need to add number of people in each category for forest plots 
+
+capture postfile temp str20 exp1 using "$tempdir/temp2.dta", replace
+
+count if exposure == 1 & $outcome == 1
+local event = r(N)
+count if exposure == 1 
+local denom = r(N)
+
+gen exp1string = string(`event', "%6.0f") + "/" + string(`denom', "%6.0f") 
+
+post temp (exp1string) 
+post temp ("")
+post temp ("")
+
+postclose temp
+
+capture postfile temp str20 exp0 using "$tempdir/temp3.dta", replace
+
+count if exposure == 0 & $outcome == 1
+local event = r(N)
+count if exposure == 0 
+local denom = r(N)
+
+gen exp0string = string(`event', "%6.0f") + "/" + string(`denom', "%6.0f")
+
+post temp (exp0string) 
+post temp ("")
+post temp ("")
+
+postclose temp
+
+use $tempdir/temp_copd.dta, clear
+gen ID = _n 
+save $tempdir/temp_copd.dta, replace
+
+use $tempdir/temp2.dta, clear
+gen ID = _n
+save $tempdir/temp2.dta, replace
+
+use $tempdir/temp3.dta, clear
+gen ID = _n
+save $tempdir/temp3.dta, replace
+
+use $tempdir/temp_copd.dta, clear
+
+merge 1:1 ID using $tempdir/temp2 
+drop _merge
+merge 1:1 ID using $tempdir/temp3
+drop _merge 
+drop ID
+ 
+save $tempdir/temp_copd.dta, replace
+
 * Close log file 
 log close
