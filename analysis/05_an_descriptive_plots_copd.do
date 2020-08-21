@@ -26,6 +26,8 @@ use $tempdir\analysis_dataset_STSET_$outcome, clear
 tab exposure $outcome
 
 /* Generate KM PLOT===========================================================*/ 
+*  Note, at editorial request, manually added in HRs into this plot 
+*  These are calculated in 06 
 
 count if exposure != .u
 noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
@@ -41,6 +43,8 @@ sts graph, by(exposure) failure 							    			///
 		   legend(size(vsmall) label(1 "LABA/LAMA Combination") label (2 "ICS Combination") region(lwidth(none)) position(12))	///
 		   graphregion(fcolor(white)) ///	
 		   risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2 "ICS Combination") title(,size(vsmall))) ///
+		   text(0.004 13  " un. HR = 1.53, 95%CI = 1.22 - 1.93", size(vsmall)) ///
+		   text(0.0032 13 " ad. HR = 1.39, 95%CI = 1.10 - 1.76", size(vsmall)) ///
 		   saving(kmplot1, replace) 
 
 graph export "$outdir/kmplot1.svg", as(svg) replace

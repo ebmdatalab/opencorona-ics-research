@@ -41,6 +41,10 @@ sts graph, by(exposure) failure 							    			///
 		   legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Low/Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12))	///
 		   graphregion(fcolor(white)) ///	
 		   risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/Medium Dose)" 3 "ICS (High Dose)") title(,size(vsmall))) ///
+		   text(0.0019 13 " un. HR (lm ICS) = 1.36, 95%CI = 1.01 - 1.84", size(vsmall)) ///
+		   text(0.0016 13 " un. HR (hd ICS) = 2.30, 95%CI = 1.64 - 3.23", size(vsmall)) ///
+		   text(0.0013 13 " ad. HR (lm ICS) = 1.14, 95%CI = 0.84 - 1.54", size(vsmall)) ///
+		   text(0.0010 13 " ad. HR (hd ICS) = 1.55, 95%CI = 1.10 - 2.18", size(vsmall)) ///
 		   saving(kmplot1, replace)
 
 graph export "$outdir/kmplot1.svg", as(svg) replace
