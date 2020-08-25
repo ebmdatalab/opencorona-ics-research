@@ -82,6 +82,8 @@ gen obs = _n
 replace title="Exposure" if obs==1
 replace analysis="Analysis" if obs==1
 replace result_label = "HR (95% CI)" if obs==1
+replace exp1 = "ICS (n/N)" if obs==1
+replace exp0 = "LABA/LAMA (n/N)" if obs==1
 
 
 *bold face some labels
@@ -93,11 +95,19 @@ gen bf_result = "{bf:" + result_label + "}" if result_label == "HR (95% CI)"
 replace bf_result = result_label if bf_result == ""
 gen bf_primsec = "{bf:" + primsec + "}" 
 
+gen bf_exp0 = "{bf:" + exp0 + "}" if exp0 == "LABA/LAMA (n/N)"
+replace bf_exp0 = exp0 if bf_exp0 == ""
+
+gen bf_exp1 = "{bf:" + exp1 + "}" if exp1 == "ICS (n/N)"
+replace bf_exp1 = exp1 if bf_exp1 == ""
+
 cap drop x0_*
-gen x0_7 = -16
-gen x0_3=-7
-gen x0_1=-4
+gen x0_7 = -18
+gen x0_3=-9
+gen x0_1=-7
 gen x0_14=4
+gen x0_exp0 = 8
+gen x0_exp1 = 12 
 
 cap drop obs
 gen obs = _n 
@@ -139,10 +149,16 @@ graph twoway ///
 		/// add results labels
 || scatter obs x0_14 if obs<no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)   ///
 || scatter obs x0_14 if obs>no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(small) mlabposition(0) mlabgap(tiny)   ///
+		/// add numerator  
+|| scatter obs x0_exp1 if obs<no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
+|| scatter obs x0_exp1 if obs>no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
+		/// add denominator   
+|| scatter obs x0_exp0 if obs<no_obs, m(i) mlab(bf_exp0) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
+|| scatter obs x0_exp0 if obs>no_obs, m(i) mlab(bf_exp0) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
 		, legend(off)						/// turn legend off
 		xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2)) 		/// x-axis title (left right bottom top) - legend off
 		xlab(0(0.5)3, labsize(vsmall)) /// x-axis tick marks
-		xscale(range(0.01 4.5))					///	resize x-axis
+		xscale(range(0.01 13))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
 		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_copd, replace)	/// get rid of rubbish grey/blue around graph
