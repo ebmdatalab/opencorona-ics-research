@@ -47,7 +47,7 @@ sts graph, by(exposure) failure 							    			///
 		   text(0.0046 15 " adjusted HR = 1.39, 95%CI = 1.10 - 1.76", size(vsmall)) ///
 		   saving(kmplot1, replace) 
 
-graph export "$outdir/kmplot1.svg", as(svg) replace
+graph export "$outdir/kmplot1.pdf", as(pdf) replace
 
 * Close window 
 graph close
