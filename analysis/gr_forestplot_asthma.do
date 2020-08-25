@@ -78,9 +78,8 @@ gen obs = _n
 replace title="Exposure" if obs==1
 replace analysis="Analysis" if obs==1
 replace result_label = "HR (95% CI)" if obs==1
-replace exp1 = "Low/Med ICS (n/N)" if obs==1
+replace exp1 = "ICS, by dose (n/N)" if obs==1
 replace exp0 = "SABA (n/N)" if obs==1
-replace exp2 = "High ICS (n/N)" if obs==1 
 
 
 *bold face some labels
@@ -95,21 +94,18 @@ gen bf_primsec = "{bf:" + primsec + "}"
 gen bf_exp0 = "{bf:" + exp0 + "}" if exp0 == "SABA (n/N)"
 replace bf_exp0 = exp0 if bf_exp0 == ""
 
-gen bf_exp1 = "{bf:" + exp1 + "}" if exp1 == "Low/Med ICS (n/N)"
+gen bf_exp1 = "{bf:" + exp1 + "}" if exp1 == "ICS, by dose (n/N)"
 replace bf_exp1 = exp1 if bf_exp1 == ""
 
-gen bf_exp2 = "{bf:" + exp2 + "}" if exp2 == "High ICS (n/N)"
-replace bf_exp2 = exp2 if bf_exp2 == ""
 
 cap drop x0_*
-gen x0_7 = -19
-gen x0_3=-9.5
-gen x0_1=-5.5
-gen x0_14=8.2
+gen x0_7 = -40.5
+gen x0_3=-20.5
+gen x0_1=-12
+gen x0_14=10
 
-gen x0_exp0 = 10
-gen x0_exp1 = 15 
-gen x0_exp2 = 20
+gen x0_exp1 = 18
+gen x0_exp0 = 25
 
 cap drop obs
 gen obs = _n 
@@ -141,20 +137,17 @@ graph twoway ///
 	|| rcap min95 max95 obs if obs<no_obs, horizontal lw(vthin) lcolor(black)					/// add the CIs
 		/// Primary/Secondary outcomes
 || scatter obs x0_7 if obs<no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(vsmall) ///
-|| scatter obs x0_7 if obs>no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(small) ///		
+|| scatter obs x0_7 if obs>no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(vsmall) ///		
 		/// Analysis
 || scatter obs x0_3 if obs<no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(vsmall) ///
-|| scatter obs x0_3 if obs>no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(small) ///	
+|| scatter obs x0_3 if obs>no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(vsmall) ///	
 		/// Exposure
 || scatter obs x0_1 if obs<no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(vsmall)  ///
-|| scatter obs x0_1 if obs>no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(small)  ///
+|| scatter obs x0_1 if obs>no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(vsmall)  ///
 		/// add results labels
 || scatter obs x0_14 if obs<no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)   ///
-|| scatter obs x0_14 if obs>no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(small) mlabposition(0) mlabgap(tiny)   ///
-		/// add numerator 1 
-|| scatter obs x0_exp2 if obs<no_obs, m(i) mlab(bf_exp2) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
-|| scatter obs x0_exp2 if obs>no_obs, m(i) mlab(bf_exp2) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
-		/// add numerator  2
+|| scatter obs x0_14 if obs>no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)   ///
+		/// add numerator  1
 || scatter obs x0_exp1 if obs<no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
 || scatter obs x0_exp1 if obs>no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
 		/// add denominator   
@@ -163,11 +156,11 @@ graph twoway ///
 		, legend(off)						/// turn legend off
 		xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2)) 		/// x-axis title (left right bottom top) - legend off
 		xlab(0(1)6, labsize(vsmall)) /// x-axis tick marks
-		xscale(range(0.01 9.5))					///	resize x-axis
+		xscale(range(0.01 26))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
 		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_asthma, replace)	/// get rid of rubbish grey/blue around graph
 
-graph export "$outdir/forestplot1_asthma.svg", as(svg) replace
+graph export "$outdir/forestplot1_asthma.pdf", as(pdf) replace
 
 log close 

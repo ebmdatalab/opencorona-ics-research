@@ -1,0 +1,95 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descri
+> ptive_plots_copd.log
+  log type:  text
+ opened on:  25 Aug 2020, 12:06:05
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Sense check outcomes======================================================
+> =*/ 
+. tab exposure $outcome
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+       COPD Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+LABA/LAMA Combination |    43,217         91 |    43,308 
+      ICS Combination |   104,911        338 |   105,249 
+----------------------+----------------------+----------
+                Total |   148,128        429 |   148,557 
+
+. 
+. /* Generate KM PLOT==========================================================
+> =*/ 
+. *  Note, at editorial request, manually added in HRs into this plot 
+. *  These are calculated in 06 
+. 
+. count if exposure != .u
+  148,557
+
+. noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
+RUNNING THE KM PLOT FOR 148557 PEOPLE WITH NON-MISSING EXPOSURE
+
+. 
+. sts graph, by(exposure) failure                                              
+>                                    ///     
+>                    title("Time to $tableoutcome, $population population", jus
+> tification(left) size(medsmall) )             ///
+>                    xtitle("Days since 1 Mar 2020", size(small))              
+>                            ///
+>                    yscale(range(0, $ymax))                                   
+>                                                    ///
+>                    ylabel(0 0.001 "0.1" 0.002 "0.2" 0.003 "0.3" 0.004 "0.4" 0
+> .005 "0.5", angle(0) labsize(small))       ///
+>                    ytitle("Cumulative mortality (%)", size(small)) ///
+>                    xscale(range(30, 84))                                     
+>                                                    ///
+>                    xlabel(0 (20) 100, labsize(small))                        
+>                                    ///                             
+>                    legend(size(vsmall) label(1 "LABA/LAMA Combination") label
+>  (2 "ICS Combination") region(lwidth(none)) position(12))  ///
+>                    graphregion(fcolor(white)) ///       
+>                    risktable(,size(vsmall) order (1 "LABA/LAMA Combination" 2
+>  "ICS Combination") title(,size(vsmall))) ///
+>                    text(0.0048 16  " unadjusted HR = 1.53, 95%CI = 1.22 - 1.9
+> 3", size(vsmall)) ///
+>                    text(0.0046 15 " adjusted HR = 1.39, 95%CI = 1.10 - 1.76",
+>  size(vsmall)) ///
+>                    saving(kmplot1, replace) 
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+(file kmplot1.gph saved)
+(file kmplot1.gph saved)
+
+. 
+. graph export "$outdir/kmplot1.svg", as(svg) replace
+(file copd_output/kmplot1.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase kmplot1.gph
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\copd_log\05_an_descri
+> ptive_plots_copd.log
+  log type:  text
+ closed on:  25 Aug 2020, 12:06:12
+-------------------------------------------------------------------------------

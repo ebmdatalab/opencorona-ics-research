@@ -149,9 +149,9 @@ post temp ("")
 
 postclose temp
 
-use $tempdir/temp_copd.dta, clear
+use $tempdir/temp_copd_eth.dta, clear
 gen ID = _n 
-save $tempdir/temp_copd.dta, replace
+save $tempdir/temp_copd_eth.dta, replace
 
 use $tempdir/temp2.dta, clear
 gen ID = _n
@@ -161,7 +161,7 @@ use $tempdir/temp3.dta, clear
 gen ID = _n
 save $tempdir/temp3.dta, replace
 
-use $tempdir/temp_copd.dta, clear
+use $tempdir/temp_copd_eth.dta, clear
 
 merge 1:1 ID using $tempdir/temp2 
 drop _merge
@@ -169,7 +169,7 @@ merge 1:1 ID using $tempdir/temp3
 drop _merge 
 drop ID
  
-save $tempdir/temp_copd.dta, replace
+save $tempdir/temp_copd_eth.dta, replace
 
 restore
 

@@ -102,12 +102,12 @@ gen bf_exp1 = "{bf:" + exp1 + "}" if exp1 == "ICS (n/N)"
 replace bf_exp1 = exp1 if bf_exp1 == ""
 
 cap drop x0_*
-gen x0_7 = -18
-gen x0_3=-9
-gen x0_1=-7
-gen x0_14=4
-gen x0_exp0 = 8
-gen x0_exp1 = 12 
+gen x0_7 = -35
+gen x0_3=-17
+gen x0_1=-9
+gen x0_14=5.5
+gen x0_exp0 = 17
+gen x0_exp1 = 11.5 
 
 cap drop obs
 gen obs = _n 
@@ -139,16 +139,16 @@ graph twoway ///
 	|| rcap min95 max95 obs if obs<no_obs, horizontal lw(vthin) lcolor(black)					/// add the CIs
 		/// Primary/Secondary outcomes
 || scatter obs x0_7 if obs<no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(vsmall) ///
-|| scatter obs x0_7 if obs>no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(small) ///		
+|| scatter obs x0_7 if obs>no_obs, m(i) mlab(bf_primsec) mlabcol(black) mlabsize(vsmall) ///		
 		/// Analysis
 || scatter obs x0_3 if obs<no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(vsmall) ///
-|| scatter obs x0_3 if obs>no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(small) ///	
+|| scatter obs x0_3 if obs>no_obs, m(i) mlab(bfanalysis) mlabcol(black) mlabsize(vsmall) ///	
 		/// Exposure
 || scatter obs x0_1 if obs<no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(vsmall)  ///
-|| scatter obs x0_1 if obs>no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(small)  ///
+|| scatter obs x0_1 if obs>no_obs, m(i)  mlab(bftitle) mlabcol(black) mlabsize(vsmall)  ///
 		/// add results labels
 || scatter obs x0_14 if obs<no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)   ///
-|| scatter obs x0_14 if obs>no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(small) mlabposition(0) mlabgap(tiny)   ///
+|| scatter obs x0_14 if obs>no_obs, m(i)  mlab(bf_result) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)   ///
 		/// add numerator  
 || scatter obs x0_exp1 if obs<no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
 || scatter obs x0_exp1 if obs>no_obs, m(i) mlab(bf_exp1) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
@@ -157,13 +157,13 @@ graph twoway ///
 || scatter obs x0_exp0 if obs>no_obs, m(i) mlab(bf_exp0) mlabcol(black) mlabsize(vsmall) mlabposition(0) mlabgap(tiny)  ///
 		, legend(off)						/// turn legend off
 		xtitle("Hazard ratio (HR)", size(vsmall) margin(40 0 0 2)) 		/// x-axis title (left right bottom top) - legend off
-		xlab(0(0.5)3, labsize(vsmall)) /// x-axis tick marks
-		xscale(range(0.01 13))					///	resize x-axis
+		xlab(0(1)2, labsize(vsmall)) /// x-axis tick marks
+		xscale(range(-30 18))					///	resize x-axis
 		, ylab(none) ytitle("") 	/// y-axis no labels or title
 		yscale(range(1 `height') lcolor(white))					/// resize y-axis
 		graphregion(color(white)) ysize(15) xsize(20) saving(forestplot1_copd, replace)	/// get rid of rubbish grey/blue around graph
 
-graph export "$outdir/forestplot1_copd.svg", as(svg) replace
+graph export "$outdir/forestplot1_copd.pdf", as(pdf) replace
 
 log close 
 
