@@ -1,0 +1,100 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_desc
+> riptive_plots_asthma.log
+  log type:  text
+ opened on:  25 Aug 2020, 12:13:14
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. /* Sense check outcomes======================================================
+> =*/ 
+. tab exposure $outcome
+
+                      |   Failure/censoring
+                      |     indicator for
+                      |  outcome: ONS covid
+     Asthma Treatment |         death
+             Exposure |         0          1 |     Total
+----------------------+----------------------+----------
+            SABA only |   108,392         49 |   108,441 
+ICS (Low/Medium Dose) |   608,597        375 |   608,972 
+      ICS (High Dose) |   100,972        105 |   101,077 
+----------------------+----------------------+----------
+                Total |   817,961        529 |   818,490 
+
+. 
+. /* Generate KM PLOT==========================================================
+> =*/ 
+. 
+. count if exposure != .u
+  818,490
+
+. noi display "RUNNING THE KM PLOT FOR `r(N)' PEOPLE WITH NON-MISSING EXPOSURE"
+RUNNING THE KM PLOT FOR 818490 PEOPLE WITH NON-MISSING EXPOSURE
+
+. 
+. sts graph, by(exposure) failure                                              
+>                                    ///     
+>                    title("Time to $tableoutcome, $population population", jus
+> tification(left) size(medsmall) )             ///
+>                    xtitle("Days since 1 Mar 2020", size(small))              
+>                            ///
+>                    yscale(range(0, 0.0011))                                  
+>                                                    ///
+>                    ylabel(0 "0.0" 0.0005 "0.05" 0.001 "0.1" 0.0015 "0.15" 0.0
+> 02 "0.2", angle(0) format(%5.4f) labsize(small))   ///
+>                    xscale(range(30, 84))                                     
+>                                                    ///
+>                    ytitle("Cumulative mortality (%)", size(small))           
+>                    ///
+>                    xlabel(0 (20) 100, labsize(small))                        
+>                                    ///                             
+>                    legend(size(vsmall) label(1 "SABA only") label (2 "ICS (Lo
+> w/Medium Dose)") label (3 "ICS (High Dose)")region(lwidth(none)) position(12)
+> )     ///
+>                    graphregion(fcolor(white)) ///       
+>                    risktable(,size(vsmall) order (1 "SABA only" 2 "ICS (Low/M
+> edium Dose)" 3 "ICS (High Dose)") title(,size(vsmall))) ///
+>                    text(0.0019 22 " unadjusted HR (low/med ICS) = 1.36, 95%CI
+>  = 1.01 - 1.84", size(vsmall)) ///
+>                    text(0.0018 20 " unadjusted HR (high ICS) = 2.30, 95%CI = 
+> 1.64 - 3.23", size(vsmall)) ///
+>                    text(0.0017 21 " adjusted HR (low/med ICS) = 1.14, 95%CI =
+>  0.84 - 1.54", size(vsmall)) ///
+>                    text(0.0016 19 " adjusted HR (high ICS) = 1.55, 95%CI = 1.
+> 10 - 2.18", size(vsmall)) ///
+>                    saving(kmplot1, replace)
+
+         failure _d:  onscoviddeath
+   analysis time _t:  (stime_onscoviddeath-origin)
+             origin:  time enter_date
+  enter on or after:  time enter_date
+                 id:  patient_id
+(file kmplot1.gph saved)
+(file kmplot1.gph saved)
+
+. 
+. graph export "$outdir/kmplot1.svg", as(svg) replace
+(file asthma_output/kmplot1.svg written in SVG format)
+
+. 
+. * Close window 
+. graph close
+
+. 
+. * Delete unneeded graphs
+. erase kmplot1.gph
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\05_an_desc
+> riptive_plots_asthma.log
+  log type:  text
+ closed on:  25 Aug 2020, 12:13:40
+-------------------------------------------------------------------------------

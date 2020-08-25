@@ -76,8 +76,6 @@ local denom = r(N)
 gen exp1string = string(`event', "%6.0f") + "/" + string(`denom', "%6.0f") 
 
 post temp (exp1string) 
-post temp ("")
-post temp ("")
 
 postclose temp
 
@@ -91,8 +89,6 @@ local denom = r(N)
 gen exp0string = string(`event', "%6.0f") + "/" + string(`denom', "%6.0f")
 
 post temp (exp0string) 
-post temp ("")
-post temp ("")
 
 postclose temp
 
