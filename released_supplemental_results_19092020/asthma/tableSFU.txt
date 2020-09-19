@@ -1,0 +1,6 @@
+Table S: Follow-up Time - Asthma
+	Total	SABA only	ICS (Low/Medium Dose)	ICS (High Dose)	Other
+Analysis time when record ends
+Median (IQR)	66 (66-66)	66 (66-66)	66 (66-66)	66 (66-66)	66 (66-66)
+Mean (SD)	65.94 (1.51)	65.94 (1.64)	65.94 (1.59)	65.91 (1.95)	65.96 (1.24)
+Min, Max	1, 66	1, 66	1, 66	1, 66	1, 66

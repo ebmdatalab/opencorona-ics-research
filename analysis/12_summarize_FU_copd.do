@@ -39,9 +39,6 @@ syntax, variable(varname)
 
 	qui summarize `variable' if exposure == 1, d
 	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
-	
-	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _tab
 
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01) (")") _n
@@ -55,9 +52,7 @@ syntax, variable(varname)
 
 	qui summarize `variable' if exposure == 1, d
 	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
-	
-	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+
 
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
@@ -72,9 +67,7 @@ syntax, variable(varname)
 
 	qui summarize `variable' if exposure == 1, d
 	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
-	
-	qui summarize `variable' if exposure == 2, d
-	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+
 
 	qui summarize `variable' if exposure >= ., d
 	file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _n
@@ -91,14 +84,12 @@ file write tablecontent ("Table S: Follow-up Time - $population") _n
 
 local lab0: label exposure 0
 local lab1: label exposure 1
-local lab2: label exposure 2
 local labu: label exposure .u
 
 
 file write tablecontent _tab ("Total")				  			  _tab ///
 							 ("`lab0'")			 			      _tab ///
 							 ("`lab1'")  						  _tab ///
-							 ("`lab2'")			  				  _tab ///
 							 ("`labu'")			  				  _n 
 							 
 summarizevariable, variable(_t)

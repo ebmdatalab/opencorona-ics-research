@@ -1,0 +1,6 @@
+Table S: Follow-up Time - COPD
+	Total	LABA/LAMA Combination	ICS Combination	Other
+Analysis time when record ends
+Median (IQR)	66 (66-66)	66 (66-66)	66 (66-66)	66 (66-66)
+Mean (SD)	65.68 (3.59)	65.72 (3.39)	65.61 (3.95)	65.72 (3.36)
+Min, Max	1, 66	1, 66	1, 66	1, 66

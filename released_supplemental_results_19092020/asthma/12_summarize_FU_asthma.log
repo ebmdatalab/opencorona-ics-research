@@ -1,0 +1,124 @@
+---------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\12_summarize_FU_asthma.log
+  log type:  text
+ opened on:  19 Sep 2020, 08:16:06
+
+. 
+. * Open Stata dataset
+. use $tempdir\analysis_dataset_STSET_$outcome, clear
+
+. 
+. * Output summary of FU time into a table, by treatment group 
+. 
+. cap prog drop summarizevariable 
+
+. prog define summarizevariable
+  1. syntax, variable(varname) 
+  2. 
+.         local lab: variable label `variable'
+  3.         file write tablecontent ("`lab'") _n 
+  4.         
+.         qui summarize `variable', d
+  5.         file write tablecontent ("Median (IQR)") _tab 
+  6.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01
+> ) (")") _tab
+  7.                                                         
+.         qui summarize `variable' if exposure == 0, d
+  8.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01
+> ) (")") _tab
+  9. 
+.         qui summarize `variable' if exposure == 1, d
+ 10.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01
+> ) (")") _tab
+ 11.         
+.         qui summarize `variable' if exposure == 2, d
+ 12.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01
+> ) (")") _tab
+ 13. 
+.         qui summarize `variable' if exposure >= ., d
+ 14.         file write tablecontent (round(r(p50)),0.01) (" (") (round(r(p25)),0.01) ("-") (round(r(p75)),0.01
+> ) (")") _n
+ 15.         
+.         qui summarize `variable', d
+ 16.         file write tablecontent ("Mean (SD)") _tab 
+ 17.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+ 18.                                                         
+.         qui summarize `variable' if exposure == 0, d
+ 19.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+ 20. 
+.         qui summarize `variable' if exposure == 1, d
+ 21.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+ 22.         
+.         qui summarize `variable' if exposure == 2, d
+ 23.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _tab
+ 24. 
+.         qui summarize `variable' if exposure >= ., d
+ 25.         file write tablecontent (round(r(mean)),0.01) (" (") (round(r(sd)),0.01) (")") _n
+ 26.         
+.         
+.         qui summarize `variable', d
+ 27.         file write tablecontent ("Min, Max") _tab 
+ 28.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 29.                                                         
+.         qui summarize `variable' if exposure == 0, d
+ 30.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 31. 
+.         qui summarize `variable' if exposure == 1, d
+ 32.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 33.         
+.         qui summarize `variable' if exposure == 2, d
+ 34.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _tab
+ 35. 
+.         qui summarize `variable' if exposure >= ., d
+ 36.         file write tablecontent (round(r(min)),0.01) (", ") (round(r(max)),0.01) ("") _n
+ 37.         
+. end
+
+. 
+. *Set up output file
+. cap file close tablecontent
+
+. file open tablecontent using ./$outdir/tableSFU.txt, write text replace
+(note: file ./asthma_output/tableSFU.txt not found)
+
+. 
+. file write tablecontent ("Table S: Follow-up Time - $population") _n
+
+. 
+. * Exposure labelled columns
+. 
+. local lab0: label exposure 0
+
+. local lab1: label exposure 1
+
+. local lab2: label exposure 2
+
+. local labu: label exposure .u
+
+. 
+. 
+. file write tablecontent _tab ("Total")                                                    _tab ///
+>                                                          ("`lab0'")                                          
+>          _tab ///
+>                                                          ("`lab1'")                                          
+>      _tab ///
+>                                                          ("`lab2'")                                          
+>              _tab ///
+>                                                          ("`labu'")                                          
+>              _n 
+
+.                                                          
+. summarizevariable, variable(_t)
+
+. 
+. file close tablecontent
+
+. 
+. * Close log file 
+. log close
+      name:  <unnamed>
+       log:  E:\analyses\opensafely-ics-research\analysis\asthma_log\12_summarize_FU_asthma.log
+  log type:  text
+ closed on:  19 Sep 2020, 08:16:38
+---------------------------------------------------------------------------------------------------------------
