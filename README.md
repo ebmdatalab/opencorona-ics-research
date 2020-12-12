@@ -2,13 +2,13 @@
 
 This is the code and configuration for our paper, _Inhaled corticosteroid use and risk COVID-19 related death among 966,461 patients with COPD or asthma: an OpenSAFELY analysis_
 
-* The preprint of our paper is available on [MedRxiv here](https://www.medrxiv.org/content/10.1101/2020.06.19.20135491v1)
-* The paper has been submitted to an academic peer-reviewed journal 
+* The paper is openly published in [The Lancet Respiratory Medicine here](https://doi.org/10.1016/S2213-2600(20)30415-X).
 * Raw model outputs, including charts, crosstabs, etc, are in `released_analysis_results/`
 * If you are interested in how we defined our covariates, take a look at the study definition; this is written in Python, but non-programmers should be able to understand what is going on there. The [COPD definition is here](https://github.com/opensafely/ics-research/blob/master/analysis/study_definition_copd.py) and [asthma definition is here](https://github.com/opensafely/ics-research/blob/master/analysis/study_definition_asthma.py).
 * The Stata code uses two userwritten programs, ```datacheck``` and ```evalue```. When running locally, these are easily installed by running ```ssc install <programme-name>```. As the server on which this code is run does not have internet access, the relevant ado files are instead provided in the analysis folder. 
 * If you are interested in how we defined our code lists, look in the [codelists folder](./codelists/). A new tool
 called OpenSafely Codelists was developed to allow codelists to be versioned and all of the codelists hosted online at [codelists.opensafely.org](http://codelists.opensafely.org) for open inspection and re-use by anyone.
+* The preprint of our paper is available on [MedRxiv here](https://www.medrxiv.org/content/10.1101/2020.06.19.20135491v1)
 
 # About the OpenSAFELY framework
 
