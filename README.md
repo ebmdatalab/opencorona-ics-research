@@ -1,6 +1,6 @@
 # Inhaled corticosteroids and risk of COVID-19 death
 
-This is the code and configuration for our paper, _Inhaled corticosteroid use and risk COVID-19 related death among 966,461 patients with COPD or asthma: an OpenSAFELY analysis_
+This is the code and configuration for our paper, _Risk of COVID-19-related death among patients with chronic obstructive pulmonary disease or asthma prescribed inhaled corticosteroids: an observational cohort study using the OpenSAFELY platform_
 
 * The paper is openly published in [The Lancet Respiratory Medicine here](https://doi.org/10.1016/S2213-2600(20)30415-X).
 * Raw model outputs, including charts, crosstabs, etc, are in `released_analysis_results/`
