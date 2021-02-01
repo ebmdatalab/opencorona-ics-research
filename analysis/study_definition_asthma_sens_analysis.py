@@ -391,16 +391,6 @@ study = StudyDefinition(
         include_month=True,
         return_expectations={"date": {"latest": "2020-02-29"}},
     ),
-    ### ILI
-    ili=patients.with_these_clinical_events(
-        ili_codes,
-        return_first_date_in_period=True,
-        include_month=True,
-        between=["2016-09-01", "2020-02-29"],
-        return_expectations={
-            "date": {"earliest": "2019-09-01", "latest": "2020-02-29"}
-        },
-    ),
     ### HYPERTENSION
     hypertension=patients.with_these_clinical_events(
         hypertension_codes,
