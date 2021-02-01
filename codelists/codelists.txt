@@ -20,7 +20,6 @@ opensafely/high-dose-single-ingredient-ics-inhalers/2020-05-13
 opensafely/hiv/2020-07-13
 opensafely/hypertension/2020-04-28
 opensafely/inflammatory-bowel-disease/2020-04-07
-opensafely/influenza-like-illness/2020-05-18
 opensafely/influenza-vaccination/2020-05-12
 opensafely/influenza-vaccination-clinical-codes-given/2020-05-21
 opensafely/influenza-vaccination-clinical-codes-not-given/2020-05-19
